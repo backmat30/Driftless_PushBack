@@ -42,6 +42,10 @@ class Coprocessor {
   /// key-value pairs
   void fetchLatestSignal();
 
+  /// @brief Turns the given packet into a storable key-value pair
+  /// @param packet __std::string&__ The packet to process
+  void processPacket(std::string& packet);
+
  public:
   /// @brief Constructs a new Coprocessor object
   /// @param serialDevice __std::unique_ptr<io::ISerialDevice>&__ The serial
