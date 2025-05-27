@@ -17,6 +17,8 @@ class Coprocessor {
  private:
   static constexpr uint8_t TASK_DELAY{10};
 
+  /// @brief Performs task updates in a constant loop
+  /// @param params __void*__ Pointer to the coprocessor to update
   static void taskLoop(void* params);
 
   std::unique_ptr<io::ISerialDevice> m_serial_device;
@@ -33,13 +35,17 @@ class Coprocessor {
 
   std::string m_serial_buffer;
 
-  void TaskUpdate();
+  /// @brief Updates the coprocessor object
+  void taskUpdate();
 
+  /// @brief Fetches the latest signal from the coprocessor and stores it as
+  /// key-value pairs
   void fetchLatestSignal();
 
-  public:
+ public:
   /// @brief Constructs a new Coprocessor object
-  /// @param serialDevice __std::unique_ptr<io::ISerialDevice>&__ The serial device used for the coprocessor
+  /// @param serialDevice __std::unique_ptr<io::ISerialDevice>&__ The serial
+  /// device used for the coprocessor
   Coprocessor(std::unique_ptr<io::ISerialDevice>& serialDevice);
 
   /// @brief Initializes the Coprocessor object
@@ -47,7 +53,8 @@ class Coprocessor {
 
   /// @brief Gets the latest value of a given key, if available
   /// @param key __char__ The key value to search for
-  /// @return __std::string__ The value associated with the key, or an empty string if not found
+  /// @return __std::string__ The value associated with the key, or an empty
+  /// string if not found
   std::string getValue(char key);
 
   /// @brief Sends a key-value pair to the coprocessor
