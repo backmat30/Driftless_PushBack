@@ -42,9 +42,9 @@ class Coprocessor {
   /// key-value pairs
   void fetchLatestSignal();
 
-  /// @brief Turns the given packet into a storable key-value pair
-  /// @param packet __std::string&__ The packet to process
-  void processPacket(std::string& packet);
+  /// @brief Takes the next packet from the buffer, if available, and stores the data
+  /// @param buffer __std::string&__ The buffer containing the packet data 
+  void processPacket(std::string& buffer);
 
  public:
   /// @brief Constructs a new Coprocessor object
