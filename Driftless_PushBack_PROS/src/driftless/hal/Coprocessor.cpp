@@ -61,5 +61,9 @@ void Coprocessor::init() {
   }
 }
 
-
+void Coprocessor::run() {
+  if(m_task) {
+    m_task->start(&Coprocessor::taskLoop, this);
+  }
+}
 }  // namespace driftless::hal

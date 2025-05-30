@@ -56,6 +56,9 @@ class Coprocessor {
   /// @brief Initializes the Coprocessor object
   void init();
 
+  /// @brief Runs the coprocessor task loop
+  void run();
+
   /// @brief Gets the latest value of a given key, if available
   /// @param key __std::string&__ The key value to search for
   /// @return __std::string__ The value associated with the key, or an empty
