@@ -10,6 +10,7 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
+#include "driftless/serial_protocol/ISerialProtocol.hpp"
 
 namespace driftless {
 namespace hal {
@@ -22,6 +23,8 @@ class Coprocessor {
   static void taskLoop(void* params);
 
   std::unique_ptr<io::ISerialDevice> m_serial_device;
+
+  std::unique_ptr<serial_protocol::ISerialProtocol> m_serial_protocol;
 
   std::unique_ptr<rtos::ITask> m_task;
 
