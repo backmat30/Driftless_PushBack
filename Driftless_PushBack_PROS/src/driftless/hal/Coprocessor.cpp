@@ -15,6 +15,7 @@ void Coprocessor::taskUpdate() {
   }
 
   fetchLatestSignal();
+  processLatestSignal();
 
   if (m_mutex) {
     m_mutex->give();
@@ -26,6 +27,24 @@ void Coprocessor::fetchLatestSignal() {
     while (m_serial_device->getInputBytes()) {
       m_serial_buffer += static_cast<char>(m_serial_device->readByte());
     }
+  }
+}
+
+void Coprocessor::processLatestSignal() {
+  while (hasPacket()) {
+    m_serial_buffer = m_serial_buffer.substr(
+        m_serial_buffer.find(m_serial_protocol->getStartDelimiter()));
+
+    std::string packet{m_serial_buffer.substr(
+        0, m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) + 1)};
+
+    std::pair<std::string, std::string> packet_info{
+        m_serial_protocol->decode(packet)};
+        
+    m_latest_data[packet_info.first] = packet_info.second;
+
+    m_serial_buffer = m_serial_buffer.substr(
+        m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) + 1);
   }
 }
 Coprocessor::Coprocessor(std::unique_ptr<io::ISerialDevice>& serial_device)
