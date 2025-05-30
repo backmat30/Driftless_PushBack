@@ -46,8 +46,7 @@ class Coprocessor {
   void fetchLatestSignal();
 
   /// @brief Takes the next packet from the buffer, if available, and stores the data
-  /// @param buffer __std::string&__ The buffer containing the packet data 
-  void processPacket(std::string& buffer);
+  void processPacket();
 
  public:
   /// @brief Constructs a new Coprocessor object
