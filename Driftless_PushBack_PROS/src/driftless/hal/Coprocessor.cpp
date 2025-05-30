@@ -40,12 +40,19 @@ void Coprocessor::processLatestSignal() {
 
     std::pair<std::string, std::string> packet_info{
         m_serial_protocol->decode(packet)};
-        
+
     m_latest_data[packet_info.first] = packet_info.second;
 
     m_serial_buffer = m_serial_buffer.substr(
         m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) + 1);
   }
+}
+
+bool Coprocessor::hasPacket() const {
+  return m_serial_buffer.find(m_serial_protocol->getStartDelimiter()) !=
+         std::string::npos &&
+         m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) !=
+             std::string::npos;
 }
 Coprocessor::Coprocessor(std::unique_ptr<io::ISerialDevice>& serial_device)
     : m_serial_device{std::move(serial_device)} {}
