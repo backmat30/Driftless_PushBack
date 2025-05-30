@@ -45,8 +45,12 @@ class Coprocessor {
   /// key-value pairs
   void fetchLatestSignal();
 
-  /// @brief Takes the next packet from the buffer, if available, and stores the data
-  void processPacket();
+  /// @brief finds and stores packets recieved from the latest signal
+  void processLatestSignal();
+
+  /// @brief Determines if the buffer contains a complete packet
+  /// @return __bool__ True if a complete packet is available, false otherwise
+  bool hasPacket() const;
 
  public:
   /// @brief Constructs a new Coprocessor object
