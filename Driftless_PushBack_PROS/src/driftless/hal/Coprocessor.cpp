@@ -54,6 +54,4 @@ bool Coprocessor::hasPacket() const {
          m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) !=
              std::string::npos;
 }
-Coprocessor::Coprocessor(std::unique_ptr<io::ISerialDevice>& serial_device)
-    : m_serial_device{std::move(serial_device)} {}
 }  // namespace driftless::hal

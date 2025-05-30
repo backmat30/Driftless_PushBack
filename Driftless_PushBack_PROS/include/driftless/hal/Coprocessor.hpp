@@ -53,11 +53,6 @@ class Coprocessor {
   bool hasPacket() const;
 
  public:
-  /// @brief Constructs a new Coprocessor object
-  /// @param serialDevice __std::unique_ptr<io::ISerialDevice>&__ The serial
-  /// device used for the coprocessor
-  Coprocessor(std::unique_ptr<io::ISerialDevice>& serialDevice);
-
   /// @brief Initializes the Coprocessor object
   void init();
 
