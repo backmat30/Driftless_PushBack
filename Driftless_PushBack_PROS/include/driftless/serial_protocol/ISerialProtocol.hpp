@@ -21,7 +21,7 @@ class ISerialProtocol {
                              const std::string& value) = 0;
 
   /// @brief Decodes a packet from a serial transmission into a key-value pair
-  /// @param packet __std::sttring&__ The packet to decode
+  /// @param packet __std::string&__ The packet to decode
   /// @return __std::pair<std::string, std::string>__ The key-value pair
   /// extracted from the packet
   virtual std::pair<std::string, std::string> decode(
