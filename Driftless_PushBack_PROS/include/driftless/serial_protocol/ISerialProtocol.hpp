@@ -26,6 +26,14 @@ class ISerialProtocol {
   /// extracted from the packet
   virtual std::pair<std::string, std::string> decode(
       const std::string& packet) = 0;
+
+  /// @brief Gets the character used to start a packet
+  /// @return __char__ The start delimiter character
+  virtual char getStartDelimiter() const = 0;
+
+  /// @brief Gets the character used to end a packet
+  /// @return __char__ The end delimiter character
+  virtual char getEndDelimiter() const = 0;
 };
 }
 }
