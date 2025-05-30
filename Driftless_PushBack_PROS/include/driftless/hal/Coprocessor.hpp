@@ -34,7 +34,7 @@ class Coprocessor {
 
   std::unique_ptr<rtos::IMutex> m_mutex;
 
-  std::map<char, std::string> m_latest_data;
+  std::map<std::string, std::string> m_latest_data;
 
   std::string m_serial_buffer;
 
@@ -62,15 +62,15 @@ class Coprocessor {
   void init();
 
   /// @brief Gets the latest value of a given key, if available
-  /// @param key __char__ The key value to search for
+  /// @param key __std::string&__ The key value to search for
   /// @return __std::string__ The value associated with the key, or an empty
   /// string if not found
-  std::string getValue(char key);
+  std::string getValue(std::string& key);
 
   /// @brief Sends a key-value pair to the coprocessor
-  /// @param key __char__ The key to send
+  /// @param key __std::string&__ The key to send
   /// @param value __std::string&__ The value to send
-  void sendValue(char key, const std::string& value);
+  void sendValue(std::string& key, const std::string& value);
 };
 }  // namespace hal
 }  // namespace driftless
