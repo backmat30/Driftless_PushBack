@@ -69,6 +69,38 @@ class Coprocessor {
   /// @param key __std::string&__ The key to send
   /// @param value __std::string&__ The value to send
   void sendValue(std::string& key, const std::string& value);
+
+  /// @brief Sets the serial device used by the coprocessor
+  /// @param serial_device __std::unique_ptr<io::ISerialDevice>&__ The serial
+  /// device to use for communication
+  void setSerialDevice(std::unique_ptr<io::ISerialDevice>& serial_device);
+
+  /// @brief Sets the protocol used for serial communication
+  /// @param serial_protocol
+  /// __std::unique_ptr<serial_protocol::ISerialProtocol>&__ The serial protocol
+  /// to use for encoding and decoding messages
+  void setSerialProtocol(
+      std::unique_ptr<serial_protocol::ISerialProtocol>& serial_protocol);
+
+  /// @brief Sets the task used for running the update loop
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use for running
+  /// the update loop
+  void setTask(std::unique_ptr<rtos::ITask>& task);
+
+  /// @brief Sets the clock used for timing operations
+  /// @param clock __std::unique_ptr<rtos::IClock>&__ The clock to use for
+  /// timing operations
+  void setClock(std::unique_ptr<rtos::IClock>& clock);
+
+  /// @brief Sets the delayer used for delaying operations
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to use for
+  /// delaying operations
+  void setDelayer(std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Sets the mutex used for synchronizing access to shared resources
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex to use for
+  /// synchronizing access to shared resources
+  void setMutex(std::unique_ptr<rtos::IMutex>& mutex);
 };
 }  // namespace hal
 }  // namespace driftless
