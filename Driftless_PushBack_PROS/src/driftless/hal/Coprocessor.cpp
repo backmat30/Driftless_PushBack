@@ -84,4 +84,29 @@ void Coprocessor::sendValue(std::string& key, const std::string& value) {
                            packet.size());
   }
 }
+
+void Coprocessor::setSerialDevice(
+    std::unique_ptr<io::ISerialDevice>& serial_device) {
+  m_serial_device = std::move(serial_device);
+}
+
+void Coprocessor::setSerialProtocol(
+    std::unique_ptr<serial_protocol::ISerialProtocol>& serial_protocol) {
+  m_serial_protocol = std::move(serial_protocol);
+}
+
+void Coprocessor::setTask(std::unique_ptr<rtos::ITask>& task) {
+  m_task = std::move(task);
+}
+void Coprocessor::setClock(std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = std::move(clock);
+}
+
+void Coprocessor::setDelayer(std::unique_ptr<rtos::IDelayer>& delayer) {
+  m_delayer = std::move(delayer);
+}
+
+void Coprocessor::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
+  m_mutex = std::move(mutex);
+}
 }  // namespace driftless::hal
