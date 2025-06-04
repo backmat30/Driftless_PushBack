@@ -66,4 +66,20 @@ void Coprocessor::run() {
     m_task->start(&Coprocessor::taskLoop, this);
   }
 }
+
+std::string Coprocessor::getValue(std::string& key) {
+  std::string value{};
+
+  if(m_latest_data.contains(key)) {
+    value = m_latest_data[key];
+  }
+
+  return value;
+}
+
+void Coprocessor::sendValue(std::string& key, const std::string& value) {
+  if (m_serial_device && m_serial_protocol) {
+    std::string packet = m_serial_protocol->encode(key, value);
+    m_serial_device->write(reinterpret_cast<uint8_t*>(packet.data()), packet.size());
+  }
 }  // namespace driftless::hal
