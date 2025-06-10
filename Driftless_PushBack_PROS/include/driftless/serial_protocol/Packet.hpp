@@ -1,6 +1,7 @@
 #ifndef __PACKET_HPP__
 #define __PACKET_HPP__
 
+#include <string>
 #include "driftless/serial_protocol/ESerialKey.hpp"
 
 /// @brief Namespace for driftless library code
@@ -17,7 +18,7 @@ class Packet {
   /// @brief Key for the packet, what the data represents
   ESerialKey key;
   /// @brief Value of the packet
-  int8_t* value;
+  std::string value;
 };
 }  // namespace serial_protocol
 }  // namespace driftless
