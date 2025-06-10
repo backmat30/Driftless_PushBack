@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <cstring>
 
 #include "driftless/serial_protocol/ESerialKey.hpp"
 #include "driftless/serial_protocol/Packet.hpp"
@@ -25,7 +26,7 @@ class SerialProtocol {
   /// @return __std::string__ The key-value pair formatted to the specified
   /// packet protocol
   template <typename T>
-  std::string encode(const ESerialKey key, const T value);
+  std::string encode(const ESerialKey key, const T& value);
 
   /// @brief Decodes a packet from a serial transmission into a key-value pair
   /// @param packet_info __std::string&__ The packet to decode
