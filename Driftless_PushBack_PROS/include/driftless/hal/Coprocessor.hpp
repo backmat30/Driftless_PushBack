@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <cstring>
 
 #include "driftless/io/ISerialDevice.hpp"
 #include "driftless/rtos/IClock.hpp"

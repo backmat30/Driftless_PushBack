@@ -32,27 +32,18 @@ void Coprocessor::fetchLatestSignal() {
 
 void Coprocessor::processLatestSignal() {
   while (hasPacket()) {
-    m_serial_buffer = m_serial_buffer.substr(
-        m_serial_buffer.find(m_serial_protocol->getStartDelimiter()));
+    serial_protocol::Packet packet{m_serial_protocol.decode(m_serial_buffer)};
+    m_serial_buffer.erase(
+        0, packet.value.size() +
+               3);  // size of the value, plus 1 byte for start delimiter, one
+                    // for packet size, and one for the key
 
-    std::string packet{m_serial_buffer.substr(
-        0, m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) + 1)};
-
-    std::pair<std::string, std::string> packet_info{
-        m_serial_protocol->decode(packet)};
-
-    m_latest_data[packet_info.first] = packet_info.second;
-
-    m_serial_buffer = m_serial_buffer.substr(
-        m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) + 1);
+    m_latest_data[packet.key] = packet.value;
   }
 }
 
 bool Coprocessor::hasPacket() const {
-  return m_serial_buffer.find(m_serial_protocol->getStartDelimiter()) !=
-             std::string::npos &&
-         m_serial_buffer.find(m_serial_protocol->getEndDelimiter()) !=
-             std::string::npos;
+  return m_serial_protocol.hasValidPacket(m_serial_buffer);
 }
 
 void Coprocessor::init() {
@@ -67,20 +58,31 @@ void Coprocessor::run() {
   }
 }
 
-std::string Coprocessor::getValue(std::string& key) {
-  std::string value{};
+template <typename T>
+T Coprocessor::getValue(serial_protocol::ESerialKey key) {
+  T value{};
 
   if (m_latest_data.contains(key)) {
-    value = m_latest_data[key];
+    try {
+      std::memcpy(&value, m_latest_data[key].data(),
+                  sizeof(T));  // Copy the bytes from the string to the value
+    } catch (const std::exception& e) {
+      // Handle conversion error, e.g., log it or throw an exception
+      // For now, we will just return the default value
+      pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
+                          "Invalid conversion for %d at %7.2f", static_cast<int>(key), m_clock->getTime() / 1000.0);
+      value = T{};
+    }
   }
 
   return value;
 }
 
-void Coprocessor::sendValue(std::string& key, const std::string& value) {
+template <typename T>
+void Coprocessor::sendValue(serial_protocol::ESerialKey key, const T& value) {
   if (m_serial_device && m_serial_protocol) {
-    std::string packet = m_serial_protocol->encode(key, value);
-    m_serial_device->write(reinterpret_cast<uint8_t*>(packet.data()),
+    std::string packet_info = m_serial_protocol->encode<T>(key, value);
+    m_serial_device->write(reinterpret_cast<uint8_t*>(packet_info.data()),
                            packet.size());
   }
 }
@@ -91,8 +93,8 @@ void Coprocessor::setSerialDevice(
 }
 
 void Coprocessor::setSerialProtocol(
-    std::unique_ptr<serial_protocol::ISerialProtocol>& serial_protocol) {
-  m_serial_protocol = std::move(serial_protocol);
+    serial_protocol::SerialProtocol& serial_protocol) {
+  m_serial_protocol = serial_protocol;
 }
 
 void Coprocessor::setTask(std::unique_ptr<rtos::ITask>& task) {
