@@ -10,7 +10,7 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
-#include "driftless/serial_protocol/ISerialProtocol.hpp"
+#include "driftless/serial_protocol/SerialProtocol.hpp"
 
 namespace driftless {
 namespace hal {
@@ -24,8 +24,6 @@ class Coprocessor {
 
   std::unique_ptr<io::ISerialDevice> m_serial_device;
 
-  std::unique_ptr<serial_protocol::ISerialProtocol> m_serial_protocol;
-
   std::unique_ptr<rtos::ITask> m_task;
 
   std::unique_ptr<rtos::IClock> m_clock;
@@ -34,7 +32,9 @@ class Coprocessor {
 
   std::unique_ptr<rtos::IMutex> m_mutex;
 
-  std::map<std::string, std::string> m_latest_data;
+  std::map<serial_protocol::ESerialKey, std::string> m_latest_data;
+
+  serial_protocol::SerialProtocol m_serial_protocol;
 
   std::string m_serial_buffer;
 
@@ -60,15 +60,17 @@ class Coprocessor {
   void run();
 
   /// @brief Gets the latest value of a given key, if available
-  /// @param key __std::string&__ The key value to search for
-  /// @return __std::string__ The value associated with the key, or an empty
-  /// string if not found
-  std::string getValue(std::string& key);
+  /// @tparam T The type to convert the bytes to
+  /// @param key __ESerialKey__ The key value to search for
+  /// @return __T__ The value associated with the key
+  template <typename T>
+  T getValue(serial_protocol::ESerialKey key);
 
   /// @brief Sends a key-value pair to the coprocessor
   /// @param key __std::string&__ The key to send
   /// @param value __std::string&__ The value to send
-  void sendValue(std::string& key, const std::string& value);
+  template <typename T>
+  void sendValue(serial_protocol::ESerialKey key, const T& value);
 
   /// @brief Sets the serial device used by the coprocessor
   /// @param serial_device __std::unique_ptr<io::ISerialDevice>&__ The serial
@@ -80,7 +82,7 @@ class Coprocessor {
   /// __std::unique_ptr<serial_protocol::ISerialProtocol>&__ The serial protocol
   /// to use for encoding and decoding messages
   void setSerialProtocol(
-      std::unique_ptr<serial_protocol::ISerialProtocol>& serial_protocol);
+      serial_protocol::SerialProtocol& serial_protocol);
 
   /// @brief Sets the task used for running the update loop
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use for running
