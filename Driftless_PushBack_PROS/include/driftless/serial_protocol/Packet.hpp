@@ -14,7 +14,7 @@ namespace serial_protocol {
 
 /// @brief Represents a packet of data for serial communication
 /// @author Matthew Backman
-class Packet {
+struct Packet {
   /// @brief Key for the packet, what the data represents
   ESerialKey key;
   /// @brief Value of the packet
