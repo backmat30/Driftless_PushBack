@@ -7,18 +7,40 @@ void XDriveModule::init() { m_motors.init(); }
 void XDriveModule::run() {}
 
 void XDriveModule::setMotionVector(HolonomicMotionVector motion_vector) {
-  // Create a motion vector using the angular offset of the module
-  HolonomicMotionVector module_motion_vector = motion_vector;
-  module_motion_vector.direction -= m_angle_offset;
+  // normalize the vector before passing to 
+  motion_vector.magnitude /= m_max_linear_velocity;
+  motion_vector.angular_velocity /= m_max_angular_velocity;
+
+  setNormalizedMotionVector(motion_vector);
+}
+
+void XDriveModule::setNormalizedMotionVector(
+    HolonomicMotionVector motion_vector) {
+  // Clamp the magnitude to [0, 1]
+  if (motion_vector.magnitude > 1.0) {
+    motion_vector.magnitude = 1.0;
+  } else if (motion_vector.magnitude < 0.0) {
+    motion_vector.magnitude = 0.0;
+  }
+  motion_vector.magnitude *= 12.0;  // Scale to max voltage (12V)
+
+  // Clamp the angular velocity to [-1, 1]
+  if (motion_vector.angular_velocity > 1.0) {
+    motion_vector.angular_velocity = 1.0;
+  } else if (motion_vector.angular_velocity < -1.0) {
+    motion_vector.angular_velocity = -1.0;
+  }
+
+  motion_vector.direction -= m_angle_offset;
 
   // Calculate the y-component of the vector, aka forward velocity of the wheel
   double linear_velocity =
-      module_motion_vector.magnitude * std::sin(module_motion_vector.direction);
-  double linear_voltage = linear_velocity * m_linear_velocity_to_voltage;
+      motion_vector.magnitude * std::sqrt(2) * std::sin(motion_vector.direction);
+  double linear_voltage = linear_velocity * 12.0;
 
   // calculate the velocity contribution from angular velocity
   double turn_voltage =
-      module_motion_vector.angular_velocity * m_angular_velocity_to_voltage;
+      motion_vector.angular_velocity * 12.0;
 
   // Set the motor speeds (assuming a simple proportional control for
   // demonstration)
@@ -32,16 +54,12 @@ void XDriveModule::setAngleOffset(double angle_offset) {
   m_angle_offset = angle_offset;
 }
 
-void XDriveModule::setAngularVelocityToVoltage(
-    double angular_velocity_to_voltage) {
-  m_angular_velocity_to_voltage = angular_velocity_to_voltage;
+void XDriveModule::setMaxAngularVelocity(double max_angular_velocity) {
+  m_max_angular_velocity = max_angular_velocity;
 }
 
-/// @brief Sets the linear velocity to voltage conversion factor
-/// @param linear_velocity_to_voltage __double__ The conversion factor to be set
-void XDriveModule::setLinearVelocityToVoltage(
-    double linear_velocity_to_voltage) {
-  m_linear_velocity_to_voltage = linear_velocity_to_voltage;
+void XDriveModule::setMaxLinearVelocity(double max_linear_velocity) {
+  m_max_linear_velocity = max_linear_velocity;
 }
 }  // namespace
    // driftless::robot::subsystems::holonomic_drive_train::holonomic_drive_module

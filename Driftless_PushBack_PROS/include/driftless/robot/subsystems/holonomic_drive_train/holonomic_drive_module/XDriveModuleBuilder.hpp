@@ -35,11 +35,11 @@ class XDriveModuleBuilder {
   /// @brief The offset angle of the module
   double m_angle_offset{};
 
-  /// @brief The conversion factor from angular velocity to voltage
-  double m_angular_velocity_to_voltage{};
+  /// @brief The maximum angular velocity of the robot
+  double m_max_angular_velocity{};
 
-  /// @brief The conversion factor from linear velocity to voltage
-  double m_linear_velocity_to_voltage{};
+  /// @brief The maximum linear velocity of the robot
+  double m_max_linear_velocity{};
 
  public:
   /// @brief Adds a motor to the module
@@ -52,17 +52,15 @@ class XDriveModuleBuilder {
   /// @return __XDriveModuleBuilder*__ A pointer to this builder
   XDriveModuleBuilder* withAngleOffset(double angle_offset);
 
-  /// @brief Sets the angular velocity to voltage conversion factor
-  /// @param angular_velocity_to_voltage __double__ The conversion factor
+  /// @brief Sets the max angular velocity of the robot
+  /// @param max_angular_velocity __double__ The max angular velocity in radians
   /// @return __XDriveModuleBuilder*__ A pointer to this builder
-  XDriveModuleBuilder* withAngularVelocityToVoltage(
-      double angular_velocity_to_voltage);
+  XDriveModuleBuilder* withMaxAngularVelocity(double max_angular_velocity);
 
-  /// @brief Sets the linear velocity to voltage conversion factor
-  /// @param linear_velocity_to_voltage __double__ The conversion factor
+  /// @brief Sets the max linear velocity of the robot
+  /// @param max_linear_velocity __double__ The max linear velocity in inches
   /// @return __XDriveModuleBuilder*__ A pointer to this builder
-  XDriveModuleBuilder* withLinearVelocityToVoltage(
-      double linear_velocity_to_voltage);
+  XDriveModuleBuilder* withMaxLinearVelocity(double max_linear_velocity);
 
   /// @brief Builds the XDriveModule
   /// @return __std::unique_ptr<IHolonomicDriveModule>__ A unique pointer to the

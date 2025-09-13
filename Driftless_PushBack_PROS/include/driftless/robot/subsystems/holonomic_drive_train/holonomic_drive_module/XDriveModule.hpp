@@ -36,11 +36,11 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief The angle offset of the module in radians
   double m_angle_offset{};
 
-  /// @brief Conversion factor from angular velocity to voltage
-  double m_angular_velocity_to_voltage{};
+  /// @brief Maximum angular velocity of the robot in radians per second
+  double m_max_angular_velocity{};
 
-  /// @brief Conversion factor from linear velocity to voltage
-  double m_linear_velocity_to_voltage{};
+  /// @brief Maximum linear velocity of the robot in inches per second
+  double m_max_linear_velocity{};
 
  public:
   /// @brief Initializes the X-drive module
@@ -69,15 +69,15 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @param angleOffset __double__ The angle offset to be set
   void setAngleOffset(double angle_offset);
 
-  /// @brief Sets the angular velocity to voltage conversion factor
-  /// @param angular_velocity_to_voltage __double__ The conversion factor to be
+  /// @brief Sets the maximum angular velocity of the robot
+  /// @param max_angular_velocity __double__ The maximum angular velocity to be
   /// set
-  void setAngularVelocityToVoltage(double angular_velocity_to_voltage);
+  void setMaxAngularVelocity(double max_angular_velocity);
 
-  /// @brief Sets the linear velocity to voltage conversion factor
-  /// @param linear_velocity_to_voltage __double__ The conversion factor to be
+  /// @brief Sets the maximum linear velocity of the robot
+  /// @param max_linear_velocity __double__ The maximum linear velocity to be
   /// set
-  void setLinearVelocityToVoltage(double linear_velocity_to_voltage);
+  void setMaxLinearVelocity(double max_linear_velocity);
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train
