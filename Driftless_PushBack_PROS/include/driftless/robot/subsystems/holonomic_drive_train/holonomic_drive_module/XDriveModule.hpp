@@ -46,7 +46,7 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief Sets the motion vector of the X-drive module
   /// @param motionVector __HolonomicMotionVector__ Vector representing the
   /// desired motion of the robot (robot-centric)
-  void setMotionVector(HolonomicMotionVector motionVector) override;
+  void setMotionVector(HolonomicMotionVector motion_vector) override;
 
   /// @brief Sets the motors of the X-drive module
   /// @param motors __MotorGroup__ The motors to be used by the module
@@ -54,7 +54,7 @@ class XDriveModule : public IHolonomicDriveModule {
 
   /// @brief Sets the angle offset of the X-drive module
   /// @param angleOffset __double__ The angle offset to be set
-  void setAngleOffset(double angleOffset);
+  void setAngleOffset(double angle_offset);
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train
