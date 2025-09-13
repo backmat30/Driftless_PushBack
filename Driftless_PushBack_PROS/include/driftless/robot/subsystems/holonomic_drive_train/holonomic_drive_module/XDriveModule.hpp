@@ -54,6 +54,13 @@ class XDriveModule : public IHolonomicDriveModule {
   /// desired motion of the robot (robot-centric)
   void setMotionVector(HolonomicMotionVector motion_vector) override;
 
+  /// @brief Sets the motion vector of the holonomic drive train with normalized
+  /// vector
+  /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+  /// @details Magnitude must be within [0, 1]
+  /// @details Angular velocity must be within [-1, 1]
+  void setNormalizedMotionVector(HolonomicMotionVector motion_vector) override;
+
   /// @brief Sets the motors of the X-drive module
   /// @param motors __MotorGroup__ The motors to be used by the module
   void setMotors(hal::MotorGroup& motors);

@@ -39,9 +39,11 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   void run() override;
 
   /// @brief Sets the motion vector of the modular holonomic drive
-  /// @param motionVector __HolonomicMotionVector__ Vector representing the
+  /// @param motion_vector __HolonomicMotionVector__ Vector representing the
   /// desired motion of the robot (robot-centric)
-  void setMotionVector(HolonomicMotionVector motionVector) override;
+  void setMotionVector(HolonomicMotionVector motion_vector) override;
+
+  void setNormalizedMotionVector(HolonomicMotionVector motion_vector) override;
 
   /// @brief Adds a module to the modular holonomic drive
   /// @param module __unique_ptr<IHolonomicDriveModule>&__ The module to be

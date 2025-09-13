@@ -33,8 +33,14 @@ namespace driftless {
           virtual void run() = 0;
 
           /// @brief Sets the motion vector of the holonomic drive train
-          /// @param motionVector __HolonomicMotionVector__ the desired motion vector
-          virtual void setMotionVector(HolonomicMotionVector motionVector) = 0;
+          /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+          virtual void setMotionVector(HolonomicMotionVector motion_ector) = 0;
+
+          /// @brief Sets the motion vector of the holonomic drive train with normalized vector
+          /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+          /// @details Magnitude must be within [0, 1]
+          /// @details Angular velocity must be within [-1, 1]
+          virtual void setNormalizedMotionVector(HolonomicMotionVector motion_vector) = 0;
         };
       }
     }

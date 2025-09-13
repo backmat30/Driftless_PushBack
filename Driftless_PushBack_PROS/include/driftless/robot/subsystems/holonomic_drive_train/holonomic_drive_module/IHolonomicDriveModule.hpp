@@ -37,9 +37,17 @@ class IHolonomicDriveModule {
   virtual void run() = 0;
 
   /// @brief Sets the motion vector of the holonomic drive module
-  /// @param motionVector __HolonomicMotionVector__ Vector representing the
+  /// @param motion_vector __HolonomicMotionVector__ Vector representing the
   /// desired motion of the robot (robot-centric)
-  virtual void setMotionVector(HolonomicMotionVector motionVector) = 0;
+  virtual void setMotionVector(HolonomicMotionVector motion_vector) = 0;
+
+  /// @brief Sets the motion vector of the holonomic drive train with normalized
+  /// vector
+  /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+  /// @details Magnitude must be within [0, 1]
+  /// @details Angular velocity must be within [-1, 1]
+  virtual void setNormalizedMotionVector(
+      HolonomicMotionVector motion_vector) = 0;
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train
