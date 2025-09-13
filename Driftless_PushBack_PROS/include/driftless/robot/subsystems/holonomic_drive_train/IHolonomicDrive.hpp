@@ -32,10 +32,6 @@ namespace driftless {
           /// @brief Runs the holonomic drive object
           virtual void run() = 0;
 
-          /// @brief Gets the motion vector of the holonomic drive train
-          /// @return __HolonomicMotionVector__ the holonomic drive train motion vector
-          virtual HolonomicMotionVector getMotionVector() = 0;
-
           /// @brief Sets the motion vector of the holonomic drive train
           /// @param motionVector __HolonomicMotionVector__ the desired motion vector
           virtual void setMotionVector(HolonomicMotionVector motionVector) = 0;
