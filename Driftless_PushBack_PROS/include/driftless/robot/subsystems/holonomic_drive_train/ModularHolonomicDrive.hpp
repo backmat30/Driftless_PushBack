@@ -46,8 +46,8 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   /// @brief Adds a module to the modular holonomic drive
   /// @param module __unique_ptr<IHolonomicDriveModule>&__ The module to be
   /// added
-  void addModule(
-      std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module);
+  void setModules(
+      std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>& modules);
 };
 }  // namespace holonomic_drive_train
 }  // namespace subsystems

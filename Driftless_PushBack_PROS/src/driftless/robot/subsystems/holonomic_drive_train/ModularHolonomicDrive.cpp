@@ -26,8 +26,8 @@ void ModularHolonomicDrive::setMotionVector(
   }
 }
 
-void ModularHolonomicDrive::addModule(
-    std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module) {
-  m_modules.push_back(std::move(module));
+void ModularHolonomicDrive::setModules(
+    std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>& modules) {
+  m_modules = std::move(modules);
 }
 }  // namespace driftless::robot::subsystems::holonomic_drive_train
