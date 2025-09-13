@@ -36,7 +36,7 @@ class ModularHolonomicDriveBuilder {
   /// __std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>&__ The
   /// module to add
   /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
-  ModularHolonomicDriveBuilder* addModule(
+  ModularHolonomicDriveBuilder* withModule(
       std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module);
 
   /// @brief Builds the ModularHolonomicDrive

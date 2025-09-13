@@ -1,7 +1,7 @@
 #include "driftless/robot/subsystems/holonomic_drive_train/ModularHolonomicDriveBuilder.hpp"
 
 namespace driftless::robot::subsystems::holonomic_drive_train {
-ModularHolonomicDriveBuilder* ModularHolonomicDriveBuilder::addModule(
+ModularHolonomicDriveBuilder* ModularHolonomicDriveBuilder::withModule(
     std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module) {
   m_modules.push_back(std::move(module));
   return this;
