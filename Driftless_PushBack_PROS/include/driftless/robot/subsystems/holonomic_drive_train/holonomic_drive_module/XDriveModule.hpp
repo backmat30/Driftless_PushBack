@@ -42,7 +42,7 @@ class XDriveModule : public IHolonomicDriveModule {
   void run() override;
 
   /// @brief Sets the motion vector of the X-drive module
-  /// @param motionVector __HolonomicMotionVector__ Vector representing the desired motion of the robot
+  /// @param motionVector __HolonomicMotionVector__ Vector representing the desired motion of the robot (robot-centric)
   void setMotionVector(HolonomicMotionVector motionVector) override;
 
   /// @brief Sets the motors of the X-drive module
