@@ -1,6 +1,8 @@
 #ifndef __X_DRIVE_MODULE_HPP__
 #define __X_DRIVE_MODULE_HPP__
 
+#include <cmath>
+
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/holonomic_drive_module/IHolonomicDriveModule.hpp"
 
