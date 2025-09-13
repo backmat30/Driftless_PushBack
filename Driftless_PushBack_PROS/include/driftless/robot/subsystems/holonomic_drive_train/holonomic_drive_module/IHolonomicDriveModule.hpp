@@ -38,7 +38,7 @@ class IHolonomicDriveModule {
 
   /// @brief Sets the motion vector of the holonomic drive module
   /// @param motionVector __HolonomicMotionVector__ Vector representing the
-  /// desired motion of the robot
+  /// desired motion of the robot (robot-centric)
   virtual void setMotionVector(HolonomicMotionVector motionVector) = 0;
 };
 }  // namespace holonomic_drive_module
