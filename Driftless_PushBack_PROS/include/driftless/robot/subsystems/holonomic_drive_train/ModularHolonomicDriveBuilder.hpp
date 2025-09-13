@@ -28,7 +28,7 @@ class ModularHolonomicDriveBuilder {
  private:
   /// @brief The modules to be added to the drive train
   std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>
-      m_modules;
+      m_modules{};
 
  public:
   /// @brief Adds a module to the drive train

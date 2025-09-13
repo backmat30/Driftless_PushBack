@@ -31,16 +31,16 @@ namespace holonomic_drive_module {
 class XDriveModule : public IHolonomicDriveModule {
  private:
   /// @brief The motors in the module
-  hal::MotorGroup m_motors;
+  hal::MotorGroup m_motors{};
 
   /// @brief The angle offset of the module in radians
-  double m_angle_offset;
+  double m_angle_offset{};
 
   /// @brief Conversion factor from angular velocity to voltage
-  double m_angular_velocity_to_voltage;
+  double m_angular_velocity_to_voltage{};
 
   /// @brief Conversion factor from linear velocity to voltage
-  double m_linear_velocity_to_voltage;
+  double m_linear_velocity_to_voltage{};
 
  public:
   /// @brief Initializes the X-drive module

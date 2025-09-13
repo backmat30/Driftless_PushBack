@@ -29,7 +29,7 @@ class ModularHolonomicDrive : public IHolonomicDrive {
  private:
   /// @brief The modules controlled by the drive train
   std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>
-      m_modules;
+      m_modules{};
 
  public:
   /// @brief Initializes the modular holonomic drive
