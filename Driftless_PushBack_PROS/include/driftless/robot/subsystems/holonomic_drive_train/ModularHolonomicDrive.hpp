@@ -19,8 +19,6 @@ namespace driftless {
 
             void run() override;
 
-            HolonomicMotionVector getMotionVector() override;
-
             void setMotionVector(HolonomicMotionVector motionVector) override;
 
             void addModule(std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module);
