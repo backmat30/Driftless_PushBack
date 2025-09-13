@@ -36,6 +36,12 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief The angle offset of the module in radians
   double m_angle_offset;
 
+  /// @brief Conversion factor from angular velocity to voltage
+  double m_angular_velocity_to_voltage;
+
+  /// @brief Conversion factor from linear velocity to voltage
+  double m_linear_velocity_to_voltage;
+
  public:
   /// @brief Initializes the X-drive module
   void init() override;
@@ -55,6 +61,16 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief Sets the angle offset of the X-drive module
   /// @param angleOffset __double__ The angle offset to be set
   void setAngleOffset(double angle_offset);
+
+  /// @brief Sets the angular velocity to voltage conversion factor
+  /// @param angular_velocity_to_voltage __double__ The conversion factor to be
+  /// set
+  void setAngularVelocityToVoltage(double angular_velocity_to_voltage);
+
+  /// @brief Sets the linear velocity to voltage conversion factor
+  /// @param linear_velocity_to_voltage __double__ The conversion factor to be
+  /// set
+  void setLinearVelocityToVoltage(double linear_velocity_to_voltage);
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train
