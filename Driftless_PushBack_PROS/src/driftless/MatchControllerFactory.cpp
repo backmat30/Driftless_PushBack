@@ -14,13 +14,16 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   lvgl_menu->addAlliance(red_alliance);
 
   // add auton routes
- 
+
+  // add configs
+  std::unique_ptr<config::IConfig> blue_config{
+      std::make_unique<config::BlueConfig>()};
+  lvgl_menu->addConfig(blue_config);
 
   // add profiles
-  std::unique_ptr<profiles::IProfile> eric_profile{
-      std::make_unique<driftless::profiles::EricProfile>()};
-  lvgl_menu->addProfile(eric_profile);
-
+  std::unique_ptr<profiles::IProfile> ethan_profile{
+      std::make_unique<driftless::profiles::EthanProfile>()};
+  lvgl_menu->addProfile(ethan_profile);
 
   // create RTOS
   std::shared_ptr<rtos::IClock> clock{
