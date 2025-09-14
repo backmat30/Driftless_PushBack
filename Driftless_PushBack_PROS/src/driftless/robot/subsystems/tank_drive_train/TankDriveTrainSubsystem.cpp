@@ -6,7 +6,7 @@ namespace subsystems {
 namespace tank_drive_train {
 TankDriveTrainSubsystem::TankDriveTrainSubsystem(
     std::unique_ptr<ITankDriveTrain>& drivetrain)
-    : ASubsystem{ESubsystem::DRIVETRAIN}, m_drive_train(std::move(drivetrain)) {}
+    : ASubsystem{ESubsystem::TANK_DRIVE_TRAIN}, m_drive_train(std::move(drivetrain)) {}
 
 void TankDriveTrainSubsystem::init() { m_drive_train->init(); }
 
@@ -14,12 +14,12 @@ void TankDriveTrainSubsystem::run() { m_drive_train->run(); }
 
 void TankDriveTrainSubsystem::command(ESubsystemCommand command_name,
                                   va_list& args) {
-  if (command_name == ESubsystemCommand::DRIVETRAIN_SET_VELOCITY) {
+  if (command_name == ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VELOCITY) {
     double left_velocity{va_arg(args, double)};
     double right_velocity{va_arg(args, double)};
     Velocity velocity{left_velocity, right_velocity};
     m_drive_train->setVelocity(velocity);
-  } else if (command_name == ESubsystemCommand::DRIVETRAIN_SET_VOLTAGE) {
+  } else if (command_name == ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VOLTAGE) {
     double left_voltage{va_arg(args, double)};
     double right_voltage{va_arg(args, double)};
     m_drive_train->setVoltage(left_voltage, right_voltage);

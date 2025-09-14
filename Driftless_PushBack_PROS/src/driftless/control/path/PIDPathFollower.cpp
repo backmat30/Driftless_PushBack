@@ -43,8 +43,8 @@ void PIDPathFollower::setDriveVelocity(
     robot::subsystems::tank_drive_train::Velocity velocity) {
   if (m_robot) {
     m_robot->sendCommand(
-        robot::subsystems::ESubsystem::DRIVETRAIN,
-        robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY,
+        robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
+        robot::subsystems::ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VELOCITY,
         velocity);
   }
 }
@@ -53,7 +53,7 @@ double PIDPathFollower::getDriveRadius() {
   double radius{};
   if (m_robot) {
     radius = *(static_cast<double*>(m_robot->getState(
-        robot::subsystems::ESubsystem::DRIVETRAIN,
+        robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
         robot::subsystems::ESubsystemState::DRIVETRAIN_GET_RADIUS)));
   }
   return radius;
@@ -226,7 +226,7 @@ void PIDPathFollower::updateVelocity(
 
   // Set the calculated velocities
   robot::subsystems::tank_drive_train::Velocity velocity{left_velocity,
-                                                   right_velocity};
+                                                         right_velocity};
   setDriveVelocity(velocity);
 }
 

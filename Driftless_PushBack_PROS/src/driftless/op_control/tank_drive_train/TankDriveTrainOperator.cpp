@@ -6,8 +6,8 @@ void TankDriveTrainOperator::updateDriveVoltage(double left_voltage,
                                                 double right_voltage) {
   if (m_robot) {
     m_robot->sendCommand(
-        robot::subsystems::ESubsystem::DRIVETRAIN,
-        robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VOLTAGE,
+        robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
+        robot::subsystems::ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VOLTAGE,
         left_voltage, right_voltage);
   }
 }

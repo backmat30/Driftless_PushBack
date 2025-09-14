@@ -15,8 +15,8 @@ void PIDDriveStraight::taskLoop(void* params) {
 void PIDDriveStraight::setDriveVelocity(double left, double right) {
   if (m_robot) {
     m_robot->sendCommand(
-        robot::subsystems::ESubsystem::DRIVETRAIN,
-        robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, left,
+        robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
+        robot::subsystems::ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VELOCITY, left,
         right);
   }
 }
