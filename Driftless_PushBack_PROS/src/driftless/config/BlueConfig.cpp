@@ -10,6 +10,13 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
   return control_system;
 }
 
+std::shared_ptr<processes::ProcessSystem> BlueConfig::buildProcessSystem() {
+  std::shared_ptr<processes::ProcessSystem> process_system =
+      std::make_shared<processes::ProcessSystem>();
+
+  return process_system;
+}
+
 std::shared_ptr<io::IController> BlueConfig::buildController() {
   // creates a default pros controller
   std::unique_ptr<pros::Controller> pros_controller{
