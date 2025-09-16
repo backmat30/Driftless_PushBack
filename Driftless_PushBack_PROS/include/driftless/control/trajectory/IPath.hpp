@@ -1,5 +1,5 @@
-#ifndef __ITRAJECTORY_HPP__
-#define __ITRAJECTORY_HPP__
+#ifndef __I_PATH_HPP__
+#define __I_PATH_HPP__
 
 #include "driftless/control/Point.hpp"
 
@@ -15,11 +15,11 @@ namespace control {
 /// @author Matthew Backman
 namespace trajectory {
 
-/// @brief Interface for a generic trajectory
-class ITrajectory {
+/// @brief Interface for a generic path
+class IPath {
  public:
-  /// @brief Destroys the trajectory
-  virtual ~ITrajectory() = default;
+  /// @brief Destroys the path
+  virtual ~IPath() = default;
 
   /// @brief Gets the point at time t
   /// @param t __double__ The time
