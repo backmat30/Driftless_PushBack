@@ -12,6 +12,9 @@ namespace op_control {
 /// @brief Enumerated class for operator control commands
 /// @author Matthew Backman
 enum EControl {
+  HOLONOMIC_FORWARD,
+  HOLONOMIC_STRAFE,
+  HOLONOMIC_TURN,
   TANK_DRIVE_ARCADE_LINEAR,
   TANK_DRIVE_ARCADE_TURN,
 };

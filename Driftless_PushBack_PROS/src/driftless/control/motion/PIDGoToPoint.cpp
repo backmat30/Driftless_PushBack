@@ -13,8 +13,8 @@ void PIDGoToPoint::taskLoop(void* params) {
 
 void PIDGoToPoint::setDriveVelocity(double left, double right) {
   m_robot->sendCommand(
-      robot::subsystems::ESubsystem::DRIVETRAIN,
-      robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, left,
+      robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
+      robot::subsystems::ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VELOCITY, left,
       right);
 }
 

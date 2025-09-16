@@ -1,10 +1,10 @@
-#include "driftless/profiles/EricProfile.hpp"
+#include "driftless/profiles/EthanProfile.hpp"
 
 namespace driftless {
 namespace profiles {
-std::string EricProfile::getName() { return PROFILE_NAME; }
+std::string EthanProfile::getName() { return PROFILE_NAME; }
 
-int EricProfile::getControlMode(op_control::EControlType control_type) const {
+int EthanProfile::getControlMode(op_control::EControlType control_type) const {
   int mode{};
   if (CONTROL_MODE_MAP.contains(control_type)) {
     mode = CONTROL_MODE_MAP.at(control_type);
@@ -12,12 +12,12 @@ int EricProfile::getControlMode(op_control::EControlType control_type) const {
   return mode;
 }
 
-void EricProfile::setControlMode(op_control::EControlType control_type,
+void EthanProfile::setControlMode(op_control::EControlType control_type,
                                  int control_mode) {
   CONTROL_MODE_MAP[control_type] = control_mode;
 }
 
-op_control::EControllerAnalog EricProfile::getAnalogControlMapping(
+op_control::EControllerAnalog EthanProfile::getAnalogControlMapping(
     op_control::EControl control) const {
   op_control::EControllerAnalog analogMapping{
       op_control::EControllerAnalog::NONE};
@@ -27,7 +27,7 @@ op_control::EControllerAnalog EricProfile::getAnalogControlMapping(
   return analogMapping;
 }
 
-op_control::EControllerDigital EricProfile::getDigitalControlMapping(
+op_control::EControllerDigital EthanProfile::getDigitalControlMapping(
     op_control::EControl control) const {
   op_control::EControllerDigital digitalMapping{
       op_control::EControllerDigital::NONE};
@@ -37,7 +37,7 @@ op_control::EControllerDigital EricProfile::getDigitalControlMapping(
   return digitalMapping;
 }
 
-bool EricProfile::getStartupConfig(
+bool EthanProfile::getStartupConfig(
     op_control::EStartupConfig startup_config) const {
   bool config{};
   if (STARTUP_CONFIG_MAP.contains(startup_config)) {

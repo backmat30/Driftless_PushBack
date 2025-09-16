@@ -14,8 +14,8 @@ void PIDTurn::taskLoop(void* params) {
 void PIDTurn::setDriveVelocity(
     driftless::robot::subsystems::tank_drive_train::Velocity velocity) {
   m_robot->sendCommand(
-      robot::subsystems::ESubsystem::DRIVETRAIN,
-      robot::subsystems::ESubsystemCommand::DRIVETRAIN_SET_VELOCITY, velocity);
+      robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
+      robot::subsystems::ESubsystemCommand::TANK_DRIVE_TRAIN_SET_VELOCITY, velocity);
 }
 
 driftless::robot::subsystems::odometry::Position PIDTurn::getPosition() {
@@ -30,7 +30,7 @@ driftless::robot::subsystems::odometry::Position PIDTurn::getPosition() {
 double PIDTurn::getDriveRadius() {
   double drive_radius{};
   drive_radius = *static_cast<double*>(m_robot->getState(
-      robot::subsystems::ESubsystem::DRIVETRAIN,
+      robot::subsystems::ESubsystem::TANK_DRIVE_TRAIN,
       robot::subsystems::ESubsystemState::DRIVETRAIN_GET_RADIUS));
   return drive_radius;
 }
