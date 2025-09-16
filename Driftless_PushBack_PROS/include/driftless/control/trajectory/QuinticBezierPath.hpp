@@ -1,0 +1,63 @@
+#ifndef __QUINTIC_BEZIER_PATH_HPP__
+#define __QUINTIC_BEZIER_PATH_HPP__
+
+#include <Eigen/Dense>
+
+#include "driftless/control/trajectory/IPath.hpp"
+
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
+namespace driftless {
+
+/// @brief Namespace for control algorithms
+/// @author Matthew Backman
+namespace control {
+
+/// @brief Namespace for trajectory generation and following
+/// @author Matthew Backman
+namespace trajectory {
+
+/// @brief Class representing a quintic bezier path
+/// @author Matthew Backman
+class QuinticBezierPath : public IPath {
+ private:
+  /// @brief Control points for the bezier curve
+  Eigen::Matrix<Point, 6, 1> controlPoints;
+
+  /// @brief Coefficients for the bezier curve
+  Eigen::Matrix<double, 6, 6> coefficients;
+
+  /// @brief Coefficients for the first derivative of the bezier curve
+  Eigen::Matrix<double, 5, 6> firstDerivativeCoefficients;
+
+  /// @brief Coefficients for the second derivative of the bezier curve
+  Eigen::Matrix<double, 4, 6> secondDerivativeCoefficients;
+
+ public:
+  /// @brief Constructs a new quintic bezier path
+  QuinticBezierPath(Point start, Point c0, Point c1, Point c2, Point c3,
+                    Point end);
+
+  /// @brief Gets the point at time t
+  /// @param t __double__ The time
+  /// @return __Point__ The point at time t
+  Point getPoint(double t) const override;
+
+  /// @brief Gets the derivative at time t
+  /// @param t __double__ The time
+  /// @return __Point__ The derivative at time t
+  Point getDerivative(double t) const override;
+
+  /// @brief Gets the second derivative at time t
+  /// @param t __double__ The time
+  /// @return __Point__ The second derivative at time t
+  Point getSecondDerivative(double t) const override;
+
+  /// @brief Gets the maximum time
+  /// @return __double__ The maximum time
+  double getMaxTime() const override;
+};
+}  // namespace trajectory
+}  // namespace control
+}  // namespace driftless
+#endif
