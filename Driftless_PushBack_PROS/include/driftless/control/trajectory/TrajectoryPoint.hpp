@@ -1,6 +1,8 @@
 #ifndef __TRAJECTORY_POINT_HPP__
 #define __TRAJECTORY_POINT_HPP__
 
+#include <cmath>
+
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
