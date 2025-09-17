@@ -22,7 +22,7 @@ namespace trajectory {
 class QuinticBezierPath : public IPath {
  private:
   /// @brief Control points for the bezier curve
-  Eigen::Matrix<Point, 6, 1> m_control_points;
+  Eigen::Matrix<double, 6, 2> m_control_points;
 
   /// @brief Coefficients for the bezier curve
   Eigen::Matrix<double, 6, 6> m_coefficients;
@@ -60,7 +60,7 @@ class QuinticBezierPath : public IPath {
   /// @brief Sets a control point at the given index
   /// @param index __int__ The index of the control point
   /// @param point __const Point__ The new control point
-  void setControlPoint(int index, const Point point);
+  void setControlPoint(int index, Point point);
 
   Point getControlPoint(int index) const;
 };
