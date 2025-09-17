@@ -21,7 +21,7 @@ namespace trajectory {
 
 /// @brief Namespace for building trajectories
 /// @author Matthew Backman
-namespace trajectory_builder {
+namespace trajectory_generator {
 
 /// @brief Namespace for kinematic constraints used in building trajectories
 /// @author Matthew Backman
