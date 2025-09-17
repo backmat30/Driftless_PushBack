@@ -56,6 +56,11 @@ class QuinticBezierPath : public IPath {
   /// @brief Gets the maximum time
   /// @return __double__ The maximum time
   double getMaxTime() const override;
+
+  /// @brief Sets a control point at the given index
+  /// @param index __int__ The index of the control point
+  /// @param point __const Point__ The new control point
+  void setControlPoint(int index, const Point point);
 };
 }  // namespace trajectory
 }  // namespace control
