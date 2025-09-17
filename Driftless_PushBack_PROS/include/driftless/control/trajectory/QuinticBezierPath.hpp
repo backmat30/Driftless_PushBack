@@ -22,16 +22,16 @@ namespace trajectory {
 class QuinticBezierPath : public IPath {
  private:
   /// @brief Control points for the bezier curve
-  Eigen::Matrix<Point, 6, 1> controlPoints;
+  Eigen::Matrix<Point, 6, 1> m_control_points;
 
   /// @brief Coefficients for the bezier curve
-  Eigen::Matrix<double, 6, 6> coefficients;
+  Eigen::Matrix<double, 6, 6> m_coefficients;
 
   /// @brief Coefficients for the first derivative of the bezier curve
-  Eigen::Matrix<double, 5, 6> firstDerivativeCoefficients;
+  Eigen::Matrix<double, 5, 6> m_first_derivative_coefficients;
 
   /// @brief Coefficients for the second derivative of the bezier curve
-  Eigen::Matrix<double, 4, 6> secondDerivativeCoefficients;
+  Eigen::Matrix<double, 4, 6> m_second_derivative_coefficients;
 
  public:
   /// @brief Constructs a new quintic bezier path
