@@ -46,4 +46,12 @@ void QuinticBezierPath::setControlPoint(int index, const Point point) {
     m_control_points(index) = point;
   }
 }
+
+Point QuinticBezierPath::getControlPoint(int index) const {
+    Point result{};
+    if (index >= 0 && index < 6) {
+      result = m_control_points(index);
+    }
+    return result;
+  }
 }  // namespace driftless::control::trajectory

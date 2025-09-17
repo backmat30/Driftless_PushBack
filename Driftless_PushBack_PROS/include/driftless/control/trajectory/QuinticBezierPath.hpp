@@ -61,6 +61,8 @@ class QuinticBezierPath : public IPath {
   /// @param index __int__ The index of the control point
   /// @param point __const Point__ The new control point
   void setControlPoint(int index, const Point point);
+
+  Point getControlPoint(int index) const;
 };
 }  // namespace trajectory
 }  // namespace control
