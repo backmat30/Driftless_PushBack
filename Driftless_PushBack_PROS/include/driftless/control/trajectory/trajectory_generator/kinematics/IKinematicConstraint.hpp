@@ -30,21 +30,23 @@ namespace kinematics {
 /// @brief Class representing a generic kinematic constraint
 /// @author Matthew Backman
 class IKinematicConstraint {
+ public:
   /// @brief Destroys the kinematic constraint
   virtual ~IKinematicConstraint() = default;
 
   /// @brief Gets the max velocity at a given point along the path
-  /// @param path __std::unique_ptr<IPath>&__ The path being used for the trajectory
+  /// @param path __std::unique_ptr<IPath>&__ The path being used for the
+  /// trajectory
   /// @param last_point __TrajectoryPoint__ The previous point in the trajectory
   /// @param delta_d __double__ The change in distance between points
   /// @param t __double__ The time value along the path
   /// @return __double__ The max velocity at the given point
   virtual double getMaxVelocity(std::unique_ptr<IPath>& path,
-                             TrajectoryPoint last_point, double delta_d,
-                             double t) = 0;
+                                TrajectoryPoint last_point, double delta_d,
+                                double t) = 0;
 };
 }  // namespace kinematics
-}  // namespace trajectory_builder
+}  // namespace trajectory_generator
 }  // namespace trajectory
 }  // namespace control
 }  // namespace driftless
