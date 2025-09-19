@@ -54,8 +54,8 @@ class TrajectoryGenerator {
   void generateTrajectory(std::unique_ptr<IPath>& path);
 
   /// @brief Gets the latest generated trajectory
-  /// @return __std::vector<TrajectoryPoint>&__ The generated trajectory
-  std::vector<TrajectoryPoint>& getTrajectory();
+  /// @return __std::vector<TrajectoryPoint>__ The generated trajectory
+  std::vector<TrajectoryPoint> getTrajectory();
 };
 }  // namespace trajectory_generator
 }  // namespace trajectory
