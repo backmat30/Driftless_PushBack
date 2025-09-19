@@ -17,8 +17,11 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
       0, 0});
   TrajectoryPoint last_point{m_trajectory.back()};
 
+  // Forward pass
   while (t < path->getMaxTime()) {
     double max_velocity{__DBL_MAX__};
+
+    // apply constraints
     for (auto& constraint : m_constraints) {
       max_velocity = constraint->getMaxVelocity(path, last_point, m_delta_d, t);
     }
@@ -26,9 +29,11 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
     Point derivative{path->getDerivative(t)};
     Point second_derivative{path->getSecondDerivative(t)};
 
+    // find the change in time needed to satisfy the change in distance
     double dt{m_delta_d / (std::sqrt(std::pow(derivative.getX(), 2) +
                                      std::pow(derivative.getY(), 2)))};
 
+    // find the curvature at the current point
     double curvature{(derivative.getX() * second_derivative.getY() -
                       derivative.getY() * second_derivative.getX()) /
                      (std::pow(std::pow(derivative.getX(), 2) +
@@ -51,7 +56,9 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
       std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
       0, 0};
 
+  // backwards pass
   while (t > 0) {
+    // only re-apply constraints if the previous velocity was changed
     if (last_point.m_velocity < m_trajectory[i].m_velocity) {
       m_trajectory[i] = last_point;
     }
