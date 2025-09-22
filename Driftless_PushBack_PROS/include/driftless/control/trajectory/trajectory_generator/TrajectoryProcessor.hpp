@@ -24,6 +24,8 @@ namespace trajectory_generator {
 /// @author Matthew Backman
 class TrajectoryProcessor {
  public:
+ /// @brief Constructs a new Trajectory processor
+ TrajectoryProcessor() = default;
   /// @brief Processes a given trajectory using a list of modifiers
   /// @param current_trajectory __const std::vector<TrajectoryPoint>&__ The
   /// trajectory to be modified
