@@ -28,12 +28,12 @@ class TrajectoryProcessor {
   /// @param current_trajectory __const std::vector<TrajectoryPoint>&__ The
   /// trajectory to be modified
   /// @param modifier_list __const
-  /// std::vector<modifiers::ITrajectoryModifier>&__ The modifiers to be applied
+  /// std::vector<std::unique_ptr<modifiers::ITrajectoryModifier>>&__ The modifiers to be applied
   /// @return __std::vector<TrajectoryPoint>__ The trajectory after modifiers
   /// are applied
   std::vector<TrajectoryPoint> process(
       const std::vector<TrajectoryPoint>& current_trajectory,
-      const std::vector<modifiers::ITrajectoryModifier>& modifier_list);
+      const std::vector<std::unique_ptr<modifiers::ITrajectoryModifier>>& modifier_list);
 };
 }  // namespace trajectory_generator
 }  // namespace trajectory
