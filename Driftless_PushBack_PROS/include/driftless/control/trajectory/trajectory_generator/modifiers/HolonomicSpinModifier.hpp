@@ -31,6 +31,9 @@ namespace modifiers {
 /// @author Matthew Backman
 class HolonomicSpinModifier : public ITrajectoryModifier {
  private:
+  /// @brief The maximum angular acceleration while spinning
+  double m_max_acceleration{};
+
   /// @brief The list of spins to apply to a trajectory
   std::vector<SpinContext> m_spins{};
 
@@ -46,6 +49,10 @@ class HolonomicSpinModifier : public ITrajectoryModifier {
   /// @brief Sets the spins to use
   /// @param spins __std::vector<SpinContext>&__ The spins to use
   void setSpins(std::vector<SpinContext>& spins);
+
+  /// @brief Sets the max acceleration for spins
+  /// @param max_acceleration __double__ The max acceleration to use
+  void setMaxAcceleration(double max_acceleration);
 };
 }  // namespace modifiers
 }  // namespace trajectory_generator
