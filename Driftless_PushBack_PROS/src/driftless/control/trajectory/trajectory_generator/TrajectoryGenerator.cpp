@@ -14,7 +14,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   m_trajectory.push_back(TrajectoryPoint{
       path->getPoint(0).getX(), path->getPoint(0).getY(),
       std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
-      0, 0});
+      0, 0, 0});
   TrajectoryPoint last_point{m_trajectory.back()};
 
   // Forward pass
@@ -43,7 +43,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
     last_point =
         TrajectoryPoint{path->getPoint(t).getX(), path->getPoint(t).getY(),
                         atan2(derivative.getY(), derivative.getX()),
-                        max_velocity, max_velocity * curvature};
+                        max_velocity, max_velocity * curvature, t};
 
     m_trajectory.push_back(last_point);
     t += dt;
@@ -54,7 +54,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   last_point = TrajectoryPoint{
       path->getPoint(t).getX(), path->getPoint(t).getY(),
       std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
-      0, 0};
+      0, 0, t};
 
   // backwards pass
   while (t > 0) {
@@ -83,7 +83,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
     last_point =
         TrajectoryPoint{path->getPoint(t).getX(), path->getPoint(t).getY(),
                         atan2(derivative.getY(), derivative.getX()),
-                        max_velocity, max_velocity * curvature};
+                        max_velocity, max_velocity * curvature, t};
 
     t -= dt;
     i--;
