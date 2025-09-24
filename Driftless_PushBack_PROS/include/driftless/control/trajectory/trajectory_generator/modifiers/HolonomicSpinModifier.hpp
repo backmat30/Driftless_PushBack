@@ -1,6 +1,7 @@
 #ifndef __HOLONOMIC_SPIN_MODIFIER_HPP__
 #define __HOLONOMIC_SPIN_MODIFIER_HPP__
 
+#include <algorithm>
 #include <vector>
 
 #include "driftless/control/trajectory/SpinContext.hpp"
@@ -34,6 +35,9 @@ class HolonomicSpinModifier : public ITrajectoryModifier {
   /// @brief The maximum angular acceleration while spinning
   double m_max_acceleration{};
 
+  /// @brief The heading of the robot at the start of the trajectory
+  double m_starting_heading{};
+
   /// @brief The list of spins to apply to a trajectory
   std::vector<SpinContext> m_spins{};
 
@@ -53,6 +57,10 @@ class HolonomicSpinModifier : public ITrajectoryModifier {
   /// @brief Sets the max acceleration for spins
   /// @param max_acceleration __double__ The max acceleration to use
   void setMaxAcceleration(double max_acceleration);
+
+  /// @brief Sets the starting heading of the trajectory
+  /// @param starting_heading __double__ The starting heading
+  void setStartingHeading(double starting_heading);
 };
 }  // namespace modifiers
 }  // namespace trajectory_generator
