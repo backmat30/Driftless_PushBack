@@ -25,22 +25,39 @@ namespace intake {
 /// @author Matthew Backman
 class DirectIntakeBuilder {
  private:
-  /// @brief The motors used to build the DirectIntake
-  hal::MotorGroup m_motors{};
+  /// @brief The front motors used to build the DirectIntake
+  hal::MotorGroup m_front_motors{};
+
+  /// @brief The intermediary motors used to build the DirectIntake
+  hal::MotorGroup m_intermediary_motors{};
+
+  /// @brief The back motors used to build the DirectIntake
+  hal::MotorGroup m_back_motors{};
 
   /// @brief The pistons used to build the DirectIntake
-  hal::PistonGroup m_pistons{};
+  hal::PistonGroup m_back_pistons{};
 
  public:
-  /// @brief Add a motor to the builder
+  /// @brief Add a front motor to the builder
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
-  DirectIntakeBuilder* withMotor(std::unique_ptr<io::IMotor>& motor);
+  DirectIntakeBuilder* withFrontMotor(std::unique_ptr<io::IMotor>& motor);
 
-  /// @brief Add a piston to the builder
+  /// @brief Add an intermediary motor to the builder
+  /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withIntermediaryMotor(
+      std::unique_ptr<io::IMotor>& motor);
+
+  /// @brief Add a back motor to the builder
+  /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withBackMotor(std::unique_ptr<io::IMotor>& motor);
+
+  /// @brief Add a back piston to the builder
   /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
-  DirectIntakeBuilder* withPiston(std::unique_ptr<io::IPiston>& piston);
+  DirectIntakeBuilder* withBackPiston(std::unique_ptr<io::IPiston>& piston);
 
   /// @brief Builds the DirectIntake object
   /// @return __std::unique_ptr<IIntake>__ Pointer to the newly built
