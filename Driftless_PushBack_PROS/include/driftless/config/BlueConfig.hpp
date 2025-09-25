@@ -66,6 +66,10 @@
 #include "driftless/robot/subsystems/holonomic_drive_train/ModularHolonomicDriveBuilder.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/holonomic_drive_module/XDriveModuleBuilder.hpp"
 
+// intake includes
+#include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
+#include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
+
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
@@ -80,6 +84,16 @@ class BlueConfig : public IConfig {
  static constexpr int DRIVE_FRONT_RIGHT_PORT{4};
  static constexpr int DRIVE_BACK_LEFT_PORT{2};
  static constexpr int DRIVE_BACK_RIGHT_PORT{5};
+
+ // ## INTAKE MOTORS ##
+
+ static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
+ static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{9};
+ static constexpr int INTAKE_BACK_MOTOR_1_PORT{7};
+
+ // ## INTAKE PNEUMATICS ##
+
+ static constexpr int INTAKE_BACK_ARMS_PORT{4};
 
  // #### ROBOT CONSTANTS ####
 
