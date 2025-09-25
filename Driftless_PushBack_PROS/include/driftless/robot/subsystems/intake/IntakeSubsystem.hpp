@@ -31,7 +31,7 @@ class IntakeSubsystem : public ASubsystem {
   public:
     /// @brief Constructs a new IntakeSubsystem
     /// @param intake __std::unique_ptr<IIntake>&__ The intake to be wrapped
-    IntakeSubsystem(ESubsystem subsystem_name, std::unique_ptr<IIntake>& intake);
+    IntakeSubsystem(std::unique_ptr<IIntake>& intake);
 
     /// @brief Initializes the subsystem
     void init() override;
