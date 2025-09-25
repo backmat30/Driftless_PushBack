@@ -30,9 +30,17 @@ class IIntake {
   /// @brief Runs the intake
   virtual void run() = 0;
 
-  /// @brief Sets the voltage of the intake motors
+  /// @brief Sets the voltage of the front intake motors
   /// @param voltage __double__ The voltage to use
-  virtual void setVoltage(double voltage) = 0;
+  virtual void setFrontVoltage(double voltage) = 0;
+
+  /// @brief Sets the voltage of the intermediary motors
+  /// @param voltage __double__ The voltage to use
+  virtual void setIntermediaryVoltage(double voltage) = 0;
+
+  /// @brief Sets the voltage of the back intake motors
+  /// @param voltage __double__ The voltage to use
+  virtual void setBackVoltage(double voltage) = 0;
 
   /// @brief Deploys the intake "arms"
   virtual void deploy() = 0;
