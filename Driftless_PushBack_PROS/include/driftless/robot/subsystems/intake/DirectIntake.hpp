@@ -62,6 +62,10 @@ class DirectIntake : public IIntake {
   /// @brief Retracts the intake "arms"
   void retract() override;
 
+  /// @brief Checks if the intake arms are deployed
+  /// @return __bool__ True of the arms are deployed, false otherwise
+  bool isDeployed() override;
+
   /// @brief Sets the motors used by the front intake
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setFrontMotors(hal::MotorGroup& motors);

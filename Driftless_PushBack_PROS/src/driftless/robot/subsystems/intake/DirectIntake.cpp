@@ -29,6 +29,10 @@ namespace driftless::robot::subsystems::intake {
     m_back_pistons.retract();
   }
 
+  bool DirectIntake::isDeployed() {
+    return m_back_pistons.isExtended();
+  }
+
   void DirectIntake::setFrontMotors(hal::MotorGroup& motors) {
     m_front_motors = motors;
   }
