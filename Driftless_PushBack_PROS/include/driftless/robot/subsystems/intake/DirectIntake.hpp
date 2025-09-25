@@ -25,11 +25,17 @@ namespace intake {
 /// @author Matthew Backman
 class DirectIntake : public IIntake {
  private:
-  /// @brief The motors used by the intake
-  hal::MotorGroup m_motors{};
+  /// @brief The motors used by the front intake
+  hal::MotorGroup m_front_motors{};
 
-  /// @brief The pistons used by the intake
-  hal::PistonGroup m_pistons{};
+  /// @brief The motors used by the intermediary section of the intake
+  hal::MotorGroup m_intermediary_motors{};
+
+  /// @brief The motors used for the back intake
+  hal::MotorGroup m_back_motors{};
+
+  /// @brief The pistons used by the back intake
+  hal::PistonGroup m_back_pistons{};
 
  public:
   /// @brief Initializes the intake
@@ -38,9 +44,17 @@ class DirectIntake : public IIntake {
   /// @brief Runs the intake
   void run() override;
 
-  /// @brief Sets the voltage of the intake motors
+  /// @brief Sets the voltage of the front intake motors
   /// @param voltage __double__ The voltage to use
-  void setVoltage(double voltage) override;
+  void setFrontVoltage(double voltage) override;
+
+  /// @brief Sets the voltage of the intermediary motors
+  /// @param voltage __double__ The voltage to use
+  void setIntermediaryVoltage(double voltage) override;
+
+  /// @brief Sets the voltage of the back intake motors
+  /// @param voltage __double__ The voltage to use
+  void setBackVoltage(double voltage) override;
 
   /// @brief Deploys the intake "arms"
   void deploy() override;
@@ -48,13 +62,21 @@ class DirectIntake : public IIntake {
   /// @brief Retracts the intake "arms"
   void retract() override;
 
-  /// @brief Sets the motors used by the intake
+  /// @brief Sets the motors used by the front intake
   /// @param motors __hal::MotorGroup&__ The motors to use
-  void setMotors(hal::MotorGroup& motors);
+  void setFrontMotors(hal::MotorGroup& motors);
 
-  /// @brief Sets the pistons used by the intake
+  /// @brief Sets the intermediary motors for the intake
+  /// @param motors __hal::MotorGroup&__ The motors to use
+  void setIntermediaryMotors(hal::MotorGroup& motors);
+
+  /// @brief Sets the motors for the back intake
+  /// @param motors __hal::MotorGroup&__ The motors to use
+  void setBackMotors(hal::MotorGroup& motors);
+
+  /// @brief Sets the pistons used by the back intake
   /// @param pistons __hal::PistonGroup&__ The pistons to use
-  void setPistons(hal::PistonGroup& pistons);
+  void setBackPistons(hal::PistonGroup& pistons);
 };
 }  // namespace intake
 }  // namespace subsystems
