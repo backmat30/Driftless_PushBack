@@ -9,6 +9,7 @@
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/tank_drive_train/TankDriveTrainOperator.hpp"
 #include "driftless/op_control/holonomic_drive_train/HolonomicDriveTrainOperator.hpp"
+#include "driftless/op_control/intake/IntakeOperator.hpp"
 #include "driftless/processes/ProcessSystem.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
