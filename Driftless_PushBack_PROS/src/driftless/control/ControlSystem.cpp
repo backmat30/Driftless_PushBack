@@ -55,7 +55,9 @@ void ControlSystem::sendCommand(EControl control_name,
   va_list args;
   va_start(args, command_name);
   // finds desired control and sends the specified command
-  controls.at(control_name)->command(command_name, args);
+  if (controls.contains(control_name)) {
+    controls.at(control_name)->command(command_name, args);
+  }
   // ends the variable list
   va_end(args);
 }
@@ -64,7 +66,10 @@ void* ControlSystem::getState(EControl control_name, EControlState state_name) {
   // defines the return variable
   void* state{nullptr};
   // find the desired control and returns the status of the given state
-  state = controls.at(control_name)->state(state_name);
+  if (controls.contains(control_name)) {
+    state = controls.at(control_name)->state(state_name);
+  }
+
   return state;
 }
 }  // namespace control

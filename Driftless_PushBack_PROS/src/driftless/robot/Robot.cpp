@@ -36,7 +36,9 @@ void Robot::sendCommand(subsystems::ESubsystem subsystem_name,
   // tells the list to store anything past command_name
   va_start(args, command_name);
   // find correct subsystem
-  subsystems.at(subsystem_name)->command(command_name, args);
+  if (subsystems.contains(subsystem_name)) {
+    subsystems.at(subsystem_name)->command(command_name, args);
+  }
   // closes the variable list
   va_end(args);
 }
@@ -45,8 +47,10 @@ void* Robot::getState(subsystems::ESubsystem subsystem_name,
                       subsystems::ESubsystemState state_name) {
   // basic ptr init
   void* state{nullptr};
-  //find correct subsystem
-  state = subsystems.at(subsystem_name)->state(state_name);
+  // find correct subsystem
+  if (subsystems.contains(subsystem_name)) {
+    state = subsystems.at(subsystem_name)->state(state_name);
+  }
   return state;
 }
 }  // namespace robot

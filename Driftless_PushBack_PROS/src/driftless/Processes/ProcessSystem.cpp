@@ -52,7 +52,9 @@ void ProcessSystem::sendCommand(EProcess process_name,
   va_list args;
   va_start(args, command_name);
 
-  m_processes.at(process_name)->command(command_name, args);
+  if (m_processes.contains(process_name)) {
+    m_processes.at(process_name)->command(command_name, args);
+  }
 
   va_end(args);
 }
@@ -60,7 +62,9 @@ void ProcessSystem::sendCommand(EProcess process_name,
 void* ProcessSystem::getState(EProcess process_name, EProcessState state_name) {
   void* result{nullptr};
 
-  result = m_processes.at(process_name)->state(state_name);
+  if (m_processes.contains(process_name)) {
+    result = m_processes.at(process_name)->state(state_name);
+  }
 
   return result;
 }
