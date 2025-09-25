@@ -47,6 +47,10 @@ class IIntake {
 
   /// @brief Retracts the intake "arms"
   virtual void retract() = 0;
+
+  /// @brief Checks if the intake arms are deployed
+  /// @return __bool__ True of the arms are deployed, false otherwise
+  virtual bool isDeployed() = 0;
 };
 }  // namespace intake
 }  // namespace subsystems
