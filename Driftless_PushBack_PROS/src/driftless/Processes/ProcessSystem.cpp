@@ -16,11 +16,15 @@ bool ProcessSystem::removeProcess(EProcess process_name) {
 }
 
 void ProcessSystem::pause(EProcess process_name) {
-  m_processes.at(process_name)->pause();
+  if (m_processes.contains(process_name)) {
+    m_processes.at(process_name)->pause();
+  }
 }
 
 void ProcessSystem::resume(EProcess process_name) {
-  m_processes.at(process_name)->resume();
+  if (m_processes.contains(process_name)) {
+    m_processes.at(process_name)->resume();
+  }
 }
 
 void ProcessSystem::pauseAll() {

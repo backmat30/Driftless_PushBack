@@ -34,12 +34,16 @@ void ControlSystem::run() {
 
 void ControlSystem::pause() {
   // searches through the controls to find the active control and pauses it
-  controls.at(active_control)->pause();
+  if (controls.contains(active_control)) {
+    controls.at(active_control)->pause();
+  }
 }
 
 void ControlSystem::resume() {
   // searches through the controls to find the active control and resumes it
-  controls.at(active_control)->resume();
+  if (controls.contains(active_control)) {
+    controls.at(active_control)->resume();
+  }
 }
 
 void ControlSystem::sendCommand(EControl control_name,
