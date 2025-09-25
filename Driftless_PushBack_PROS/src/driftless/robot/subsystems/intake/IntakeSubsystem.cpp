@@ -18,24 +18,29 @@ void IntakeSubsystem::run() {
 
 void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
   switch (command_name) {
-    case ESubsystemCommand::INTAKE_SET_FRONT_VOLTAGE:
+    case ESubsystemCommand::INTAKE_SET_FRONT_VOLTAGE: {
       double voltage{va_arg(args, double)};
       m_intake->setFrontVoltage(voltage);
       break;
-    case ESubsystemCommand::INTAKE_SET_INTERMEDIARY_VOLTAGE:
+    }
+    case ESubsystemCommand::INTAKE_SET_INTERMEDIARY_VOLTAGE: {
       double voltage{va_arg(args, double)};
       m_intake->setIntermediaryVoltage(voltage);
       break;
-    case ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE:
+    }
+    case ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE: {
       double voltage{va_arg(args, double)};
       m_intake->setBackVoltage(voltage);
       break;
-    case ESubsystemCommand::INTAKE_DEPLOY_ARMS:
+    }
+    case ESubsystemCommand::INTAKE_DEPLOY_ARMS: {
       m_intake->deploy();
       break;
-    case ESubsystemCommand::INTAKE_RETRACT_ARMS:
+    }
+    case ESubsystemCommand::INTAKE_RETRACT_ARMS: {
       m_intake->retract();
       break;
+    }
   }
 }
 
