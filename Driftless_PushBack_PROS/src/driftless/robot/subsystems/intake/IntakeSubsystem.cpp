@@ -41,7 +41,11 @@ void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
 
 void* IntakeSubsystem::state(ESubsystemState state_name) {
   void* result{nullptr};
-
+  switch (state_name) {
+    case ESubsystemState::INTAKE_ARE_ARMS_DEPLOYED:
+      result = new bool(m_intake->isDeployed());
+      break;
+  }
   return result;
 }
 }  // namespace driftless::robot::subsystems::intake
