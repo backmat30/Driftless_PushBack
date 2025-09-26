@@ -41,6 +41,11 @@ class PistonGroup {
   /// @brief Determines if the pistons in the group are extended
   /// @return __bool__ True if extended, false if retracted
   bool isExtended();
+
+  /// @brief Copies a given piston group
+  /// @param rhs __PistonGroup&__ The piston group to copy
+  /// @return __PistonGroup&__ Reference to the copy of the piston group
+  PistonGroup& operator=(PistonGroup& rhs);  
 };
 }  // namespace hal
 }  // namespace driftless

@@ -35,6 +35,7 @@ void OpControlManager::run(
   // set subsystems to driver control
   op_control::holonomic_drive_train::HolonomicDriveTrainOperator
       holonomic_drive_train_operator{controller, robot};
+  op_control::intake::IntakeOperator intake_operator{controller, robot};
 
   // variable to hold time for delayer
   uint32_t current_time{};
@@ -46,6 +47,7 @@ void OpControlManager::run(
 
     // updates all subsystems
     holonomic_drive_train_operator.setDriveMotionVector(m_profile);
+    intake_operator.update(m_profile);
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER

@@ -34,5 +34,14 @@ void PistonGroup::toggleState() {
 }
 
 bool PistonGroup::isExtended() { return extended; }
+
+PistonGroup& PistonGroup::operator=(PistonGroup& rhs) {
+  m_pistons.clear();
+  for(uint8_t i{0}; i < rhs.m_pistons.size(); ++i) {
+    m_pistons.push_back(std::move(rhs.m_pistons.at(i)));
+  }
+  rhs.m_pistons.clear();
+  return *this;
+}
 }  // namespace hal
 }  // namespace driftless
