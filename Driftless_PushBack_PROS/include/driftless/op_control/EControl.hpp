@@ -17,6 +17,10 @@ enum EControl {
   HOLONOMIC_TURN,
   TANK_DRIVE_ARCADE_LINEAR,
   TANK_DRIVE_ARCADE_TURN,
+  INTAKE_FRONT_RUN_IN,
+  INTAKE_FRONT_RUN_OUT,
+  INTAKE_BACK_RUN_IN,
+  INTAKE_BACK_TOGGLE_ARMS
 };
 }  // namespace op_control
 }  // namespace driftless

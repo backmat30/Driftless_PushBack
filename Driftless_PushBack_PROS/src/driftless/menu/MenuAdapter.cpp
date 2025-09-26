@@ -63,40 +63,48 @@ void MenuAdapter::addProfile(std::unique_ptr<profiles::IProfile>& profile) {
 }
 
 void MenuAdapter::display() {
-  std::vector<std::string> alliance_options{};
+  if (alliances.size() > 0) {
+    std::vector<std::string> alliance_options{};
 
-  for (auto& alliance : alliances) {
-    alliance_options.push_back(alliance->getName());
+    for (auto& alliance : alliances) {
+      alliance_options.push_back(alliance->getName());
+    }
+
+    Option alliance_option{ALLIANCE_OPTION_NAME, alliance_options};
+    lvgl_menu.addOption(alliance_option);
   }
 
-  Option alliance_option{ALLIANCE_OPTION_NAME, alliance_options};
-  lvgl_menu.addOption(alliance_option);
+  if (autons.size() > 0) {
+    std::vector<std::string> auton_options{};
 
-  std::vector<std::string> auton_options{};
+    for (auto& auton : autons) {
+      auton_options.push_back(auton->getName());
+    }
 
-  for (auto& auton : autons) {
-    auton_options.push_back(auton->getName());
+    Option auton_option{AUTON_OPTION_NAME, auton_options};
+    lvgl_menu.addOption(auton_option);
   }
 
-  Option auton_option{AUTON_OPTION_NAME, auton_options};
-  lvgl_menu.addOption(auton_option);
-
-  // list of config names
-  std::vector<std::string> config_options{};
-  // fills list of config names
-  for (auto& config : configs) {
-    config_options.push_back(config->getName());
+  if (configs.size() > 0) {
+    // list of config names
+    std::vector<std::string> config_options{};
+    // fills list of config names
+    for (auto& config : configs) {
+      config_options.push_back(config->getName());
+    }
+    // turn the config list into an option and add it to the menu
+    Option config_option{CONFIG_OPTION_NAME, config_options};
+    lvgl_menu.addOption(config_option);
   }
-  // turn the config list into an option and add it to the menu
-  Option config_option{CONFIG_OPTION_NAME, config_options};
-  lvgl_menu.addOption(config_option);
 
-  std::vector<std::string> profile_options{};
-  for (auto& profile : profiles) {
-    profile_options.push_back(profile->getName());
+  if (profiles.size() > 0) {
+    std::vector<std::string> profile_options{};
+    for (auto& profile : profiles) {
+      profile_options.push_back(profile->getName());
+    }
+    Option profile_option{PROFILE_OPTION_NAME, profile_options};
+    lvgl_menu.addOption(profile_option);
   }
-  Option profile_option{PROFILE_OPTION_NAME, profile_options};
-  lvgl_menu.addOption(profile_option);
 
   lvgl_menu.displayMenu();
 }
