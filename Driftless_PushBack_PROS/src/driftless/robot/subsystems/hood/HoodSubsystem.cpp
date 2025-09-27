@@ -1,0 +1,57 @@
+#include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
+
+namespace driftless::robot::subsystems::hood {
+HoodSubsystem::HoodSubsystem(std::unique_ptr<IHood>& hood)
+    : ASubsystem{ESubsystem::HOOD}, m_hood{std::move(hood)} {}
+
+void HoodSubsystem::init() { m_hood->init(); }
+
+void HoodSubsystem::run() { m_hood->run(); }
+
+void HoodSubsystem::command(ESubsystemCommand command_name, va_list& args) {
+  switch (command_name) {
+    case ESubsystemCommand::HOOD_SET_VOLTAGE: {
+      double voltage{va_arg(args, double)};
+      m_hood->setVoltage(voltage);
+      break;
+    }
+    case ESubsystemCommand::HOOD_OPEN_GATE: {
+      m_hood->open();
+      break;
+    }
+    case ESubsystemCommand::HOOD_CLOSE_GATE: {
+      m_hood->close();
+      break;
+    }
+    case ESubsystemCommand::HOOD_TOGGLE_GATE: {
+      m_hood->toggleOpen();
+      break;
+    }
+    case ESubsystemCommand::HOOD_RAISE: {
+      m_hood->raise();
+      break;
+    }
+    case ESubsystemCommand::HOOD_LOWER: {
+      m_hood->lower();
+      break;
+    }
+    case ESubsystemCommand::HOOD_TOGGLE_RAISED: {
+      m_hood->toggleRaised();
+      break;
+    }
+  }
+}
+
+void* HoodSubsystem::state(ESubsystemState state_name) {
+  void* state{nullptr};
+
+  switch (state_name) {
+    case ESubsystemState::HOOD_IS_RAISED: {
+      state = new bool{m_hood->isRaised()};
+      break;
+    }
+  }
+
+  return state;
+}
+}  // namespace driftless::robot::subsystems::hood
