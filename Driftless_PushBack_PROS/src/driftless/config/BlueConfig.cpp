@@ -154,7 +154,41 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // add subsystem to robot
   robot->addSubsystem(intake_subsystem);
 
+    // ## HOOD SUBSYSTEM ##
 
+  // create pros objects
+  std::unique_ptr<pros::Motor> pros_hood_motor_1{
+      std::make_unique<pros::Motor>(HOOD_MOTOR_1_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_height_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_HEIGHT_PISTONS_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_gate_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_GATE_PISTONS_PORT)};
+
+  // adapt the pros objects
+  std::unique_ptr<io::IMotor> hood_motor_1{
+      std::make_unique<pros_adapters::ProsV5Motor>(pros_hood_motor_1)};
+  std::unique_ptr<io::IPiston> hood_height_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(pros_hood_height_pistons)};
+  std::unique_ptr<io::IPiston> hood_gate_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(pros_hood_gate_pistons)};
+
+  // build the hood
+  robot::subsystems::hood::DirectHoodBuilder hood_builder{};
+
+  std::unique_ptr<robot::subsystems::hood::IHood> hood{
+      hood_builder.withMotor(hood_motor_1)
+          ->withHeightPiston(hood_height_pistons)
+          ->withGatePiston(hood_gate_pistons)
+          ->build()};
+
+  // build the subsystem
+  std::unique_ptr<robot::subsystems::ASubsystem> hood_subsystem{
+      std::make_unique<robot::subsystems::hood::HoodSubsystem>(hood)};
+
+  // add subsystem to robot
+  robot->addSubsystem(hood_subsystem);
+
+  
   // return complete robot
   return robot;
 }
