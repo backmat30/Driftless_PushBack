@@ -13,18 +13,24 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
   double front_voltage{};
   double intermediary_voltage{};
   double back_voltage{};
+  double vertical_voltage{};
 
   if (run_back_intake_in) {
     back_voltage = -12.0;
     intermediary_voltage = 12.0;
+    vertical_voltage = 12.0;
 
   } else if (run_front_intake_in) {
     front_voltage = 12.0;
     intermediary_voltage = 12.0;
     back_voltage = 12.0;
+    vertical_voltage = 12.0;
   
   } else if (run_front_intake_out) {
     front_voltage = -12.0;
+    back_voltage = -12.0;
+    intermediary_voltage = -12.0;
+    vertical_voltage = -12.0;
   }
 
   m_robot->sendCommand(
@@ -38,6 +44,10 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
       robot::subsystems::ESubsystem::INTAKE,
       robot::subsystems::ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE,
       back_voltage);
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_SET_VERTICAL_VOLTAGE,
+      vertical_voltage);
 
   if (toggle_back_arms) {
     bool is_intake_deployed{*static_cast<bool*>(m_robot->getState(

@@ -17,6 +17,11 @@ DirectIntakeBuilder* DirectIntakeBuilder::withBackMotor(std::unique_ptr<io::IMot
   return this;
 }
 
+DirectIntakeBuilder* DirectIntakeBuilder::withVerticalMotor(std::unique_ptr<io::IMotor>& motor) {
+  m_vertical_motors.addMotor(motor);
+  return this;
+}
+
 DirectIntakeBuilder* DirectIntakeBuilder::withBackPiston(
     std::unique_ptr<io::IPiston>& piston) {
   m_back_pistons.addPiston(piston);
@@ -28,6 +33,7 @@ std::unique_ptr<IIntake> DirectIntakeBuilder::build() {
   direct_intake->setFrontMotors(m_front_motors);
   direct_intake->setIntermediaryMotors(m_intermediary_motors);
   direct_intake->setBackMotors(m_back_motors);
+  direct_intake->setVerticalMotors(m_vertical_motors);
   direct_intake->setBackPistons(m_back_pistons);
 
   return direct_intake;
