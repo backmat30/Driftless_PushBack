@@ -42,6 +42,10 @@ class IIntake {
   /// @param voltage __double__ The voltage to use
   virtual void setBackVoltage(double voltage) = 0;
 
+  /// @brief Sets the voltage of the vertical transition motors
+  /// @param voltage __double__ The voltage to use
+  virtual void setVerticalVoltage(double voltage) = 0;
+
   /// @brief Deploys the intake "arms"
   virtual void deploy() = 0;
 

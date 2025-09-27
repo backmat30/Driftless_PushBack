@@ -34,6 +34,9 @@ class DirectIntake : public IIntake {
   /// @brief The motors used for the back intake
   hal::MotorGroup m_back_motors{};
 
+  /// @brief The motors used for the vertical transition to the hood
+  hal::MotorGroup m_vertical_motors{};
+
   /// @brief The pistons used by the back intake
   hal::PistonGroup m_back_pistons{};
 
@@ -55,6 +58,10 @@ class DirectIntake : public IIntake {
   /// @brief Sets the voltage of the back intake motors
   /// @param voltage __double__ The voltage to use
   void setBackVoltage(double voltage) override;
+
+  /// @brief Sets the voltage of the vertical transition motors
+  /// @param voltage __double__ The voltage to use
+  void setVerticalVoltage(double voltage) override;
 
   /// @brief Deploys the intake "arms"
   void deploy() override;
@@ -81,6 +88,10 @@ class DirectIntake : public IIntake {
   /// @brief Sets the pistons used by the back intake
   /// @param pistons __hal::PistonGroup&__ The pistons to use
   void setBackPistons(hal::PistonGroup& pistons);
+
+  /// @brief Sets the motors used for the vertical transition to the hood
+  /// @param motors __hal::MotorGroup&__ The motors to use
+  void setVerticalMotors(hal::MotorGroup& motors);
 };
 }  // namespace intake
 }  // namespace subsystems

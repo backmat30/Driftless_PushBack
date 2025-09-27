@@ -5,6 +5,7 @@ namespace driftless::robot::subsystems::intake {
     m_front_motors.init();
     m_intermediary_motors.init();
     m_back_motors.init();
+    m_vertical_motors.init();
   }
 
   void DirectIntake::run() {}
@@ -19,6 +20,10 @@ namespace driftless::robot::subsystems::intake {
 
   void DirectIntake::setBackVoltage(double voltage) {
     m_back_motors.setVoltage(voltage);
+  }
+
+  void DirectIntake::setVerticalVoltage(double voltage) {
+    m_vertical_motors.setVoltage(voltage);
   }
 
   void DirectIntake::deploy() {
@@ -47,5 +52,9 @@ namespace driftless::robot::subsystems::intake {
 
   void DirectIntake::setBackPistons(hal::PistonGroup& pistons) {
     m_back_pistons = pistons;
+  }
+
+  void DirectIntake::setVerticalMotors(hal::MotorGroup& motors) {
+    m_vertical_motors = motors;
   }
 }

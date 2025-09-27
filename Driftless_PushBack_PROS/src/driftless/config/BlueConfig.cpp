@@ -126,6 +126,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::Motor>(INTAKE_BACK_MOTOR_1_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_intake_back_arms{
       std::make_unique<pros::adi::DigitalOut>(INTAKE_BACK_ARMS_PORT)};
+  std::unique_ptr<pros::Motor> pros_intake_vertical_motor_1{
+      std::make_unique<pros::Motor>(INTAKE_VERTICAL_MOTOR_1_PORT)};
 
   // adapt the pros objects
   std::unique_ptr<io::IMotor> intake_front_motor_1{
@@ -137,6 +139,9 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsV5Motor>(pros_intake_back_motor_1)};
   std::unique_ptr<io::IPiston> intake_back_arms{
       std::make_unique<pros_adapters::ProsPiston>(pros_intake_back_arms)};
+  std::unique_ptr<io::IMotor> intake_vertical_motor_1{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_intake_vertical_motor_1)};
 
   // build the intake
   robot::subsystems::intake::DirectIntakeBuilder intake_builder{};
@@ -145,16 +150,18 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       intake_builder.withFrontMotor(intake_front_motor_1)
           ->withIntermediaryMotor(intake_intermediary_motor_1)
           ->withBackMotor(intake_back_motor_1)
+          ->withVerticalMotor(intake_vertical_motor_1)
           ->withBackPiston(intake_back_arms)
           ->build()};
 
   // build the subsystem
-  std::unique_ptr<robot::subsystems::ASubsystem> intake_subsystem{std::make_unique<robot::subsystems::intake::IntakeSubsystem>(intake)};
+  std::unique_ptr<robot::subsystems::ASubsystem> intake_subsystem{
+      std::make_unique<robot::subsystems::intake::IntakeSubsystem>(intake)};
 
   // add subsystem to robot
   robot->addSubsystem(intake_subsystem);
 
-    // ## HOOD SUBSYSTEM ##
+  // ## HOOD SUBSYSTEM ##
 
   // create pros objects
   std::unique_ptr<pros::Motor> pros_hood_motor_1{
@@ -188,7 +195,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // add subsystem to robot
   robot->addSubsystem(hood_subsystem);
 
-  
   // return complete robot
   return robot;
 }
