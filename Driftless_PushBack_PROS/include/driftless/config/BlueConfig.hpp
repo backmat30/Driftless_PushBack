@@ -70,6 +70,10 @@
 #include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
 #include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
 
+// hood includes
+#include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
+#include "driftless/robot/subsystems/hood/DirectHoodBuilder.hpp"
+
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
@@ -94,6 +98,15 @@ class BlueConfig : public IConfig {
  // ## INTAKE PNEUMATICS ##
 
  static constexpr int INTAKE_BACK_ARMS_PORT{4};
+
+ // ## HOOD MOTORS ##
+
+ static constexpr int HOOD_MOTOR_1_PORT{-10};
+ 
+ // ## HOOD PNEUMATICS ##
+
+ static constexpr int HOOD_HEIGHT_PISTONS_PORT{2};
+ static constexpr int HOOD_GATE_PISTONS_PORT{3};
 
  // #### ROBOT CONSTANTS ####
 
