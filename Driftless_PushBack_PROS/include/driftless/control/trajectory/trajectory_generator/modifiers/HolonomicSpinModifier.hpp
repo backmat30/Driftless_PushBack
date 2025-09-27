@@ -42,9 +42,6 @@ class HolonomicSpinModifier : public ITrajectoryModifier {
   std::vector<SpinContext> m_spins{};
 
  public:
-  /// @brief Constructs a HolonomicSpinModifier object
-  HolonomicSpinModifier() = default;
-
   /// @brief Applies the modifier to the provided trajectory
   /// @param trajectory __std::vector<TrajectoryPoint>&__ The trajectory to
   /// modify
