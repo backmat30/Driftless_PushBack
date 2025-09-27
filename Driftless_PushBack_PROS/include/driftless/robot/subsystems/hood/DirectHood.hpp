@@ -71,6 +71,10 @@ class DirectHood : public IHood {
   /// @brief Toggles the hood between raised and lowered
   void toggleRaised() override;
 
+  /// @brief Checks if the hood is raised
+  /// @return __bool__ True if the hood is raised, false otherwise
+  bool isRaised() override;
+
   /// @brief Sets the motors used by the hood
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setMotors(hal::MotorGroup& motors);

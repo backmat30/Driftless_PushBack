@@ -51,6 +51,10 @@ class IHood {
 
   /// @brief Toggles the hood between raised and lowered
   virtual void toggleRaised() = 0;
+
+  /// @brief Checks if the hood is raised
+  /// @return __bool__ True if the hood is raised, false otherwise
+  virtual bool isRaised() = 0;
 };
 }  // namespace hood
 }  // namespace subsystems

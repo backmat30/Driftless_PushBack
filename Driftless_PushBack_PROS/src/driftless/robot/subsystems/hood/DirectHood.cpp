@@ -50,4 +50,8 @@ void DirectHood::setHeightPistons(hal::PistonGroup& pistons) {
 void DirectHood::setGatePistons(hal::PistonGroup& pistons) {
   m_gate_pistons = pistons;
 }
+
+bool DirectHood::isRaised() {
+  return m_raised;
+}
 }  // namespace driftless::robot::subsystems::hood
