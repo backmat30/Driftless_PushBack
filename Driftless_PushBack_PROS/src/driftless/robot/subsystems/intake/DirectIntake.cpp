@@ -5,6 +5,7 @@ namespace driftless::robot::subsystems::intake {
     m_front_motors.init();
     m_intermediary_motors.init();
     m_back_motors.init();
+    m_vertical_motors.init();
   }
 
   void DirectIntake::run() {}
