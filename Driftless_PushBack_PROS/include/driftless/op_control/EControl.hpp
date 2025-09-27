@@ -20,7 +20,9 @@ enum EControl {
   INTAKE_FRONT_RUN_IN,
   INTAKE_FRONT_RUN_OUT,
   INTAKE_BACK_RUN_IN,
-  INTAKE_BACK_TOGGLE_ARMS
+  INTAKE_BACK_TOGGLE_ARMS,
+  HOOD_TOGGLE_RAISED,
+  HOOD_TOGGLE_GATE
 };
 }  // namespace op_control
 }  // namespace driftless
