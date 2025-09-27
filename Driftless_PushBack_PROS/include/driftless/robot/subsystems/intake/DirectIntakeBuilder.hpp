@@ -34,6 +34,9 @@ class DirectIntakeBuilder {
   /// @brief The back motors used to build the DirectIntake
   hal::MotorGroup m_back_motors{};
 
+  /// @brief The vertical transition motors used to build the DirectIntake
+  hal::MotorGroup m_vertical_motors{};
+
   /// @brief The pistons used to build the DirectIntake
   hal::PistonGroup m_back_pistons{};
 
@@ -53,6 +56,11 @@ class DirectIntakeBuilder {
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
   DirectIntakeBuilder* withBackMotor(std::unique_ptr<io::IMotor>& motor);
+
+  /// @brief Add a vertical motor to the builder
+  /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withVerticalMotor(std::unique_ptr<io::IMotor>& motor);
 
   /// @brief Add a back piston to the builder
   /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
