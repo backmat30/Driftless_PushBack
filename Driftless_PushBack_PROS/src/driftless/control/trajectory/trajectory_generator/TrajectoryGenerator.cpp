@@ -10,12 +10,12 @@ void TrajectoryGenerator::addConstraint(
 
 void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   double t = 0;
-  m_trajectory.clear();
-  m_trajectory.push_back(TrajectoryPoint{
+  std::vector<TrajectoryPoint> dist_trajectory{};
+  dist_trajectory.push_back(TrajectoryPoint{
       path->getPoint(0).getX(), path->getPoint(0).getY(),
       std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
-      0, 0, 0});
-  TrajectoryPoint last_point{m_trajectory.back()};
+      0, 0});
+  TrajectoryPoint last_point{dist_trajectory.back()};
 
   // Forward pass
   while (t < path->getMaxTime()) {
@@ -43,24 +43,24 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
     last_point =
         TrajectoryPoint{path->getPoint(t).getX(), path->getPoint(t).getY(),
                         atan2(derivative.getY(), derivative.getX()),
-                        max_velocity, max_velocity * curvature, t};
+                        max_velocity, max_velocity * curvature};
 
-    m_trajectory.push_back(last_point);
+    dist_trajectory.push_back(last_point);
     t += dt;
   }
 
-  int i = m_trajectory.size() - 1;
+  int i = dist_trajectory.size() - 1;
   t = path->getMaxTime();
   last_point = TrajectoryPoint{
       path->getPoint(t).getX(), path->getPoint(t).getY(),
       std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
-      0, 0, t};
+      0, 0};
 
   // backwards pass
   while (t > 0) {
     // only re-apply constraints if the previous velocity was changed
-    if (last_point.m_velocity < m_trajectory[i].m_velocity) {
-      m_trajectory[i] = last_point;
+    if (last_point.m_velocity < dist_trajectory[i].m_velocity) {
+      dist_trajectory[i] = last_point;
     }
 
     double max_velocity{__DBL_MAX__};
@@ -83,10 +83,19 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
     last_point =
         TrajectoryPoint{path->getPoint(t).getX(), path->getPoint(t).getY(),
                         atan2(derivative.getY(), derivative.getX()),
-                        max_velocity, max_velocity * curvature, t};
+                        max_velocity, max_velocity * curvature};
 
     t -= dt;
     i--;
+  }
+
+  // Create m_trajectory as a time based trajectory, using dist_trajectory
+  double current_distance{};
+  double delta_t = 0.02;
+  while(current_distance < dist_trajectory.size() * m_delta_d) {
+    TrajectoryPoint point = dist_trajectory[static_cast<int>(current_distance / m_delta_d)];
+    current_distance += point.m_velocity * delta_t;
+    m_trajectory.push_back(point);
   }
 }
 
