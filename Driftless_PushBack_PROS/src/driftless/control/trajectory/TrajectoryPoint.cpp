@@ -14,16 +14,6 @@ TrajectoryPoint::TrajectoryPoint(double x, double y, double heading,
       m_velocity{velocity},
       m_angular_velocity{angular_velocity} {}
 
-TrajectoryPoint::TrajectoryPoint(double x, double y, double heading,
-                                 double velocity, double angular_velocity,
-                                 double t)
-    : m_x{x},
-      m_y{y},
-      m_heading{heading},
-      m_velocity{velocity},
-      m_angular_velocity{angular_velocity},
-      m_t{t} {}
-
 double TrajectoryPoint::distanceTo(const TrajectoryPoint& other) const {
   return std::sqrt(std::pow(other.m_x - m_x, 2) + std::pow(other.m_y - m_y, 2));
 }

@@ -34,9 +34,6 @@ class TrajectoryPoint {
   /// @brief The angular velocity in radians per second
   double m_angular_velocity;
 
-  /// @brief The t-value of the point along the trajectory
-  double m_t;
-
   /// @brief Constructs a new TrajectoryPoint
   /// @param x __double__ The x coordinate in inches
   /// @param y __double__ The y coordinate in inches
@@ -56,17 +53,6 @@ class TrajectoryPoint {
   /// @param angular_velocity __double__ The angular velocity in radians per second
   TrajectoryPoint(double x, double y, double heading, double velocity,
                   double angular_velocity);
-
-
-  /// @brief Constructs a new TrajectoryPoint
-  /// @param x __double__ The x coordinate in inches
-  /// @param y __double__ The y coordinate in inches
-  /// @param heading __double__ The heading in radians
-  /// @param velocity __double__ The velocity in inches per second
-  /// @param angular_velocity __double__ The angular velocity in radians per second
-  /// @param t __double__ The t-value of the point along the trajectory
-  TrajectoryPoint(double x, double y, double heading, double velocity,
-                  double angular_velocity, double t);
 
   /// @brief Determines the distance to another point
   /// @param other __const TrajectoryPoint&__ The other point
