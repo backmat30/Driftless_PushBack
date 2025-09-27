@@ -43,14 +43,17 @@ class HoodOperator {
 
   /// @brief Updates the hood using toggles for pneumatic control
   /// @param spin_forwards __EControllerDigital__ The control for spinning the
-  /// hood motors forwards
+  /// hood motors forwards from the front intake
+  /// @param spin_forwards_back __EControllerDigital__ The control for spinning the
+  /// hood motors forwards from the back intake
   /// @param spin_backwards __EControllerDigital__ The control for spinning the
   /// hood motors backwards
   /// @param toggle_height __EControllerDigital__ The control for toggling the
   /// hood height
   /// @param toggle_gate __EControllerDigital__ The control for toggling the
   /// hood gate
-  void updateHoodToggle(EControllerDigital spin_forwards,
+  void updateHoodToggle(EControllerDigital spin_forwards_front,
+                        EControllerDigital spin_forwards_back,
                         EControllerDigital spin_backwards,
                         EControllerDigital toggle_height,
                         EControllerDigital toggle_gate);
