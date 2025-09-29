@@ -24,13 +24,23 @@ namespace trajectory_generator {
 namespace kinematics {
 class MaxVelocityConstraint : public IKinematicConstraint {
  private:
+  /// @brief The max velocity of the robot in inches per second
   double m_max_velocity;
 
  public:
+  /// @brief Gets the max velocity at a given point along the path
+  /// @param path __std::unique_ptr<IPath>&__ The path being used for the
+  /// trajectory
+  /// @param last_point __TrajectoryPoint__ The previous point in the trajectory
+  /// @param delta_d __double__ The change in distance between points
+  /// @param t __double__ The time value along the path
+  /// @return __double__ The max velocity at the given point
   double getMaxVelocity(std::unique_ptr<IPath>& path,
                         TrajectoryPoint last_point, double delta_d,
                         double t) override;
 
+  /// @brief Sets the max velocity of the robot
+  /// @param max_velocity __double__ The max velocity in inches per second
   void setMaxVelocity(double max_velocity);
 };
 }  // namespace kinematics
