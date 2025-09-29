@@ -22,6 +22,9 @@ namespace trajectory_generator {
 /// @brief Namespace for kinematic constraints used in building trajectories
 /// @author Matthew Backman
 namespace kinematics {
+
+/// @brief Kinematic constraint to limit the max velocity of the robot
+/// @author Matthew Backman
 class MaxVelocityConstraint : public IKinematicConstraint {
  private:
   /// @brief The max velocity of the robot in inches per second
