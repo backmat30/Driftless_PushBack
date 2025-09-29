@@ -5,7 +5,7 @@ TrajectoryGenerator::TrajectoryGenerator(double delta_d) : m_delta_d{delta_d} {}
 
 void TrajectoryGenerator::addConstraint(
     std::unique_ptr<kinematics::IKinematicConstraint>& constraint) {
-  m_constraints.push_back(constraint);
+  m_constraints.push_back(std::move(constraint));
 }
 
 void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
