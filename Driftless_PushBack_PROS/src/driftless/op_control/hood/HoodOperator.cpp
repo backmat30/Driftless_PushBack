@@ -40,6 +40,9 @@ void HoodOperator::updateHoodToggle(EControllerDigital spin_forwards_front,
 
   if (toggle_height_pressed) {
     toggleHoodHeight();
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
   }
 
   if (toggle_gate_pressed) {
