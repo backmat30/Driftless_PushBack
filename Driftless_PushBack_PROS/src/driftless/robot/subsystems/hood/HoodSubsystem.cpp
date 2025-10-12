@@ -51,6 +51,18 @@ void HoodSubsystem::command(ESubsystemCommand command_name, va_list& args) {
       m_hood->toggleDescore();
       break;
     }
+    case ESubsystemCommand::HOOD_BUMP_UP: {
+      m_hood->bumpUp();
+      break;
+    }
+    case ESubsystemCommand::HOOD_BUMP_DOWN: {
+      m_hood->bumpDown();
+      break;
+    }
+    case ESubsystemCommand::HOOD_TOGGLE_BUMP: {
+      m_hood->toggleBump();
+      break;
+    }
   }
 }
 
