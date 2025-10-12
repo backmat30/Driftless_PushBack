@@ -23,7 +23,7 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
   } else if (run_front_intake_in) {
     front_voltage = 12.0;
     intermediary_voltage = 12.0;
-    back_voltage = -12.0;
+    back_voltage = -6.0;
     vertical_voltage = 12.0;
   
   } else if (run_front_intake_out) {
