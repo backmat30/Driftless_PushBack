@@ -56,7 +56,8 @@ class HoodOperator {
                         EControllerDigital spin_forwards_back,
                         EControllerDigital spin_backwards,
                         EControllerDigital toggle_height,
-                        EControllerDigital toggle_gate);
+                        EControllerDigital toggle_gate,
+                        EControllerDigital toggle_descore);
 
  public:
   /// @brief Constructs a new HoodOperator object
