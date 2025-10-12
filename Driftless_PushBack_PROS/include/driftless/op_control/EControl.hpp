@@ -22,7 +22,8 @@ enum EControl {
   INTAKE_BACK_RUN_IN,
   INTAKE_BACK_TOGGLE_ARMS,
   HOOD_TOGGLE_RAISED,
-  HOOD_TOGGLE_GATE
+  HOOD_TOGGLE_GATE,
+  HOOD_TOGGLE_DESCORE
 };
 }  // namespace op_control
 }  // namespace driftless
