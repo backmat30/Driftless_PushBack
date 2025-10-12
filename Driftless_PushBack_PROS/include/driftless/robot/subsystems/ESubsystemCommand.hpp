@@ -38,7 +38,10 @@ enum class ESubsystemCommand {
   HOOD_TOGGLE_GATE,
   HOOD_RAISE,
   HOOD_LOWER,
-  HOOD_TOGGLE_RAISED
+  HOOD_TOGGLE_RAISED,
+  HOOD_EXTEND_DESCORE,
+  HOOD_RETRACT_DESCORE,
+  HOOD_TOGGLE_DESCORE
 
 };
 }  // namespace subsystems
