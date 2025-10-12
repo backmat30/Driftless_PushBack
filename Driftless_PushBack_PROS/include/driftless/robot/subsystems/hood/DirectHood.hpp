@@ -117,9 +117,7 @@ class DirectHood : public IHood {
 
   /// @brief Sets the pistons to use for bump control
   /// @param pistons __hal::PistonGroup&__ The pistons to use
-  void setBumpPistons(hal::PistonGroup& pistons) {
-    m_bump_pistons = pistons;
-  }
+  void setBumpPistons(hal::PistonGroup& pistons);
 };
 }  // namespace hood
 }  // namespace subsystems
