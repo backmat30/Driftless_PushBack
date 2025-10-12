@@ -39,7 +39,13 @@ class EthanProfile : public IProfile {
           {op_control::EControl::INTAKE_BACK_RUN_IN,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::INTAKE_BACK_TOGGLE_ARMS,
-           op_control::EControllerDigital::BUTTON_A}};
+           op_control::EControllerDigital::BUTTON_A},
+          {op_control::EControl::HOOD_TOGGLE_RAISED,
+           op_control::EControllerDigital::BUTTON_B},
+          {op_control::EControl::HOOD_TOGGLE_GATE,
+           op_control::EControllerDigital::DPAD_DOWN},
+          {op_control::EControl::HOOD_TOGGLE_DESCORE,
+           op_control::EControllerDigital::DPAD_LEFT}};
 
   /// @brief Maps startup configurations to their values
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{};
