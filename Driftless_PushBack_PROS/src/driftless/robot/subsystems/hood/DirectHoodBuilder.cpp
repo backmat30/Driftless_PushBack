@@ -21,6 +21,11 @@ namespace driftless::robot::subsystems::hood {
     return this;
   }
 
+  DirectHoodBuilder* DirectHoodBuilder::withBumpPiston(std::unique_ptr<io::IPiston>& piston) {
+    m_bump_pistons.addPiston(piston);
+    return this;
+  }
+
   std::unique_ptr<IHood> DirectHoodBuilder::build() {
     std::unique_ptr<DirectHood> direct_hood{std::make_unique<DirectHood>()};
 
@@ -28,6 +33,7 @@ namespace driftless::robot::subsystems::hood {
     direct_hood->setHeightPistons(m_height_pistons);
     direct_hood->setGatePistons(m_gate_pistons);
     direct_hood->setDescorePistons(m_descore_pistons);
+    direct_hood->setBumpPistons(m_bump_pistons);
 
     return direct_hood;
   }

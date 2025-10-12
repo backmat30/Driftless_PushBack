@@ -35,6 +35,9 @@ class DirectHoodBuilder {
   /// @brief The descore pistons used to build the DirectHood
   hal::PistonGroup m_descore_pistons{};
 
+  /// @brief The bump pistons used to build the DirectHood
+  hal::PistonGroup m_bump_pistons{};
+
  public:
   /// @brief Adds a motor to the builder
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
@@ -55,6 +58,11 @@ class DirectHoodBuilder {
   /// @param piston __std::unique_ptr<io::IPiston>& The descore piston to add
   /// @return __DirectHoodBuilder*__ Pointer to this builder
   DirectHoodBuilder* withDescorePiston(std::unique_ptr<io::IPiston>& piston);
+
+  /// @brief Adds a bump piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>& The bump piston to add
+  /// @return __DirectHoodBuilder*__ Pointer to this builder
+  DirectHoodBuilder* withBumpPiston(std::unique_ptr<io::IPiston>& piston);
 
   /// @brief Builds the DirectHood object using the supplied values
   /// @return __std::unique_ptr<IHood>__ The DirectHood object that was built
