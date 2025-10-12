@@ -39,6 +39,18 @@ void HoodSubsystem::command(ESubsystemCommand command_name, va_list& args) {
       m_hood->toggleRaised();
       break;
     }
+    case ESubsystemCommand::HOOD_EXTEND_DESCORE: {
+      m_hood->extendDescore();
+      break;
+    }
+    case ESubsystemCommand::HOOD_RETRACT_DESCORE: {
+      m_hood->retractDescore();
+      break;
+    }
+    case ESubsystemCommand::HOOD_TOGGLE_DESCORE: {
+      m_hood->toggleDescore();
+      break;
+    }
   }
 }
 
