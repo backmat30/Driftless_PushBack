@@ -23,13 +23,20 @@ void HoodOperator::updateHoodToggle(EControllerDigital spin_forwards_front,
                                     EControllerDigital spin_backwards,
                                     EControllerDigital toggle_height,
                                     EControllerDigital toggle_gate,
-                                    EControllerDigital toggle_descore) {
+                                    EControllerDigital toggle_descore,
+                                    EControllerDigital toggle_bump) {
   bool spin_forwards_pressed{m_controller->getDigital(spin_forwards_front) ||
                              m_controller->getDigital(spin_forwards_back)};
   bool spin_backwards_pressed{m_controller->getDigital(spin_backwards)};
   bool toggle_height_pressed{m_controller->getNewDigital(toggle_height)};
   bool toggle_gate_pressed{m_controller->getNewDigital(toggle_gate)};
   bool toggle_descore_pressed{m_controller->getNewDigital(toggle_descore)};
+  bool toggle_bump_pressed{m_controller->getNewDigital(toggle_bump)};
+
+  bool is_hood_raised{*static_cast<bool*>(
+        m_robot->getState(robot::subsystems::ESubsystem::HOOD,
+                          robot::subsystems::ESubsystemState::HOOD_IS_RAISED))};
+
   if (spin_forwards_pressed) {
     setMotorVoltage(12.0);
   } else if (spin_backwards_pressed) {
@@ -43,6 +50,9 @@ void HoodOperator::updateHoodToggle(EControllerDigital spin_forwards_front,
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
   }
 
   if (toggle_gate_pressed) {
@@ -50,13 +60,18 @@ void HoodOperator::updateHoodToggle(EControllerDigital spin_forwards_front,
   }
 
   if (toggle_descore_pressed) {
-    bool is_hood_raised{*static_cast<bool*>(
-        m_robot->getState(robot::subsystems::ESubsystem::HOOD,
-                          robot::subsystems::ESubsystemState::HOOD_IS_RAISED))};
     if (is_hood_raised) {
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_DESCORE);
+    }
+  }
+
+  if (toggle_bump_pressed) {
+    if (!is_hood_raised) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
     }
   }
 }
@@ -78,8 +93,10 @@ void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
       op_control::EControl::HOOD_TOGGLE_GATE)};
   EControllerDigital toggle_descore{profile->getDigitalControlMapping(
       op_control::EControl::HOOD_TOGGLE_DESCORE)};
+  EControllerDigital toggle_bump{profile->getDigitalControlMapping(
+      op_control::EControl::HOOD_TOGGLE_BUMP)};
 
   updateHoodToggle(spin_forwards_front, spin_forwards_back, spin_backwards,
-                   toggle_height, toggle_gate, toggle_descore);
+                   toggle_height, toggle_gate, toggle_descore, toggle_bump);
 }
 }  // namespace driftless::op_control::hood

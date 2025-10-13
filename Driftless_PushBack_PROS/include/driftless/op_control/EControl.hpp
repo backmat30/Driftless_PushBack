@@ -23,7 +23,8 @@ enum EControl {
   INTAKE_BACK_TOGGLE_ARMS,
   HOOD_TOGGLE_RAISED,
   HOOD_TOGGLE_GATE,
-  HOOD_TOGGLE_DESCORE
+  HOOD_TOGGLE_DESCORE,
+  HOOD_TOGGLE_BUMP
 };
 }  // namespace op_control
 }  // namespace driftless

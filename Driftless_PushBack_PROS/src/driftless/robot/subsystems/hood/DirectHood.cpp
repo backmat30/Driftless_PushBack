@@ -51,6 +51,18 @@ void DirectHood::toggleDescore() {
   m_descore_pistons.toggleState();
 }
 
+void DirectHood::bumpUp() {
+  m_bump_pistons.extend();
+}
+
+void DirectHood::bumpDown() {
+  m_bump_pistons.retract();
+}
+
+void DirectHood::toggleBump() {
+  m_bump_pistons.toggleState();
+}
+
 void DirectHood::setMotors(hal::MotorGroup& motors) {
   m_motors = motors;
 }
@@ -65,6 +77,10 @@ void DirectHood::setGatePistons(hal::PistonGroup& pistons) {
 
 void DirectHood::setDescorePistons(hal::PistonGroup& pistons) {
   m_descore_pistons = pistons;
+}
+
+void DirectHood::setBumpPistons(hal::PistonGroup& pistons) {
+  m_bump_pistons = pistons;
 }
 
 bool DirectHood::isRaised() {
