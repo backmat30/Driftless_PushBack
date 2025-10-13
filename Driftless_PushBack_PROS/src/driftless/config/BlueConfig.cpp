@@ -172,6 +172,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(HOOD_GATE_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_descore_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_DESCORE_PISTONS_PORT)};
+    std::unique_ptr<pros::adi::DigitalOut> pros_hood_bump_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_BUMP_PISTONS_PORT)};
 
   // adapt the pros objects
   std::unique_ptr<io::IMotor> hood_motor_1{
@@ -182,6 +184,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_gate_pistons)};
   std::unique_ptr<io::IPiston> hood_descore_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_descore_pistons)};
+    std::unique_ptr<io::IPiston> hood_bump_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(pros_hood_bump_pistons)};
 
   // build the hood
   robot::subsystems::hood::DirectHoodBuilder hood_builder{};
@@ -191,6 +195,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           ->withHeightPiston(hood_height_pistons)
           ->withGatePiston(hood_gate_pistons)
           ->withDescorePiston(hood_descore_pistons)
+          ->withBumpPiston(hood_bump_pistons)
           ->build()};
 
   // build the subsystem
