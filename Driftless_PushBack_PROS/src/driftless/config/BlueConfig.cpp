@@ -34,28 +34,48 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // ## DRIVE TRAIN ##
 
   // create pros objects
-  std::unique_ptr<pros::Motor> pros_drive_front_left_motor_1{
-      std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_PORT, DRIVE_GEARSET)};
-  std::unique_ptr<pros::Motor> pros_drive_front_right_motor_1{
-      std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_PORT, DRIVE_GEARSET)};
-  std::unique_ptr<pros::Motor> pros_drive_back_left_motor_1{
-      std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_PORT, DRIVE_GEARSET)};
-  std::unique_ptr<pros::Motor> pros_drive_back_right_motor_1{
-      std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_front_left_top_motor{
+      std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_TOP_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_front_left_bottom_motor{
+      std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_BOTTOM_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_front_right_top_motor{
+      std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_TOP_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_front_right_bottom_motor{
+      std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_BOTTOM_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_back_left_top_motor{
+      std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_TOP_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_back_left_bottom_motor{
+      std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_BOTTOM_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_back_right_top_motor{
+      std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_TOP_PORT, DRIVE_GEARSET)};
+  std::unique_ptr<pros::Motor> pros_drive_back_right_bottom_motor{
+      std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_BOTTOM_PORT, DRIVE_GEARSET)};
 
   // adapt the pros objects
-  std::unique_ptr<io::IMotor> drive_front_left_motor_1{
+  std::unique_ptr<io::IMotor> drive_front_left_top_motor{
       std::make_unique<pros_adapters::ProsV5Motor>(
-          pros_drive_front_left_motor_1)};
-  std::unique_ptr<io::IMotor> drive_front_right_motor_1{
+          pros_drive_front_left_top_motor)};
+  std::unique_ptr<io::IMotor> drive_front_left_bottom_motor{
       std::make_unique<pros_adapters::ProsV5Motor>(
-          pros_drive_front_right_motor_1)};
-  std::unique_ptr<io::IMotor> drive_back_left_motor_1{
+          pros_drive_front_left_bottom_motor)};
+  std::unique_ptr<io::IMotor> drive_front_right_top_motor{
       std::make_unique<pros_adapters::ProsV5Motor>(
-          pros_drive_back_left_motor_1)};
-  std::unique_ptr<io::IMotor> drive_back_right_motor_1{
+          pros_drive_front_right_top_motor)};
+  std::unique_ptr<io::IMotor> drive_front_right_bottom_motor{
       std::make_unique<pros_adapters::ProsV5Motor>(
-          pros_drive_back_right_motor_1)};
+          pros_drive_front_right_bottom_motor)};
+  std::unique_ptr<io::IMotor> drive_back_left_top_motor{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_drive_back_left_top_motor)};
+  std::unique_ptr<io::IMotor> drive_back_left_bottom_motor{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_drive_back_left_bottom_motor)};
+  std::unique_ptr<io::IMotor> drive_back_right_top_motor{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_drive_back_right_top_motor)};
+  std::unique_ptr<io::IMotor> drive_back_right_bottom_motor{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_drive_back_right_bottom_motor)};
 
   // create the drive module builders
   robot::subsystems::holonomic_drive_train::holonomic_drive_module::
@@ -71,28 +91,32 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
                       holonomic_drive_module::IHolonomicDriveModule>
       drive_front_left_module{
-          drive_front_left_module_builder.withMotor(drive_front_left_motor_1)
+          drive_front_left_module_builder.withMotor(drive_front_left_top_motor)
+              ->withMotor(drive_front_left_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_LEFT_ANGLE_OFFSET)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
                       holonomic_drive_module::IHolonomicDriveModule>
       drive_front_right_module{
-          drive_front_right_module_builder.withMotor(drive_front_right_motor_1)
+          drive_front_right_module_builder.withMotor(drive_front_right_top_motor)
+              ->withMotor(drive_front_right_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_RIGHT_ANGLE_OFFSET)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
                       holonomic_drive_module::IHolonomicDriveModule>
       drive_back_left_module{
-          drive_back_left_module_builder.withMotor(drive_back_left_motor_1)
+          drive_back_left_module_builder.withMotor(drive_back_left_top_motor)
+              ->withMotor(drive_back_left_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_LEFT_ANGLE_OFFSET)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
                       holonomic_drive_module::IHolonomicDriveModule>
       drive_back_right_module{
-          drive_back_right_module_builder.withMotor(drive_back_right_motor_1)
+          drive_back_right_module_builder.withMotor(drive_back_right_top_motor)
+              ->withMotor(drive_back_right_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_RIGHT_ANGLE_OFFSET)
               ->build()};
 
