@@ -40,7 +40,7 @@ void XDriveModule::setNormalizedMotionVector(
   // Calculate the y-component of the vector, aka forward velocity of the wheel
   double linear_velocity = std::sin(m_angle_offset) * motion_vector.y +
                            std::cos(m_angle_offset) * motion_vector.x;
-  double linear_voltage = linear_velocity * 12.0;
+  double linear_voltage = linear_velocity * 12.0 * std::sqrt(2);
 
   // calculate the velocity contribution from angular velocity
   double turn_voltage =
