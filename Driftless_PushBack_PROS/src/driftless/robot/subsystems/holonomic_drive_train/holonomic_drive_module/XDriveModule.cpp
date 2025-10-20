@@ -8,7 +8,8 @@ void XDriveModule::run() {}
 
 void XDriveModule::setMotionVector(HolonomicMotionVector motion_vector) {
   // normalize the vector before passing to 
-  motion_vector.magnitude /= m_max_linear_velocity;
+  motion_vector.x /= m_max_linear_velocity;
+  motion_vector.y /= m_max_linear_velocity;
   motion_vector.angular_velocity /= m_max_angular_velocity;
 
   setNormalizedMotionVector(motion_vector);

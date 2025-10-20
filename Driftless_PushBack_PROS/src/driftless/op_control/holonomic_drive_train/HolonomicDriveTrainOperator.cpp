@@ -12,9 +12,8 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   robot::subsystems::holonomic_drive_train::HolonomicMotionVector motion_vector;
 
   // Calculate magnitude and direction from forward and strafe inputs
-  motion_vector.magnitude =
-      std::sqrt(forward_input * forward_input + strafe_input * strafe_input);
-  motion_vector.direction = std::atan2(strafe_input, forward_input);  // Radians
+  motion_vector.x = strafe_input;
+  motion_vector.y = forward_input;
 
   // Set angular velocity from turn input
   motion_vector.angular_velocity = turn_input;
