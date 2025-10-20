@@ -12,6 +12,14 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   robot::subsystems::holonomic_drive_train::HolonomicMotionVector motion_vector;
 
   // Calculate magnitude and direction from forward and strafe inputs
+  double magnitude =
+      std::sqrt(forward_input * forward_input + strafe_input * strafe_input);
+
+  if (magnitude > 1.0) {
+    forward_input /= magnitude;
+    strafe_input /= magnitude;
+  }
+
   motion_vector.x = strafe_input;
   motion_vector.y = forward_input;
 
