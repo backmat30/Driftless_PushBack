@@ -119,10 +119,10 @@ class BlueConfig : public IConfig {
  // ## DRIVE ##
 
  static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
- static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{-M_PI / 4};
-  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{M_PI / 4}; 
- static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* -M_PI / 4};
- static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * M_PI / 4};
+ static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{M_PI / 4};
+  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{ -M_PI / 4}; 
+ static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* M_PI / 4};
+ static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
 
  public:
   std::string getName() override;
