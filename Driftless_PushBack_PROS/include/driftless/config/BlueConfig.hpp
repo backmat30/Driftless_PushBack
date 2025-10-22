@@ -84,10 +84,14 @@ class BlueConfig : public IConfig {
  
  // ## DRIVE MOTORS ##
 
- static constexpr int DRIVE_FRONT_LEFT_PORT{1};
- static constexpr int DRIVE_FRONT_RIGHT_PORT{4};
- static constexpr int DRIVE_BACK_LEFT_PORT{2};
- static constexpr int DRIVE_BACK_RIGHT_PORT{5};
+ static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{18};
+  static constexpr int DRIVE_FRONT_LEFT_BOTTOM_PORT{-17};
+ static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{16};
+  static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-15};
+ static constexpr int DRIVE_BACK_LEFT_TOP_PORT{12};
+  static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-11};
+ static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{14};
+  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-13};
 
  // ## INTAKE MOTORS ##
 
@@ -116,10 +120,10 @@ class BlueConfig : public IConfig {
  // ## DRIVE ##
 
  static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
- static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{-M_PI / 4};
-  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{M_PI / 4}; 
- static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* -M_PI / 4};
- static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * M_PI / 4};
+ static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{M_PI / 4};
+  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{ -M_PI / 4}; 
+ static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* M_PI / 4};
+ static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
 
  public:
   std::string getName() override;

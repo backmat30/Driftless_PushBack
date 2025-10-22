@@ -14,12 +14,11 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
                                            va_list& args) {
   switch (command_name) {
     case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_MOTION_VECTOR: {
-      double magnitude = va_arg(args, double);
-      double direction = va_arg(args, double);
+      double x = va_arg(args, double);
+      double y = va_arg(args, double);
       double angular_velocity = va_arg(args, double);
 
-      HolonomicMotionVector motion_vector{magnitude, direction,
-                                          angular_velocity};
+      HolonomicMotionVector motion_vector{x, y, angular_velocity};
       m_drive_train->setMotionVector(motion_vector);
       break;
     }
