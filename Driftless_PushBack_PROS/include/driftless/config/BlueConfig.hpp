@@ -106,7 +106,7 @@ class BlueConfig : public IConfig {
 
  // ## HOOD MOTORS ##
 
- static constexpr int HOOD_MOTOR_1_PORT{-10};
+ static constexpr int HOOD_MOTOR_1_PORT{10};
  
  // ## HOOD PNEUMATICS ##
 
