@@ -12,8 +12,19 @@ namespace op_control {
 /// @brief Enumerated class for operator control commands
 /// @author Matthew Backman
 enum EControl {
+  HOLONOMIC_FORWARD,
+  HOLONOMIC_STRAFE,
+  HOLONOMIC_TURN,
   TANK_DRIVE_ARCADE_LINEAR,
   TANK_DRIVE_ARCADE_TURN,
+  INTAKE_FRONT_RUN_IN,
+  INTAKE_FRONT_RUN_OUT,
+  INTAKE_BACK_RUN_IN,
+  INTAKE_BACK_TOGGLE_ARMS,
+  HOOD_TOGGLE_RAISED,
+  HOOD_TOGGLE_GATE,
+  HOOD_TOGGLE_DESCORE,
+  HOOD_TOGGLE_BUMP
 };
 }  // namespace op_control
 }  // namespace driftless

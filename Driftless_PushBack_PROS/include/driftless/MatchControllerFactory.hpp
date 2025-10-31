@@ -1,13 +1,21 @@
 #ifndef __MATCH_CONTROLLER_FACTORY_HPP__
 #define __MATCH_CONTROLLER_FACTORY_HPP__
 
+// general includes
 #include "driftless/MatchController.hpp"
-#include "driftless/alliance/BlueAlliance.hpp"
-#include "driftless/alliance/RedAlliance.hpp"
-#include "driftless/menu/MenuAdapter.hpp"
-#include "driftless/profiles/EricProfile.hpp"
 #include "driftless/pros_adapters/ProsClock.hpp"
 #include "driftless/pros_adapters/ProsDelayer.hpp"
+#include "driftless/menu/MenuAdapter.hpp"
+
+// alliance includes
+#include "driftless/alliance/BlueAlliance.hpp"
+#include "driftless/alliance/RedAlliance.hpp"
+
+// config includes
+#include "driftless/config/BlueConfig.hpp"
+
+// profile includes
+#include "driftless/profiles/EthanProfile.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
