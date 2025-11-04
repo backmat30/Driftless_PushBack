@@ -95,14 +95,14 @@ class BlueConfig : public IConfig {
 
  // ## INTAKE MOTORS ##
 
- static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+ static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-9};
  static constexpr int INTAKE_BACK_MOTOR_1_PORT{7};
- static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{8};
+ static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
 
  // ## INTAKE PNEUMATICS ##
 
- static constexpr int INTAKE_BACK_ARMS_PORT{1};
+ static constexpr int INTAKE_BACK_ARMS_PORT{2};
 
  // ## HOOD MOTORS ##
 
@@ -110,10 +110,10 @@ class BlueConfig : public IConfig {
  
  // ## HOOD PNEUMATICS ##
 
- static constexpr int HOOD_HEIGHT_PISTONS_PORT{4};
- static constexpr int HOOD_GATE_PISTONS_PORT{5};
- static constexpr int HOOD_DESCORE_PISTONS_PORT{2};
- static constexpr int HOOD_BUMP_PISTONS_PORT{3};
+ static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
+ static constexpr int HOOD_GATE_PISTONS_PORT{4};
+ static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+ static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
  // #### ROBOT CONSTANTS ####
 
