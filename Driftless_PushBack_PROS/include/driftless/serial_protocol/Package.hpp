@@ -19,7 +19,7 @@ namespace driftless {
 
         void clearPackets();
 
-        std::string getSerializedPackage() const;
+        std::vector<uint8_t> getSerializedPackage() const;
     };
   }
 }

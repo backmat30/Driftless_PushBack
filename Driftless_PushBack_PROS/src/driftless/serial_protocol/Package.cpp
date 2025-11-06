@@ -14,13 +14,16 @@ void Package::clearPackets() {
   m_packets.clear();
 }
 
-std::string Package::getSerializedPackage() const {
-  std::string output_string{};
-  output_string += static_cast<char>(m_packets.size());
-  for(Packet packet : m_packets) {
-    output_string += static_cast<char>(packet.key);
-    output_string += packet.value;
+std::vector<uint8_t> Package::getSerializedPackage() const {
+  std::vector<uint8_t> output_vector;
+  output_vector.push_back(0); // Placeholder for package size
+  output_vector.push_back(static_cast<uint8_t>(m_packets.size()));
+  for (const Packet& packet : m_packets) {
+    output_vector.push_back(static_cast<uint8_t>(packet.key));
+    output_vector.insert(output_vector.end(), packet.value.begin(), packet.value.end());
   }
-  return output_string;
+
+  output_vector[0] = static_cast<uint8_t>(output_vector.size() + 2); // +2 for CRC bytes
+  return output_vector;
 }
 }
