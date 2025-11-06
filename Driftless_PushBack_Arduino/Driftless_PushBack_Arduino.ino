@@ -11,19 +11,41 @@
  * @author Matthew Backman
  */
 
-constexpr char START_DELIMETER{'/'};
-std::map<char, uint8_t> key_size{{'R', 1}, 
-                                  {'X', 4}, 
-                                  {'Y', 4}, 
-                                  {'H', 4}};
+enum class EErrorCode {
+  RECIEVER_TIMEOUT = 0,
+  CRC_MISSMATCH = 1,
+  INVALID_KEY = 2
+};
+
+constexpr char START_DELIMETER{ '/' };
+const std::map<char, uint8_t> key_size{ { 'R', 1 },
+                                        { 'X', 4 },
+                                        { 'Y', 4 },
+                                        { 'H', 4 } };
+
+bool isValidPackage(const std::vector<uint8_t>& data);
+uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size);
+void handleRequestCommand(const uint8_t* data);
+void handleCalibrateCommand(const uint8_t* data);
+void handleSetXCommand(const uint8_t* data);
+void handleSetYCommand(const uint8_t* data);
+void handleSetHeadingCommand(const uint8_t* data);
+void sendInvalidPackageError(const uint8_t error_code);
+
+std::map<char, void (*)(const uint8_t*)> command_handlers{ { 'R', handleRequestCommand },
+                                                           { 'C', handleCalibrateCommand },
+                                                           { 'X', handleSetXCommand },
+                                                           { 'Y', handleSetYCommand },
+                                                           { 'H', handleSetHeadingCommand } };
 // Create an Optical Tracking Odometry Sensor object
 QwiicOTOS odom_sensor;
-Serial rs485Serial{ 20, 21 };
+
+std::vector<char> packets_requested{};
 
 void setup() {
   // put your setup code here, to run once:
 
-  rs485Serial.begin(921600);
+  Serial5.begin(921600);
   //Serial.begin(74880);
   Wire.begin();
 
@@ -37,131 +59,107 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   uint64_t current_time{ millis() };
-  bool should_send{};
-  std::vector<char> packets_requested{};
+
+  packets_requested.clear();
 
   // Check for input from brain
-  if (rs485Serial.available()) {
-    char* recieved_data;
-    int num_bytes{rs485Serial.available()};
-    rs485Serial.readBytes(recieved_data, num_bytes);
-    uint8_t packets_recieved{recieved_data[0]};
+  if (Serial5.available()) {
+    std::vector<uint8_t> recieved_data{};
+    while (Serial5.available()) {
+      recieved_data.push_back(Serial5.read());
+    }
+    uint8_t bytes_expected{ recieved_data[0] };
 
-    uint8_t packet_start_index{1};
-    for(int i = 0; i < packets_recieved; ++i) {
-      char key{recieved_data[packet_start_index++]};
-      if(key_size.find(key) != key_size.cend()) {
-        break;
+    uint32_t recieve_start_time{millis()};
+    while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
+      if (Serial5.available()) {
+        recieved_data.push_back(Serial5.read());
+      } else {
+        delay(1);
       }
-      uint8_t size{key_size.at(key)};
-
-      // validate data
-      if(isValidPackage(recieved_data, num_bytes)) {
-        break;
-      }
-
-      // handle data
-      switch(key) {
-        case 'R': {
-          should_send = true;
-
-          char requested_key{};
-          memcpy(&requested_key, &recieved_data[packet_start_index], size);
-          packets_requested.push_back(requested_key);
-          break;
-        }
-        case 'C': {
-          odom_sensor.calibrateImu();
-          delay(1000);
-          break;
-        }
-        case 'X': {
-          float x_offset{};
-          memcpy(&x_offset, &recieved_data[packet_start_index], size);
-
-          sfe_otos_pose2d_t offset{};
-          odom_sensor.getOffset(offset);
-          offset.x = x_offset;
-          odom_sensor.setOffset(offset);
-          break;
-        }
-        case 'Y': {
-          float y_offset{};
-          memcpy(&y_offset, &recieved_data[packet_start_index], size);
-
-          sfe_otos_pose2d_t offset{};
-          odom_sensor.getOffset(offset);
-          offset.y = y_offset;
-          odom_sensor.setOffset(offset);
-          break;
-        }
-        case 'H': {
-          float h_offset{};
-          memcpy(&h_offset, &recieved_data[packet_start_index], size);
-
-          sfe_otos_pose2d_t offset{};
-          odom_sensor.getOffset(offset);
-          offset.h = h_offset;
-          odom_sensor.setOffset(offset);
-          break;
-        }
-        
-      }
-
+    }
+    if(millis() >= recieve_start_time + 100) {
+      sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
+      return;
     }
 
+    // validate data
+    if (!isValidPackage(recieved_data)) {
+      sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
+      return;
+    }
+
+    uint8_t packets_recieved{ recieved_data[1] };
+
+    uint8_t packet_offset{ 2 };
+    for (int i = 0; i < packets_recieved; ++i) {
+      char key{ recieved_data[packet_offset++] };
+      if (key_size.find(key) == key_size.end()) {
+        sendInvalidPackageError(EErrorCode::INVALID_KEY);
+        return;
+      }
+      uint8_t size{ key_size.at(key) };
+
+      const uint8_t* packet_value{ &recieved_data[packet_offset] };
+
+      // handle data
+      auto handler = command_handlers.find(key);
+      if (handler != command_handlers.end()) {
+        handler->second(packet_value);
+      }
+
+      packet_offset += size;
+    }
   }
 
   // generate package of data if requested
-  if(should_send) {
-    String output_string{static_cast<char>(packets_requested.size())};
-    for(char& requested_key : packets_requested) {
-      output_string.append(requested_key);
+  if (packets_requested.size()) {
+    std::vector<uint8_t> output_package{};
+    output_package.push_back(0);
+    output_package.push_back(packets_requested.size());
+    for (char& requested_key : packets_requested) {
+      output_package.push_back(static_cast<uint8_t>(requested_key));
 
-      switch(requested_key) {
-        case 'X': {
-          sfe_otos_pose2d_t position;
-          odom_sensor.getPosition(position);
+      uint8_t value_size{ key_size.at(requested_key) };
+      uint8_t value[value_size];
 
-          char value[key_size.at(requested_key)];
-          memcpy(&value, &position.x, key_size.at(requested_key));
+      switch (requested_key) {
+        case 'X':
+          {
+            sfe_otos_pose2d_t position;
+            odom_sensor.getPosition(position);
 
-          output_string.append(value);
-          break;
-        }
-        case 'Y': {
-          sfe_otos_pose2d_t position;
-          odom_sensor.getPosition(position);
+            memcpy(&value, &position.x, value_size);
+            break;
+          }
+        case 'Y':
+          {
+            sfe_otos_pose2d_t position;
+            odom_sensor.getPosition(position);
 
-          char value[key_size.at(requested_key)];
-          memcpy(&value, &position.y, key_size.at(requested_key));
+            memcpy(&value, &position.y, value_size);
+            break;
+          }
+        case 'H':
+          {
+            sfe_otos_pose2d_t position;
+            odom_sensor.getPosition(position);
 
-          output_string.append(value);
-          break;
-        }
-        case 'H': {
-          sfe_otos_pose2d_t position;
-          odom_sensor.getPosition(position);
-
-          char value[key_size.at(requested_key)];
-          memcpy(&value, &position.h, key_size.at(requested_key));
-
-          output_string.append(value);
-          break;
-        }
+            memcpy(&value, &position.h, value_size);
+            break;
+          }
       }
+      output_package.insert(output_package.end(), value, value + key_size.at(requested_key));
     }
     // calculate crc for validation
-    uint16_t crc{computeCRC(output_string.c_str(), output_string.length())};
-    char crc_bytes[2];
+    uint16_t crc{ computeCRC(output_package, output_package.size()) };
+    uint8_t crc_bytes[2];
     memcpy(&crc_bytes, &crc, 2);
-    output_string.append(crc_bytes);
+    output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
+    output_package[0] = output_package.size();
 
-    rs485Serial.print(output_string);
+    Serial5.write(output_package.data(), output_package.size());
   }
-
-  
-  sfe_otos_pose2d_t position;  
 
   /* SEND DATA TO ARDUINO IDE FOR DEBUG, UNCOMMENT IF NEEDED */
   //Serial.println(output_string);
@@ -179,16 +177,16 @@ void loop() {
  */
 template<typename T>
 String buildPacket(char key, T value) {
-  char size{sizeof(T)};
+  char size{ sizeof(T) };
   char bytes[size]{};
   memcpy(&bytes, &value, size);
 
-  String delimeter_str{START_DELIMETER};
-  String key_str{key};
-  String size_str{size};
-  String value_str{bytes};
+  String delimeter_str{ START_DELIMETER };
+  String key_str{ key };
+  String size_str{ size };
+  String value_str{ bytes };
 
-  String output{delimeter_str + key_str + size_str + value_str};
+  String output{ delimeter_str + key_str + size_str + value_str };
   return output;
 }
 
@@ -197,9 +195,9 @@ String buildPacket(char key, T value) {
 * @param length the size of the package
 * @return CRC value
 */
-uint16_t computeCRC(const char* data, size_t length) {
-  uint16_t crc{0xFFFF};
-  for (size_t i = 0; i < length; ++i) {
+uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size) {
+  uint16_t crc{ 0xFFFF };
+  for (size_t i = 0; i < size; ++i) {
     crc ^= static_cast<uint8_t>(data[i]);
     for (uint8_t i = 0; i < 8; ++i) {
       if (crc & 1)
@@ -213,14 +211,71 @@ uint16_t computeCRC(const char* data, size_t length) {
 
 /** Validates a package by checking the CRC value
 * @param data The package recieved
-* @param length The size of the package
 * @return True if the packet was transmitted correctly
 */
-bool isValidPackage(const char* data, size_t length) {
+bool isValidPackage(const std::vector<uint8_t>& data) {
   uint16_t actual_crc{};
 
-  memcpy(&actual_crc, &data[length-2], 2);
-  uint16_t calculated_crc{computeCRC(data, length - 2)};
+  memcpy(&actual_crc, &data[data.size() - 2], 2);
+  uint16_t calculated_crc{ computeCRC(data, data.size() - 2) };
 
   return actual_crc == calculated_crc;
+}
+
+// Define command handlers
+void handleRequestCommand(const uint8_t* data) {
+  char requested_key{};
+  memcpy(&requested_key, data, 1);
+  packets_requested.push_back(requested_key);
+}
+
+void handleCalibrateCommand(const uint8_t* data) {
+  odom_sensor.calibrateImu();
+  delay(1000);
+}
+
+void handleSetXCommand(const uint8_t* data) {
+  float x_offset{};
+  memcpy(&x_offset, data, 4);
+
+  sfe_otos_pose2d_t offset{};
+  odom_sensor.getOffset(offset);
+  offset.x = x_offset;
+  odom_sensor.setOffset(offset);
+}
+
+void handleSetYCommand(const uint8_t* data) {
+  float y_offset{};
+  memcpy(&y_offset, data, 4);
+
+  sfe_otos_pose2d_t offset{};
+  odom_sensor.getOffset(offset);
+  offset.y = y_offset;
+  odom_sensor.setOffset(offset);
+}
+
+void handleSetHeadingCommand(const uint8_t* data) {
+  float h_offset{};
+  memcpy(&h_offset, data, 4);
+
+  sfe_otos_pose2d_t offset{};
+  odom_sensor.getOffset(offset);
+  offset.h = h_offset;
+  odom_sensor.setOffset(offset);
+}
+
+void sendInvalidPackageError(const EErrorCode error_code) {
+  std::vector<uint8_t> package;
+  package.reserve(6);
+  package.push_back(6);
+  package.push_back(1);
+  package.push_back(static_cast<uint8_t>('E'));
+  package.push_back(static_cast<uint8_t>(error_code));
+
+  uint16_t crc{computeCRC(package, 4)};
+  uint8_t crc_bytes[2];
+  memcpy(crc_bytes, &crc, 2);
+  package.insert(package.end(), crc_bytes, crc_bytes + 2);
+
+  Serial5.write(package.data(), package.size());
 }
