@@ -10,6 +10,10 @@ void Package::addPacket(const ESerialKey key, const std::string& value) {
   m_packets.push_back(packet);
 }
 
+void Package::clearPackets() {
+  m_packets.clear();
+}
+
 std::string Package::getSerializedPackage() const {
   std::string output_string{};
   output_string += static_cast<char>(m_packets.size());

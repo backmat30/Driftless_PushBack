@@ -12,9 +12,12 @@ namespace driftless {
         std::vector<Packet> m_packets;
       
       public:
+
         void addPacket(const Packet& packet);
 
         void addPacket(const ESerialKey key, const std::string& value);
+
+        void clearPackets();
 
         std::string getSerializedPackage() const;
     };
