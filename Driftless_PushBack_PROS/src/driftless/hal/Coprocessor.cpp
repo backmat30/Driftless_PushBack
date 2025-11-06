@@ -24,8 +24,12 @@ void Coprocessor::taskUpdate() {
 
 void Coprocessor::fetchLatestSignal() {
   if (m_serial_device) {
-    while (m_serial_device->getInputBytes()) {
-      m_serial_buffer += static_cast<char>(m_serial_device->readByte());
+    if (m_serial_device->getInputBytes()) {
+      uint8_t input_buffer[m_serial_device->getInputBytes()]{};
+      m_serial_device->read(input_buffer, m_serial_device->getInputBytes());
+      m_serial_buffer.append(
+          reinterpret_cast<char*>(input_buffer),
+          m_serial_device->getInputBytes());
     }
   }
 }
