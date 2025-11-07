@@ -45,7 +45,7 @@ std::vector<char> packets_requested{};
 void setup() {
   // put your setup code here, to run once:
 
-  Serial5.begin(921600);
+  Serial2.begin(921600);
   //Serial.begin(74880);
   Wire.begin();
 
@@ -63,17 +63,17 @@ void loop() {
   packets_requested.clear();
 
   // Check for input from brain
-  if (Serial5.available()) {
+  if (Serial2.available()) {
     std::vector<uint8_t> recieved_data{};
-    while (Serial5.available()) {
-      recieved_data.push_back(Serial5.read());
+    while (Serial2.available()) {
+      recieved_data.push_back(Serial2.read());
     }
     uint8_t bytes_expected{ recieved_data[0] };
 
     uint32_t recieve_start_time{millis()};
     while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
-      if (Serial5.available()) {
-        recieved_data.push_back(Serial5.read());
+      if (Serial2.available()) {
+        recieved_data.push_back(Serial2.read());
       } else {
         delay(1);
       }
@@ -158,7 +158,7 @@ void loop() {
     output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
     output_package[0] = output_package.size();
 
-    Serial5.write(output_package.data(), output_package.size());
+    Serial2.write(output_package.data(), output_package.size());
   }
 
   /* SEND DATA TO ARDUINO IDE FOR DEBUG, UNCOMMENT IF NEEDED */
@@ -277,5 +277,5 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   memcpy(crc_bytes, &crc, 2);
   package.insert(package.end(), crc_bytes, crc_bytes + 2);
 
-  Serial5.write(package.data(), package.size());
+  Serial2.write(package.data(), package.size());
 }
