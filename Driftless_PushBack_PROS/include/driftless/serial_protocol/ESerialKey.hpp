@@ -10,6 +10,8 @@ namespace driftless {
     /// @brief Enumeration representing valid keys for serial communication
     /// @author Matthew Backman
     enum class ESerialKey : int8_t {
+      REQUEST_PACKET = 'R',
+      CALIBRATE_ODOM = 'C',
       XPOS = 'X',
       YPOS = 'Y',
       THETA = 'H',
