@@ -18,7 +18,8 @@ namespace driftless {
       SWERVE_MODULE_A = 'A',
       SWERVE_MODULE_B = 'B',
       SWERVE_MODULE_C = 'C',
-      SWERVE_MODULE_D = 'D'
+      SWERVE_MODULE_D = 'D',
+      ERROR = 'E'
     };
   }
 }
