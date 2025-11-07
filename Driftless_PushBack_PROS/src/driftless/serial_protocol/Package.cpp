@@ -5,7 +5,7 @@ void Package::addPacket(const Packet& packet) {
   m_packets.push_back(packet);
 }
 
-void Package::addPacket(const ESerialKey key, const std::string& value) {
+void Package::addPacket(const ESerialKey key, const std::vector<uint8_t>& value) {
   Packet packet{key, value};
   m_packets.push_back(packet);
 }

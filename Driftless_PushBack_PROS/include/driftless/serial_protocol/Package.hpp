@@ -15,7 +15,7 @@ namespace driftless {
 
         void addPacket(const Packet& packet);
 
-        void addPacket(const ESerialKey key, const std::string& value);
+        void addPacket(const ESerialKey key, const std::vector<uint8_t>& value);
 
         void clearPackets();
 
