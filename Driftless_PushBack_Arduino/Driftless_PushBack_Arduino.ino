@@ -21,7 +21,8 @@ constexpr char START_DELIMETER{ '/' };
 const std::map<char, uint8_t> key_size{ { 'R', 1 },
                                         { 'X', 4 },
                                         { 'Y', 4 },
-                                        { 'H', 4 } };
+                                        { 'H', 4 },
+                                        { 'C', 1 } };
 
 bool isValidPackage(const std::vector<uint8_t>& data);
 uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size);
@@ -45,8 +46,8 @@ std::vector<char> packets_requested{};
 void setup() {
   // put your setup code here, to run once:
 
-  Serial2.begin(921600);
-  //Serial.begin(74880);
+  Serial2.begin(74880);
+  Serial.begin(74880);
   Wire.begin();
 
   odom_sensor.setAngularUnit(kSfeOtosAngularUnitDegrees);
@@ -65,12 +66,10 @@ void loop() {
   // Check for input from brain
   if (Serial2.available()) {
     std::vector<uint8_t> recieved_data{};
-    while (Serial2.available()) {
-      recieved_data.push_back(Serial2.read());
-    }
+    recieved_data.push_back(Serial2.read());
     uint8_t bytes_expected{ recieved_data[0] };
 
-    uint32_t recieve_start_time{millis()};
+    uint32_t recieve_start_time{ millis() };
     while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
       if (Serial2.available()) {
         recieved_data.push_back(Serial2.read());
@@ -78,7 +77,11 @@ void loop() {
         delay(1);
       }
     }
-    if(millis() >= recieve_start_time + 100) {
+
+    Serial.write(recieved_data.data(), recieved_data.size());
+    Serial.print("\n");
+
+    if (millis() >= recieve_start_time + 100) {
       sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
       return;
     }
@@ -88,6 +91,8 @@ void loop() {
       sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
       return;
     }
+
+    Serial.println("Valid packet recieved");
 
     uint8_t packets_recieved{ recieved_data[1] };
 
@@ -160,9 +165,6 @@ void loop() {
 
     Serial2.write(output_package.data(), output_package.size());
   }
-
-  /* SEND DATA TO ARDUINO IDE FOR DEBUG, UNCOMMENT IF NEEDED */
-  //Serial.println(output_string);
 
   uint64_t delay_time{ 10 - (millis() - current_time) };
   if (delay_time > 0) {
@@ -272,7 +274,7 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   package.push_back(static_cast<uint8_t>('E'));
   package.push_back(static_cast<uint8_t>(error_code));
 
-  uint16_t crc{computeCRC(package, 4)};
+  uint16_t crc{ computeCRC(package, 4) };
   uint8_t crc_bytes[2];
   memcpy(crc_bytes, &crc, 2);
   package.insert(package.end(), crc_bytes, crc_bytes + 2);

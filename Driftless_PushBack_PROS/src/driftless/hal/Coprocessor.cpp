@@ -51,8 +51,11 @@ void Coprocessor::fetchLatestSignal() {
   if (m_serial_device) {
     if (m_serial_device->getInputBytes()) {
       uint64_t fetch_start_time{m_clock->getTime()};
-      m_serial_device->read(m_serial_buffer.data(),
-                            m_serial_device->getInputBytes());
+      while(m_serial_device->getInputBytes()) {
+        m_serial_buffer.push_back(m_serial_device->readByte());
+      }
+      pros::screen::print(
+          pros::E_TEXT_MEDIUM_CENTER, 7, "data recieved: %s", m_serial_buffer.data());
 
       uint8_t package_size{m_serial_buffer[0]};
       while (package_size > m_serial_buffer.size() &&
@@ -61,11 +64,17 @@ void Coprocessor::fetchLatestSignal() {
           m_serial_buffer.push_back(m_serial_device->readByte());
         }
       }
+      pros::screen::print(
+          pros::E_TEXT_MEDIUM_CENTER, 8, "Data received: %s",
+          std::string(reinterpret_cast<char*>(m_serial_buffer.data())));
     }
   }
 }
 
 void Coprocessor::processLatestSignal() {
+  if (m_serial_buffer.size() < 2) {
+    return;
+  }
   if (m_serial_buffer.size() != m_serial_buffer[0]) {
     return;
   }
@@ -138,6 +147,8 @@ void Coprocessor::sendOutgoingPackage() {
                              static_cast<int>(serialized_data.size()));
     }
   }
+
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 9, "Package size: %d, packets: %d", serialized_data[0], serialized_data[1]);
   m_outgoing_package.clearPackets();
 }
 
@@ -150,60 +161,6 @@ void Coprocessor::init() {
 void Coprocessor::run() {
   if (m_task) {
     m_task->start(&Coprocessor::taskLoop, this);
-  }
-}
-
-template <typename T>
-T Coprocessor::getValue(serial_protocol::ESerialKey key) {
-  T value{};
-
-  if (m_latest_data.contains(key)) {
-    try {
-      std::memcpy(&value, m_latest_data[key].data(),
-                  sizeof(T));  // Copy the bytes from the string to the value
-    } catch (const std::exception& e) {
-      // Handle conversion error, e.g., log it or throw an exception
-      // For now, we will just return the default value
-      pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
-                          "Invalid conversion for %d at %7.2f",
-                          static_cast<char>(key), m_clock->getTime() / 1000.0);
-      value = T{};
-    }
-  }
-
-  return value;
-}
-
-template <typename T>
-void Coprocessor::addPacketToPackage(serial_protocol::ESerialKey key,
-                                     const T& value) {
-  std::vector<uint8_t> byte_vector(sizeof(T));
-  std::memcpy(byte_vector.data(), &value, sizeof(T));
-  m_outgoing_package.addPacket(key, byte_vector);
-}
-
-template <typename T>
-void Coprocessor::addRecurringPacket(serial_protocol::ESerialKey key,
-                                     const T& value) {
-  std::vector<uint8_t> byte_vector(sizeof(T));
-  std::memcpy(byte_vector.data(), &value, sizeof(T));
-  serial_protocol::Packet packet{key, byte_vector};
-
-  m_recurring_packets.push_back(packet);
-}
-
-template <typename T>
-void Coprocessor::removeRecurringPacket(serial_protocol::ESerialKey key,
-                                        const T& value) {
-  std::vector<uint8_t> byte_vector(sizeof(T));
-  std::memcpy(byte_vector.data(), &value, sizeof(T));
-  serial_protocol::Packet packet{key, byte_vector};
-
-  for(int i = 0; i < m_recurring_packets.size(); ++i) {
-    if (m_recurring_packets[i] == packet) {
-      m_recurring_packets.erase(m_recurring_packets.begin() + i);
-      break;
-    }
   }
 }
 

@@ -31,25 +31,57 @@ std::shared_ptr<io::IController> BlueConfig::buildController() {
 std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::shared_ptr<robot::Robot> robot{std::make_shared<robot::Robot>()};
 
+  // ## ARDUINO ##
+  // create pros objects
+  std::unique_ptr<pros::Serial> pros_arduino_serial{
+      std::make_unique<pros::Serial>(ARDUINO_PORT, 74880)};
+
+  // adapt the pros objects
+  std::unique_ptr<io::ISerialDevice> arduino_serial{
+      std::make_unique<pros_adapters::ProsSerialDevice>(pros_arduino_serial)};
+  std::unique_ptr<rtos::IClock> arduino_clock{
+      std::make_unique<pros_adapters::ProsClock>()};
+  std::unique_ptr<rtos::IDelayer> arduino_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> arduino_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> arduino_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+
+  // create the arduino coprocessor
+  hal::CoprocessorBuilder arduino_builder;
+
+  std::shared_ptr<hal::Coprocessor> arduino_coprocessor{
+      arduino_builder.withSerialDevice(arduino_serial)
+          ->withClock(arduino_clock)
+          ->withDelayer(arduino_delayer)
+          ->withMutex(arduino_mutex)
+          ->withTask(arduino_task)
+          ->build()};
+
   // ## DRIVE TRAIN ##
 
   // create pros objects
   std::unique_ptr<pros::Motor> pros_drive_front_left_top_motor{
       std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_TOP_PORT, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_front_left_bottom_motor{
-      std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_BOTTOM_PORT, DRIVE_GEARSET)};
+      std::make_unique<pros::Motor>(DRIVE_FRONT_LEFT_BOTTOM_PORT,
+                                    DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_front_right_top_motor{
       std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_TOP_PORT, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_front_right_bottom_motor{
-      std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_BOTTOM_PORT, DRIVE_GEARSET)};
+      std::make_unique<pros::Motor>(DRIVE_FRONT_RIGHT_BOTTOM_PORT,
+                                    DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_back_left_top_motor{
       std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_TOP_PORT, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_back_left_bottom_motor{
-      std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_BOTTOM_PORT, DRIVE_GEARSET)};
+      std::make_unique<pros::Motor>(DRIVE_BACK_LEFT_BOTTOM_PORT,
+                                    DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_back_right_top_motor{
       std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_TOP_PORT, DRIVE_GEARSET)};
   std::unique_ptr<pros::Motor> pros_drive_back_right_bottom_motor{
-      std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_BOTTOM_PORT, DRIVE_GEARSET)};
+      std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_BOTTOM_PORT,
+                                    DRIVE_GEARSET)};
 
   // adapt the pros objects
   std::unique_ptr<io::IMotor> drive_front_left_top_motor{
@@ -99,7 +131,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
                       holonomic_drive_module::IHolonomicDriveModule>
       drive_front_right_module{
-          drive_front_right_module_builder.withMotor(drive_front_right_top_motor)
+          drive_front_right_module_builder
+              .withMotor(drive_front_right_top_motor)
               ->withMotor(drive_front_right_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_RIGHT_ANGLE_OFFSET)
               ->build()};
@@ -196,7 +229,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(HOOD_GATE_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_descore_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_DESCORE_PISTONS_PORT)};
-    std::unique_ptr<pros::adi::DigitalOut> pros_hood_bump_pistons{
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_bump_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_BUMP_PISTONS_PORT)};
 
   // adapt the pros objects
@@ -208,7 +241,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_gate_pistons)};
   std::unique_ptr<io::IPiston> hood_descore_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_descore_pistons)};
-    std::unique_ptr<io::IPiston> hood_bump_pistons{
+  std::unique_ptr<io::IPiston> hood_bump_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_bump_pistons)};
 
   // build the hood
@@ -228,6 +261,41 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
 
   // add subsystem to robot
   robot->addSubsystem(hood_subsystem);
+
+  // ## ODOMETRY SUBSYSTEM ##
+
+  // create pros adapters
+  std::unique_ptr<rtos::IClock> odom_clock{
+      std::make_unique<pros_adapters::ProsClock>()};
+  std::unique_ptr<rtos::IDelayer> odom_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> odom_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> odom_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+
+  // build the arduino position tracker
+  robot::subsystems::odometry::SparkFunPositionTrackerBuilder
+      position_tracker_builder{};
+
+  std::unique_ptr<robot::subsystems::odometry::IPositionTracker>
+      position_tracker{position_tracker_builder.withClock(odom_clock)
+                           ->withDelayer(odom_delayer)
+                           ->withMutex(odom_mutex)
+                           ->withTask(odom_task)
+                           ->withCoprocessor(arduino_coprocessor)
+                           ->withLocalXOffset(ODOMETRY_LOCAL_X_OFFSET)
+                           ->withLocalYOffset(ODOMETRY_LOCAL_Y_OFFSET)
+                           ->withLocalThetaOffset(ODOMETRY_LOCAL_THETA_OFFSET)
+                           ->build()};
+
+    std::unique_ptr<robot::subsystems::ASubsystem>
+      odometry_subsystem{
+          std::make_unique<robot::subsystems::odometry::OdometrySubsystem>(
+              position_tracker)};
+
+    // add subsystem to robot
+    robot->addSubsystem(odometry_subsystem);
 
   // return complete robot
   return robot;

@@ -6,14 +6,13 @@
 #include <memory>
 #include <string>
 
-#include "pros/screen.hpp"
-
 #include "driftless/io/ISerialDevice.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/serial_protocol/Package.hpp"
+#include "pros/screen.hpp"
 
 namespace driftless {
 namespace hal {
@@ -51,7 +50,7 @@ class Coprocessor {
           {serial_protocol::ESerialKey::THETA,
            &Coprocessor::handleThetaCommand},
       };
-  
+
   const std::map<serial_protocol::ESerialKey, uint8_t> m_command_sizes{
       {serial_protocol::ESerialKey::XPOS, sizeof(float)},
       {serial_protocol::ESerialKey::YPOS, sizeof(float)},
@@ -111,7 +110,25 @@ class Coprocessor {
   /// @param key __ESerialKey__ The key value to search for
   /// @return __T__ The value associated with the key
   template <typename T>
-  T getValue(serial_protocol::ESerialKey key);
+  T getValue(serial_protocol::ESerialKey key) {
+    T value{};
+
+    if (m_latest_data.contains(key)) {
+      try {
+        std::memcpy(&value, m_latest_data[key].data(),
+                    sizeof(T));  // Copy the bytes from the string to the value
+      } catch (const std::exception& e) {
+        // Handle conversion error, e.g., log it or throw an exception
+        // For now, we will just return the default value
+        pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
+                            "Invalid conversion for %d at %7.2f",
+                            static_cast<char>(key), m_clock->getTime() / 1000.0);
+        value = T{};
+      }
+    }
+
+    return value;
+  }
 
   /// @brief Adds a packet to the next outgoing package
   /// @tparam T The type of the value to send
@@ -119,7 +136,15 @@ class Coprocessor {
   /// value
   /// @param value __T__ The value to send
   template <typename T>
-  void addPacketToPackage(serial_protocol::ESerialKey key, const T& value);
+  void addPacketToPackage(serial_protocol::ESerialKey key,
+                                       const T& value) {
+    std::vector<uint8_t> byte_vector(sizeof(T));
+    std::memcpy(byte_vector.data(), &value, sizeof(T));
+    m_outgoing_package.addPacket(key, byte_vector);
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 3,
+                        "Added packet %c with value %7.2f",
+                        static_cast<char>(key), static_cast<float>(value));
+  }
 
   /// @brief Adds a packet to the list of packets to be sent for every package
   /// @tparam T The type of the value to send
@@ -127,10 +152,32 @@ class Coprocessor {
   /// value
   /// @param value __T__ The value to send
   template <typename T>
-  void addRecurringPacket(serial_protocol::ESerialKey key, const T& value);
+  void addRecurringPacket(serial_protocol::ESerialKey key,
+                                       const T& value) {
+    std::vector<uint8_t> byte_vector(sizeof(T));
+    std::memcpy(byte_vector.data(), &value, sizeof(T));
+    serial_protocol::Packet packet{key, byte_vector};
+
+    m_recurring_packets.push_back(packet);
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 2,
+                        "Added recurring packet %c with value %c",
+                        static_cast<char>(key), static_cast<char>(value));
+  }
 
   template <typename T>
-  void removeRecurringPacket(serial_protocol::ESerialKey key, const T& value);
+  void removeRecurringPacket(serial_protocol::ESerialKey key,
+                                          const T& value) {
+    std::vector<uint8_t> byte_vector(sizeof(T));
+    std::memcpy(byte_vector.data(), &value, sizeof(T));
+    serial_protocol::Packet packet{key, byte_vector};
+
+    for (int i = 0; i < m_recurring_packets.size(); ++i) {
+      if (m_recurring_packets[i] == packet) {
+        m_recurring_packets.erase(m_recurring_packets.begin() + i);
+        break;
+      }
+    }
+  }
 
   /// @brief Sets the serial device used by the coprocessor
   /// @param serial_device __std::unique_ptr<io::ISerialDevice>&__ The serial
