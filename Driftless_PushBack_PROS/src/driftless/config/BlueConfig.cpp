@@ -34,7 +34,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // ## ARDUINO ##
   // create pros objects
   std::unique_ptr<pros::Serial> pros_arduino_serial{
-      std::make_unique<pros::Serial>(ARDUINO_PORT, 74880)};
+      std::make_unique<pros::Serial>(ARDUINO_PORT, 115200)};
 
   // adapt the pros objects
   std::unique_ptr<io::ISerialDevice> arduino_serial{

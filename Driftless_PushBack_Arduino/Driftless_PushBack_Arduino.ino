@@ -46,9 +46,14 @@ std::vector<char> packets_requested{};
 void setup() {
   // put your setup code here, to run once:
 
-  Serial2.begin(74880);
+  Serial8.begin(115200);
   Serial.begin(74880);
   Wire.begin();
+  while (!(odom_sensor.begin())) {
+    Serial.println("Odom initializing");
+    delay(1000);
+  }
+  Serial.println("Odom initialized");
 
   odom_sensor.setAngularUnit(kSfeOtosAngularUnitDegrees);
   odom_sensor.setLinearUnit(kSfeOtosLinearUnitInches);
@@ -59,67 +64,75 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  uint64_t current_time{ millis() };
-
+  uint32_t current_time{ millis() };
   packets_requested.clear();
 
   // Check for input from brain
-  if (Serial2.available()) {
+  if (Serial8.available()) {
     std::vector<uint8_t> recieved_data{};
-    recieved_data.push_back(Serial2.read());
-    uint8_t bytes_expected{ recieved_data[0] };
+    while (Serial8.available() && Serial8.peek() != 0xff && millis() < current_time + 100) {
+      Serial.print(Serial8.peek(), HEX);
+      Serial.print(" ");
+      Serial8.read();
+    }
+    Serial.println("");
+    if (Serial8.available()) {
+      recieved_data.push_back(Serial8.read());
+      recieved_data.push_back(Serial8.read());
+      uint8_t bytes_expected{ recieved_data[1] };
+      Serial.println("Point B");
 
-    uint32_t recieve_start_time{ millis() };
-    while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
-      if (Serial2.available()) {
-        recieved_data.push_back(Serial2.read());
+      uint32_t recieve_start_time{ millis() };
+      while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
+        if (Serial8.available()) {
+          recieved_data.push_back(Serial8.read());
+        } else {
+          delay(1);
+        }
+      }
+
+      Serial.write(recieved_data.data(), recieved_data.size());
+      Serial.print("\n");
+
+      if (millis() >= recieve_start_time + 100) {
+        sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
+      } else if (!isValidPackage(recieved_data)) {
+        sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
       } else {
-        delay(1);
+
+        Serial.println("Valid packet recieved");
+
+        uint8_t packets_recieved{ recieved_data[2] };
+
+        uint8_t packet_offset{ 3 };
+        for (int i = 0; i < packets_recieved; ++i) {
+          char key{ recieved_data[packet_offset++] };
+          if (key_size.find(key) == key_size.end()) {
+            sendInvalidPackageError(EErrorCode::INVALID_KEY);
+            Serial.println(key);
+            break;
+          }
+          uint8_t size{ key_size.at(key) };
+
+          const uint8_t* packet_value{ &recieved_data[packet_offset] };
+
+          // handle data
+          auto handler = command_handlers.find(key);
+          if (handler != command_handlers.end()) {
+            handler->second(packet_value);
+          }
+
+          packet_offset += size;
+          Serial.println("packet " + String(i) + " of " + String(packets_recieved) + " read");
+        }
       }
-    }
-
-    Serial.write(recieved_data.data(), recieved_data.size());
-    Serial.print("\n");
-
-    if (millis() >= recieve_start_time + 100) {
-      sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
-      return;
-    }
-
-    // validate data
-    if (!isValidPackage(recieved_data)) {
-      sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
-      return;
-    }
-
-    Serial.println("Valid packet recieved");
-
-    uint8_t packets_recieved{ recieved_data[1] };
-
-    uint8_t packet_offset{ 2 };
-    for (int i = 0; i < packets_recieved; ++i) {
-      char key{ recieved_data[packet_offset++] };
-      if (key_size.find(key) == key_size.end()) {
-        sendInvalidPackageError(EErrorCode::INVALID_KEY);
-        return;
-      }
-      uint8_t size{ key_size.at(key) };
-
-      const uint8_t* packet_value{ &recieved_data[packet_offset] };
-
-      // handle data
-      auto handler = command_handlers.find(key);
-      if (handler != command_handlers.end()) {
-        handler->second(packet_value);
-      }
-
-      packet_offset += size;
     }
   }
 
   // generate package of data if requested
-  if (packets_requested.size()) {
+  if (packets_requested.size() > 0) {
     std::vector<uint8_t> output_package{};
+    output_package.push_back(0xff);
     output_package.push_back(0);
     output_package.push_back(packets_requested.size());
     for (char& requested_key : packets_requested) {
@@ -127,69 +140,63 @@ void loop() {
 
       uint8_t value_size{ key_size.at(requested_key) };
       uint8_t value[value_size];
-
       switch (requested_key) {
         case 'X':
           {
             sfe_otos_pose2d_t position;
             odom_sensor.getPosition(position);
+            float xPos = position.x;
 
-            memcpy(&value, &position.x, value_size);
+            memcpy(&value, &xPos, value_size);
             break;
           }
         case 'Y':
           {
             sfe_otos_pose2d_t position;
             odom_sensor.getPosition(position);
+            float yPos = position.y;
 
-            memcpy(&value, &position.y, value_size);
+            memcpy(&value, &yPos, value_size);
             break;
           }
         case 'H':
           {
             sfe_otos_pose2d_t position;
             odom_sensor.getPosition(position);
+            float heading = position.h;
 
-            memcpy(&value, &position.h, value_size);
+            memcpy(&value, &heading, value_size);
             break;
           }
       }
-      output_package.insert(output_package.end(), value, value + key_size.at(requested_key));
+      Serial.print("Value of: " + String(requested_key) + ": ");
+      for (int i = 0; i < value_size; ++i) {
+        Serial.print(value[i], HEX);
+      }
+      Serial.println();
+      output_package.insert(output_package.end(), value, value + value_size);
     }
+    output_package[1] = output_package.size() + 2;
+
     // calculate crc for validation
     uint16_t crc{ computeCRC(output_package, output_package.size()) };
     uint8_t crc_bytes[2];
     memcpy(&crc_bytes, &crc, 2);
     output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
-    output_package[0] = output_package.size();
 
-    Serial2.write(output_package.data(), output_package.size());
+    for (auto& byte : output_package) {
+      Serial8.write(byte);
+      Serial.print(byte, HEX);
+      Serial.print(" ");
+    }
+    Serial.println("");
+    Serial.println("");
   }
 
-  uint64_t delay_time{ 10 - (millis() - current_time) };
+  int32_t delay_time{ 10 - (millis() - current_time) };
   if (delay_time > 0) {
     delay(delay_time);
   }
-}
-
-/** Builds a packet to send over the serial link
- * @tparam T    The datatype of the value sent
- * @param key   The key designating the purpose of the data
- * @param value The value held by the packet 
- */
-template<typename T>
-String buildPacket(char key, T value) {
-  char size{ sizeof(T) };
-  char bytes[size]{};
-  memcpy(&bytes, &value, size);
-
-  String delimeter_str{ START_DELIMETER };
-  String key_str{ key };
-  String size_str{ size };
-  String value_str{ bytes };
-
-  String output{ delimeter_str + key_str + size_str + value_str };
-  return output;
 }
 
 /** Computes the CRC of a package
@@ -279,5 +286,6 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   memcpy(crc_bytes, &crc, 2);
   package.insert(package.end(), crc_bytes, crc_bytes + 2);
 
-  Serial2.write(package.data(), package.size());
+  Serial8.write(package.data(), package.size());
+  Serial.println("Error: " + String(static_cast<int>(error_code)));
 }

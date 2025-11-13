@@ -24,7 +24,7 @@ class Coprocessor {
     INVALID_KEY = 2
   };
 
-  static constexpr uint8_t TASK_DELAY{10};
+  static constexpr uint16_t TASK_DELAY{10};
 
   /// @brief Performs task updates in a constant loop
   /// @param params __void*__ Pointer to the coprocessor to update
@@ -141,9 +141,6 @@ class Coprocessor {
     std::vector<uint8_t> byte_vector(sizeof(T));
     std::memcpy(byte_vector.data(), &value, sizeof(T));
     m_outgoing_package.addPacket(key, byte_vector);
-    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 3,
-                        "Added packet %c with value %7.2f",
-                        static_cast<char>(key), static_cast<float>(value));
   }
 
   /// @brief Adds a packet to the list of packets to be sent for every package
@@ -159,9 +156,6 @@ class Coprocessor {
     serial_protocol::Packet packet{key, byte_vector};
 
     m_recurring_packets.push_back(packet);
-    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 2,
-                        "Added recurring packet %c with value %c",
-                        static_cast<char>(key), static_cast<char>(value));
   }
 
   template <typename T>

@@ -1,11 +1,11 @@
 #include "driftless/hal/Coprocessor.hpp"
 
+#include <iostream>
 namespace driftless::hal {
 void Coprocessor::taskLoop(void* params) {
   Coprocessor* coprocessor = static_cast<Coprocessor*>(params);
   while (true) {
     coprocessor->taskUpdate();
-    coprocessor->m_delayer->delay(Coprocessor::TASK_DELAY);
   }
 }
 
@@ -14,9 +14,14 @@ void Coprocessor::taskUpdate() {
     m_mutex->take();
   }
 
+  uint32_t start_time{m_clock->getTime()};
+
   fetchLatestSignal();
   processLatestSignal();
   sendOutgoingPackage();
+
+  uint32_t elapsed_time{m_clock->getTime() - start_time};
+  m_delayer->delay(Coprocessor::TASK_DELAY - elapsed_time);
 
   if (m_mutex) {
     m_mutex->give();
@@ -48,42 +53,73 @@ void Coprocessor::handleThetaCommand(const uint8_t* data) {
 }
 
 void Coprocessor::fetchLatestSignal() {
+  m_serial_buffer.clear();
   if (m_serial_device) {
-    if (m_serial_device->getInputBytes()) {
+    if (m_serial_device->getInputBytes() >= 2) {
       uint64_t fetch_start_time{m_clock->getTime()};
-      while(m_serial_device->getInputBytes()) {
+
+      // read until start delimiter is found
+      while (m_serial_device->getInputBytes() &&
+             m_serial_device->readByte() != 0xFF &&
+             fetch_start_time + 100 > m_clock->getTime());
+
+      if (m_serial_device->getInputBytes()) {
+        m_serial_buffer.push_back(0xFF);
         m_serial_buffer.push_back(m_serial_device->readByte());
       }
-      pros::screen::print(
-          pros::E_TEXT_MEDIUM_CENTER, 7, "data recieved: %s", m_serial_buffer.data());
-
-      uint8_t package_size{m_serial_buffer[0]};
+      uint8_t package_size{m_serial_buffer[1]};
       while (package_size > m_serial_buffer.size() &&
              fetch_start_time + 100 > m_clock->getTime()) {
         if (m_serial_device->getInputBytes()) {
           m_serial_buffer.push_back(m_serial_device->readByte());
         }
       }
-      pros::screen::print(
-          pros::E_TEXT_MEDIUM_CENTER, 8, "Data received: %s",
-          std::string(reinterpret_cast<char*>(m_serial_buffer.data())));
+      while (!isValidSignal() && fetch_start_time + 100 > m_clock->getTime()) {
+        m_serial_buffer.erase(m_serial_buffer.begin());
+        while (m_serial_buffer.size() > 1 && m_serial_buffer[0] != 0xFF &&
+               fetch_start_time + 100 > m_clock->getTime()) {
+          m_serial_buffer.erase(m_serial_buffer.begin());
+        }
+
+        if (m_serial_buffer.size() < 1) {
+          package_size = m_serial_buffer[1];
+          while (package_size > m_serial_buffer.size() &&
+                 fetch_start_time + 100 > m_clock->getTime()) {
+            if (m_serial_device->getInputBytes()) {
+              m_serial_buffer.push_back(m_serial_device->readByte());
+            }
+          }
+        }
+        for (uint8_t& byte : m_serial_buffer) {
+          std::cout << std::hex << static_cast<int>(byte) << " ";
+        }
+        std::cout << std::endl;
+      }
+      std::cout << "Final Buffer: ";
+      for (uint8_t& byte : m_serial_buffer) {
+        std::cout << std::hex << static_cast<int>(byte) << " ";
+      }
+      std::cout << std::endl;
     }
   }
 }
 
 void Coprocessor::processLatestSignal() {
   if (m_serial_buffer.size() < 2) {
+    std::cout << "Buffer too small" << std::endl;
     return;
   }
-  if (m_serial_buffer.size() != m_serial_buffer[0]) {
+  if (m_serial_buffer.size() != m_serial_buffer[1]) {
+    std::cout << "Size mismatch" << std::endl;
     return;
   }
   if (!isValidSignal()) {
+    std::cout << "Invalid CRC" << std::endl;
     return;
   }
 
-  uint8_t packet_count{m_serial_buffer[1]};
-  uint8_t index{2};
+  uint8_t packet_count{m_serial_buffer[2]};
+  uint8_t index{3};
 
   for (uint8_t i = 0; i < packet_count; ++i) {
     serial_protocol::ESerialKey key =
@@ -109,8 +145,10 @@ bool Coprocessor::isValidSignal() const {
     std::memcpy(&recieved_crc,
                 m_serial_buffer.data() + m_serial_buffer.size() - 2, 2);
   }
+  std::cout << "Recieved CRC: " << std::hex << recieved_crc << std::endl;
   uint16_t calculated_crc =
       calculateCRC(m_serial_buffer, m_serial_buffer.size() - 2);
+  std::cout << "Calculated CRC: " << std::hex << calculated_crc << std::endl;
   return recieved_crc == calculated_crc;
 }
 
@@ -137,7 +175,7 @@ void Coprocessor::sendOutgoingPackage() {
   std::vector<uint8_t> serialized_data{
       m_outgoing_package.getSerializedPackage()};
 
-  if (serialized_data[1] != 0) {
+  if (serialized_data[2] != 0) {
     uint16_t crc{calculateCRC(serialized_data, serialized_data.size())};
     uint8_t* crc_bytes = reinterpret_cast<uint8_t*>(&crc);
     serialized_data.insert(serialized_data.end(), crc_bytes, crc_bytes + 2);
@@ -145,10 +183,13 @@ void Coprocessor::sendOutgoingPackage() {
     if (m_serial_device) {
       m_serial_device->write(serialized_data.data(),
                              static_cast<int>(serialized_data.size()));
+      for (uint8_t& byte : serialized_data) {
+        std::cout << std::hex << static_cast<int>(byte) << " ";
+      }
+      std::cout << std::endl;
     }
   }
 
-  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 9, "Package size: %d, packets: %d", serialized_data[0], serialized_data[1]);
   m_outgoing_package.clearPackets();
 }
 
