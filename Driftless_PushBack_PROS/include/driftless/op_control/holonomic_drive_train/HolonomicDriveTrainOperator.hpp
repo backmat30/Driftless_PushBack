@@ -12,6 +12,7 @@
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
+#include "driftless/robot/subsystems/odometry/Position.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
