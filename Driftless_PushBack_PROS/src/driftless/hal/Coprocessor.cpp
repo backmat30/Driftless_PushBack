@@ -123,7 +123,7 @@ void Coprocessor::fetchLatestSignal() {
 }
 
 void Coprocessor::processLatestSignal() {
-  if (m_serial_buffer.size() < 2) {
+  if (m_serial_buffer.size() < 3) {
     std::cout << "Buffer too small" << std::endl;
     return;
   }

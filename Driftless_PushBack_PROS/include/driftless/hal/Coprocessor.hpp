@@ -24,7 +24,7 @@ class Coprocessor {
     INVALID_KEY = 2
   };
 
-  static constexpr uint16_t TASK_DELAY{10};
+  static constexpr uint16_t TASK_DELAY{20};
 
   /// @brief Performs task updates in a constant loop
   /// @param params __void*__ Pointer to the coprocessor to update
