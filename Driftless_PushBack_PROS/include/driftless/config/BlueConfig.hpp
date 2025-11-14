@@ -16,7 +16,6 @@
 #include "pros/rotation.hpp"
 
 // hardware interface includes
-#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
