@@ -3,6 +3,8 @@
 #include <map>
 #include <vector>
 
+//#define DEBUG
+
 /**
  * Arduino code to recieve odometry information from a
  * Sparkfun Odometry sensor (PAA5160E1) and transmits the
@@ -47,13 +49,18 @@ void setup() {
   // put your setup code here, to run once:
 
   Serial8.begin(115200);
+
+#ifdef DEBUG
   Serial.begin(74880);
+#endif
+
   Wire.begin();
   while (!(odom_sensor.begin())) {
+#ifdef DEBUG
     Serial.println("Odom initializing");
+#endif
     delay(1000);
   }
-  Serial.println("Odom initialized");
 
   odom_sensor.setAngularUnit(kSfeOtosAngularUnitDegrees);
   odom_sensor.setLinearUnit(kSfeOtosLinearUnitInches);
@@ -92,13 +99,19 @@ void loop() {
     }
   }
   if (recieved_data.size() < 2) {
+#ifdef DEBUG
     Serial.println("Timeout on size byte");
+#endif
+
     sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
     return;
   }
   uint8_t expected_size = recieved_data[1];
   if (expected_size < 4) {  // Min: 0xFF + size + count + CRC (empty package)
+#ifdef DEBUG
     Serial.println("Invalid size");
+#endif
+
     sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);  // Reuse as invalid
     return;
   }
@@ -113,25 +126,37 @@ void loop() {
     }
   }
   if (remaining > 0) {
+#ifdef DEBUG
     Serial.println("Timeout on data");
+#endif
+
     sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
     return;
   }
 
   // Now validate
   if (recieved_data.size() != expected_size || recieved_data[0] != 0xFF) {
+#ifdef DEBUG
     Serial.println("Size or delim mismatch");
+#endif
+
     sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
     return;
   }
   if (!isValidPackage(recieved_data)) {
+#ifdef DEBUG
     Serial.println("Invalid CRC");
+#endif
+
     sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
     return;
   }
 
-  // Process packets (your existing code from here)
+// Process packets (your existing code from here)
+#ifdef DEBUG
   Serial.println("Valid packet recieved");
+#endif
+
   Serial8.flush();
 
   uint8_t packets_recieved = recieved_data[2];
@@ -140,7 +165,10 @@ void loop() {
     char key = recieved_data[packet_offset++];
     if (key_size.find(key) == key_size.end()) {
       sendInvalidPackageError(EErrorCode::INVALID_KEY);
+#ifdef DEBUG
       Serial.println(key);
+#endif
+
       break;
     }
     uint8_t size = key_size.at(key);
@@ -152,7 +180,9 @@ void loop() {
     }
 
     packet_offset += size;
+#ifdef DEBUG
     Serial.println("packet " + String(i) + " of " + String(packets_recieved) + " read");
+#endif
   }
 
   // generate package of data if requested
@@ -195,11 +225,14 @@ void loop() {
             break;
           }
       }
+#ifdef DEBUG
       Serial.print("Value of: " + String(requested_key) + ": ");
       for (int i = 0; i < value_size; ++i) {
         Serial.print(value[i], HEX);
       }
       Serial.println();
+#endif
+
       output_package.insert(output_package.end(), value, value + value_size);
     }
     output_package[1] = output_package.size() + 2;
@@ -210,14 +243,19 @@ void loop() {
     memcpy(&crc_bytes, &crc, 2);
     output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
 
+#ifdef DEBUG
     Serial.print("Sending: ");
     for (auto& byte : output_package) {
-      Serial8.write(byte);
       Serial.print(byte, HEX);
       Serial.print(" ");
     }
     Serial.println("");
     Serial.println("");
+#endif
+
+    for (auto& byte : output_package) {
+      Serial8.write(byte);
+    }
   }
 
   int32_t delay_time{ 10 - (millis() - start_time) };
@@ -266,13 +304,20 @@ void handleRequestCommand(const uint8_t* data) {
 }
 
 void handleCalibrateCommand(const uint8_t* data) {
-  odom_sensor.calibrateImu();
-  delay(1000);
+  odom_sensor.resetTracking();
+  odom_sensor.calibrateImu(255);
+#ifdef DEBUG
+  Serial.println("Calibrating");
+#endif
 }
 
 void handleSetXCommand(const uint8_t* data) {
   float x_offset{};
   memcpy(&x_offset, data, 4);
+
+#ifdef DEBUG
+  Serial.println("X offset: " + String(x_offset));
+#endif
 
   sfe_otos_pose2d_t offset{};
   odom_sensor.getOffset(offset);
@@ -284,6 +329,10 @@ void handleSetYCommand(const uint8_t* data) {
   float y_offset{};
   memcpy(&y_offset, data, 4);
 
+#ifdef DEBUG
+  Serial.println("Y offset: " + String(y_offset));
+#endif
+
   sfe_otos_pose2d_t offset{};
   odom_sensor.getOffset(offset);
   offset.y = y_offset;
@@ -293,6 +342,10 @@ void handleSetYCommand(const uint8_t* data) {
 void handleSetHeadingCommand(const uint8_t* data) {
   float h_offset{};
   memcpy(&h_offset, data, 4);
+
+#ifdef DEBUG
+  Serial.println("Heading offset: " + String(h_offset));
+#endif
 
   sfe_otos_pose2d_t offset{};
   odom_sensor.getOffset(offset);
@@ -315,9 +368,11 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   package.insert(package.end(), crc_bytes, crc_bytes + 2);
 
   Serial8.write(package.data(), package.size());
+#ifdef DEBUG
   Serial.println("");
   Serial.println("=============================================\n=============================================");
   Serial.println("Error: " + String(static_cast<int>(error_code)));
   Serial.println("=============================================\n=============================================");
   Serial.println("");
+#endif DEBUG
 }
