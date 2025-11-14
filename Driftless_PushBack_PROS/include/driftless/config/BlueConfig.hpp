@@ -78,8 +78,8 @@
 #include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
 
 // odometry includes
-#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
 namespace driftless {
 namespace config {
@@ -90,29 +90,30 @@ class BlueConfig : public IConfig {
   // #### PORT NUMBERS ####
 
   // ## ARDUINO PORT ##
+
   static constexpr int ARDUINO_PORT{16};
 
   // ## DRIVE MOTORS ##
 
   static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{11};
   static constexpr int DRIVE_FRONT_LEFT_BOTTOM_PORT{-12};
- static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{14};
+  static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{14};
   static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
- static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
+  static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
   static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-19};
- static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
   static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-18};
 
   // ## INTAKE MOTORS ##
 
-  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
-  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-9};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{7};
-  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{8};
+  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
 
   // ## INTAKE PNEUMATICS ##
 
-  static constexpr int INTAKE_BACK_ARMS_PORT{1};
+  static constexpr int INTAKE_BACK_ARMS_PORT{2};
 
   // ## HOOD MOTORS ##
 
@@ -120,10 +121,10 @@ class BlueConfig : public IConfig {
 
   // ## HOOD PNEUMATICS ##
 
-  static constexpr int HOOD_HEIGHT_PISTONS_PORT{4};
-  static constexpr int HOOD_GATE_PISTONS_PORT{5};
-  static constexpr int HOOD_DESCORE_PISTONS_PORT{2};
-  static constexpr int HOOD_BUMP_PISTONS_PORT{3};
+  static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
+  static constexpr int HOOD_GATE_PISTONS_PORT{4};
+  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
   // #### ROBOT CONSTANTS ####
 
