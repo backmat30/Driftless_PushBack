@@ -21,7 +21,9 @@ void Coprocessor::taskUpdate() {
   sendOutgoingPackage();
 
   uint32_t elapsed_time{m_clock->getTime() - start_time};
-  m_delayer->delay(Coprocessor::TASK_DELAY - elapsed_time);
+  if (elapsed_time > 0) {
+    m_delayer->delay(Coprocessor::TASK_DELAY - elapsed_time);
+  }
 
   if (m_mutex) {
     m_mutex->give();
@@ -54,53 +56,69 @@ void Coprocessor::handleThetaCommand(const uint8_t* data) {
 
 void Coprocessor::fetchLatestSignal() {
   m_serial_buffer.clear();
-  if (m_serial_device) {
-    if (m_serial_device->getInputBytes() >= 2) {
-      uint64_t fetch_start_time{m_clock->getTime()};
+  if (!m_serial_device) return;
 
-      // read until start delimiter is found
-      while (m_serial_device->getInputBytes() &&
-             m_serial_device->readByte() != 0xFF &&
-             fetch_start_time + 100 > m_clock->getTime());
+  uint32_t start_time = m_clock->getTime();
+  bool found_delim = false;
 
-      if (m_serial_device->getInputBytes()) {
-        m_serial_buffer.push_back(0xFF);
-        m_serial_buffer.push_back(m_serial_device->readByte());
+  // Hunt for 0xFF
+  while (!found_delim && m_clock->getTime() < start_time + 15) {
+    if (m_serial_device->getInputBytes()) {
+      uint8_t b = m_serial_device->readByte();
+      if (b == 0xFF) {
+        m_serial_buffer.push_back(b);
+        found_delim = true;
       }
-      uint8_t package_size{m_serial_buffer[1]};
-      while (package_size > m_serial_buffer.size() &&
-             fetch_start_time + 100 > m_clock->getTime()) {
-        if (m_serial_device->getInputBytes()) {
-          m_serial_buffer.push_back(m_serial_device->readByte());
-        }
-      }
-      while (!isValidSignal() && fetch_start_time + 100 > m_clock->getTime()) {
-        m_serial_buffer.erase(m_serial_buffer.begin());
-        while (m_serial_buffer.size() > 1 && m_serial_buffer[0] != 0xFF &&
-               fetch_start_time + 100 > m_clock->getTime()) {
-          m_serial_buffer.erase(m_serial_buffer.begin());
-        }
-
-        if (m_serial_buffer.size() < 1) {
-          package_size = m_serial_buffer[1];
-          while (package_size > m_serial_buffer.size() &&
-                 fetch_start_time + 100 > m_clock->getTime()) {
-            if (m_serial_device->getInputBytes()) {
-              m_serial_buffer.push_back(m_serial_device->readByte());
-            }
-          }
-        }
-        for (uint8_t& byte : m_serial_buffer) {
-          std::cout << std::hex << static_cast<int>(byte) << " ";
-        }
-        std::cout << std::endl;
-      }
-      std::cout << "Final Buffer: ";
-      for (uint8_t& byte : m_serial_buffer) {
-        std::cout << std::hex << static_cast<int>(byte) << " ";
-      }
-      std::cout << std::endl;
     }
+  }
+  if (!found_delim) {
+    // Timeout: log or skip
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
+                        "Fetch timeout at %7.2f", m_clock->getTime() / 1000.0);
+    return;
+  }
+
+  // Read size byte
+  start_time = m_clock->getTime();
+  while (m_serial_buffer.size() < 2 && m_clock->getTime() < start_time + 15) {
+    if (m_serial_device->getInputBytes()) {
+      m_serial_buffer.push_back(m_serial_device->readByte());
+    }
+  }
+  if (m_serial_buffer.size() < 2) {
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10, "Size timeout at %7.2f",
+                        m_clock->getTime() / 1000.0);
+    return;
+  }
+  uint8_t package_size = m_serial_buffer[1];
+  if (package_size < 4) {
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10, "Invalid size at %7.2f",
+                        m_clock->getTime() / 1000.0);
+    return;
+  }
+
+  // Read remaining
+  uint8_t remaining = package_size - 2;
+  start_time = m_clock->getTime();
+  while (remaining > 0 && m_clock->getTime() < start_time + 15) {
+    if (m_serial_device->getInputBytes()) {
+      m_serial_buffer.push_back(m_serial_device->readByte());
+      remaining--;
+    }
+  }
+  if (remaining > 0) {
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10, "Data timeout at %7.2f",
+                        m_clock->getTime() / 1000.0);
+    return;
+  }
+
+  // Validate (your existing isValidSignal() checks CRC)
+  if (m_serial_buffer.size() != package_size || m_serial_buffer[0] != 0xFF ||
+      !isValidSignal()) {
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
+                        "Invalid signal at %7.2f", m_clock->getTime() / 1000.0);
+    m_serial_buffer.clear();
+    return;
   }
 }
 
@@ -183,10 +201,6 @@ void Coprocessor::sendOutgoingPackage() {
     if (m_serial_device) {
       m_serial_device->write(serialized_data.data(),
                              static_cast<int>(serialized_data.size()));
-      for (uint8_t& byte : serialized_data) {
-        std::cout << std::hex << static_cast<int>(byte) << " ";
-      }
-      std::cout << std::endl;
     }
   }
 

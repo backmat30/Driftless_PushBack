@@ -62,71 +62,97 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-  uint32_t current_time{ millis() };
+  // Check for input from brain
   packets_requested.clear();
 
-  // Check for input from brain
-  if (Serial8.available()) {
-    std::vector<uint8_t> recieved_data{};
-    while (Serial8.available() && Serial8.peek() != 0xff && millis() < current_time + 100) {
-      Serial.print(Serial8.peek(), HEX);
-      Serial.print(" ");
-      Serial8.read();
+  std::vector<uint8_t> recieved_data;
+  uint32_t start_time = millis();
+  bool found_delim = false;
+
+  // Hunt for 0xFF (discard garbage)
+  while (!found_delim && millis() < start_time + 15) {
+    if (Serial8.available()) {
+      uint8_t b = Serial8.read();
+      if (b == 0xFF) {
+        recieved_data.push_back(b);
+        found_delim = true;
+      }
     }
-    Serial.println("");
+  }
+  if (!found_delim) {
+    // Timeout: optional send error or just skip
+    return;  // Or delay and retry next loop
+  }
+
+  // Read size byte
+  start_time = millis();
+  while (recieved_data.size() < 2 && millis() < start_time + 15) {
     if (Serial8.available()) {
       recieved_data.push_back(Serial8.read());
-      recieved_data.push_back(Serial8.read());
-      uint8_t bytes_expected{ recieved_data[1] };
-      Serial.println("Point B");
-
-      uint32_t recieve_start_time{ millis() };
-      while (recieved_data.size() < bytes_expected && millis() < recieve_start_time + 100) {
-        if (Serial8.available()) {
-          recieved_data.push_back(Serial8.read());
-        } else {
-          delay(1);
-        }
-      }
-
-      Serial.write(recieved_data.data(), recieved_data.size());
-      Serial.print("\n");
-
-      if (millis() >= recieve_start_time + 100) {
-        sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
-      } else if (!isValidPackage(recieved_data)) {
-        sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
-      } else {
-
-        Serial.println("Valid packet recieved");
-
-        uint8_t packets_recieved{ recieved_data[2] };
-
-        uint8_t packet_offset{ 3 };
-        for (int i = 0; i < packets_recieved; ++i) {
-          char key{ recieved_data[packet_offset++] };
-          if (key_size.find(key) == key_size.end()) {
-            sendInvalidPackageError(EErrorCode::INVALID_KEY);
-            Serial.println(key);
-            break;
-          }
-          uint8_t size{ key_size.at(key) };
-
-          const uint8_t* packet_value{ &recieved_data[packet_offset] };
-
-          // handle data
-          auto handler = command_handlers.find(key);
-          if (handler != command_handlers.end()) {
-            handler->second(packet_value);
-          }
-
-          packet_offset += size;
-          Serial.println("packet " + String(i) + " of " + String(packets_recieved) + " read");
-        }
-      }
     }
+  }
+  if (recieved_data.size() < 2) {
+    Serial.println("Timeout on size byte");
+    sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
+    return;
+  }
+  uint8_t expected_size = recieved_data[1];
+  if (expected_size < 4) {  // Min: 0xFF + size + count + CRC (empty package)
+    Serial.println("Invalid size");
+    sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);  // Reuse as invalid
+    return;
+  }
+
+  // Read remaining bytes
+  uint8_t remaining = expected_size - 2;
+  start_time = millis();
+  while (remaining > 0 && millis() < start_time + 15) {
+    if (Serial8.available()) {
+      recieved_data.push_back(Serial8.read());
+      remaining--;
+    }
+  }
+  if (remaining > 0) {
+    Serial.println("Timeout on data");
+    sendInvalidPackageError(EErrorCode::RECIEVER_TIMEOUT);
+    return;
+  }
+
+  // Now validate
+  if (recieved_data.size() != expected_size || recieved_data[0] != 0xFF) {
+    Serial.println("Size or delim mismatch");
+    sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
+    return;
+  }
+  if (!isValidPackage(recieved_data)) {
+    Serial.println("Invalid CRC");
+    sendInvalidPackageError(EErrorCode::CRC_MISSMATCH);
+    return;
+  }
+
+  // Process packets (your existing code from here)
+  Serial.println("Valid packet recieved");
+  Serial8.flush();
+
+  uint8_t packets_recieved = recieved_data[2];
+  uint8_t packet_offset = 3;
+  for (int i = 0; i < packets_recieved; ++i) {
+    char key = recieved_data[packet_offset++];
+    if (key_size.find(key) == key_size.end()) {
+      sendInvalidPackageError(EErrorCode::INVALID_KEY);
+      Serial.println(key);
+      break;
+    }
+    uint8_t size = key_size.at(key);
+    const uint8_t* packet_value = &recieved_data[packet_offset];
+
+    auto handler = command_handlers.find(key);
+    if (handler != command_handlers.end()) {
+      handler->second(packet_value);
+    }
+
+    packet_offset += size;
+    Serial.println("packet " + String(i) + " of " + String(packets_recieved) + " read");
   }
 
   // generate package of data if requested
@@ -184,6 +210,7 @@ void loop() {
     memcpy(&crc_bytes, &crc, 2);
     output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
 
+    Serial.print("Sending: ");
     for (auto& byte : output_package) {
       Serial8.write(byte);
       Serial.print(byte, HEX);
@@ -193,7 +220,7 @@ void loop() {
     Serial.println("");
   }
 
-  int32_t delay_time{ 10 - (millis() - current_time) };
+  int32_t delay_time{ 10 - (millis() - start_time) };
   if (delay_time > 0) {
     delay(delay_time);
   }
@@ -275,8 +302,9 @@ void handleSetHeadingCommand(const uint8_t* data) {
 
 void sendInvalidPackageError(const EErrorCode error_code) {
   std::vector<uint8_t> package;
-  package.reserve(6);
-  package.push_back(6);
+  package.reserve(7);
+  package.push_back(0xff);
+  package.push_back(7);
   package.push_back(1);
   package.push_back(static_cast<uint8_t>('E'));
   package.push_back(static_cast<uint8_t>(error_code));
@@ -287,5 +315,9 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   package.insert(package.end(), crc_bytes, crc_bytes + 2);
 
   Serial8.write(package.data(), package.size());
+  Serial.println("");
+  Serial.println("=============================================\n=============================================");
   Serial.println("Error: " + String(static_cast<int>(error_code)));
+  Serial.println("=============================================\n=============================================");
+  Serial.println("");
 }
