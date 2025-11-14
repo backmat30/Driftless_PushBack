@@ -16,7 +16,6 @@
 #include "pros/rotation.hpp"
 
 // hardware interface includes
-#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
@@ -61,69 +60,85 @@
 // robot include
 #include "driftless/robot/Robot.hpp"
 
+// arduino includes
+#include "driftless/hal/CoprocessorBuilder.hpp"
+
 // holonomic drive subsystem includes
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicDriveTrainSubsystem.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/ModularHolonomicDriveBuilder.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/holonomic_drive_module/XDriveModuleBuilder.hpp"
 
 // intake includes
-#include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
 #include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
+#include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
 
 // hood includes
-#include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
 #include "driftless/robot/subsystems/hood/DirectHoodBuilder.hpp"
+#include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
+
+// odometry includes
+#include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
  private:
- static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
+  static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
 
- // #### PORT NUMBERS ####
- 
- // ## DRIVE MOTORS ##
+  // #### PORT NUMBERS ####
 
- static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{11};
+  // ## ARDUINO PORT ##
+
+  static constexpr int ARDUINO_PORT{16};
+
+  // ## DRIVE MOTORS ##
+
+  static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{11};
   static constexpr int DRIVE_FRONT_LEFT_BOTTOM_PORT{-12};
- static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{14};
+  static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{14};
   static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
- static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
+  static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
   static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-19};
- static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
   static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-18};
 
- // ## INTAKE MOTORS ##
+  // ## INTAKE MOTORS ##
 
- static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
- static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
- static constexpr int INTAKE_BACK_MOTOR_1_PORT{7};
- static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
+  static constexpr int INTAKE_BACK_MOTOR_1_PORT{7};
+  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
 
- // ## INTAKE PNEUMATICS ##
+  // ## INTAKE PNEUMATICS ##
 
- static constexpr int INTAKE_BACK_ARMS_PORT{2};
+  static constexpr int INTAKE_BACK_ARMS_PORT{2};
 
- // ## HOOD MOTORS ##
+  // ## HOOD MOTORS ##
 
- static constexpr int HOOD_MOTOR_1_PORT{10};
- 
- // ## HOOD PNEUMATICS ##
+  static constexpr int HOOD_MOTOR_1_PORT{10};
 
- static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
- static constexpr int HOOD_GATE_PISTONS_PORT{4};
- static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
- static constexpr int HOOD_BUMP_PISTONS_PORT{7};
+  // ## HOOD PNEUMATICS ##
 
- // #### ROBOT CONSTANTS ####
+  static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
+  static constexpr int HOOD_GATE_PISTONS_PORT{4};
+  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
- // ## DRIVE ##
+  // #### ROBOT CONSTANTS ####
 
- static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
- static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{M_PI / 4};
-  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{ -M_PI / 4}; 
- static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* M_PI / 4};
- static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
+  // ## DRIVE ##
+
+  static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
+  static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{M_PI / 4};
+  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{-M_PI / 4};
+  static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3 * M_PI / 4};
+  static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
+
+  // ## ODOMETRY ##
+  static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.0f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{0.0f};
 
  public:
   std::string getName() override;
