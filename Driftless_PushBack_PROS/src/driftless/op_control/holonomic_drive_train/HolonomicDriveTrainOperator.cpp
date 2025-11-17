@@ -8,13 +8,28 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   double strafe_input = m_controller->getAnalog(strafe) / 127.0;
   double turn_input = m_controller->getAnalog(turn) / 127.0;
 
+  auto position =
+      *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
+  double heading = position.theta;
+
   // Create a motion vector based on controller inputs
   robot::subsystems::holonomic_drive_train::HolonomicMotionVector motion_vector;
 
   // Calculate magnitude and direction from forward and strafe inputs
-  motion_vector.magnitude =
+  double magnitude =
       std::sqrt(forward_input * forward_input + strafe_input * strafe_input);
-  motion_vector.direction = std::atan2(strafe_input, forward_input);  // Radians
+
+  if (magnitude > 1.0) {
+    forward_input /= magnitude;
+    strafe_input /= magnitude;
+  }
+
+  motion_vector.x =
+      strafe_input * std::cos(heading) + forward_input * std::sin(heading);
+  motion_vector.y =
+      forward_input * std::cos(heading) - strafe_input * std::sin(heading);
 
   // Set angular velocity from turn input
   motion_vector.angular_velocity = turn_input;

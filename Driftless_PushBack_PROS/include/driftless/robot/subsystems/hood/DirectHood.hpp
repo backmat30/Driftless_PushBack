@@ -42,6 +42,12 @@ class DirectHood : public IHood {
   /// @brief The pistons controlling the hood gate
   hal::PistonGroup m_gate_pistons{};
 
+  /// @brief The pistons controlling the descore mechanism
+  hal::PistonGroup m_descore_pistons{};
+
+  /// @brief The pistons controlling the hood bump
+  hal::PistonGroup m_bump_pistons{};
+
  public:
   /// @brief Initializes the hood
   void init() override;
@@ -71,6 +77,24 @@ class DirectHood : public IHood {
   /// @brief Toggles the hood between raised and lowered
   void toggleRaised() override;
 
+  /// @brief Extends the descore mechanism
+  void extendDescore() override;
+
+  /// @brief Retracts the descore mechanism
+  void retractDescore() override;
+
+  /// @brief Toggles the descore mechanism between extended and retracted
+  void toggleDescore() override;
+
+  /// @brief Bumps the hood up slightly
+  void bumpUp() override;
+
+  /// @brief Retracts the hood bump
+  void bumpDown() override;
+
+  /// @brief Toggles the hood bump
+  void toggleBump() override;
+
   /// @brief Checks if the hood is raised
   /// @return __bool__ True if the hood is raised, false otherwise
   bool isRaised() override;
@@ -86,6 +110,14 @@ class DirectHood : public IHood {
   /// @brief Sets the pistons to use for gate control
   /// @param pistons __hal::PistonGroup&__ The pistons to use
   void setGatePistons(hal::PistonGroup& pistons);
+
+  /// @brief Sets the pistons to use for descore control
+  /// @param pistons __hal::PistonGroup&__ The pistons to use
+  void setDescorePistons(hal::PistonGroup& pistons);
+
+  /// @brief Sets the pistons to use for bump control
+  /// @param pistons __hal::PistonGroup&__ The pistons to use
+  void setBumpPistons(hal::PistonGroup& pistons);
 };
 }  // namespace hood
 }  // namespace subsystems

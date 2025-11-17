@@ -52,6 +52,24 @@ class IHood {
   /// @brief Toggles the hood between raised and lowered
   virtual void toggleRaised() = 0;
 
+  /// @brief Extends the descore mechanism
+  virtual void extendDescore() = 0;
+
+  /// @brief Retracts the descore mechanism
+  virtual void retractDescore() = 0;
+
+  /// @brief Toggles the descore mechanism between extended and retracted
+  virtual void toggleDescore() = 0;
+
+  /// @brief Bumps the hood up slightly
+  virtual void bumpUp() = 0;
+
+  /// @brief Retracts the hood bump
+  virtual void bumpDown() = 0;
+
+  /// @brief Toggles the hood bump
+  virtual void toggleBump() = 0;
+
   /// @brief Checks if the hood is raised
   /// @return __bool__ True if the hood is raised, false otherwise
   virtual bool isRaised() = 0;
