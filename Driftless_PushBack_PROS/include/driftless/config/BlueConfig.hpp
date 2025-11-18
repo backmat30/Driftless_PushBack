@@ -137,8 +137,8 @@ class BlueConfig : public IConfig {
 
   // ## ODOMETRY ##
   static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
-  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.0f};
-  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
  public:
   std::string getName() override;
