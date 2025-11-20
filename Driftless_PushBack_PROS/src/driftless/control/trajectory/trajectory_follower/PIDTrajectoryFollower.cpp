@@ -1,0 +1,191 @@
+#include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollower.hpp"
+
+namespace driftless::control::trajectory::trajectory_follower {
+void PIDTrajectoryFollower::taskLoop(void* params) {
+  PIDTrajectoryFollower* follower = static_cast<PIDTrajectoryFollower*>(params);
+
+  while (true) {
+    follower->taskUpdate();
+  }
+}
+
+void PIDTrajectoryFollower::taskUpdate() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  if (!paused && !target_reached) {
+    auto position = getRobotPosition();
+    uint32_t current_time = m_clock->getTime() - m_start_time;
+
+    TrajectoryPoint current_point{m_trajectory[current_time / 50.0]};
+
+    if (calculateDistanceToTarget(position) < m_target_tolerance &&
+        std::sqrt(position.xV * position.xV + position.yV * position.yV) <
+            m_target_velocity) {
+      target_reached = true;
+      setDriveMotionVector(0, 0, 0);
+    } else {
+      updateVelocity(position, current_point);
+    }
+  }
+  m_delayer->delay(TASK_DELAY);
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDTrajectoryFollower::setDriveMotionVector(double x_velocity,
+                                                 double y_velocity,
+                                                 double angular_velocity) {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
+      robot::subsystems::ESubsystemCommand::
+          HOLONOMIC_DRIVE_TRAIN_SET_MOTION_VECTOR,
+      robot::subsystems::holonomic_drive_train::HolonomicMotionVector{
+          x_velocity, y_velocity, angular_velocity});
+}
+
+driftless::robot::subsystems::odometry::Position
+PIDTrajectoryFollower::getRobotPosition() {
+  return *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ODOMETRY,
+      robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
+}
+
+double PIDTrajectoryFollower::calculateDistanceToTarget(
+    const driftless::robot::subsystems::odometry::Position& position) {
+  TrajectoryPoint target_point{m_trajectory.back()};
+
+  double dx = target_point.m_x - position.x;
+  double dy = target_point.m_y - position.y;
+
+  return std::sqrt(dx * dx + dy * dy);
+}
+
+void PIDTrajectoryFollower::updateVelocity(
+    const driftless::robot::subsystems::odometry::Position& position,
+    const TrajectoryPoint& target_point) {
+  double target_velocity = target_point.m_velocity;
+  double target_heading = target_point.m_heading;
+
+  double x_velocity = target_velocity * std::cos(target_heading);
+  double y_velocity = target_velocity * std::sin(target_heading);
+  double angular_velocity = target_point.m_angular_velocity;
+
+  x_velocity += m_x_pid.getControlValue(position.x, target_point.m_x);
+  y_velocity += m_y_pid.getControlValue(position.y, target_point.m_y);
+  angular_velocity +=
+      m_theta_pid.getControlValue(position.theta, target_point.m_heading);
+  setDriveMotionVector(x_velocity, y_velocity, angular_velocity);
+}
+
+void PIDTrajectoryFollower::init() {
+  m_x_pid.reset();
+  m_y_pid.reset();
+  m_theta_pid.reset();
+}
+
+void PIDTrajectoryFollower::run() {
+  if (m_task) {
+    m_task->start(taskLoop, this);
+  }
+}
+
+void PIDTrajectoryFollower::pause() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  paused = true;
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDTrajectoryFollower::resume() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  paused = false;
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDTrajectoryFollower::followTrajectory(
+    const std::shared_ptr<robot::Robot>& robot,
+    const std::vector<TrajectoryPoint>& trajectory) {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  m_robot = robot;
+  m_trajectory = trajectory;
+  paused = false;
+  target_reached = false;
+  if (m_clock) {
+    m_start_time = m_clock->getTime();
+  }
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+bool PIDTrajectoryFollower::targetReached() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  return target_reached;
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void PIDTrajectoryFollower::setDelayer(
+    const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
+  m_delayer = delayer->clone();
+}
+
+void PIDTrajectoryFollower::setMutex(
+    std::unique_ptr<driftless::rtos::IMutex>& mutex) {
+  m_mutex = std::move(mutex);
+}
+
+void PIDTrajectoryFollower::setTask(
+    std::unique_ptr<driftless::rtos::ITask>& task) {
+  m_task = std::move(task);
+}
+
+void PIDTrajectoryFollower::setClock(
+    const std::unique_ptr<driftless::rtos::IClock>& clock) {
+  m_clock = clock->clone();
+}
+
+void PIDTrajectoryFollower::setXPID(driftless::control::PID& x_pid) {
+  m_x_pid = x_pid;
+}
+
+void PIDTrajectoryFollower::setYPID(driftless::control::PID& y_pid) {
+  m_y_pid = y_pid;
+}
+
+void PIDTrajectoryFollower::setThetaPID(driftless::control::PID& theta_pid) {
+  m_theta_pid = theta_pid;
+}
+
+void PIDTrajectoryFollower::setTargetTolerance(double target_tolerance) {
+  m_target_tolerance = target_tolerance;
+}
+
+void PIDTrajectoryFollower::setTargetVelocity(double target_velocity) {
+  m_target_velocity = target_velocity;
+}
+}  // namespace driftless::control::trajectory::trajectory_follower
