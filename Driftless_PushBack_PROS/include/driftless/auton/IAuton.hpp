@@ -20,8 +20,16 @@
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 
+/// @brief Namespace for driftless library code
+/// @author Matthew Backman
 namespace driftless {
+
+/// @brief Namespace for autonomous routines
+/// @author Matthew Backman
 namespace auton {
+
+/// @brief Interface for a generic autonomous routine
+/// @author Matthew Backman
 class IAuton {
  public:
   /// @brief Deletes the auton
