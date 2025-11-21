@@ -1,5 +1,7 @@
 #include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollower.hpp"
 
+#include "pros/screen.hpp"
+
 namespace driftless::control::trajectory::trajectory_follower {
 void PIDTrajectoryFollower::taskLoop(void* params) {
   PIDTrajectoryFollower* follower = static_cast<PIDTrajectoryFollower*>(params);
@@ -74,11 +76,16 @@ void PIDTrajectoryFollower::updateVelocity(
   double y_velocity = target_velocity * std::sin(target_heading);
   double angular_velocity = target_point.m_angular_velocity;
 
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 5, "target x: %7.2f, y: %7.2f, t: %7.2f", target_point.m_x, target_point.m_y, target_point.m_heading);
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "target xvel: %7.2f, yvel: %7.2f, tvel: %7.2f", x_velocity, y_velocity, angular_velocity);
+
   x_velocity += m_x_pid.getControlValue(position.x, target_point.m_x);
   y_velocity += m_y_pid.getControlValue(position.y, target_point.m_y);
   angular_velocity +=
       m_theta_pid.getControlValue(position.theta, target_point.m_heading);
-  setDriveMotionVector(x_velocity, y_velocity, angular_velocity);
+
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "xvel: %7.2f, yvel: %7.2f tvel: %7.2f", x_velocity, y_velocity, angular_velocity);
+  //setDriveMotionVector(x_velocity, y_velocity, angular_velocity);
 }
 
 void PIDTrajectoryFollower::init() {
