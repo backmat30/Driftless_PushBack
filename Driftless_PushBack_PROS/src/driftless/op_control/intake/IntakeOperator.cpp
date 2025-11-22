@@ -132,7 +132,7 @@ IntakeOperator::IntakeOperator(
 void IntakeOperator::update(
     const std::unique_ptr<profiles::IProfile>& profile) {
   EIntakeControlMode control_mode{
-      profile->getControlMode(EControlType::INTAKE)};
+      static_cast<EIntakeControlMode>(profile->getControlMode(EControlType::INTAKE))};
 
   EControllerDigital front_intake_in{
       profile->getDigitalControlMapping(EControl::INTAKE_FRONT_RUN_IN)};

@@ -151,7 +151,7 @@ HoodOperator::HoodOperator(const std::shared_ptr<io::IController>& controller,
     : m_controller{controller}, m_robot{robot} {}
 
 void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
-  EHoodControlMode control_mode{profile->getControlMode(EControlType::HOOD)};
+  EHoodControlMode control_mode{static_cast<EHoodControlMode>(profile->getControlMode(EControlType::HOOD))};
 
   EControllerDigital spin_forwards_front{profile->getDigitalControlMapping(
       op_control::EControl::INTAKE_FRONT_RUN_IN)};
