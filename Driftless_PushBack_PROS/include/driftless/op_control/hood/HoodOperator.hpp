@@ -3,6 +3,7 @@
 
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
+#include "driftless/op_control/hood/EHoodControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
 #include "driftless/robot/subsystems/ESubsystem.hpp"
@@ -52,13 +53,19 @@ class HoodOperator {
   /// hood height
   /// @param toggle_gate __EControllerDigital__ The control for toggling the
   /// hood gate
-  void updateHoodToggle(EControllerDigital spin_forwards_front,
-                        EControllerDigital spin_forwards_back,
-                        EControllerDigital spin_backwards,
-                        EControllerDigital toggle_height,
+  void updateHoodToggle(EControllerDigital toggle_height,
                         EControllerDigital toggle_gate,
                         EControllerDigital toggle_descore,
                         EControllerDigital toggle_bump);
+
+  void updateHoodSmartToggle(EControllerDigital toggle_high_goal,
+                             EControllerDigital toggle_low_goal,
+                             EControllerDigital toggle_gate,
+                             EControllerDigital toggle_descore);
+
+  void updateHoodRollers(EControllerDigital spin_forwards_front,
+                         EControllerDigital spin_forwards_back,
+                         EControllerDigital spin_backwards);
 
  public:
   /// @brief Constructs a new HoodOperator object
