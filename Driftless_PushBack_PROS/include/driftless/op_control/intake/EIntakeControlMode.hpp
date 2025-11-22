@@ -1,5 +1,5 @@
-#ifndef __E_CONTROL_TYPE_HPP__
-#define __E_CONTROL_TYPE_HPP__
+#ifndef __E_INTAKE_CONTROL_MODE_HPP__
+#define __E_INTAKE_CONTROL_MODE_HPP__
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -9,9 +9,15 @@ namespace driftless {
 /// @author Matthew Backman
 namespace op_control {
 
-/// @brief Enumerated class for controllable objects
+/// @brief Namespace for intake control during operator control
 /// @author Matthew Backman
-enum EControlType { TANK_DRIVE_TRAIN, HOLONOMIC_DRIVE_TRAIN, INTAKE, HOOD };
+namespace intake {
+enum class EIntakeControlMode {
+  SPLIT,
+  SMART_SPLIT
+};
+}
 }  // namespace op_control
 }  // namespace driftless
+
 #endif

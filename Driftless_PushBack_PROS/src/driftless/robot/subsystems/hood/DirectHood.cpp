@@ -86,4 +86,8 @@ void DirectHood::setBumpPistons(hal::PistonGroup& pistons) {
 bool DirectHood::isRaised() {
   return m_raised;
 }
+
+bool DirectHood::isBumped() {
+  return m_bump_pistons.isExtended();
+}
 }  // namespace driftless::robot::subsystems::hood

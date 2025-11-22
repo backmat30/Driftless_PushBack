@@ -73,6 +73,10 @@ class IHood {
   /// @brief Checks if the hood is raised
   /// @return __bool__ True if the hood is raised, false otherwise
   virtual bool isRaised() = 0;
+
+  /// @brief Checks if the hood bump is extended
+  /// @return __bool__ True if the hood is bumped up, false otherwise
+  virtual bool isBumped() = 0;
 };
 }  // namespace hood
 }  // namespace subsystems
