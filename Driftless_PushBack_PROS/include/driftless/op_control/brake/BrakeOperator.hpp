@@ -28,7 +28,7 @@ class BrakeOperator {
   public:
     BrakeOperator(std::shared_ptr<io::IController>& controller, std::shared_ptr<robot::Robot>& robot);
 
-    void update(std::shared_ptr<profiles::IProfile>& profile);
+    void update(std::unique_ptr<profiles::IProfile>& profile);
 };
 }  // namespace brake
 }  // namespace op_control
