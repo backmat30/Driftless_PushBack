@@ -19,6 +19,7 @@
 #include "driftless/op_control/intake/IntakeOperator.hpp"
 #include "driftless/op_control/hood/HoodOperator.hpp"
 #include "driftless/op_control/brake/BrakeOperator.hpp"
+#include "driftless/op_control/rake/RakeOperator.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
