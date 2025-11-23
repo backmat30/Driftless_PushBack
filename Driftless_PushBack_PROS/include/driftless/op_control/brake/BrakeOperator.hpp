@@ -26,7 +26,7 @@ class BrakeOperator {
     void updateToggle(EControllerDigital brake_toggle);
 
   public:
-    BrakeOperator(std::shared_ptr<robot::Robot>& robot, std::shared_ptr<io::IController>& controller);
+    BrakeOperator(std::shared_ptr<io::IController>& controller, std::shared_ptr<robot::Robot>& robot);
 
     void update(std::shared_ptr<profiles::IProfile>& profile);
 };

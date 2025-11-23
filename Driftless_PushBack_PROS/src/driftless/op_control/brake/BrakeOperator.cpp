@@ -15,7 +15,7 @@ namespace driftless::op_control::brake {
     }
   }
 
-  BrakeOperator::BrakeOperator(std::shared_ptr<robot::Robot>& robot, std::shared_ptr<io::IController>& controller) : m_robot{robot}, m_controller{controller} {}
+  BrakeOperator::BrakeOperator(std::shared_ptr<io::IController>& controller, std::shared_ptr<robot::Robot>& robot) : m_robot{robot}, m_controller{controller} {}
 
   void BrakeOperator::update(std::shared_ptr<profiles::IProfile>& profile) {
     EControllerDigital brake_toggle{profile->getDigitalControlMapping(EControl::BRAKE_TOGGLE)};
