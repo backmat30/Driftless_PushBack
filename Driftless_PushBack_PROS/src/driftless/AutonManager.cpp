@@ -16,19 +16,17 @@ void AutonManager::setAuton(std::unique_ptr<auton::IAuton>& auton) {
 
 void AutonManager::initAuton(
     std::shared_ptr<robot::Robot>& robot,
-    std::shared_ptr<control::ControlSystem>& control_system,
-    std::shared_ptr<driftless::processes::ProcessSystem>& process_system) {
+    std::shared_ptr<control::ControlSystem>& control_system) {
   if (m_auton) {
-    m_auton->init(robot, control_system, process_system);
+    m_auton->init(robot, control_system);
   }
 }
 
 void AutonManager::runAuton(
     std::shared_ptr<driftless::robot::Robot>& robot,
-    std::shared_ptr<driftless::control::ControlSystem>& control_system,
-    std::shared_ptr<driftless::processes::ProcessSystem>& process_system) {
+    std::shared_ptr<driftless::control::ControlSystem>& control_system) {
   if (m_auton) {
-    m_auton->run(robot, control_system, process_system, m_alliance, m_clock,
+    m_auton->run(robot, control_system, m_alliance, m_clock,
                  m_delayer);
   }
 }
