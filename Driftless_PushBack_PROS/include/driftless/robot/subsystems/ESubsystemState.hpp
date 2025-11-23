@@ -23,7 +23,8 @@ enum class ESubsystemState {
   INTAKE_ARE_ARMS_DEPLOYED,
   HOOD_IS_RAISED,
   HOOD_IS_BUMPED,
-  BRAKE_IS_DEPLOYED
+  BRAKE_IS_DEPLOYED,
+  RAKE_IS_DEPLOYED
 };
 }  // namespace subsystems
 }  // namespace robot
