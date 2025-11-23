@@ -7,6 +7,56 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
   std::shared_ptr<control::ControlSystem> control_system =
       std::make_shared<control::ControlSystem>();
 
+  // clock and delayer for controls
+
+  std::unique_ptr<rtos::IClock> clock{
+      std::make_unique<pros_adapters::ProsClock>()};
+  std::unique_ptr<rtos::IDelayer> delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+
+  // ## TRAJECTORY FOLLOWER ##
+
+  // rtos
+  std::unique_ptr<rtos::ITask> trajectory_follower_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> trajectory_follower_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
+  // PID controllers
+  control::PID trajectory_follower_x_pid{clock, TRAJECTORY_FOLLOWER_X_KP,
+                                         TRAJECTORY_FOLLOWER_X_KI,
+                                         TRAJECTORY_FOLLOWER_X_KD};
+  control::PID trajectory_follower_y_pid{clock, TRAJECTORY_FOLLOWER_Y_KP,
+                                         TRAJECTORY_FOLLOWER_Y_KI,
+                                         TRAJECTORY_FOLLOWER_Y_KD};
+  control::PID trajectory_follower_theta_PID{
+      clock, TRAJECTORY_FOLLOWER_THETA_KP, TRAJECTORY_FOLLOWER_THETA_KI,
+      TRAJECTORY_FOLLOWER_THETA_KD};
+
+  // build the trajectory follower
+  control::trajectory::trajectory_follower::PIDTrajectoryFollowerBuilder
+      trajectory_follower_builder{};
+
+  std::unique_ptr<control::trajectory::trajectory_follower::ITrajectoryFollower>
+      trajectory_follower{
+          trajectory_follower_builder.withClock(clock)
+              ->withDelayer(delayer)
+              ->withTask(trajectory_follower_task)
+              ->withMutex(trajectory_follower_mutex)
+              ->withXPID(trajectory_follower_x_pid)
+              ->withYPID(trajectory_follower_y_pid)
+              ->withThetaPID(trajectory_follower_theta_PID)
+              ->withTargetTolerance(TRAJECTORY_FOLLOWER_TARGET_TOLERANCE)
+              ->withTargetVelocity(TRAJECTORY_FOLLOWER_TARGET_VELOCITY)
+              ->build()};
+
+  std::unique_ptr<control::AControl> trajectory_follower_control{
+      std::make_unique<
+          control::trajectory::trajectory_follower::TrajectoryFollowerControl>(
+          trajectory_follower)};
+
+  control_system->addControl(trajectory_follower_control);
+
   return control_system;
 }
 
@@ -289,13 +339,12 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
                            ->withLocalThetaOffset(ODOMETRY_LOCAL_THETA_OFFSET)
                            ->build()};
 
-    std::unique_ptr<robot::subsystems::ASubsystem>
-      odometry_subsystem{
-          std::make_unique<robot::subsystems::odometry::OdometrySubsystem>(
-              position_tracker)};
+  std::unique_ptr<robot::subsystems::ASubsystem> odometry_subsystem{
+      std::make_unique<robot::subsystems::odometry::OdometrySubsystem>(
+          position_tracker)};
 
-    // add subsystem to robot
-    robot->addSubsystem(odometry_subsystem);
+  // add subsystem to robot
+  robot->addSubsystem(odometry_subsystem);
 
   // return complete robot
   return robot;

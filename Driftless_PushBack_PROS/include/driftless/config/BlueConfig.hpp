@@ -56,6 +56,8 @@
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollowerBuilder.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -85,6 +87,25 @@ namespace config {
 class BlueConfig : public IConfig {
  private:
   static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
+
+  // #### CONTROL SYSTEM CONSTANTS ####
+
+  // ## TRAJECTORY FOLLOWER ##
+
+  static constexpr double TRAJECTORY_FOLLOWER_X_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_TOLERANCE{2.0};
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_VELOCITY{1.0};
 
   // #### PORT NUMBERS ####
 
