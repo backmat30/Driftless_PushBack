@@ -84,6 +84,10 @@
 #include "driftless/robot/subsystems/brake/BrakeSubsystem.hpp"
 #include "driftless/robot/subsystems/brake/PneumaticBrakeBuilder.hpp"
 
+// Rake includes
+#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
+#include "driftless/robot/subsystems/rake/PneumaticRakeBuilder.hpp"
+
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
@@ -132,6 +136,10 @@ class BlueConfig : public IConfig {
   // ## BRAKE PNEUMATICS ##
 
   static constexpr int BRAKE_PISTON_PORT{1};
+
+  // ## RAKE PNEUMATICS ##
+
+  static constexpr int RAKE_PISTON_PORT{6};
 
   // #### ROBOT CONSTANTS ####
 

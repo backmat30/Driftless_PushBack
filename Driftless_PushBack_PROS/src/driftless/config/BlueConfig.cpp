@@ -317,6 +317,27 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
 
   robot->addSubsystem(brake_subsystem);
 
+  // ## RAKE SUBSYSTEM ##
+
+  // create pros objects
+  std::unique_ptr<pros::adi::DigitalOut> pros_rake_piston{
+      std::make_unique<pros::adi::DigitalOut>(RAKE_PISTON_PORT)};
+
+  // adapt pros objects
+  std::unique_ptr<io::IPiston> adapted_rake_piston{
+      std::make_unique<pros_adapters::ProsPiston>(pros_rake_piston)};
+
+  // build the rake
+  robot::subsystems::rake::PneumaticRakeBuilder rake_builder{};
+
+  std::unique_ptr<robot::subsystems::rake::IRake> rake{
+      rake_builder.withRakePiston(adapted_rake_piston)->build()};
+
+  // create the subsystem
+  std::unique_ptr<robot::subsystems::ASubsystem> rake_subsystem{std::make_unique<robot::subsystems::rake::RakeSubsystem>(rake)};
+
+  robot->addSubsystem(rake_subsystem);
+
   // return complete robot
   return robot;
 }
