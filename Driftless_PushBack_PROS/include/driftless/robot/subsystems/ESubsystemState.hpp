@@ -22,6 +22,7 @@ enum class ESubsystemState {
   ODOMETRY_GET_RESETTER_RAW_VALUE,
   INTAKE_ARE_ARMS_DEPLOYED,
   HOOD_IS_RAISED,
+  HOOD_IS_BUMPED,
   BRAKE_IS_DEPLOYED
 };
 }  // namespace subsystems
