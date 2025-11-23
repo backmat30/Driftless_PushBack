@@ -47,7 +47,8 @@ class EthanProfile : public IProfile {
           {op_control::EControl::HOOD_TOGGLE_DESCORE,
            op_control::EControllerDigital::DPAD_LEFT},
           {op_control::EControl::HOOD_TOGGLE_BUMP,
-           op_control::EControllerDigital::BUTTON_Y}};
+           op_control::EControllerDigital::BUTTON_Y},
+        {op_control::EControl::BRAKE_TOGGLE, op_control::EControllerDigital::DPAD_RIGHT}};
 
   /// @brief Maps startup configurations to their values
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{};
