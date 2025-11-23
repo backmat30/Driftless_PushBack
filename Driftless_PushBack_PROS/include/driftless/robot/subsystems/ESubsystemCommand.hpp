@@ -44,7 +44,9 @@ enum class ESubsystemCommand {
   HOOD_TOGGLE_DESCORE,
   HOOD_BUMP_UP,
   HOOD_BUMP_DOWN,
-  HOOD_TOGGLE_BUMP
+  HOOD_TOGGLE_BUMP,
+  BRAKE_RETRACT,
+  BRAKE_DEPLOY
 
 };
 }  // namespace subsystems
