@@ -18,6 +18,7 @@
 #include "driftless/op_control/holonomic_drive_train/HolonomicDriveTrainOperator.hpp"
 #include "driftless/op_control/intake/IntakeOperator.hpp"
 #include "driftless/op_control/hood/HoodOperator.hpp"
+#include "driftless/op_control/brake/BrakeOperator.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
