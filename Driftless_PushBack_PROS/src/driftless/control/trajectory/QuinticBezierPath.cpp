@@ -30,14 +30,14 @@ Point QuinticBezierPath::getPoint(double t) const {
 
 Point QuinticBezierPath::getDerivative(double t) const {
   Eigen::Matrix<double, 1, 5> T;
-  T << std::pow(t, 4), std::pow(t, 3), std::pow(t, 2), t, 1;
+  T << std::pow(1-t, 4), std::pow(1-t, 3), std::pow(1-t, 2), 1-t, 1;
   auto result = (T * m_first_derivative_coefficients) * m_control_points;
   return Point{result(0), result(1)};
 }
 
 Point QuinticBezierPath::getSecondDerivative(double t) const {
   Eigen::Matrix<double, 1, 4> T;
-  T << std::pow(t, 3), std::pow(t, 2), t, 1;
+  T << std::pow(1-t, 3), std::pow(1-t, 2), 1-t, 1;
   auto result = (T * m_second_derivative_coefficients) * m_control_points;
   return Point{result(0), result(1)};
 }
