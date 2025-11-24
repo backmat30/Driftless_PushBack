@@ -3,7 +3,7 @@
 namespace driftless::control::trajectory::trajectory_follower {
 TrajectoryFollowerControl::TrajectoryFollowerControl(
     std::unique_ptr<ITrajectoryFollower>& trajectory_follower)
-    : m_trajectory_follower{}, AControl(EControl::TRAJECTORY_FOLLOWER) {}
+    : m_trajectory_follower{std::move(trajectory_follower)}, AControl(EControl::TRAJECTORY_FOLLOWER) {}
 
 void TrajectoryFollowerControl::init() { m_trajectory_follower->init(); }
 
