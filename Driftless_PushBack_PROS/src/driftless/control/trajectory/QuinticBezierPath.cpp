@@ -1,5 +1,6 @@
 #include "driftless/control/trajectory/QuinticBezierPath.hpp"
 
+#include <iostream>
 namespace driftless::control::trajectory {
 QuinticBezierPath::QuinticBezierPath(Point start, Point c0, Point c1, Point c2,
                                      Point c3, Point end) {
@@ -22,8 +23,14 @@ QuinticBezierPath::QuinticBezierPath(Point start, Point c0, Point c1, Point c2,
 
 Point QuinticBezierPath::getPoint(double t) const {
   Eigen::Matrix<double, 1, 6> T;
-  T << std::pow(t, 5), std::pow(t, 4), std::pow(t, 3), std::pow(t, 2), t, 1;
+  T << std::pow(1 - t, 5), std::pow(1 - t, 4), std::pow(1 - t, 3),
+      std::pow(1 - t, 2), 1 - t, 1;
   auto result = (T * m_coefficients) * m_control_points;
+
+  if (static_cast<int>(t * 10000) % 1000 == 0) {
+    std::cout << "t: " << t << "\t x: " << result(0) << "\t y: " << result(1)
+              << std::endl;
+  }
   return Point{result(0), result(1)};
 }
 
