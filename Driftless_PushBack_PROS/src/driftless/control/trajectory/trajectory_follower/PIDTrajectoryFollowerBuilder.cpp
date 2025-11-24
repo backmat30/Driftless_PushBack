@@ -22,6 +22,7 @@ PIDTrajectoryFollowerBuilder* PIDTrajectoryFollowerBuilder::withTask(
 PIDTrajectoryFollowerBuilder* PIDTrajectoryFollowerBuilder::withClock(
     const std::unique_ptr<rtos::IClock>& clock) {
   m_clock = clock->clone();
+  return this;
 }
 
 PIDTrajectoryFollowerBuilder* PIDTrajectoryFollowerBuilder::withXPID(
