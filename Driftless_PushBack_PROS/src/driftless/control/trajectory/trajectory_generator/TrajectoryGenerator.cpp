@@ -44,7 +44,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
 
     last_point =
         TrajectoryPoint{path->getPoint(t).getX(), path->getPoint(t).getY(),
-                        atan2(derivative.getY(), derivative.getX()),
+                        std::atan2(derivative.getY(), derivative.getX()),
                         max_velocity, max_velocity * curvature};
 
     dist_trajectory.push_back(last_point);
@@ -55,7 +55,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   t = path->getMaxTime();
   last_point = TrajectoryPoint{
       path->getPoint(t).getX(), path->getPoint(t).getY(),
-      std::atan2(path->getDerivative(0).getY(), path->getDerivative(0).getX()),
+      std::atan2(path->getDerivative(t).getY(), path->getDerivative(t).getX()),
       0, 0};
 
   // backwards pass
@@ -67,7 +67,7 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
 
     double max_velocity{__DBL_MAX__};
     for (auto& constraint : m_constraints) {
-      max_velocity = constraint->getMaxVelocity(path, last_point, m_delta_d, t);
+      max_velocity = std::min(constraint->getMaxVelocity(path, last_point, m_delta_d, t), max_velocity);
     }
 
     Point derivative{path->getDerivative(t)};
@@ -94,11 +94,17 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   // Create m_trajectory as a time based trajectory, using dist_trajectory
   double current_distance{};
   double delta_t = 0.02;
-  while (current_distance < dist_trajectory.size() * m_delta_d) {
+  double current_time{};
+  while (static_cast<int>(current_distance / m_delta_d) < dist_trajectory.size()) {
     TrajectoryPoint point =
         dist_trajectory[static_cast<int>(current_distance / m_delta_d)];
+        if(point.m_velocity != 0) {
     current_distance += point.m_velocity * delta_t;
+        } else {
+          current_distance += m_delta_d;
+        }
     m_trajectory.push_back(point);
+    current_time += delta_t;
   }
 }
 
