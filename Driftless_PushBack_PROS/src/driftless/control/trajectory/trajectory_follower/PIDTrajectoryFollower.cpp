@@ -20,7 +20,10 @@ void PIDTrajectoryFollower::taskUpdate() {
 
   if (!m_paused && !m_target_reached) {
     auto position = getRobotPosition();
-    uint32_t current_time = m_clock->getTime() - m_start_time;
+
+    m_elapsed_time += m_clock->getTime() - m_last_time;
+
+    m_last_time = m_clock->getTime();
 
     TrajectoryPoint current_point{m_trajectory[current_time / 50.0]};
 
