@@ -14,8 +14,11 @@ namespace driftless::control::trajectory::trajectory_generator::modifiers {
     while(spin_index < m_spins.size()) {
       current_spin = m_spins.at(spin_index);
       double spin_duration = current_spin.end_t - current_spin.start_t;
-      double initial_heading = (spin_index == 0) ? m_starting_heading : m_spins.at(spin_index - 1).end_angle;
-      double total_angle_change = current_spin.end_angle - initial_heading;
+    double initial_heading = (spin_index == 0)
+                                 ? m_starting_heading
+                                 : m_spins.at(spin_index - 1).end_angle;
+    double total_angle_change =
+        bindRadians(current_spin.end_angle - initial_heading);
       double direction = (total_angle_change > 0) ? 1 : -1;
 
       // Calculate the time needed to reach max angular velocity

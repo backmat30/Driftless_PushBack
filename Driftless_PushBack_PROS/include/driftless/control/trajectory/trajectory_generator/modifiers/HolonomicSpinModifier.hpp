@@ -6,6 +6,7 @@
 
 #include "driftless/control/trajectory/SpinContext.hpp"
 #include "driftless/control/trajectory/trajectory_generator/modifiers/ITrajectoryModifier.hpp"
+#include "driftless/utils/UtilityFunctions.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
