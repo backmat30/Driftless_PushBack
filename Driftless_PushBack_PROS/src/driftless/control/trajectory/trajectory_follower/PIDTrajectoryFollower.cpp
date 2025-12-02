@@ -16,7 +16,7 @@ void PIDTrajectoryFollower::taskUpdate() {
     m_mutex->take();
   }
 
-  if (!paused && !target_reached) {
+  if (!m_paused && !m_target_reached) {
     auto position = getRobotPosition();
     uint32_t current_time = m_clock->getTime() - m_start_time;
 
@@ -25,7 +25,7 @@ void PIDTrajectoryFollower::taskUpdate() {
     if (calculateDistanceToTarget(position) < m_target_tolerance &&
         std::sqrt(position.xV * position.xV + position.yV * position.yV) <
             m_target_velocity) {
-      target_reached = true;
+      m_target_reached = true;
       setDriveMotionVector(0, 0, 0);
     } else {
       updateVelocity(position, current_point);
@@ -105,7 +105,7 @@ void PIDTrajectoryFollower::pause() {
     m_mutex->take();
   }
 
-  paused = true;
+  m_paused = true;
 
   if (m_mutex) {
     m_mutex->give();
@@ -117,7 +117,8 @@ void PIDTrajectoryFollower::resume() {
     m_mutex->take();
   }
 
-  paused = false;
+  m_paused = false;
+  m_last_time = m_clock->getTime();
 
   if (m_mutex) {
     m_mutex->give();
@@ -133,28 +134,17 @@ void PIDTrajectoryFollower::followTrajectory(
 
   m_robot = robot;
   m_trajectory = trajectory;
-  paused = false;
-  target_reached = false;
-  if (m_clock) {
-    m_start_time = m_clock->getTime();
-  }
+  m_paused = false;
+  m_target_reached = false;
+  m_elapsed_time = 0;
+  m_last_time = m_clock->getTime();
 
   if (m_mutex) {
     m_mutex->give();
   }
 }
 
-bool PIDTrajectoryFollower::targetReached() {
-  if (m_mutex) {
-    m_mutex->take();
-  }
-
-  return target_reached;
-
-  if (m_mutex) {
-    m_mutex->give();
-  }
-}
+bool PIDTrajectoryFollower::targetReached() { return m_target_reached; }
 
 void PIDTrajectoryFollower::setDelayer(
     const std::unique_ptr<driftless::rtos::IDelayer>& delayer) {
