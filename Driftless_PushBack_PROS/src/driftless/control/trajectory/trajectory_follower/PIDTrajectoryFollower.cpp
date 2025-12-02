@@ -36,11 +36,12 @@ void PIDTrajectoryFollower::taskUpdate() {
       updateVelocity(position, current_point);
     }
   }
-  m_delayer->delay(TASK_DELAY);
 
   if (m_mutex) {
     m_mutex->give();
   }
+
+  m_delayer->delay(TASK_DELAY);
 }
 
 void PIDTrajectoryFollower::setDriveMotionVector(double x_velocity,
