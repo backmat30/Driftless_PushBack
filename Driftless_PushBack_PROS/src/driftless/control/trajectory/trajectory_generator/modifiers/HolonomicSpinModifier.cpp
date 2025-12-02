@@ -23,14 +23,22 @@ void HolonomicSpinModifier::applyModifier(
         bindRadians(current_spin.end_angle - initial_heading);
       double direction = (total_angle_change > 0) ? 1 : -1;
 
-      // Calculate the time needed to reach max angular velocity
-      double time_to_max_velocity = std::sqrt(std::abs(total_angle_change) / m_max_acceleration);
-      double max_angular_velocity = m_max_acceleration * time_to_max_velocity;
-
-      // Adjust if the spin duration is too short to reach max angular velocity
-      if (2 * time_to_max_velocity > spin_duration) {
-        time_to_max_velocity = spin_duration / 2;
-        max_angular_velocity = std::abs(total_angle_change) / time_to_max_velocity;
+    // Calculate the max angular velocity
+    double max_angular_velocity{};
+    double time_to_max_velocity{};
+    if (std::pow(spin_duration, 2) <
+        (4 * std::abs(total_angle_change) / m_max_acceleration)) {
+      // Triangle profile
+      time_to_max_velocity =
+          std::sqrt(std::abs(total_angle_change) / m_max_acceleration);
+      max_angular_velocity = m_max_acceleration * time_to_max_velocity;
+    } else {
+      max_angular_velocity =
+          (-spin_duration +
+           std::sqrt(std::pow(spin_duration, 2) -
+                     (4 * std::abs(total_angle_change) / m_max_acceleration))) *
+          (m_max_acceleration / -2);
+      time_to_max_velocity = max_angular_velocity / m_max_acceleration;
       }
 
       int start_index = static_cast<int>(current_spin.start_t / 0.02);
