@@ -155,6 +155,8 @@ class BlueConfig : public IConfig {
   static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{-M_PI / 4};
   static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3 * M_PI / 4};
   static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
+  static constexpr double DRIVE_MAX_LINEAR_VELOCITY{80.0};
+  static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
 
   // ## ODOMETRY ##
   static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
