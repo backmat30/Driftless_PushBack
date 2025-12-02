@@ -57,11 +57,13 @@ class PIDTrajectoryFollower : public ITrajectoryFollower {
 
   std::vector<TrajectoryPoint> m_trajectory{};
 
-  uint32_t m_start_time{};
+  uint32_t m_elapsed_time{};
 
-  bool paused{};
+  uint32_t m_last_time{};
 
-  bool target_reached{true};
+  bool m_paused{};
+
+  bool m_target_reached{true};
 
   /// @brief Updates the trajectory follower
   void taskUpdate();
