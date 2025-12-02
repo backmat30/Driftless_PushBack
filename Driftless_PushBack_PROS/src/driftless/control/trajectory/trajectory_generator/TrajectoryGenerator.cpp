@@ -103,6 +103,9 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
         } else {
           current_distance += m_delta_d;
         }
+    // get x and y velocities
+    point.m_x_velocity = point.m_velocity * std::cos(point.m_heading);
+    point.m_y_velocity = point.m_velocity * std::sin(point.m_heading);
     m_trajectory.push_back(point);
     current_time += delta_t;
   }
