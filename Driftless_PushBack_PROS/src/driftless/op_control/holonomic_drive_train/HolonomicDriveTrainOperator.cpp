@@ -27,9 +27,9 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   }
 
   motion_vector.x =
-      strafe_input * std::cos(heading) + forward_input * std::sin(heading);
+      strafe_input * std::sin(heading) - forward_input * std::cos(heading);
   motion_vector.y =
-      forward_input * std::cos(heading) - strafe_input * std::sin(heading);
+      forward_input * std::sin(heading) + strafe_input * std::cos(heading);
 
   // Set angular velocity from turn input
   motion_vector.angular_velocity = turn_input;
