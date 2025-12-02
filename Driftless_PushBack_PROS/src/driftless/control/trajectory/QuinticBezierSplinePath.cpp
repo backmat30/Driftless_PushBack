@@ -44,7 +44,7 @@ QuinticBezierSplinePath::QuinticBezierSplinePath(
 
 Point QuinticBezierSplinePath::getPoint(double t) const {
   Point result{};
-  if (t >= 0 && t <= m_max_time) {
+  if (t >= 0 && t < m_max_time) {
     int segment = static_cast<int>(t);
     double local_t = t - segment;
     result = m_segments[segment].getPoint(local_t);
@@ -54,7 +54,7 @@ Point QuinticBezierSplinePath::getPoint(double t) const {
 
 Point QuinticBezierSplinePath::getDerivative(double t) const {
   Point result{};
-  if (t >= 0 && t <= m_max_time) {
+  if (t >= 0 && t < m_max_time) {
     int segment = static_cast<int>(t);
     double local_t = t - segment;
     result = m_segments[segment].getDerivative(local_t);
@@ -64,7 +64,7 @@ Point QuinticBezierSplinePath::getDerivative(double t) const {
 
 Point QuinticBezierSplinePath::getSecondDerivative(double t) const {
   Point result{};
-  if (t >= 0 && t <= m_max_time) {
+  if (t >= 0 && t < m_max_time) {
     int segment = static_cast<int>(t);
     double local_t = t - segment;
     result = m_segments[segment].getSecondDerivative(local_t);
