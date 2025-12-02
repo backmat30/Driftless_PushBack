@@ -25,7 +25,11 @@ void PIDTrajectoryFollower::taskUpdate() {
 
     m_last_time = m_clock->getTime();
 
-    TrajectoryPoint current_point{m_trajectory[current_time / 50.0]};
+    TrajectoryPoint current_point{m_trajectory[m_trajectory.size() - 1]};
+
+    if (m_elapsed_time / 20 < m_trajectory.size()) {
+      current_point = m_trajectory[m_elapsed_time / 20];
+    }
 
     if (calculateDistanceToTarget(position) < m_target_tolerance &&
         std::sqrt(position.xV * position.xV + position.yV * position.yV) <
