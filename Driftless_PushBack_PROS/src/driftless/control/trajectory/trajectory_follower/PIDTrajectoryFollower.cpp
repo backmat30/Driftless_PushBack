@@ -80,10 +80,9 @@ void PIDTrajectoryFollower::updateVelocity(
     const driftless::robot::subsystems::odometry::Position& position,
     const TrajectoryPoint& target_point) {
   double target_velocity = target_point.m_velocity;
-  double target_heading = target_point.m_heading;
 
-  double x_velocity = target_velocity * std::cos(target_heading);
-  double y_velocity = target_velocity * std::sin(target_heading);
+  double x_velocity = target_point.m_x_velocity;
+  double y_velocity = target_point.m_y_velocity;
   double angular_velocity = target_point.m_angular_velocity;
 
   if ((m_elapsed_time / 20) % 5 == 0) {

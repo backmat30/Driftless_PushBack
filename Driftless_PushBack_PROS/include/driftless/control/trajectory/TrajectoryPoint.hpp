@@ -30,6 +30,12 @@ class TrajectoryPoint {
 
   /// @brief The velocity in inches per second
   double m_velocity;
+
+  /// @brief The x velocity in inches per second
+  double m_x_velocity;
+
+  /// @brief The y velocity in inches per second
+  double m_y_velocity;
   
   /// @brief The angular velocity in radians per second
   double m_angular_velocity;
