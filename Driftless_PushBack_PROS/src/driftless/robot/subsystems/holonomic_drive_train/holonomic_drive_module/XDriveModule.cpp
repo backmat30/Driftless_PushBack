@@ -6,31 +6,6 @@ void XDriveModule::init() { m_motors.init(); }
 
 void XDriveModule::run() {}
 
-void XDriveModule::setMotionVector(HolonomicMotionVector motion_vector) {
-  // cap the velocity at the max velocity
-  if (std::sqrt(motion_vector.x * motion_vector.x +
-                motion_vector.y * motion_vector.y) > m_max_linear_velocity) {
-    double scale =
-        m_max_linear_velocity / std::sqrt(motion_vector.x * motion_vector.x +
-                                          motion_vector.y * motion_vector.y);
-    motion_vector.x *= scale;
-    motion_vector.y *= scale;
-  }
-  // cap angular velocity
-  if (std::abs(motion_vector.angular_velocity) > m_max_angular_velocity) {
-    motion_vector.angular_velocity =
-        (motion_vector.angular_velocity /
-         std::abs(motion_vector.angular_velocity)) *
-        m_max_angular_velocity;
-  }
-  // normalize the vector before passing to
-  motion_vector.x /= m_max_linear_velocity;
-  motion_vector.y /= m_max_linear_velocity;
-  motion_vector.angular_velocity /= m_max_angular_velocity;
-
-  setNormalizedMotionVector(motion_vector);
-}
-
 void XDriveModule::setNormalizedMotionVector(
     HolonomicMotionVector motion_vector) {
   // Clamp the x and y to [-1, 1]
