@@ -1,5 +1,6 @@
 #include "driftless/control/motion/PIDHolonomicGoToPoint.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless::control::motion {
 void PIDHolonomicGoToPoint::taskLoop(void* params) {
   PIDHolonomicGoToPoint* go_to_point{
@@ -57,14 +58,17 @@ void PIDHolonomicGoToPoint::taskUpdate() {
         std::sqrt(x_distance * x_distance + y_distance * y_distance)};
     double angular_distance{
         bindRadians(m_target_point.getTheta() - position.theta)};
+    double velocity{
+        std::sqrt(position.xV * position.xV + position.yV * position.yV)};
 
     if (distance_to_target < m_distance_tolerance &&
-        getVelocity() < m_velocity_tolerance &&
+        velocity < m_velocity_tolerance &&
         std::abs(angular_distance) < m_angular_tolerance) {
       m_target_reached = true;
       setDriveMotionVector(0, 0, 0);
+      pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 8, "Target Reached");
     } else {
-      updateVelocity(x_distance, y_distance, angular_distance);
+      updateVelocity(x_distance, y_distance, position.theta, angular_distance);
     }
   }
 
