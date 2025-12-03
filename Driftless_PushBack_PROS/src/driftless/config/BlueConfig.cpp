@@ -131,8 +131,8 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
 
   // make the controller
   std::unique_ptr<control::AControl> motion_control{
-      std::make_unique<control::motion::MotionControl>(drive_straight, turn,
-                                                       go_to_point)};
+      std::make_unique<control::motion::MotionControl>(drive_straight,
+                                                       go_to_point, turn)};
 
   // add to the control system
   control_system->addControl(motion_control);
