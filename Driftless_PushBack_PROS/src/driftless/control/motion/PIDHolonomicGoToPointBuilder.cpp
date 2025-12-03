@@ -61,6 +61,7 @@ std::unique_ptr<PIDHolonomicGoToPoint> PIDHolonomicGoToPointBuilder::build() {
 
   go_to_point->setDelayer(m_delayer);
   go_to_point->setMutex(m_mutex);
+  go_to_point->setTask(m_task);
   go_to_point->setXPID(m_x_pid);
   go_to_point->setYPID(m_y_pid);
   go_to_point->setRotationalPID(m_rotational_pid);
