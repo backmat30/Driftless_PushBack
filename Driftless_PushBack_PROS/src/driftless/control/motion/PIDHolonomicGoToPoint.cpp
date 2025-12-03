@@ -22,20 +22,9 @@ void PIDHolonomicGoToPoint::setDriveMotionVector(double x_velocity,
 }
 
 robot::subsystems::odometry::Position PIDHolonomicGoToPoint::getPosition() {
-  robot::subsystems::odometry::Position position{};
-  position =
-      *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
-          robot::subsystems::ESubsystem::ODOMETRY,
-          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
-  return position;
-}
-
-double PIDHolonomicGoToPoint::getVelocity() {
-  double velocity{};
-  velocity = *static_cast<double*>(m_robot->getState(
-      robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
-      robot::subsystems::ESubsystemState::DRIVETRAIN_GET_VELOCITY));
-  return velocity;
+  return *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
+      robot::subsystems::ESubsystem::ODOMETRY,
+      robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
 }
 
 void PIDHolonomicGoToPoint::updateVelocity(double x_distance, double y_distance,
