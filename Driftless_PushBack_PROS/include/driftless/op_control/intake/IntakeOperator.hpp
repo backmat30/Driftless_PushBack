@@ -9,6 +9,7 @@
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
+#include "driftless/op_control/intake/EIntakeControlMode.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -45,6 +46,17 @@ class IntakeOperator {
                          EControllerDigital front_intake_out,
                          EControllerDigital back_intake_in,
                          EControllerDigital back_arms_toggle);
+
+  /// @brief Updates the intake using smarter split controls
+  /// @param front_intake_in __EControllerDigital__ The digital input tied to
+  /// spinning the front intake forward
+  /// @param front_intake_out __EControllerDigital__ The digital input tied to
+  /// spinning the front intake backward
+  /// @param back_intake_in __EControllerDigital__ The digital input tied to
+  /// spinning the back intake forward
+  void updateIntakeSmartSplit(EControllerDigital front_intake_in,
+                              EControllerDigital front_intake_out,
+                              EControllerDigital back_intake_in);
 
  public:
   /// @brief Constructs a new IntakeOperator object

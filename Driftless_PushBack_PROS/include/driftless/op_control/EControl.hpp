@@ -24,7 +24,8 @@ enum EControl {
   HOOD_TOGGLE_RAISED,
   HOOD_TOGGLE_GATE,
   HOOD_TOGGLE_DESCORE,
-  HOOD_TOGGLE_BUMP
+  HOOD_TOGGLE_BUMP,
+  BRAKE_TOGGLE
 };
 }  // namespace op_control
 }  // namespace driftless

@@ -82,6 +82,10 @@
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
 #include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
+// Brake includes
+#include "driftless/robot/subsystems/brake/BrakeSubsystem.hpp"
+#include "driftless/robot/subsystems/brake/PneumaticBrakeBuilder.hpp"
+
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
@@ -145,6 +149,10 @@ class BlueConfig : public IConfig {
   static constexpr int HOOD_GATE_PISTONS_PORT{4};
   static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
+
+  // ## BRAKE PNEUMATICS ##
+
+  static constexpr int BRAKE_PISTON_PORT{1};
 
   // #### ROBOT CONSTANTS ####
 
