@@ -4,13 +4,20 @@ namespace driftless {
 namespace control {
 Point::Point(double x, double y) : m_x{x}, m_y{y} {}
 
+Point::Point(double x, double y, double theta)
+    : m_x{x}, m_y{y}, m_theta{theta} {}
+
 void Point::setX(double x) { m_x = x; }
 
 void Point::setY(double y) { m_y = y; }
 
+void Point::setTheta(double theta) { m_theta = theta; }
+
 double Point::getX() { return m_x; }
 
 double Point::getY() { return m_y; }
+
+double Point::getTheta() { return m_theta; }
 
 Point Point::operator+(const Point& rhs) {
   return Point{m_x + rhs.m_x, m_y + rhs.m_y};
