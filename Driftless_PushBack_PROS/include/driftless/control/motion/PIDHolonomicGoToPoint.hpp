@@ -79,10 +79,6 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @return The current position of the robot
   robot::subsystems::odometry::Position getPosition();
 
-  /// @brief Gets the current velocity of the robot
-  /// @return The current velocity of the robot
-  double getVelocity();
-
   /// @brief Updates the velocity of the robot
   /// @param x_distance __double__ The distance to the target in the x direction
   /// @param y_distance __double__ The distance to the target in the y direction
