@@ -28,13 +28,19 @@ robot::subsystems::odometry::Position PIDHolonomicGoToPoint::getPosition() {
 }
 
 void PIDHolonomicGoToPoint::updateVelocity(double x_distance, double y_distance,
+                                           double current_heading,
                                            double angular_distance) {
   double x_velocity{m_x_pid.getControlValue(0, x_distance)};
   double y_velocity{m_y_pid.getControlValue(0, y_distance)};
   double angular_velocity{
       m_rotational_pid.getControlValue(0, angular_distance)};
 
-  setDriveMotionVector(x_velocity, y_velocity, angular_velocity);
+  double out_x = x_velocity * std::sin(current_heading) -
+                 y_velocity * std::cos(current_heading);
+  double out_y = x_velocity * std::cos(current_heading) +
+                 y_velocity * std::sin(current_heading);
+
+  setDriveMotionVector(out_x, out_y, -angular_velocity);
 }
 
 void PIDHolonomicGoToPoint::taskUpdate() {
