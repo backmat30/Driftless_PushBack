@@ -86,9 +86,8 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @brief Updates the velocity of the robot
   /// @param x_distance __double__ The distance to the target in the x direction
   /// @param y_distance __double__ The distance to the target in the y direction
-  /// @param target_angle __double__ The angle of the target point
-  /// @param theta __double__ The current angle of the robot
-  void updateVelocity(double x_distance, double y_distance, double target_angle, double theta);
+  /// @param angular_distance __double__ The angular distance to the target
+  void updateVelocity(double x_distance, double y_distance, double angular_distance);
 
   /// @brief Runs all instance specific updates
   void taskUpdate();
