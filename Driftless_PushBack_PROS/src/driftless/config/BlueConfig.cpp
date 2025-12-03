@@ -7,6 +7,56 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
   std::shared_ptr<control::ControlSystem> control_system =
       std::make_shared<control::ControlSystem>();
 
+  // clock and delayer for controls
+
+  std::unique_ptr<rtos::IClock> clock{
+      std::make_unique<pros_adapters::ProsClock>()};
+  std::unique_ptr<rtos::IDelayer> delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+
+  // ## TRAJECTORY FOLLOWER ##
+
+  // rtos
+  std::unique_ptr<rtos::ITask> trajectory_follower_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> trajectory_follower_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
+  // PID controllers
+  control::PID trajectory_follower_x_pid{clock, TRAJECTORY_FOLLOWER_X_KP,
+                                         TRAJECTORY_FOLLOWER_X_KI,
+                                         TRAJECTORY_FOLLOWER_X_KD};
+  control::PID trajectory_follower_y_pid{clock, TRAJECTORY_FOLLOWER_Y_KP,
+                                         TRAJECTORY_FOLLOWER_Y_KI,
+                                         TRAJECTORY_FOLLOWER_Y_KD};
+  control::PID trajectory_follower_theta_PID{
+      clock, TRAJECTORY_FOLLOWER_THETA_KP, TRAJECTORY_FOLLOWER_THETA_KI,
+      TRAJECTORY_FOLLOWER_THETA_KD};
+
+  // build the trajectory follower
+  control::trajectory::trajectory_follower::PIDTrajectoryFollowerBuilder
+      trajectory_follower_builder{};
+
+  std::unique_ptr<control::trajectory::trajectory_follower::ITrajectoryFollower>
+      trajectory_follower{
+          trajectory_follower_builder.withClock(clock)
+              ->withDelayer(delayer)
+              ->withTask(trajectory_follower_task)
+              ->withMutex(trajectory_follower_mutex)
+              ->withXPID(trajectory_follower_x_pid)
+              ->withYPID(trajectory_follower_y_pid)
+              ->withThetaPID(trajectory_follower_theta_PID)
+              ->withTargetTolerance(TRAJECTORY_FOLLOWER_TARGET_TOLERANCE)
+              ->withTargetVelocity(TRAJECTORY_FOLLOWER_TARGET_VELOCITY)
+              ->build()};
+
+  std::unique_ptr<control::AControl> trajectory_follower_control{
+      std::make_unique<
+          control::trajectory::trajectory_follower::TrajectoryFollowerControl>(
+          trajectory_follower)};
+
+  control_system->addControl(trajectory_follower_control);
+
   return control_system;
 }
 
@@ -126,6 +176,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_front_left_module_builder.withMotor(drive_front_left_top_motor)
               ->withMotor(drive_front_left_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_LEFT_ANGLE_OFFSET)
+              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
+              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -135,6 +187,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
               .withMotor(drive_front_right_top_motor)
               ->withMotor(drive_front_right_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_RIGHT_ANGLE_OFFSET)
+              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
+              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -143,6 +197,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_back_left_module_builder.withMotor(drive_back_left_top_motor)
               ->withMotor(drive_back_left_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_LEFT_ANGLE_OFFSET)
+              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
+              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -151,6 +207,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_back_right_module_builder.withMotor(drive_back_right_top_motor)
               ->withMotor(drive_back_right_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_RIGHT_ANGLE_OFFSET)
+              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
+              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   // build the drive train

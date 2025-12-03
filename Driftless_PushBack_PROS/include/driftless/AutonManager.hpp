@@ -43,25 +43,17 @@ class AutonManager {
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
   /// control system to use
-  /// @param process_system
-  /// __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process
-  /// system to use
   void initAuton(
       std::shared_ptr<robot::Robot>& robot,
-      std::shared_ptr<control::ControlSystem>& control_system,
-      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
+      std::shared_ptr<control::ControlSystem>& control_system);
 
   /// @brief Runs the selected auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
   /// control system to use
-  /// @param process_system
-  /// __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process
-  /// system to use
   void runAuton(
       std::shared_ptr<driftless::robot::Robot>& robot,
-      std::shared_ptr<driftless::control::ControlSystem>& control_system,
-      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
+      std::shared_ptr<driftless::control::ControlSystem>& control_system);
 };
 }  // namespace driftless
 #endif

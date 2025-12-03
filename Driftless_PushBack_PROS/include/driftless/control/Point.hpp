@@ -19,6 +19,8 @@ class Point {
   // y position
   double m_y{};
 
+  double m_theta{};
+
  public:
   /// @brief Constructs a new point
   Point() = default;
@@ -27,6 +29,12 @@ class Point {
   /// @param x __double__ The x coordinate
   /// @param y __double__ The y coordinate
   Point(double x, double y);
+
+  /// @brief Constructs a new point
+  /// @param x __double__ The x coordinate
+  /// @param y __double__ The y coordinate
+  /// @param theta __double__ The heading
+  Point(double x, double y, double theta);
 
   /// @brief Constructs a new point
   /// @param other __const Point&__ The point to copy
@@ -47,6 +55,10 @@ class Point {
   /// @param y __double__ The new y position
   void setY(double y);
 
+  /// @brief Sets the heading of the point
+  /// @param theta __double__ The new heading
+  void setTheta(double theta);
+
   /// @brief Gets the x position of the point
   /// @return __double__ The x position
   double getX();
@@ -54,6 +66,10 @@ class Point {
   /// @brief Gets the y position of the point
   /// @return __double__ The y position
   double getY();
+
+  /// @brief Gets the heading at the point
+  /// @return __double__ The heading at the point
+  double getTheta();
 
   // ---OPERATORS---
 

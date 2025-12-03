@@ -56,6 +56,8 @@
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollowerBuilder.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -93,6 +95,25 @@ namespace config {
 class BlueConfig : public IConfig {
  private:
   static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
+
+  // #### CONTROL SYSTEM CONSTANTS ####
+
+  // ## TRAJECTORY FOLLOWER ##
+
+  static constexpr double TRAJECTORY_FOLLOWER_X_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KD{0.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_TOLERANCE{2.0};
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_VELOCITY{1.0};
 
   // #### PORT NUMBERS ####
 
@@ -150,11 +171,13 @@ class BlueConfig : public IConfig {
   static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{-M_PI / 4};
   static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3 * M_PI / 4};
   static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
+  static constexpr double DRIVE_MAX_LINEAR_VELOCITY{80.0};
+  static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
 
   // ## ODOMETRY ##
   static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
-  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.0f};
-  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
  public:
   std::string getName() override;
