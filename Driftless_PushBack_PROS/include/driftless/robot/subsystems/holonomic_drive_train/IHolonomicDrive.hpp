@@ -36,11 +36,35 @@ namespace driftless {
           /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
           virtual void setMotionVector(HolonomicMotionVector motion_ector) = 0;
 
+          /// @brief Sets the X velocity of the holonomic drive train
+          /// @param x_velocity The desired X velocity
+          virtual void setXVelocity(double x_velocity) = 0;
+
+          /// @brief Sets the Y velocity of the holonomic drive train
+          /// @param y_velocity The desired Y velocity
+          virtual void setYVelocity(double y_velocity) = 0;
+
+          /// @brief Sets the angular velocity of the holonomic drive train
+          /// @param angular_velocity The desired angular velocity
+          virtual void setAngularVelocity(double angular_velocity) = 0;
+
           /// @brief Sets the motion vector of the holonomic drive train with normalized vector
           /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
           /// @details Magnitude must be within [0, 1]
           /// @details Angular velocity must be within [-1, 1]
           virtual void setNormalizedMotionVector(HolonomicMotionVector motion_vector) = 0;
+
+          /// @brief Sets the normalized X velocity of the holonomic drive train
+          /// @param x_velocity The desired normalized X velocity [-1, 1]
+          virtual void setNormalizedXVelocity(double x_velocity) = 0;
+
+          /// @brief Sets the normalized Y velocity of the holonomic drive train
+          /// @param y_velocity The desired normalized Y velocity [-1, 1]
+          virtual void setNormalizedYVelocity(double y_velocity) = 0;
+
+          /// @brief Sets the normalized angular velocity of the holonomic drive train
+          /// @param angular_velocity The desired normalized angular velocity [-1, 1]
+          virtual void setNormalizedAngularVelocity(double angular_velocity) = 0;
         };
       }
     }
