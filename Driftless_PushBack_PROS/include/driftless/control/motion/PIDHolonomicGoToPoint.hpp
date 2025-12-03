@@ -66,7 +66,7 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
 
   bool m_target_reached{};
 
-  bool m_paused{};
+  bool m_paused{true};
 
   /// @brief Sets the drive motion vector of the robot
   /// @param x_velocity __double__ The velocity in the x direction
