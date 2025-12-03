@@ -53,6 +53,7 @@
 #include "driftless/control/motion/MotionControl.hpp"
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
@@ -114,6 +115,37 @@ class BlueConfig : public IConfig {
 
   static constexpr double TRAJECTORY_FOLLOWER_TARGET_TOLERANCE{2.0};
   static constexpr double TRAJECTORY_FOLLOWER_TARGET_VELOCITY{1.0};
+
+  // ## BASIC MOTION CONTROLLERS ##
+
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KP{0.0};
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KI{0.0};
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KD{0.0};
+
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KP{0.0};
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KI{0.0};
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KD{0.0};
+
+  static constexpr double TURN_KP{0.0};
+  static constexpr double TURN_KI{0.0};
+  static constexpr double TURN_KD{0.0};
+
+  static constexpr double GO_TO_POINT_X_KP{40.0};
+  static constexpr double GO_TO_POINT_X_KI{0.0};
+  static constexpr double GO_TO_POINT_X_KD{3000.0};
+
+  static constexpr double GO_TO_POINT_Y_KP{40.0};
+  static constexpr double GO_TO_POINT_Y_KI{0.0};
+  static constexpr double GO_TO_POINT_Y_KD{3000.0};
+
+  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
+
+  static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
+  static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{0.1};
+  static constexpr double MOTION_LINEAR_DISTANCE_TOLERANCE{1.0};
+  static constexpr double MOTION_ANGULAR_DISTANCE_TOLERANCE{0.1};
 
   // #### PORT NUMBERS ####
 
