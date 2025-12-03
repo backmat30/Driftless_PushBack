@@ -57,6 +57,86 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
 
   control_system->addControl(trajectory_follower_control);
 
+  // ## MOTION CONTROL ##
+
+  // rtos
+  std::unique_ptr<rtos::ITask> drive_straight_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> drive_straight_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
+  std::unique_ptr<rtos::ITask> turn_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> turn_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
+  std::unique_ptr<rtos::ITask> go_to_point_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> go_to_point_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
+  // PID controllers
+  control::PID drive_straight_linear_pid{clock, DRIVE_STRAIGHT_LINEAR_KP,
+                                         DRIVE_STRAIGHT_LINEAR_KI,
+                                         DRIVE_STRAIGHT_LINEAR_KD};
+  control::PID drive_straight_angular_pid{clock, DRIVE_STRAIGHT_ANGULAR_KP,
+                                          DRIVE_STRAIGHT_ANGULAR_KI,
+                                          DRIVE_STRAIGHT_ANGULAR_KD};
+
+  control::PID turn_pid{clock, TURN_KP, TURN_KI, TURN_KD};
+
+  control::PID go_to_point_x_pid{clock, GO_TO_POINT_X_KP, GO_TO_POINT_X_KI,
+                                 GO_TO_POINT_X_KD};
+  control::PID go_to_point_y_pid{clock, GO_TO_POINT_Y_KP, GO_TO_POINT_Y_KI,
+                                 GO_TO_POINT_Y_KD};
+  control::PID go_to_point_rotational_pid{clock, GO_TO_POINT_ROTATIONAL_KP,
+                                          GO_TO_POINT_ROTATIONAL_KI,
+                                          GO_TO_POINT_ROTATIONAL_KD};
+
+  // build the motion controls
+  control::motion::PIDDriveStraightBuilder drive_straight_builder{};
+  control::motion::PIDTurnBuilder turn_builder{};
+  control::motion::PIDHolonomicGoToPointBuilder go_to_point_builder{};
+
+  std::unique_ptr<control::motion::IDriveStraight> drive_straight{
+      drive_straight_builder.withDelayer(delayer)
+          ->withMutex(drive_straight_mutex)
+          ->withTask(drive_straight_task)
+          ->withLinearPID(drive_straight_linear_pid)
+          ->withRotationalPID(drive_straight_angular_pid)
+          ->withTargetTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
+          ->withTargetVelocity(1.0)
+          ->build()};
+
+  std::unique_ptr<control::motion::ITurn> turn{
+      turn_builder.withDelayer(delayer)
+          ->withMutex(turn_mutex)
+          ->withTask(turn_task)
+          ->withRotationalPID(turn_pid)
+          ->withTargetTolerance(MOTION_ANGULAR_DISTANCE_TOLERANCE)
+          ->withTargetVelocity(0.1)
+          ->build()};
+
+  std::unique_ptr<control::motion::IGoToPoint> go_to_point{
+      go_to_point_builder.withDelayer(delayer)
+          ->withMutex(go_to_point_mutex)
+          ->withTask(go_to_point_task)
+          ->withXPID(go_to_point_x_pid)
+          ->withYPID(go_to_point_y_pid)
+          ->withRotationalPID(go_to_point_rotational_pid)
+          ->withVelocityTolerance(MOTION_LINEAR_VELOCITY_TOLERANCE)
+          ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
+          ->withAngularTolerance(MOTION_ANGULAR_DISTANCE_TOLERANCE)
+          ->build()};
+
+  // make the controller
+  std::unique_ptr<control::AControl> motion_control{
+      std::make_unique<control::motion::MotionControl>(drive_straight, turn,
+                                                       go_to_point)};
+
+  // add to the control system
+  control_system->addControl(motion_control);
+
   return control_system;
 }
 
@@ -371,7 +451,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       brake_builder.withBrakePiston(adapted_brake_piston)->build()};
 
   // create the subsystem
-  std::unique_ptr<robot::subsystems::ASubsystem> brake_subsystem{std::make_unique<robot::subsystems::brake::BrakeSubsystem>(brake)};
+  std::unique_ptr<robot::subsystems::ASubsystem> brake_subsystem{
+      std::make_unique<robot::subsystems::brake::BrakeSubsystem>(brake)};
 
   robot->addSubsystem(brake_subsystem);
 
