@@ -79,11 +79,12 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   void setAngularVelocity(double angular_velocity) override;
 
   /// @brief Sets the normalized motion vector of the modular holonomic drive
-  /// @param motion_vector Vector representing the desired normalized motion of the robot (robot-centric)
+  /// @param motion_vector Vector representing the desired normalized motion of
+  /// the robot (robot-centric)
   void setNormalizedMotionVector(HolonomicMotionVector motion_vector) override;
 
-    /// @brief Sets the normalized X velocity of the modular holonomic drive
-    /// @param x_velocity The desired normalized X velocity [-1, 1]
+  /// @brief Sets the normalized X velocity of the modular holonomic drive
+  /// @param x_velocity The desired normalized X velocity [-1, 1]
   void setNormalizedXVelocity(double x_velocity) override;
 
   /// @brief Sets the normalized Y velocity of the modular holonomic drive
@@ -100,7 +101,25 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   void setModules(std::vector<std::unique_ptr<
                       holonomic_drive_module::IHolonomicDriveModule>>& modules);
 
+  /// @brief Sets the task for the modular holonomic drive
+  /// @param task The task to be used
+  void setTask(std::unique_ptr<rtos::ITask>& task);
 
+  /// @brief Sets the delayer for the modular holonomic drive
+  /// @param delayer The delayer to be used
+  void setDelayer(std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Sets the mutex for the modular holonomic drive
+  /// @param mutex The mutex to be used
+  void setMutex(std::unique_ptr<rtos::IMutex>& mutex);
+
+  /// @brief Sets the maximum linear velocity of the modular holonomic drive
+  /// @param max_linear_velocity The maximum linear velocity
+  void setMaxLinearVelocity(double max_linear_velocity);
+
+  /// @brief Sets the maximum angular velocity of the modular holonomic drive
+  /// @param max_angular_velocity The maximum angular velocity
+  void setMaxAngularVelocity(double max_angular_velocity);
 };
 }  // namespace holonomic_drive_train
 }  // namespace subsystems
