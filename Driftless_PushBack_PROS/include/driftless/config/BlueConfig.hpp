@@ -126,17 +126,17 @@ class BlueConfig : public IConfig {
   static constexpr double TURN_KI{0.0};
   static constexpr double TURN_KD{0.0};
 
-  static constexpr double GO_TO_POINT_X_KP{0.0};
+  static constexpr double GO_TO_POINT_X_KP{40.0};
   static constexpr double GO_TO_POINT_X_KI{0.0};
-  static constexpr double GO_TO_POINT_X_KD{0.0};
+  static constexpr double GO_TO_POINT_X_KD{3000.0};
 
-  static constexpr double GO_TO_POINT_Y_KP{0.0};
+  static constexpr double GO_TO_POINT_Y_KP{40.0};
   static constexpr double GO_TO_POINT_Y_KI{0.0};
-  static constexpr double GO_TO_POINT_Y_KD{0.0};
+  static constexpr double GO_TO_POINT_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POINT_ROTATIONAL_KP{0.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
   static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KD{0.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
   static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{0.1};
