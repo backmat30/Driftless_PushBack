@@ -1,6 +1,7 @@
 #ifndef __MODULAR_HOLONOMIC_DRIVE_HPP__
 #define __MODULAR_HOLONOMIC_DRIVE_HPP__
 
+#include <cmath>
 #include <memory>
 #include <vector>
 
@@ -66,13 +67,10 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   /// desired motion of the robot (robot-centric)
   void setMotionVector(HolonomicMotionVector motion_vector) override;
 
-  /// @brief Sets the X velocity of the modular holonomic drive
-  /// @param x_velocity The desired X velocity
-  void setXVelocity(double x_velocity) override;
-
-  /// @brief Sets the Y velocity of the modular holonomic drive
-  /// @param y_velocity The desired Y velocity
-  void setYVelocity(double y_velocity) override;
+  /// @brief Sets the linear velocity of the modular holonomic drive
+  /// @param x_velocity The desired x velocity
+  /// @param y_velocity The desired y velocity
+  void setLinearVelocity(double x_velocity, double y_velocity) override;
 
   /// @brief Sets the angular velocity of the modular holonomic drive
   /// @param angular_velocity The desired angular velocity
@@ -85,11 +83,9 @@ class ModularHolonomicDrive : public IHolonomicDrive {
 
   /// @brief Sets the normalized X velocity of the modular holonomic drive
   /// @param x_velocity The desired normalized X velocity [-1, 1]
-  void setNormalizedXVelocity(double x_velocity) override;
-
-  /// @brief Sets the normalized Y velocity of the modular holonomic drive
   /// @param y_velocity The desired normalized Y velocity [-1, 1]
-  void setNormalizedYVelocity(double y_velocity) override;
+  void setNormalizedLinearVelocity(double x_velocity,
+                                   double y_velocity) override;
 
   /// @brief Sets the normalized angular velocity of the modular holonomic drive
   /// @param angular_velocity The desired normalized angular velocity [-1, 1]
