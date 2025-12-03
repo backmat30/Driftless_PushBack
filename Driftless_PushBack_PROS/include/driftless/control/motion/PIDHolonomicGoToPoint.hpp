@@ -15,6 +15,7 @@
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
+#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -58,6 +59,8 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   double m_distance_tolerance{};
 
   double m_velocity_tolerance{};
+
+  double m_angular_tolerance{};
 
   Point m_target_point{};
 
@@ -150,6 +153,10 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @brief Sets the velocity tolerance for reaching the target
   /// @param velocity_tolerance __double__ The velocity tolerance
   void setVelocityTolerance(double velocity_tolerance);
+
+  /// @brief Sets the angular tolerance for reaching the target
+  /// @param angular_tolerance __double__ The angular tolerance
+  void setAngularTolerance(double angular_tolerance);
 };
 }  // namespace motion
 }  // namespace control
