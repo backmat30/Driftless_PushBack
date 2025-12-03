@@ -55,17 +55,17 @@ namespace motion {
     /// @brief Sets the x PID for the control
     /// @param pid __PID&__ The x PID to use
     /// @return __PIDHolonomicGoToPointBuilder*__ Pointer to the builder
-    PIDHolonomicGoToPointBuilder* withXPid(const PID& pid);
+    PIDHolonomicGoToPointBuilder* withXPID(const PID& pid);
 
     /// @brief Sets the y PID for the control
     /// @param pid __PID&__ The y PID to use
     /// @return __PIDHolonomicGoToPointBuilder*__ Pointer to the builder
-    PIDHolonomicGoToPointBuilder* withYPid(const PID& pid);
+    PIDHolonomicGoToPointBuilder* withYPID(const PID& pid);
 
     /// @brief Sets the rotational PID for the control
     /// @param pid __PID&__ The rotational PID to use
     /// @return __PIDHolonomicGoToPointBuilder*__ Pointer to the builder
-    PIDHolonomicGoToPointBuilder* withRotationalPid(const PID& pid);
+    PIDHolonomicGoToPointBuilder* withRotationalPID(const PID& pid);
 
     /// @brief Sets the distance tolerance for the control
     /// @param tolerance __double__ The distance tolerance to use

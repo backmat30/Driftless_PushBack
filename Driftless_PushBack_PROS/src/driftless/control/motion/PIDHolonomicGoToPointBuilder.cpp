@@ -19,19 +19,19 @@ PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withTask(
   return this;
 }
 
-PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withXPid(
+PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withXPID(
     const PID& pid) {
   m_x_pid = pid;
   return this;
 }
 
-PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withYPid(
+PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withYPID(
     const PID& pid) {
   m_y_pid = pid;
   return this;
 }
 
-PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withRotationalPid(
+PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withRotationalPID(
     const PID& pid) {
   m_rotational_pid = pid;
   return this;
