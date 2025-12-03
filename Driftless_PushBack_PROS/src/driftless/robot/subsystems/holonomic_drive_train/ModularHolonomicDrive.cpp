@@ -16,7 +16,7 @@ void ModularHolonomicDrive::taskUpdate() {
 
   for (auto& module : m_modules) {
     if (module) {
-      module->setMotionVector(m_current_velocity);
+      module->setNormalizedMotionVector(m_current_velocity);
     }
   }
 
