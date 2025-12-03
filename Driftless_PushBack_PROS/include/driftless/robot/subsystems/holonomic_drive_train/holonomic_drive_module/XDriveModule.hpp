@@ -36,23 +36,12 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief The angle offset of the module in radians
   double m_angle_offset{};
 
-  /// @brief Maximum angular velocity of the robot in radians per second
-  double m_max_angular_velocity{};
-
-  /// @brief Maximum linear velocity of the robot in inches per second
-  double m_max_linear_velocity{};
-
  public:
   /// @brief Initializes the X-drive module
   void init() override;
 
   /// @brief Runs the X-drive module
   void run() override;
-
-  /// @brief Sets the motion vector of the X-drive module
-  /// @param motionVector __HolonomicMotionVector__ Vector representing the
-  /// desired motion of the robot (robot-centric)
-  void setMotionVector(HolonomicMotionVector motion_vector) override;
 
   /// @brief Sets the motion vector of the holonomic drive train with normalized
   /// vector
@@ -68,16 +57,6 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief Sets the angle offset of the X-drive module
   /// @param angleOffset __double__ The angle offset to be set
   void setAngleOffset(double angle_offset);
-
-  /// @brief Sets the maximum angular velocity of the robot
-  /// @param max_angular_velocity __double__ The maximum angular velocity to be
-  /// set
-  void setMaxAngularVelocity(double max_angular_velocity);
-
-  /// @brief Sets the maximum linear velocity of the robot
-  /// @param max_linear_velocity __double__ The maximum linear velocity to be
-  /// set
-  void setMaxLinearVelocity(double max_linear_velocity);
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train

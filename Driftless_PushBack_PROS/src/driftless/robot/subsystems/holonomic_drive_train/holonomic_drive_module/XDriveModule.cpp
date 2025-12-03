@@ -48,13 +48,5 @@ void XDriveModule::setMotors(hal::MotorGroup& motors) { m_motors = motors; }
 void XDriveModule::setAngleOffset(double angle_offset) {
   m_angle_offset = angle_offset;
 }
-
-void XDriveModule::setMaxAngularVelocity(double max_angular_velocity) {
-  m_max_angular_velocity = max_angular_velocity;
-}
-
-void XDriveModule::setMaxLinearVelocity(double max_linear_velocity) {
-  m_max_linear_velocity = max_linear_velocity;
-}
 }  // namespace
    // driftless::robot::subsystems::holonomic_drive_train::holonomic_drive_module
