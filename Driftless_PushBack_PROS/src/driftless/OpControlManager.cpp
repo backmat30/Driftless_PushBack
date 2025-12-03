@@ -38,6 +38,7 @@ void OpControlManager::run(
   op_control::intake::IntakeOperator intake_operator{controller, robot};
   op_control::hood::HoodOperator hood_operator{controller, robot};
   op_control::brake::BrakeOperator brake_operator{controller, robot};
+  op_control::rake::RakeOperator rake_operator{controller, robot};
 
   // variable to hold time for delayer
   uint32_t current_time{};
@@ -52,6 +53,7 @@ void OpControlManager::run(
     intake_operator.update(m_profile);
     hood_operator.update(m_profile);
     brake_operator.update(m_profile);
+    rake_operator.update(m_profile);
 
     // delay until 10 seconds after loop start
     // keeps time per loop consistent rather than delaying 10 seconds AFTER
