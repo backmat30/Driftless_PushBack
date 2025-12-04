@@ -74,7 +74,7 @@ void DirectIntake::taskUpdate() {
     m_mutex->give();
   }
 
-  if(m_delayer) {
+  if (m_delayer) {
     m_delayer->delay(TASK_DELAY);
   }
 }
@@ -90,7 +90,7 @@ void DirectIntake::init() {
 void DirectIntake::run() { m_task->start(&taskLoop, this); }
 
 void DirectIntake::intakeFront(bool reversed) {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
@@ -105,28 +105,29 @@ void DirectIntake::intakeFront(bool reversed) {
     m_intermediary_motors.setVoltage(voltage);
   }
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::intakeBack() {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
   m_running_forward = false;
+  m_front_motors.setVoltage(0.0);
   m_back_motors.setVoltage(12.0);
   m_vertical_motors.setVoltage(12.0);
   m_intermediary_motors.setVoltage(12.0);
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::stopIntake() {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
@@ -136,68 +137,68 @@ void DirectIntake::stopIntake() {
   m_intermediary_motors.setVoltage(0.0);
   m_vertical_motors.setVoltage(0.0);
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::startColorSort(alliance::EAlliance alliance) {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
   m_alliance = alliance;
   m_color_sort_paused = false;
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::pauseColorSort() {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
   m_color_sort_paused = true;
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::resumeColorSort() {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
   m_color_sort_paused = false;
 
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
 }
 
 void DirectIntake::deploy() {
-  if(m_mutex) {
+  if (m_mutex) {
     m_mutex->take();
   }
 
-   m_back_pistons.extend(); 
+  m_back_pistons.extend();
 
-   if(m_mutex) {
+  if (m_mutex) {
     m_mutex->give();
   }
-  }
+}
 
-void DirectIntake::retract() { 
-  if(m_mutex) {
+void DirectIntake::retract() {
+  if (m_mutex) {
     m_mutex->take();
   }
-  
-  m_back_pistons.retract(); 
 
-  if(m_mutex) {
+  m_back_pistons.retract();
+
+  if (m_mutex) {
     m_mutex->give();
   }
 }
