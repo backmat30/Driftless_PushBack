@@ -30,6 +30,10 @@ void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
       m_intake->intakeBack();
       break;
     }
+    case ESubsystemCommand::INTAKE_STOP_MOTION: {
+      m_intake->stopIntake();
+      break;
+    }
     case ESubsystemCommand::INTAKE_DEPLOY_ARMS: {
       m_intake->deploy();
       break;
