@@ -64,6 +64,7 @@ void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_RETRACT_ARMS);
+        
     if (run_front_intake_in) {
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::INTAKE,
