@@ -10,45 +10,23 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
   bool run_back_intake_in{m_controller->getDigital(back_intake_in)};
   bool toggle_back_arms{m_controller->getNewDigital(back_arms_toggle)};
 
-  double front_voltage{};
-  double intermediary_voltage{};
-  double back_voltage{};
-  double vertical_voltage{};
-
   if (run_back_intake_in) {
-    back_voltage = -12.0;
-    intermediary_voltage = 12.0;
-    vertical_voltage = 12.0;
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                         robot::subsystems::ESubsystemCommand::INTAKE_BACK_IN);
 
   } else if (run_front_intake_in) {
-    front_voltage = 12.0;
-    intermediary_voltage = 12.0;
-    back_voltage = -6.0;
-    vertical_voltage = 12.0;
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                         robot::subsystems::ESubsystemCommand::INTAKE_FRONT_IN);
 
   } else if (run_front_intake_out) {
-    front_voltage = -12.0;
-    back_voltage = -12.0;
-    intermediary_voltage = -12.0;
-    vertical_voltage = -12.0;
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
+  } else {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_STOP_MOTION);
   }
-
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_FRONT_VOLTAGE,
-      front_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_INTERMEDIARY_VOLTAGE,
-      intermediary_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE,
-      back_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_VERTICAL_VOLTAGE,
-      vertical_voltage);
 
   if (toggle_back_arms) {
     bool is_intake_deployed{*static_cast<bool*>(m_robot->getState(
@@ -74,54 +52,33 @@ void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
   bool run_front_intake_out{m_controller->getDigital(front_intake_out)};
   bool run_back_intake_in{m_controller->getDigital(back_intake_in)};
 
-  double front_voltage{};
-  double intermediary_voltage{};
-  double back_voltage{};
-  double vertical_voltage{};
-
-  if (run_front_intake_in) {
-    front_voltage = 12.0;
-    intermediary_voltage = 12.0;
-    back_voltage = -6.0;
-    vertical_voltage = 12.0;
-
-  } else if (run_front_intake_out) {
-    front_voltage = -12.0;
-    back_voltage = -12.0;
-    intermediary_voltage = -12.0;
-    vertical_voltage = -12.0;
-  }
-
   if (run_back_intake_in) {
-    back_voltage = -12.0;
-    intermediary_voltage = 12.0;
-    vertical_voltage = 12.0;
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                         robot::subsystems::ESubsystemCommand::INTAKE_BACK_IN);
 
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_DEPLOY_ARMS);
+
   } else {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_RETRACT_ARMS);
-  }
+    if (run_front_intake_in) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::INTAKE,
+          robot::subsystems::ESubsystemCommand::INTAKE_FRONT_IN);
 
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_FRONT_VOLTAGE,
-      front_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_INTERMEDIARY_VOLTAGE,
-      intermediary_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE,
-      back_voltage);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::INTAKE,
-      robot::subsystems::ESubsystemCommand::INTAKE_SET_VERTICAL_VOLTAGE,
-      vertical_voltage);
+    } else if (run_front_intake_out) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::INTAKE,
+          robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
+    } else {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::INTAKE,
+          robot::subsystems::ESubsystemCommand::INTAKE_STOP_MOTION);
+    }
+  }
 }
 
 IntakeOperator::IntakeOperator(
@@ -131,8 +88,8 @@ IntakeOperator::IntakeOperator(
 
 void IntakeOperator::update(
     const std::unique_ptr<profiles::IProfile>& profile) {
-  EIntakeControlMode control_mode{
-      static_cast<EIntakeControlMode>(profile->getControlMode(EControlType::INTAKE))};
+  EIntakeControlMode control_mode{static_cast<EIntakeControlMode>(
+      profile->getControlMode(EControlType::INTAKE))};
 
   EControllerDigital front_intake_in{
       profile->getDigitalControlMapping(EControl::INTAKE_FRONT_RUN_IN)};
