@@ -1,6 +1,8 @@
 #ifndef __I_INTAKE_HPP__
 #define __I_INTAKE_HPP__
 
+#include "driftless/alliance/EAlliance.hpp"
+
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
@@ -51,6 +53,14 @@ class IIntake {
 
   /// @brief Retracts the intake "arms"
   virtual void retract() = 0;
+
+  virtual void startColorSort(alliance::EAlliance alliance) = 0;
+
+  /// @brief Pauses the color sorting
+  virtual void pauseColorSort() = 0;
+
+  /// @brief Resumes the color sorting
+  virtual void resumeColorSort() = 0;
 
   /// @brief Checks if the intake arms are deployed
   /// @return __bool__ True of the arms are deployed, false otherwise
