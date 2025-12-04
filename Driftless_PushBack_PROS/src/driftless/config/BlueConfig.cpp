@@ -213,6 +213,14 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::Motor>(DRIVE_BACK_RIGHT_BOTTOM_PORT,
                                     DRIVE_GEARSET)};
 
+  // rtos
+  std::unique_ptr<rtos::IDelayer> drive_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::ITask> drive_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> drive_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
   // adapt the pros objects
   std::unique_ptr<io::IMotor> drive_front_left_top_motor{
       std::make_unique<pros_adapters::ProsV5Motor>(
@@ -256,8 +264,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_front_left_module_builder.withMotor(drive_front_left_top_motor)
               ->withMotor(drive_front_left_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_LEFT_ANGLE_OFFSET)
-              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
-              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -267,8 +273,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
               .withMotor(drive_front_right_top_motor)
               ->withMotor(drive_front_right_bottom_motor)
               ->withAngleOffset(DRIVE_FRONT_RIGHT_ANGLE_OFFSET)
-              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
-              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -277,8 +281,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_back_left_module_builder.withMotor(drive_back_left_top_motor)
               ->withMotor(drive_back_left_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_LEFT_ANGLE_OFFSET)
-              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
-              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   std::unique_ptr<robot::subsystems::holonomic_drive_train::
@@ -287,8 +289,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           drive_back_right_module_builder.withMotor(drive_back_right_top_motor)
               ->withMotor(drive_back_right_bottom_motor)
               ->withAngleOffset(DRIVE_BACK_RIGHT_ANGLE_OFFSET)
-              ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
-              ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
               ->build()};
 
   // build the drive train
@@ -300,6 +300,11 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
                       ->withModule(drive_front_right_module)
                       ->withModule(drive_back_left_module)
                       ->withModule(drive_back_right_module)
+                      ->withDelayer(drive_delayer)
+                      ->withTask(drive_task)
+                      ->withMutex(drive_mutex)
+                      ->withMaxLinearVelocity(DRIVE_MAX_LINEAR_VELOCITY)
+                      ->withMaxAngularVelocity(DRIVE_MAX_ANGULAR_VELOCITY)
                       ->build()};
 
   // create the subsystem
