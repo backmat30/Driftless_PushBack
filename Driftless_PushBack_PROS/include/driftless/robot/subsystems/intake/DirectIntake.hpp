@@ -61,14 +61,7 @@ class DirectIntake : public IIntake {
 
   alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
 
-  /// @brief Whether the intake is running automatically or accepting manual
-  /// control
-  bool m_manual_control{true};
-
   bool m_color_sort_paused{true};
-
-  /// @brief Updates the color sorting logic
-  void updateColorSort();
 
   /// @brief Performs all instance related updates
   void taskUpdate();
@@ -80,26 +73,22 @@ class DirectIntake : public IIntake {
   /// @brief Runs the intake
   void run() override;
 
-  /// @brief Sets the voltage of the front intake motors
-  /// @param voltage __double__ The voltage to use
-  void setFrontVoltage(double voltage) override;
+  /// @brief Runs the intake to intake from the front
+  /// @param voltage __double__ The voltage to run at
+  void intakeFront(double voltage) override;
 
-  /// @brief Sets the voltage of the intermediary motors
-  /// @param voltage __double__ The voltage to use
-  void setIntermediaryVoltage(double voltage) override;
+  /// @brief Runs the intake to intake from the back
+  /// @param voltage __double__ The voltage to run at
+  void intakeBack(double voltage) override;
 
-  /// @brief Sets the voltage of the back intake motors
-  /// @param voltage __double__ The voltage to use
-  void setBackVoltage(double voltage) override;
-
-  /// @brief Sets the voltage of the vertical transition motors
-  /// @param voltage __double__ The voltage to use
-  void setVerticalVoltage(double voltage) override;
-
+  /// @brief Starts the color sorting process
+  /// @param alliance __alliance::EAlliance__ The alliance color to sort for
   void startColorSort(alliance::EAlliance alliance) override;
 
+  /// @brief Pauses the color sorting
   void pauseColorSort() override;
 
+  /// @brief Resumes the color sorting
   void resumeColorSort() override;
 
   /// @brief Deploys the intake "arms"
