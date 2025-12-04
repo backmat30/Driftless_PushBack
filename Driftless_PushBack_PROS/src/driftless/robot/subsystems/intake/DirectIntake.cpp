@@ -65,6 +65,7 @@ void DirectIntake::init() {
   m_intermediary_motors.init();
   m_back_motors.init();
   m_vertical_motors.init();
+  m_color_sensor->init();
 }
 
 void DirectIntake::run() {}
