@@ -3,6 +3,7 @@
 
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/hal/PistonGroup.hpp"
+#include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
 
 /// @brief The namespace for driftless library code
@@ -25,6 +26,21 @@ namespace intake {
 /// @author Matthew Backman
 class DirectIntake : public IIntake {
  private:
+  static constexpr uint8_t TASK_DELAY{10};
+
+  /// @brief Constantly runs task updates
+  /// @param params __void*__ Pointer to the DirectIntake object being updated
+  static void taskLoop(void* params);
+
+  /// @brief The delayer for the intake
+  std::unique_ptr<rtos::IDelayer> m_delayer{};
+
+  /// @brief The mutex for the intake
+  std::unique_ptr<rtos::IMutex> m_mutex{};
+
+  /// @brief The task for the intake
+  std::unique_ptr<rtos::ITask> m_task{};
+
   /// @brief The motors used by the front intake
   hal::MotorGroup m_front_motors{};
 
@@ -39,6 +55,23 @@ class DirectIntake : public IIntake {
 
   /// @brief The pistons used by the back intake
   hal::PistonGroup m_back_pistons{};
+
+  /// @brief The color sensor used for color sorting
+  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+
+  alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
+
+  /// @brief Whether the intake is running automatically or accepting manual
+  /// control
+  bool m_manual_control{true};
+
+  bool m_color_sort_paused{true};
+
+  /// @brief Updates the color sorting logic
+  void updateColorSort();
+
+  /// @brief Performs all instance related updates
+  void taskUpdate();
 
  public:
   /// @brief Initializes the intake
@@ -62,6 +95,12 @@ class DirectIntake : public IIntake {
   /// @brief Sets the voltage of the vertical transition motors
   /// @param voltage __double__ The voltage to use
   void setVerticalVoltage(double voltage) override;
+
+  void startColorSort(alliance::EAlliance alliance) override;
+
+  void pauseColorSort() override;
+
+  void resumeColorSort() override;
 
   /// @brief Deploys the intake "arms"
   void deploy() override;
@@ -92,6 +131,24 @@ class DirectIntake : public IIntake {
   /// @brief Sets the motors used for the vertical transition to the hood
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setVerticalMotors(hal::MotorGroup& motors);
+
+  /// @brief Sets the color sensor used for color sorting
+  /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
+  /// sensor to use
+  void setColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Sets the delayer used by the intake
+  /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer to
+  /// use
+  void setDelayer(const std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Sets the mutex used by the intake
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex to use
+  void setMutex(std::unique_ptr<rtos::IMutex>& mutex);
+
+  /// @brief Sets the task used by the intake
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
+  void setTask(std::unique_ptr<rtos::ITask>& task);
 };
 }  // namespace intake
 }  // namespace subsystems
