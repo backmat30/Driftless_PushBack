@@ -33,12 +33,14 @@ class IIntake {
   virtual void run() = 0;
 
   /// @brief Runs the intake to intake from the front
-  /// @param voltage __double__ The voltage to run at
-  virtual void intakeFront(double voltage) = 0;
+  /// @param reversed __bool__ True for outtaking, false for intaking
+  virtual void intakeFront(bool reversed) = 0;
 
   /// @brief Runs the intake to intake from the back
-  /// @param voltage __double__ The voltage to run at
-  virtual void intakeBack(double voltage) = 0;
+  virtual void intakeBack() = 0;
+
+  /// @brief Stops all intake motors
+  virtual void stopIntake() = 0;
 
   /// @brief Deploys the intake "arms"
   virtual void deploy() = 0;

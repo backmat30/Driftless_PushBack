@@ -5,6 +5,9 @@
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
+#include "driftless/rtos/IDelayer.hpp"
+#include "driftless/rtos/IMutex.hpp"
+#include "driftless/rtos/ITask.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -27,6 +30,8 @@ namespace intake {
 class DirectIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
+
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{5.0};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
@@ -63,6 +68,14 @@ class DirectIntake : public IIntake {
 
   bool m_color_sort_paused{true};
 
+  bool m_running_forward{};
+
+  double m_latest_opposing_block_pos{__DBL_MIN__};
+
+  /// @brief Checks if there is a block of the opposing alliance in the intake
+  /// @return __bool__ True if there is an opposing block, false otherwise
+  bool hasOpposingBlock();
+
   /// @brief Performs all instance related updates
   void taskUpdate();
 
@@ -74,12 +87,14 @@ class DirectIntake : public IIntake {
   void run() override;
 
   /// @brief Runs the intake to intake from the front
-  /// @param voltage __double__ The voltage to run at
-  void intakeFront(double voltage) override;
+  /// @param reversed __bool__ True for outtaking, false for intaking
+  void intakeFront(bool reversed) override;
 
   /// @brief Runs the intake to intake from the back
-  /// @param voltage __double__ The voltage to run at
-  void intakeBack(double voltage) override;
+  void intakeBack() override;
+
+  /// @brief Stops all intake motors
+  void stopIntake() override;
 
   /// @brief Starts the color sorting process
   /// @param alliance __alliance::EAlliance__ The alliance color to sort for
