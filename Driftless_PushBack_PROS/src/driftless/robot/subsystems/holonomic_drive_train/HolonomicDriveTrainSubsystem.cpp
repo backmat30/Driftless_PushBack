@@ -33,6 +33,28 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
       m_drive_train->setNormalizedMotionVector(motion_vector);
       break;
     }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_LINEAR_VELOCITY: {
+      double x_velocity = va_arg(args, double);
+      double y_velocity = va_arg(args, double);
+      m_drive_train->setLinearVelocity(x_velocity, y_velocity);
+      break;
+    }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_ANGULAR_VELOCITY: {
+      double angular_velocity = va_arg(args, double);
+      m_drive_train->setAngularVelocity(angular_velocity);
+      break;
+    }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_NORMALIZED_LINEAR_VELOCITY: {
+      double normalized_x_velocity = va_arg(args, double);
+      double normalized_y_velocity = va_arg(args, double);
+      m_drive_train->setNormalizedLinearVelocity(normalized_x_velocity, normalized_y_velocity);
+      break;
+    }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_NORMALIZED_ANGULAR_VELOCITY: {
+      double normalized_angular_velocity = va_arg(args, double);
+      m_drive_train->setNormalizedAngularVelocity(normalized_angular_velocity);
+      break;
+    }
   }
 }
 void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {
