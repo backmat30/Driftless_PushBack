@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/intake/DirectIntake.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless::robot::subsystems::intake {
 void DirectIntake::taskLoop(void* params) {
   DirectIntake* intake = static_cast<DirectIntake*>(params);
@@ -41,6 +42,18 @@ void DirectIntake::taskUpdate() {
   if (m_mutex) {
     m_mutex->take();
   }
+
+  pros::screen::print(
+      pros::E_TEXT_MEDIUM_CENTER, 5, "dist: %d R: %7.2f B: %7.2f",
+      m_color_sensor->getProximity(), m_color_sensor->getRGB().red,
+      m_color_sensor->getRGB().blue);
+
+  if (m_latest_opposing_block_pos >= -10000) {
+    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "latest pos: %7.2f",
+                        m_latest_opposing_block_pos);
+  }
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "current pos: %7.2f",
+                      m_front_motors.getPosition());
 
   if (!m_color_sort_paused && m_running_forward && hasOpposingBlock()) {
     m_latest_opposing_block_pos = m_front_motors.getPosition();
