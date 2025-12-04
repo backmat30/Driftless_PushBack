@@ -34,7 +34,7 @@ void XDriveModule::setNormalizedMotionVector(
   double linear_voltage = linear_velocity * 12.0 * std::sqrt(2);
 
   // calculate the velocity contribution from angular velocity
-  double turn_voltage = motion_vector.angular_velocity * 12.0;
+  double turn_voltage = motion_vector.angular_velocity * -12.0;
 
   // Set the motor speeds (assuming a simple proportional control for
   // demonstration)
