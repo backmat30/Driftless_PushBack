@@ -87,7 +87,7 @@ void DirectIntake::init() {
   m_color_sensor->init();
 }
 
-void DirectIntake::run() {}
+void DirectIntake::run() { m_task->start(&taskLoop, this); }
 
 void DirectIntake::intakeFront(bool reversed) {
   if(m_mutex) {
