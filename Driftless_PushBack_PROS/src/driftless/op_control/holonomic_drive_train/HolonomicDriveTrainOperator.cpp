@@ -32,7 +32,7 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
       forward_input * std::sin(heading) + strafe_input * std::cos(heading);
 
   // Set angular velocity from turn input
-  motion_vector.angular_velocity = turn_input;
+  motion_vector.angular_velocity = -turn_input;
 
   // Send the motion vector to the holonomic drive train subsystem
   m_robot->sendCommand(robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
