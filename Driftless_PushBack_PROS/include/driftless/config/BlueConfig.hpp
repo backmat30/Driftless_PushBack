@@ -55,6 +55,7 @@
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
 #include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"

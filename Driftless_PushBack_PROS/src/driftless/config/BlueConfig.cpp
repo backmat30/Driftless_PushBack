@@ -95,7 +95,7 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
 
   // build the motion controls
   control::motion::PIDDriveStraightBuilder drive_straight_builder{};
-  control::motion::PIDTurnBuilder turn_builder{};
+  control::motion::PIDHolonomicTurnBuilder turn_builder{};
   control::motion::PIDHolonomicGoToPointBuilder go_to_point_builder{};
 
   std::unique_ptr<control::motion::IDriveStraight> drive_straight{
