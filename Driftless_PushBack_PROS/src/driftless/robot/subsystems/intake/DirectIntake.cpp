@@ -43,14 +43,16 @@ void DirectIntake::taskUpdate() {
   }
 
   if (!m_color_sort_paused && m_running_forward && hasOpposingBlock()) {
-    m_latest_opposing_block_pos = m_back_motors.getPosition();
+    m_latest_opposing_block_pos = m_front_motors.getPosition();
   }
-  if (m_back_motors.getPosition() >
-          m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 &&
-      m_back_motors.getPosition() >
+  if (m_front_motors.getPosition() >
+          m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
+      m_front_motors.getPosition() <
           m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
-    m_latest_opposing_block_pos = __DBL_MIN__;
-  } else {
+    m_latest_opposing_block_pos = -__DBL_MAX__;
+  } else if (m_front_motors.getPosition() <
+                 m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
+             m_running_forward) {
     m_back_motors.setVoltage(-12.0);
     m_intermediary_motors.setVoltage(-12.0);
   }
@@ -84,9 +86,9 @@ void DirectIntake::intakeFront(bool reversed) {
   m_front_motors.setVoltage(voltage);
   m_vertical_motors.setVoltage(voltage);
 
-  if (m_back_motors.getPosition() >
+  if (m_front_motors.getPosition() >
       m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END) {
-    m_back_motors.setVoltage(0);
+    m_back_motors.setVoltage(reversed ? 12.0 : 6.0);
     m_intermediary_motors.setVoltage(voltage);
   }
 
