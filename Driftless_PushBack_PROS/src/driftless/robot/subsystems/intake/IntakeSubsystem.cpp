@@ -18,24 +18,16 @@ void IntakeSubsystem::run() {
 
 void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
   switch (command_name) {
-    case ESubsystemCommand::INTAKE_SET_FRONT_VOLTAGE: {
-      double voltage{va_arg(args, double)};
-      m_intake->setFrontVoltage(voltage);
+    case ESubsystemCommand::INTAKE_FRONT_IN: {
+      m_intake->intakeFront(false);
       break;
     }
-    case ESubsystemCommand::INTAKE_SET_INTERMEDIARY_VOLTAGE: {
-      double voltage{va_arg(args, double)};
-      m_intake->setIntermediaryVoltage(voltage);
+    case ESubsystemCommand::INTAKE_FRONT_OUT: {
+      m_intake->intakeFront(true);
       break;
     }
-    case ESubsystemCommand::INTAKE_SET_BACK_VOLTAGE: {
-      double voltage{va_arg(args, double)};
-      m_intake->setBackVoltage(voltage);
-      break;
-    }
-    case ESubsystemCommand::INTAKE_SET_VERTICAL_VOLTAGE: {
-      double voltage{va_arg(args, double)};
-      m_intake->setVerticalVoltage(voltage);
+    case ESubsystemCommand::INTAKE_BACK_IN: {
+      m_intake->intakeBack();
       break;
     }
     case ESubsystemCommand::INTAKE_DEPLOY_ARMS: {
@@ -44,6 +36,19 @@ void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
     }
     case ESubsystemCommand::INTAKE_RETRACT_ARMS: {
       m_intake->retract();
+      break;
+    }
+    case ESubsystemCommand::INTAKE_START_COLOR_SORT: {
+      alliance::EAlliance alliance{va_arg(args, alliance::EAlliance)};
+      m_intake->startColorSort(alliance);
+      break;
+    }
+    case ESubsystemCommand::INTAKE_PAUSE_COLOR_SORT: {
+      m_intake->pauseColorSort();
+      break;
+    }
+    case ESubsystemCommand::INTAKE_RESUME_COLOR_SORT: {
+      m_intake->resumeColorSort();
       break;
     }
   }
