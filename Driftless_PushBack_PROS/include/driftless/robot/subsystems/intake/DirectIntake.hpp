@@ -31,7 +31,7 @@ class DirectIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
 
-  static constexpr double COLOR_SORT_DISTANCE_TO_END{5.0};
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{3.0};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
@@ -70,7 +70,7 @@ class DirectIntake : public IIntake {
 
   bool m_running_forward{};
 
-  double m_latest_opposing_block_pos{__DBL_MIN__};
+  double m_latest_opposing_block_pos{-__DBL_MAX__};
 
   /// @brief Checks if there is a block of the opposing alliance in the intake
   /// @return __bool__ True if there is an opposing block, false otherwise
