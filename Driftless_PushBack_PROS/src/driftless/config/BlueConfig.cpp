@@ -323,6 +323,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(INTAKE_BACK_ARMS_PORT)};
   std::unique_ptr<pros::Motor> pros_intake_vertical_motor_1{
       std::make_unique<pros::Motor>(INTAKE_VERTICAL_MOTOR_1_PORT)};
+  std::unique_ptr<pros::Optical> pros_intake_color_sensor{
+      std::make_unique<pros::Optical>(INTAKE_COLOR_SENSOR_PORT)};
 
   // adapt the pros objects
   std::unique_ptr<io::IMotor> intake_front_motor_1{
@@ -337,6 +339,15 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::unique_ptr<io::IMotor> intake_vertical_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(
           pros_intake_vertical_motor_1)};
+  std::unique_ptr<io::IColorSensor> intake_color_sensor{
+      std::make_unique<pros_adapters::ProsColorSensor>(
+          pros_intake_color_sensor)};
+
+  // rtos
+  std::unique_ptr<rtos::IDelayer> intake_delayer{
+      std::make_unique<pros_adapters::ProsDelayer>()};
+  std::unique_ptr<rtos::IMutex> intake_mutex{std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> intake_task{std::make_unique<pros_adapters::ProsTask>()};
 
   // build the intake
   robot::subsystems::intake::DirectIntakeBuilder intake_builder{};
@@ -347,6 +358,10 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           ->withBackMotor(intake_back_motor_1)
           ->withVerticalMotor(intake_vertical_motor_1)
           ->withBackPiston(intake_back_arms)
+          ->withColorSensor(intake_color_sensor)
+          ->withDelayer(intake_delayer)
+          ->withMutex(intake_mutex)
+          ->withTask(intake_task)
           ->build()};
 
   // build the subsystem
@@ -473,7 +488,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       rake_builder.withRakePiston(adapted_rake_piston)->build()};
 
   // create the subsystem
-  std::unique_ptr<robot::subsystems::ASubsystem> rake_subsystem{std::make_unique<robot::subsystems::rake::RakeSubsystem>(rake)};
+  std::unique_ptr<robot::subsystems::ASubsystem> rake_subsystem{
+      std::make_unique<robot::subsystems::rake::RakeSubsystem>(rake)};
 
   robot->addSubsystem(rake_subsystem);
 
