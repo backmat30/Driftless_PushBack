@@ -41,7 +41,7 @@ void PIDHolonomicGoToPoint::updateVelocity(double x_distance, double y_distance,
   double out_y = x_velocity * std::cos(current_heading) +
                  y_velocity * std::sin(current_heading);
 
-  setDriveMotionVector(out_x, out_y, -angular_velocity);
+  setDriveMotionVector(out_x, out_y, angular_velocity);
 }
 
 void PIDHolonomicGoToPoint::taskUpdate() {
