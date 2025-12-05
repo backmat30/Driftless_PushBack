@@ -118,7 +118,7 @@ void PIDTrajectoryFollower::updateVelocity(
   // pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7,
   //                     "xvel: %7.2f, yvel: %7.2f tvel: %7.2f", x_velocity,
   //                     y_velocity, angular_velocity);
-  setDriveMotionVector(out_x, out_y, -angular_velocity);
+  setDriveMotionVector(out_x, out_y, angular_velocity);
 }
 
 void PIDTrajectoryFollower::init() {

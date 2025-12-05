@@ -33,8 +33,7 @@ void OpControlManager::run(
   process_system->resumeAll();
 
   // set subsystems to driver control
-  op_control::holonomic_drive_train::HolonomicDriveTrainOperator
-      holonomic_drive_train_operator{controller, robot};
+  op_control::holonomic_drive_train::HolonomicDriveTrainOperator holonomic_drive_train_operator{controller, robot, control_system};
   op_control::intake::IntakeOperator intake_operator{controller, robot};
   op_control::hood::HoodOperator hood_operator{controller, robot};
   op_control::brake::BrakeOperator brake_operator{controller, robot};
@@ -49,7 +48,7 @@ void OpControlManager::run(
     current_time = m_clock->getTime();
 
     // updates all subsystems
-    holonomic_drive_train_operator.setDriveMotionVector(m_profile);
+    holonomic_drive_train_operator.update(m_profile);
     intake_operator.update(m_profile);
     hood_operator.update(m_profile);
     brake_operator.update(m_profile);
