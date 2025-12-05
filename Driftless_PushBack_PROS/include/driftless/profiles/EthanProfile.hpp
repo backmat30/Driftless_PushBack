@@ -8,8 +8,6 @@
 #include "driftless/op_control/EControlType.hpp"
 #include "driftless/op_control/EControllerAnalog.hpp"
 #include "driftless/op_control/EControllerDigital.hpp"
-#include "driftless/op_control/hood/EHoodControlMode.hpp"
-#include "driftless/op_control/intake/EIntakeControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
 namespace driftless {
@@ -20,11 +18,7 @@ class EthanProfile : public IProfile {
   static constexpr char PROFILE_NAME[]{"ETHAN"};
 
   /// @brief Map of control modes for each subsystem
-  std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
-      {op_control::EControlType::INTAKE,
-       static_cast<int>(op_control::intake::EIntakeControlMode::SMART_SPLIT)},
-      {op_control::EControlType::HOOD,
-       static_cast<int>(op_control::hood::EHoodControlMode::SMART_TOGGLE)}};
+  std::map<op_control::EControlType, int> CONTROL_MODE_MAP{};
 
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
@@ -37,27 +31,7 @@ class EthanProfile : public IProfile {
 
   /// @brief Maps subsystem controls to digital inputs
   const std::map<op_control::EControl, op_control::EControllerDigital>
-      DIGITAL_CONTROL_MAP{
-          {op_control::EControl::INTAKE_FRONT_RUN_IN,
-           op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
-          {op_control::EControl::INTAKE_FRONT_RUN_OUT,
-           op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
-          {op_control::EControl::INTAKE_BACK_RUN_IN,
-           op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
-          {op_control::EControl::HOOD_TOGGLE_RAISED,
-           op_control::EControllerDigital::BUTTON_B},
-          {op_control::EControl::HOOD_TOGGLE_GATE,
-           op_control::EControllerDigital::DPAD_DOWN},
-          {op_control::EControl::HOOD_TOGGLE_DESCORE,
-           op_control::EControllerDigital::TRIGGER_LEFT_TOP},
-          {op_control::EControl::HOOD_TOGGLE_BUMP,
-           op_control::EControllerDigital::BUTTON_Y},
-          {op_control::EControl::BRAKE_TOGGLE,
-           op_control::EControllerDigital::DPAD_RIGHT},
-          {op_control::EControl::HOLONOMIC_LOCK_90,
-           op_control::EControllerDigital::BUTTON_A},
-          {op_control::EControl::HOLONOMIC_LOCK_45,
-           op_control::EControllerDigital::BUTTON_X}};
+      DIGITAL_CONTROL_MAP{};
 
   /// @brief Maps startup configurations to their values
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{};

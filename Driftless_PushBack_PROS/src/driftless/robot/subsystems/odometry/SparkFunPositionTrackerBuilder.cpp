@@ -25,9 +25,9 @@ SparkFunPositionTrackerBuilder* SparkFunPositionTrackerBuilder::withTask(
   return this;
 }
 
-SparkFunPositionTrackerBuilder* SparkFunPositionTrackerBuilder::withCoprocessor(
-    std::shared_ptr<hal::Coprocessor>& coprocessor) {
-  m_coprocessor = coprocessor;
+SparkFunPositionTrackerBuilder* SparkFunPositionTrackerBuilder::withPositionSensor(
+    std::unique_ptr<io::IPositionSensor>& position_sensor) {
+  m_position_sensor = std::move(position_sensor);
   return this;
 }
 
@@ -56,7 +56,7 @@ std::unique_ptr<IPositionTracker> SparkFunPositionTrackerBuilder::build() {
   position_tracker->setDelayer(m_delayer);
   position_tracker->setMutex(m_mutex);
   position_tracker->setTask(m_task);
-  position_tracker->setCoprocessor(m_coprocessor);
+  position_tracker->setPositionSensor(m_position_sensor);
   position_tracker->setLocalXOffset(m_local_x_offset);
   position_tracker->setLocalYOffset(m_local_y_offset);
   position_tracker->setLocalThetaOffset(m_local_theta_offset);

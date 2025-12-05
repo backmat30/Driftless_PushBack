@@ -13,7 +13,7 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
-#include "driftless/hal/Coprocessor.hpp"
+#include "driftless/io/IPositionSensor.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -49,7 +49,7 @@ class SparkFunPositionTracker : public IPositionTracker {
 
   std::unique_ptr<rtos::ITask> m_task{};
 
-  std::shared_ptr<hal::Coprocessor> m_coprocessor{};
+  std::unique_ptr<io::IPositionSensor> m_position_sensor{};
 
   double m_local_x_offset{};
   double m_local_y_offset{};
@@ -122,10 +122,10 @@ class SparkFunPositionTracker : public IPositionTracker {
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to set
   void setTask(std::unique_ptr<rtos::ITask>& task);
 
-  /// @brief Sets the coprocessor
-  /// @param coprocessor __std::shared_ptr<hal::Coprocessor>&__ The coprocessor
-  /// to set
-  void setCoprocessor(std::shared_ptr<hal::Coprocessor>& coprocessor);
+  /// @brief Sets the position sensor
+  /// @param position_sensor __std::unique_ptr<io::IPositionSensor>&__ The
+  /// position sensor to set
+  void setPositionSensor(std::unique_ptr<io::IPositionSensor>& position_sensor);
 
   /// @brief Sets the local X offset of the sensor
   /// @param local_x_offset __double__ The local x offset

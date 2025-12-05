@@ -11,7 +11,7 @@ namespace op_control {
 
 /// @brief Enumerated class for controllable objects
 /// @author Matthew Backman
-enum EControlType { TANK_DRIVE_TRAIN, HOLONOMIC_DRIVE_TRAIN, INTAKE, HOOD };
+enum EControlType { TANK_DRIVE_TRAIN };
 }  // namespace op_control
 }  // namespace driftless
 #endif

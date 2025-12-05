@@ -14,7 +14,7 @@ INCDIR=$(ROOT)/include
 
 WARNFLAGS+=
 EXTRA_CFLAGS=
-EXTRA_CXXFLAGS+= -I$(INCDIR)
+EXTRA_CXXFLAGS=
 
 # Set to 1 to enable hot/cold linking
 USE_PACKAGE:=1
@@ -28,7 +28,7 @@ IS_LIBRARY:=0
 # TODO: CHANGE THIS! 
 # Be sure that your header files are in the include directory inside of a folder with the
 # same name as what you set LIBNAME to below.
-LIBNAME:=driftless
+LIBNAME:=libbest
 VERSION:=1.0.0
 # EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/unpublishedfile.c
 # this line excludes opcontrol.c and similar files
