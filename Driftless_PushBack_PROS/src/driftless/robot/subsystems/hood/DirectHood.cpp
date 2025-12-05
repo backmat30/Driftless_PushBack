@@ -63,6 +63,10 @@ void DirectHood::toggleBump() {
   m_bump_pistons.toggleState();
 }
 
+void DirectHood::setCurrentLimit(double amps) {
+  m_motors.setCurrentLimit(amps);
+}
+
 bool DirectHood::isOpen() {
   return m_gate_open;
 }
