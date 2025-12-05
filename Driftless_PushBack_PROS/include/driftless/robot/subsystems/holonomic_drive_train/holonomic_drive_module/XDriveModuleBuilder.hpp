@@ -35,6 +35,12 @@ class XDriveModuleBuilder {
   /// @brief The offset angle of the module
   double m_angle_offset{};
 
+  /// @brief The maximum angular velocity of the robot
+  double m_max_angular_velocity{};
+
+  /// @brief The maximum linear velocity of the robot
+  double m_max_linear_velocity{};
+
  public:
   /// @brief Adds a motor to the module
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
@@ -45,6 +51,16 @@ class XDriveModuleBuilder {
   /// @param angle_offset __double__ The angle offset in radians
   /// @return __XDriveModuleBuilder*__ A pointer to this builder
   XDriveModuleBuilder* withAngleOffset(double angle_offset);
+
+  /// @brief Sets the max angular velocity of the robot
+  /// @param max_angular_velocity __double__ The max angular velocity in radians
+  /// @return __XDriveModuleBuilder*__ A pointer to this builder
+  XDriveModuleBuilder* withMaxAngularVelocity(double max_angular_velocity);
+
+  /// @brief Sets the max linear velocity of the robot
+  /// @param max_linear_velocity __double__ The max linear velocity in inches
+  /// @return __XDriveModuleBuilder*__ A pointer to this builder
+  XDriveModuleBuilder* withMaxLinearVelocity(double max_linear_velocity);
 
   /// @brief Builds the XDriveModule
   /// @return __std::unique_ptr<IHolonomicDriveModule>__ A unique pointer to the

@@ -16,7 +16,7 @@ void SparkFunPositionTracker::taskUpdate() {
 
   updatePosition();
   uint64_t current_time{m_clock->getTime()};
-  if (current_time - start_time < TASK_DELAY) {
+  if(current_time - start_time < TASK_DELAY) {
     m_delayer->delay(TASK_DELAY - (current_time - start_time));
   }
 }
@@ -72,14 +72,8 @@ void SparkFunPositionTracker::updatePosition() {
 Position SparkFunPositionTracker::fetchRawPosition() {
   Position raw_position{};
 
-  if (m_coprocessor) {
-    raw_position.x = static_cast<double>(
-        m_coprocessor->getValue<float>(serial_protocol::ESerialKey::XPOS));
-    raw_position.y = static_cast<double>(
-        m_coprocessor->getValue<float>(serial_protocol::ESerialKey::YPOS));
-    raw_position.theta = static_cast<double>(m_coprocessor->getValue<float>(
-                             serial_protocol::ESerialKey::THETA)) *
-                         M_PI / 180.0;
+  if (m_position_sensor) {
+    raw_position = m_position_sensor->getPosition();
   }
   return raw_position;
 }
@@ -89,16 +83,9 @@ void SparkFunPositionTracker::sendLocalOffset() {
     m_mutex->take();
   }
 
-  if (m_coprocessor) {
-    m_coprocessor->addPacketToPackage<float>(
-        serial_protocol::ESerialKey::XPOS,
-        static_cast<float>(m_local_x_offset));
-    m_coprocessor->addPacketToPackage<float>(
-        serial_protocol::ESerialKey::YPOS,
-        static_cast<float>(m_local_y_offset));
-    m_coprocessor->addPacketToPackage<float>(
-        serial_protocol::ESerialKey::THETA,
-        static_cast<float>(m_local_theta_offset * 180 / M_PI));
+  if (m_position_sensor) {
+    m_position_sensor->setLocalOffset(m_local_x_offset, m_local_y_offset,
+                                      m_local_theta_offset * 180 / M_PI);
   }
 
   if (m_mutex) {
@@ -106,29 +93,9 @@ void SparkFunPositionTracker::sendLocalOffset() {
   }
 }
 
-void SparkFunPositionTracker::init() {
-  m_coprocessor->init();
-  m_coprocessor->addPacketToPackage<char>(
-      serial_protocol::ESerialKey::CALIBRATE_ODOM, 0);
-  m_delayer->delay(1000);
+void SparkFunPositionTracker::init() { sendLocalOffset(); }
 
-  sendLocalOffset();
-
-  m_coprocessor->addRecurringPacket<serial_protocol::ESerialKey>(
-      serial_protocol::ESerialKey::REQUEST_PACKET,
-      serial_protocol::ESerialKey::XPOS);
-  m_coprocessor->addRecurringPacket<serial_protocol::ESerialKey>(
-      serial_protocol::ESerialKey::REQUEST_PACKET,
-      serial_protocol::ESerialKey::YPOS);
-  m_coprocessor->addRecurringPacket<serial_protocol::ESerialKey>(
-      serial_protocol::ESerialKey::REQUEST_PACKET,
-      serial_protocol::ESerialKey::THETA);
-}
-
-void SparkFunPositionTracker::run() {
-  m_task->start(taskLoop, this);
-  m_coprocessor->run();
-}
+void SparkFunPositionTracker::run() { m_task->start(taskLoop, this); }
 
 void SparkFunPositionTracker::setPosition(Position position) {
   setX(position.x);
@@ -167,9 +134,9 @@ void SparkFunPositionTracker::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
 }
 
-void SparkFunPositionTracker::setCoprocessor(
-    std::shared_ptr<hal::Coprocessor>& coprocessor) {
-  m_coprocessor = coprocessor;
+void SparkFunPositionTracker::setPositionSensor(
+    std::unique_ptr<io::IPositionSensor>& position_sensor) {
+  m_position_sensor = std::move(position_sensor);
 }
 
 void SparkFunPositionTracker::setLocalXOffset(double local_x_offset) {

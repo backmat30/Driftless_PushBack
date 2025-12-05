@@ -20,11 +20,11 @@ namespace driftless {
         /// @brief Represents a motion vector for a holonomic drive train
         /// @author Matthew Backman
         struct HolonomicMotionVector {
-          /// @brief The x-component of the motion vector (strafe)
-          double x{};
+          /// @brief The linear component of the motion vector (translation)
+          double magnitude{};
 
-          /// @brief The y-component of the motion vector (forward)
-          double y{};
+          /// @brief The direction of the motion vector (angle in radians)
+          double direction{};
 
           /// @brief The angular component of the motion vector (rotation)
           double angular_velocity{};

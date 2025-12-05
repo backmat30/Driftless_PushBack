@@ -20,16 +20,8 @@
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 
-/// @brief Namespace for driftless library code
-/// @author Matthew Backman
 namespace driftless {
-
-/// @brief Namespace for autonomous routines
-/// @author Matthew Backman
 namespace auton {
-
-/// @brief Interface for a generic autonomous routine
-/// @author Matthew Backman
 class IAuton {
  public:
   /// @brief Deletes the auton
@@ -47,7 +39,8 @@ class IAuton {
   /// process system used
   virtual void init(
       std::shared_ptr<driftless::robot::Robot>& robot,
-      std::shared_ptr<driftless::control::ControlSystem>& control_system) = 0;
+      std::shared_ptr<driftless::control::ControlSystem>& control_system,
+      std::shared_ptr<driftless::processes::ProcessSystem>& process_system) = 0;
 
   /// @brief Runs the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
@@ -62,6 +55,7 @@ class IAuton {
   virtual void run(
       std::shared_ptr<driftless::robot::Robot>& robot,
       std::shared_ptr<driftless::control::ControlSystem>& control_system,
+      std::shared_ptr<driftless::processes::ProcessSystem>& process_system,
       std::shared_ptr<driftless::alliance::IAlliance>& alliance,
       std::shared_ptr<rtos::IClock>& clock,
       std::unique_ptr<rtos::IDelayer>& delayer) = 0;

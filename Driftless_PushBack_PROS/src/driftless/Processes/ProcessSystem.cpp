@@ -16,15 +16,11 @@ bool ProcessSystem::removeProcess(EProcess process_name) {
 }
 
 void ProcessSystem::pause(EProcess process_name) {
-  if (m_processes.contains(process_name)) {
-    m_processes.at(process_name)->pause();
-  }
+  m_processes.at(process_name)->pause();
 }
 
 void ProcessSystem::resume(EProcess process_name) {
-  if (m_processes.contains(process_name)) {
-    m_processes.at(process_name)->resume();
-  }
+  m_processes.at(process_name)->resume();
 }
 
 void ProcessSystem::pauseAll() {
@@ -56,9 +52,7 @@ void ProcessSystem::sendCommand(EProcess process_name,
   va_list args;
   va_start(args, command_name);
 
-  if (m_processes.contains(process_name)) {
-    m_processes.at(process_name)->command(command_name, args);
-  }
+  m_processes.at(process_name)->command(command_name, args);
 
   va_end(args);
 }
@@ -66,9 +60,7 @@ void ProcessSystem::sendCommand(EProcess process_name,
 void* ProcessSystem::getState(EProcess process_name, EProcessState state_name) {
   void* result{nullptr};
 
-  if (m_processes.contains(process_name)) {
-    result = m_processes.at(process_name)->state(state_name);
-  }
+  result = m_processes.at(process_name)->state(state_name);
 
   return result;
 }
