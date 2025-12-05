@@ -137,12 +137,26 @@ void HoodOperator::updateHoodRollers(EControllerDigital spin_forwards_front,
                              m_controller->getDigital(spin_forwards_back)};
   bool spin_backwards_pressed{m_controller->getDigital(spin_backwards)};
 
+  bool is_hood_open{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::HOOD,
+                        robot::subsystems::ESubsystemState::HOOD_IS_OPEN))};
+
   if (spin_forwards_pressed) {
     setMotorVoltage(12.0);
-  } else if (spin_backwards_pressed) {
-    setMotorVoltage(-12.0);
+    if (!is_hood_open) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
+    }
   } else {
-    setMotorVoltage(0.0);
+    m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
+    if (spin_backwards_pressed) {
+      setMotorVoltage(-12.0);
+    } else {
+      setMotorVoltage(0.0);
+    }
   }
 }
 
@@ -151,7 +165,8 @@ HoodOperator::HoodOperator(const std::shared_ptr<io::IController>& controller,
     : m_controller{controller}, m_robot{robot} {}
 
 void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
-  EHoodControlMode control_mode{static_cast<EHoodControlMode>(profile->getControlMode(EControlType::HOOD))};
+  EHoodControlMode control_mode{static_cast<EHoodControlMode>(
+      profile->getControlMode(EControlType::HOOD))};
 
   EControllerDigital spin_forwards_front{profile->getDigitalControlMapping(
       op_control::EControl::INTAKE_FRONT_RUN_IN)};
