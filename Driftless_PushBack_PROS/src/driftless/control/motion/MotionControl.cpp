@@ -81,7 +81,8 @@ void MotionControl::command(EControlCommand command_name, va_list& args) {
     double velocity{va_arg(args, double)};
     double x{va_arg(args, double)};
     double y{va_arg(args, double)};
-    Point point{x, y};
+    double theta{va_arg(args, double)};
+    Point point{x, y, theta};
 
     m_go_to_point->goToPoint(robot, velocity, point);
 

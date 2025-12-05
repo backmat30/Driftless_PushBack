@@ -30,15 +30,10 @@ class OdometrySubsystem : public ASubsystem {
   // the position tracker being used
   std::unique_ptr<IPositionTracker> m_position_tracker{};
 
-  // the position resetter being used
-  std::unique_ptr<IPositionResetter> m_position_resetter{};
-
  public:
   /// @brief Constructor
   /// @param position_tracker __std::unique_ptr<IPositionTracker>&__ The position tracker to use
-  /// @param position_resetter __std::unique_ptr<IPositionResetter>&__ The position resetter to use
-  OdometrySubsystem(std::unique_ptr<IPositionTracker>& position_tracker,
-                    std::unique_ptr<IPositionResetter>& position_resetter);
+  OdometrySubsystem(std::unique_ptr<IPositionTracker>& position_tracker);
 
   /// @brief Initializes the subsystem
   void init() override;
