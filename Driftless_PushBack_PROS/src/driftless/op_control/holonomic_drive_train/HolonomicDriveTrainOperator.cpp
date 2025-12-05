@@ -45,7 +45,7 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
     m_control_system->pause();
   }
 
-  if (lock_direction != LockDirection::NONE) {
+  if (lock_direction == LockDirection::NONE) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
         robot::subsystems::ESubsystemCommand::
@@ -61,41 +61,46 @@ void HolonomicDriveTrainOperator::updateHeadingLock(
   bool turn_target_reached{*static_cast<bool*>(m_control_system->getState(
       control::EControl::MOTION, control::EControlState::TURN_TARGET_REACHED))};
 
+  robot::subsystems::odometry::Position current_pos{
+      *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
+          robot::subsystems::ESubsystem::ODOMETRY,
+          robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION))};
+  double current_angle = current_pos.theta;
+
+  double quadrant_angle = current_angle;
+
+  while (quadrant_angle >= M_PI / 2.0) {
+    quadrant_angle -= M_PI / 2.0;
+  }
+  while (quadrant_angle < 0) {
+    quadrant_angle += M_PI / 2.0;
+  }
+
+  double angle_difference{};
+
   if (start_lock_90) {
     lock_direction = LockDirection::NEAREST_90;
+    turn_target_reached = false;
+    angle_difference = (quadrant_angle > M_PI / 4) ? M_PI / 2 - quadrant_angle
+                                                   : -quadrant_angle;
+    target_angle = current_angle + angle_difference;
+    m_control_system->sendCommand(control::EControl::MOTION,
+                                  control::EControlCommand::TURN_TO_ANGLE,
+                                  m_robot, M_PI * 3.0, target_angle,
+                                  control::motion::ETurnDirection::AUTO);
   } else if (start_lock_45) {
     lock_direction = LockDirection::NEAREST_45;
+    turn_target_reached = false;
+    angle_difference = M_PI / 4 - quadrant_angle;
+    target_angle = current_angle + angle_difference;
+    m_control_system->sendCommand(control::EControl::MOTION,
+                                  control::EControlCommand::TURN_TO_ANGLE,
+                                  m_robot, M_PI * 3.0, target_angle,
+                                  control::motion::ETurnDirection::AUTO);
   }
 
   if (lock_direction != LockDirection::NONE && turn_target_reached) {
-    robot::subsystems::odometry::Position current_pos{
-        *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
-            robot::subsystems::ESubsystem::ODOMETRY,
-            robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION))};
-    double current_angle = current_pos.theta;
-
-    double quadrant_angle = current_angle;
-
-    while (quadrant_angle >= M_PI / 2.0) {
-      quadrant_angle -= M_PI / 2.0;
-    }
-    while (quadrant_angle < 0) {
-      quadrant_angle += M_PI / 2.0;
-    }
-
-    double angle_difference{};
-    switch (lock_direction) {
-      case LockDirection::NEAREST_90:
-        angle_difference =
-            (quadrant_angle > 45) ? 90 - quadrant_angle : -quadrant_angle;
-        break;
-      case LockDirection::NEAREST_45:
-        angle_difference = 45 - quadrant_angle;
-        break;
-    }
-    if (angle_difference < M_PI / 20.0) {
-      double target_angle = current_angle + angle_difference;
-
+    if (std::abs(target_angle - current_angle) > M_PI / 45.0) {
       m_control_system->sendCommand(control::EControl::MOTION,
                                     control::EControlCommand::TURN_TO_ANGLE,
                                     m_robot, M_PI * 3.0, target_angle,

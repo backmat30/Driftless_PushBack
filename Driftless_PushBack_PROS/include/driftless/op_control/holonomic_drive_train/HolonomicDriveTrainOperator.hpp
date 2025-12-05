@@ -48,6 +48,8 @@ class HolonomicDriveTrainOperator {
 
   LockDirection lock_direction{LockDirection::NONE};
 
+  double target_angle{};
+
   /// @brief Updates the drive motion vector based on controller inputs
   /// @param forward __EControllerAnalog__ The analog input for forward/backward
   /// @param strafe __EControllerAnalog__ The analog input for left/right
