@@ -69,6 +69,14 @@ void ProsV5Motor::setVoltage(double volts) {
   if (m_motor) m_motor->move_voltage(millivolts);
 }
 
+void ProsV5Motor::setCurrentLimit(double amps) {
+  int milliamps{static_cast<int>(amps * CURRENT_CONVERSION)};
+  milliamps = std::min(milliamps, 0);
+  milliamps = std::max(milliamps, MAX_MILLIAMPS);
+
+  if(m_motor) m_motor->set_current_limit(milliamps);
+}
+
 void ProsV5Motor::setPosition(double position) {
   position_offset = position;
   m_motor->tare_position();

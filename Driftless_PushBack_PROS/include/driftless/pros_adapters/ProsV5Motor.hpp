@@ -68,11 +68,15 @@ class ProsV5Motor : public io::IMotor {
    */
   static constexpr double VOLTAGE_CONVERSION{1000};
 
+  static constexpr double CURRENT_CONVERSION{1000};
+
   /**
    * @brief The maximum output to the motor in millivolts
    *
    */
   static constexpr int MAX_MILLIVOLTS{12000};
+
+  static constexpr int MAX_MILLIAMPS{2500};
 
   /**
    * @brief The motor being adapted
@@ -92,7 +96,7 @@ class ProsV5Motor : public io::IMotor {
    *
    * @param motor __std::unique_ptr<pros::Motor>&__ The motor being adapted
    */
-  ProsV5Motor(std::unique_ptr<pros::Motor> &motor);
+  ProsV5Motor(std::unique_ptr<pros::Motor>& motor);
 
   /**
    * @brief Initializes the motor
@@ -152,6 +156,10 @@ class ProsV5Motor : public io::IMotor {
    * @param volts __double__ The voltage input in Volts
    */
   void setVoltage(double volts) override;
+
+  /// @brief Sets the max current of the motor in amps
+  /// @param amps __double__ The desired current limit
+  void setCurrentLimit(double amps) override;
 
   /**
    * @brief Set the position of the motor in radians
