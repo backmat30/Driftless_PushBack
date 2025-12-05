@@ -140,9 +140,9 @@ class BlueConfig : public IConfig {
   static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
-  static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{0.1};
+  static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};
   static constexpr double MOTION_LINEAR_DISTANCE_TOLERANCE{1.0};
-  static constexpr double MOTION_ANGULAR_DISTANCE_TOLERANCE{0.1};
+  static constexpr double MOTION_ANGULAR_DISTANCE_TOLERANCE{M_PI / 45};
 
   // #### PORT NUMBERS ####
 
