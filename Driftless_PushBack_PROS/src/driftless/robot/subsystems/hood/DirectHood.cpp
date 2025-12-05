@@ -63,6 +63,10 @@ void DirectHood::toggleBump() {
   m_bump_pistons.toggleState();
 }
 
+bool DirectHood::isOpen() {
+  return m_gate_open;
+}
+
 void DirectHood::setMotors(hal::MotorGroup& motors) {
   m_motors = motors;
 }

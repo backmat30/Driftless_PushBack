@@ -77,6 +77,10 @@ class IHood {
   /// @brief Checks if the hood bump is extended
   /// @return __bool__ True if the hood is bumped up, false otherwise
   virtual bool isBumped() = 0;
+
+  /// @brief Checks if the hood door is open
+  /// @return __bool__ True if the door is open, false otherwise
+  virtual bool isOpen() = 0;
 };
 }  // namespace hood
 }  // namespace subsystems

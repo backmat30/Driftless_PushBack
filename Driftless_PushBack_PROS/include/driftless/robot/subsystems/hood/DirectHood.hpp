@@ -103,6 +103,10 @@ class DirectHood : public IHood {
   /// @return __bool__ True if the hood is bumped up, false otherwise
   bool isBumped() override;
 
+  /// @brief Checks if the hood door is open
+  /// @return __bool__ True if the door is open, false otherwise
+  bool isOpen() override;
+
   /// @brief Sets the motors used by the hood
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setMotors(hal::MotorGroup& motors);

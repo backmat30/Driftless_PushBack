@@ -78,6 +78,9 @@ void* HoodSubsystem::state(ESubsystemState state_name) {
       state = new bool{m_hood->isBumped()};
       break;
     }
+    case ESubsystemState::HOOD_IS_OPEN: {
+      state = new bool{m_hood->isOpen()};
+    }
   }
 
   return state;
