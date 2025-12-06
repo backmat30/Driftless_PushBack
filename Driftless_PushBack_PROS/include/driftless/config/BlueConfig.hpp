@@ -158,12 +158,12 @@ class BlueConfig : public IConfig {
 
   static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{11};
   static constexpr int DRIVE_FRONT_LEFT_BOTTOM_PORT{-12};
-  static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{14};
+  static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{15};
   static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
-  static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
-  static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-19};
-  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
-  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-18};
+  static constexpr int DRIVE_BACK_LEFT_TOP_PORT{19};
+  static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-20};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{18};
+  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-17};
 
   // ## INTAKE MOTORS ##
 
