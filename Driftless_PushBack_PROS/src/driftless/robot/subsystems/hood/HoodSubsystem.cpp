@@ -63,6 +63,11 @@ void HoodSubsystem::command(ESubsystemCommand command_name, va_list& args) {
       m_hood->toggleBump();
       break;
     }
+    case ESubsystemCommand::HOOD_SET_CURRENT_LIMIT: {
+      double amps{va_arg(args, double)};
+      m_hood->setCurrentLimit(amps);
+      break;
+    }
   }
 }
 
@@ -76,6 +81,10 @@ void* HoodSubsystem::state(ESubsystemState state_name) {
     }
     case ESubsystemState::HOOD_IS_BUMPED: {
       state = new bool{m_hood->isBumped()};
+      break;
+    }
+    case ESubsystemState::HOOD_IS_OPEN: {
+      state = new bool{m_hood->isOpen()};
       break;
     }
   }

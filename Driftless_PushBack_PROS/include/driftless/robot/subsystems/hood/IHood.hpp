@@ -70,6 +70,10 @@ class IHood {
   /// @brief Toggles the hood bump
   virtual void toggleBump() = 0;
 
+  /// @brief Sets the current limit of the rollers
+  /// @param amps __double__ The limit in amps
+  virtual void setCurrentLimit(double amps) = 0;
+
   /// @brief Checks if the hood is raised
   /// @return __bool__ True if the hood is raised, false otherwise
   virtual bool isRaised() = 0;
@@ -77,6 +81,10 @@ class IHood {
   /// @brief Checks if the hood bump is extended
   /// @return __bool__ True if the hood is bumped up, false otherwise
   virtual bool isBumped() = 0;
+
+  /// @brief Checks if the hood door is open
+  /// @return __bool__ True if the door is open, false otherwise
+  virtual bool isOpen() = 0;
 };
 }  // namespace hood
 }  // namespace subsystems
