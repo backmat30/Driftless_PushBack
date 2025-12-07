@@ -5,10 +5,10 @@
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
+#include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
-#include "driftless/rtos/IClock.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -47,8 +47,6 @@ class DirectIntake : public IIntake {
   /// @brief The task for the intake
   std::unique_ptr<rtos::ITask> m_task{};
 
-  std::unique_ptr<rtos::IClock> m_clock{};
-
   /// @brief The motors used by the front intake
   hal::MotorGroup m_front_motors{};
 
@@ -73,9 +71,15 @@ class DirectIntake : public IIntake {
 
   bool m_running_forward{};
 
+  bool m_has_first_matchloader_block{};
+
+  bool m_has_second_matchloader_block{};
+
   bool m_back_intake_to_hood{};
 
-  double m_latest_empty_intake_time{};
+  double m_first_matchloader_block_pos{-__DBL_MAX__};
+
+  double m_second_matchloader_block_pos{-__DBL_MAX__};
 
   double m_latest_opposing_block_pos{-__DBL_MAX__};
 
@@ -99,6 +103,9 @@ class DirectIntake : public IIntake {
 
   /// @brief Runs the intake to intake from the back
   void intakeBack() override;
+
+  /// @brief Intakes from the back straight to the hood
+  void intakeBackToHood() override;
 
   /// @brief Stops all intake motors
   void stopIntake() override;
@@ -160,10 +167,6 @@ class DirectIntake : public IIntake {
   /// @brief Sets the task used by the intake
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
   void setTask(std::unique_ptr<rtos::ITask>& task);
-
-  /// @brief Sets the clock used by the intake
-  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
-  void setClock(const std::unique_ptr<rtos::IClock>& clock);
 };
 }  // namespace intake
 }  // namespace subsystems
