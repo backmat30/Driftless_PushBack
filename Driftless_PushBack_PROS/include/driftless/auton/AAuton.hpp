@@ -9,6 +9,7 @@
 #include "driftless/control/EControl.hpp"
 #include "driftless/control/EControlCommand.hpp"
 #include "driftless/control/EControlState.hpp"
+#include "driftless/control/motion/ETurnDirection.hpp"
 #include "driftless/control/trajectory/QuinticBezierSplinePath.hpp"
 #include "driftless/control/trajectory/trajectory_generator/TrajectoryGenerator.hpp"
 #include "driftless/control/trajectory/trajectory_generator/TrajectoryProcessor.hpp"
@@ -41,8 +42,27 @@ namespace auton {
 /// @brief Abstract class for a generic autonomous routine
 /// @author Matthew Backman
 class AAuton {
+ private:
+  static constexpr uint8_t LOOP_DELAY{10};
+
+  std::string m_name{};
+
  protected:
+  std::shared_ptr<robot::Robot> m_robot{};
+
+  std::shared_ptr<control::ControlSystem> m_control_system{};
+
+  std::shared_ptr<alliance::IAlliance> m_alliance{};
+
+  std::shared_ptr<rtos::IClock> m_clock{};
+
+  std::shared_ptr<rtos::IDelayer> m_delayer{};
+
   uint32_t getTime();
+
+  void delay(uint32_t delay_time);
+
+  void delayUntil(uint32_t time);
 
   robot::subsystems::odometry::Position getOdomPosition();
 
@@ -56,15 +76,66 @@ class AAuton {
   void waitForTrajectory(control::trajectory::TrajectoryPoint& endpoint,
                          double tolerance, uint32_t timeout);
 
-  void stopMotion();
+  void goToPoint(control::Point target_point, double target_velocity);
+
+  bool goToPointTargetReached();
+
+  void waitForGoToPoint(control::Point target_point, double tolerance,
+                        uint32_t timeout);
+
+  void turnToPoint(control::Point target_point, double target_velocity,
+                   control::motion::ETurnDirection direction =
+                       control::motion::ETurnDirection::AUTO);
+
+  void turnToHeading(double heading,
+                     double target_velocity, control::motion::ETurnDirection
+                         direction = control::motion::ETurnDirection::AUTO);
+
+  bool turnTargetReached();
+
+  void waitForTurnToPoint(control::Point target_point, double tolerance,
+                          uint32_t timeout);
+
+  void waitForTurnToAngle(double heading, double tolerance, uint32_t timeout);
+
+   void stopMotion();
+
+  void intakeFront();
+
+  void outtakeFront();
+
+  void intakeBack();
+
+  void intakeBackToHood();
+
+  void deployBackIntakeArms();
+
+  void retractBackIntakeArms();
+
+  void hoodRaise();
+
+  void hoodBumpUp();
+
+  void hoodLower();
+
+  void hoodOpenDoor();
+
+  void hoodCloseDoor();
+
+  void deployRake();
+
+  void retractRake();
 
  public:
+  /// @brief Constructs a new AAuton object
+  /// @param name __std::string__ The name of the auton
+  AAuton(std::string name);
   /// @brief Deletes the auton
   virtual ~AAuton() = default;
 
   /// @brief Gets the name of the auton
   /// @return __std::string__ The name of the auton
-  virtual std::string getName() = 0;
+  std::string getName();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
