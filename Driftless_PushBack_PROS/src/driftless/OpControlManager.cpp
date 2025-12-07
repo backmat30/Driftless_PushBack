@@ -32,6 +32,11 @@ void OpControlManager::run(
   control_system->pause();
   process_system->resumeAll();
 
+  robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_START_COLOR_SORT,
+      m_alliance->getAlliance());
+
   // set subsystems to driver control
   op_control::holonomic_drive_train::HolonomicDriveTrainOperator holonomic_drive_train_operator{controller, robot, control_system};
   op_control::intake::IntakeOperator intake_operator{controller, robot};

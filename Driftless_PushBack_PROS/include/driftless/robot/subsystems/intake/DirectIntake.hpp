@@ -3,7 +3,11 @@
 
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/hal/PistonGroup.hpp"
+#include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
+#include "driftless/rtos/IDelayer.hpp"
+#include "driftless/rtos/IMutex.hpp"
+#include "driftless/rtos/ITask.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -25,6 +29,23 @@ namespace intake {
 /// @author Matthew Backman
 class DirectIntake : public IIntake {
  private:
+  static constexpr uint8_t TASK_DELAY{10};
+
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{5.5};
+
+  /// @brief Constantly runs task updates
+  /// @param params __void*__ Pointer to the DirectIntake object being updated
+  static void taskLoop(void* params);
+
+  /// @brief The delayer for the intake
+  std::unique_ptr<rtos::IDelayer> m_delayer{};
+
+  /// @brief The mutex for the intake
+  std::unique_ptr<rtos::IMutex> m_mutex{};
+
+  /// @brief The task for the intake
+  std::unique_ptr<rtos::ITask> m_task{};
+
   /// @brief The motors used by the front intake
   hal::MotorGroup m_front_motors{};
 
@@ -40,6 +61,24 @@ class DirectIntake : public IIntake {
   /// @brief The pistons used by the back intake
   hal::PistonGroup m_back_pistons{};
 
+  /// @brief The color sensor used for color sorting
+  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+
+  alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
+
+  bool m_color_sort_paused{true};
+
+  bool m_running_forward{};
+
+  double m_latest_opposing_block_pos{-__DBL_MAX__};
+
+  /// @brief Checks if there is a block of the opposing alliance in the intake
+  /// @return __bool__ True if there is an opposing block, false otherwise
+  bool hasOpposingBlock();
+
+  /// @brief Performs all instance related updates
+  void taskUpdate();
+
  public:
   /// @brief Initializes the intake
   void init() override;
@@ -47,21 +86,25 @@ class DirectIntake : public IIntake {
   /// @brief Runs the intake
   void run() override;
 
-  /// @brief Sets the voltage of the front intake motors
-  /// @param voltage __double__ The voltage to use
-  void setFrontVoltage(double voltage) override;
+  /// @brief Runs the intake to intake from the front
+  /// @param reversed __bool__ True for outtaking, false for intaking
+  void intakeFront(bool reversed) override;
 
-  /// @brief Sets the voltage of the intermediary motors
-  /// @param voltage __double__ The voltage to use
-  void setIntermediaryVoltage(double voltage) override;
+  /// @brief Runs the intake to intake from the back
+  void intakeBack() override;
 
-  /// @brief Sets the voltage of the back intake motors
-  /// @param voltage __double__ The voltage to use
-  void setBackVoltage(double voltage) override;
+  /// @brief Stops all intake motors
+  void stopIntake() override;
 
-  /// @brief Sets the voltage of the vertical transition motors
-  /// @param voltage __double__ The voltage to use
-  void setVerticalVoltage(double voltage) override;
+  /// @brief Starts the color sorting process
+  /// @param alliance __alliance::EAlliance__ The alliance color to sort for
+  void startColorSort(alliance::EAlliance alliance) override;
+
+  /// @brief Pauses the color sorting
+  void pauseColorSort() override;
+
+  /// @brief Resumes the color sorting
+  void resumeColorSort() override;
 
   /// @brief Deploys the intake "arms"
   void deploy() override;
@@ -92,6 +135,24 @@ class DirectIntake : public IIntake {
   /// @brief Sets the motors used for the vertical transition to the hood
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setVerticalMotors(hal::MotorGroup& motors);
+
+  /// @brief Sets the color sensor used for color sorting
+  /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
+  /// sensor to use
+  void setColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Sets the delayer used by the intake
+  /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer to
+  /// use
+  void setDelayer(const std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Sets the mutex used by the intake
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex to use
+  void setMutex(std::unique_ptr<rtos::IMutex>& mutex);
+
+  /// @brief Sets the task used by the intake
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
+  void setTask(std::unique_ptr<rtos::ITask>& task);
 };
 }  // namespace intake
 }  // namespace subsystems

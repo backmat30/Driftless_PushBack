@@ -11,7 +11,7 @@ namespace alliance {
 
 /// @brief Enumeration representing all potential alliances
 /// @author Matthew Backman
-enum class EAlliance { BLUE, RED };
+enum class EAlliance { NONE, BLUE, RED };
 }  // namespace alliance
 }  // namespace driftless
 #endif

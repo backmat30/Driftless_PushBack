@@ -28,6 +28,26 @@ DirectIntakeBuilder* DirectIntakeBuilder::withBackPiston(
   return this;
 }
 
+DirectIntakeBuilder* DirectIntakeBuilder::withColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor) {
+  m_color_sensor = std::move(color_sensor);
+  return this;
+}
+
+DirectIntakeBuilder* DirectIntakeBuilder::withDelayer(const std::unique_ptr<rtos::IDelayer>& delayer) {
+  m_delayer = delayer->clone();
+  return this;
+}
+
+DirectIntakeBuilder* DirectIntakeBuilder::withMutex(std::unique_ptr<rtos::IMutex>& mutex) {
+  m_mutex = std::move(mutex);
+  return this;
+}
+
+DirectIntakeBuilder* DirectIntakeBuilder::withTask(std::unique_ptr<rtos::ITask>& task) {
+  m_task = std::move(task);
+  return this;
+}
+
 std::unique_ptr<IIntake> DirectIntakeBuilder::build() {
   std::unique_ptr<DirectIntake> direct_intake{std::make_unique<DirectIntake>()};
   direct_intake->setFrontMotors(m_front_motors);
@@ -35,6 +55,10 @@ std::unique_ptr<IIntake> DirectIntakeBuilder::build() {
   direct_intake->setBackMotors(m_back_motors);
   direct_intake->setVerticalMotors(m_vertical_motors);
   direct_intake->setBackPistons(m_back_pistons);
+  direct_intake->setColorSensor(m_color_sensor);
+  direct_intake->setDelayer(m_delayer);
+  direct_intake->setMutex(m_mutex);
+  direct_intake->setTask(m_task);
 
   return direct_intake;
 }

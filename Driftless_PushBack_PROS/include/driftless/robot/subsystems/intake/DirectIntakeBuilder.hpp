@@ -40,6 +40,14 @@ class DirectIntakeBuilder {
   /// @brief The pistons used to build the DirectIntake
   hal::PistonGroup m_back_pistons{};
 
+  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+
+  std::unique_ptr<rtos::IDelayer> m_delayer{};
+
+  std::unique_ptr<rtos::IMutex> m_mutex{};
+
+  std::unique_ptr<rtos::ITask> m_task{};
+
  public:
   /// @brief Add a front motor to the builder
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
@@ -66,6 +74,26 @@ class DirectIntakeBuilder {
   /// @param piston __std::unique_ptr<io::IPiston>&__ The piston to add
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
   DirectIntakeBuilder* withBackPiston(std::unique_ptr<io::IPiston>& piston);
+
+  /// @brief Add a color sensor to the builder
+  /// @param piston __std::unique_ptr<io::IColorSensor>&__ The color sensor to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Add a delayer to the builder
+  /// @param piston __const std::unique_ptr<rtos::IDelayer>&__ The delayer to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withDelayer(const std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Add a mutex to the builder
+  /// @param piston __std::unique_ptr<rtos::IMutex>&__ The mutex to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withMutex(std::unique_ptr<rtos::IMutex>& mutex);
+
+    /// @brief Add a task to the builder
+  /// @param piston __std::unique_ptr<rtos::ITask>&__ The task to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withTask(std::unique_ptr<rtos::ITask>& task);
 
   /// @brief Builds the DirectIntake object
   /// @return __std::unique_ptr<IIntake>__ Pointer to the newly built

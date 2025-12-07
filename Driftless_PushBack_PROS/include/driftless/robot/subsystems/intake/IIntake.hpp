@@ -1,6 +1,8 @@
 #ifndef __I_INTAKE_HPP__
 #define __I_INTAKE_HPP__
 
+#include "driftless/alliance/EAlliance.hpp"
+
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
@@ -30,27 +32,29 @@ class IIntake {
   /// @brief Runs the intake
   virtual void run() = 0;
 
-  /// @brief Sets the voltage of the front intake motors
-  /// @param voltage __double__ The voltage to use
-  virtual void setFrontVoltage(double voltage) = 0;
+  /// @brief Runs the intake to intake from the front
+  /// @param reversed __bool__ True for outtaking, false for intaking
+  virtual void intakeFront(bool reversed) = 0;
 
-  /// @brief Sets the voltage of the intermediary motors
-  /// @param voltage __double__ The voltage to use
-  virtual void setIntermediaryVoltage(double voltage) = 0;
+  /// @brief Runs the intake to intake from the back
+  virtual void intakeBack() = 0;
 
-  /// @brief Sets the voltage of the back intake motors
-  /// @param voltage __double__ The voltage to use
-  virtual void setBackVoltage(double voltage) = 0;
-
-  /// @brief Sets the voltage of the vertical transition motors
-  /// @param voltage __double__ The voltage to use
-  virtual void setVerticalVoltage(double voltage) = 0;
+  /// @brief Stops all intake motors
+  virtual void stopIntake() = 0;
 
   /// @brief Deploys the intake "arms"
   virtual void deploy() = 0;
 
   /// @brief Retracts the intake "arms"
   virtual void retract() = 0;
+
+  virtual void startColorSort(alliance::EAlliance alliance) = 0;
+
+  /// @brief Pauses the color sorting
+  virtual void pauseColorSort() = 0;
+
+  /// @brief Resumes the color sorting
+  virtual void resumeColorSort() = 0;
 
   /// @brief Checks if the intake arms are deployed
   /// @return __bool__ True of the arms are deployed, false otherwise
