@@ -43,17 +43,24 @@ void DirectIntake::taskUpdate() {
     m_mutex->take();
   }
 
-  pros::screen::print(
-      pros::E_TEXT_MEDIUM_CENTER, 5, "dist: %d R: %7.2f B: %7.2f",
-      m_color_sensor->getProximity(), m_color_sensor->getRGB().red,
-      m_color_sensor->getRGB().blue);
+  // pros::screen::print(
+  //     pros::E_TEXT_MEDIUM_CENTER, 5, "dist: %d R: %7.2f B: %7.2f",
+  //     m_color_sensor->getProximity(), m_color_sensor->getRGB().red,
+  //     m_color_sensor->getRGB().blue);
 
-  if (m_latest_opposing_block_pos >= -10000) {
-    pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "latest pos: %7.2f",
-                        m_latest_opposing_block_pos);
-  }
-  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "current pos: %7.2f",
-                      m_front_motors.getPosition());
+  // if (m_latest_opposing_block_pos >= -10000) {
+  //   pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "latest pos: %7.2f",
+  //                       m_latest_opposing_block_pos);
+  // }
+  // pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "current pos: %7.2f",
+  //                     m_front_motors.getPosition());
+
+  pros::screen::print(
+      pros::E_TEXT_MEDIUM_CENTER, 6, "first block: %d  second block: %d",
+      m_has_first_matchloader_block, m_has_second_matchloader_block);
+  pros::screen::print(
+      pros::E_TEXT_MEDIUM_CENTER, 7, "first pos: %7.2f second pos: %7.2f",
+      m_first_matchloader_block_pos, m_second_matchloader_block_pos);
 
   if (!m_color_sort_paused && m_running_forward && hasOpposingBlock()) {
     m_latest_opposing_block_pos = m_front_motors.getPosition();
@@ -68,6 +75,7 @@ void DirectIntake::taskUpdate() {
              m_running_forward) {
     m_back_motors.setVoltage(-12.0);
     m_intermediary_motors.setVoltage(-12.0);
+    m_intermediary_motors.setCurrentLimit(2.5);
   }
 
   if (m_mutex) {
@@ -96,15 +104,25 @@ void DirectIntake::intakeFront(bool reversed) {
 
   m_running_forward = !reversed;
   m_back_intake_to_hood = false;
+  m_has_first_matchloader_block = false;
+  m_first_matchloader_block_pos = -__DBL_MAX__;
+  m_has_second_matchloader_block = false;
+  m_second_matchloader_block_pos = -__DBL_MAX__;
 
   double voltage = 12.0 * (reversed ? -1.0 : 1.0);
   m_front_motors.setVoltage(voltage);
+  m_front_motors.setCurrentLimit(2.5);
+
   m_vertical_motors.setVoltage(voltage);
+  m_vertical_motors.setCurrentLimit(1.5);
 
   if (m_front_motors.getPosition() >
       m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END) {
     m_back_motors.setVoltage(reversed ? 12.0 : 6.0);
+    m_back_motors.setCurrentLimit(0.75);
+
     m_intermediary_motors.setVoltage(voltage);
+    m_intermediary_motors.setCurrentLimit(1.5);
   }
 
   if (m_mutex) {
@@ -118,29 +136,52 @@ void DirectIntake::intakeBack() {
   }
 
   m_running_forward = false;
-  if (m_color_sensor->getProximity() < 100) {
-    m_latest_empty_intake_time = m_clock->getTime();
-  }
 
-  if (m_latest_empty_intake_time + 500 < m_clock->getTime()) {
+  if (m_color_sensor->getProximity() > 250 && !m_has_first_matchloader_block) {
+    m_first_matchloader_block_pos = m_front_motors.getPosition();
+    m_has_first_matchloader_block = true;
+  } else if (m_has_first_matchloader_block && !m_has_second_matchloader_block &&
+             m_front_motors.getPosition() <
+                 m_first_matchloader_block_pos - 1.5 &&
+             m_color_sensor->getProximity() > 250) {
+    m_second_matchloader_block_pos = m_front_motors.getPosition();
+    m_has_second_matchloader_block = true;
+  } else if (m_has_second_matchloader_block &&
+             m_front_motors.getPosition() <
+                 m_second_matchloader_block_pos - 1.5) {
     m_back_intake_to_hood = true;
   }
-  if(m_back_intake_to_hood) {
+
+  if (m_back_intake_to_hood) {
     m_front_motors.setVoltage(0.0);
     m_front_motors.setCurrentLimit(2.5);
 
     m_vertical_motors.setVoltage(12.0);
     m_vertical_motors.setCurrentLimit(2.5);
-  } else {
-    m_front_motors.setVoltage(-12.0);
-    m_front_motors.setCurrentLimit(0.3);
+  } else if (!m_has_first_matchloader_block ||
+             (m_has_first_matchloader_block &&
+              m_front_motors.getPosition() >
+                  m_first_matchloader_block_pos - 1.5) ||
+             (m_has_second_matchloader_block &&
+              m_front_motors.getPosition() >
+                  m_second_matchloader_block_pos - 1.5)) {
+    m_front_motors.setVoltage(-8.0);
+    m_front_motors.setCurrentLimit(2.5);
 
     m_vertical_motors.setVoltage(-12.0);
-    m_vertical_motors.setCurrentLimit(1.5);
+    m_vertical_motors.setCurrentLimit(1.0);
+  } else {
+    m_front_motors.setVoltage(0.0);
+
+    m_vertical_motors.setVoltage(-12.0);
+    m_vertical_motors.setCurrentLimit(1.0);
   }
 
   m_intermediary_motors.setVoltage(12.0);
+  m_intermediary_motors.setCurrentLimit(2.5);
+
   m_back_motors.setVoltage(12.0);
+  m_back_motors.setCurrentLimit(1.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -153,8 +194,7 @@ void DirectIntake::stopIntake() {
   }
 
   m_running_forward = false;
-  m_back_intake_to_hood = false;
-  
+
   m_front_motors.setVoltage(0.0);
   m_back_motors.setVoltage(0.0);
   m_intermediary_motors.setVoltage(0.0);

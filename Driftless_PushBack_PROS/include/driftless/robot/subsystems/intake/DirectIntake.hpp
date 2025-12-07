@@ -73,9 +73,15 @@ class DirectIntake : public IIntake {
 
   bool m_running_forward{};
 
+  bool m_has_first_matchloader_block{};
+
+  bool m_has_second_matchloader_block{};
+
   bool m_back_intake_to_hood{};
 
-  double m_latest_empty_intake_time{};
+  double m_first_matchloader_block_pos{-__DBL_MAX__};
+
+  double m_second_matchloader_block_pos{-__DBL_MAX__};
 
   double m_latest_opposing_block_pos{-__DBL_MAX__};
 
