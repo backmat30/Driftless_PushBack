@@ -2,7 +2,7 @@
 #define __I_MENU_HPP__
 
 #include "driftless/SystemConfig.hpp"
-#include "driftless/auton/IAuton.hpp"
+#include "driftless/auton/AAuton.hpp"
 #include "driftless/config/IConfig.hpp"
 #include "driftless/profiles/IProfile.hpp"
 
@@ -40,9 +40,9 @@ class IMenu {
   virtual void addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) = 0;
 
   /// @brief Adds an auton to the menu
-  /// @param auton __std::unique_ptr<auton::IAuton>&__ Reference to the auton
+  /// @param auton __std::unique_ptr<auton::AAuton>&__ Reference to the auton
   /// being added
-  virtual void addAuton(std::unique_ptr<auton::IAuton>& auton) = 0;
+  virtual void addAuton(std::unique_ptr<auton::AAuton>& auton) = 0;
 
   /// @brief Adds a config to the menu
   /// @param config __std::unique_ptr<config::IConfig>&__ Reference to the

@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "driftless/alliance/IAlliance.hpp"
-#include "driftless/auton/IAuton.hpp"
+#include "driftless/auton/AAuton.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 
@@ -17,7 +17,7 @@ class AutonManager {
  private:
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
-  std::unique_ptr<auton::IAuton> m_auton{};
+  std::unique_ptr<auton::AAuton> m_auton{};
 
   std::shared_ptr<rtos::IClock> m_clock{};
 
@@ -36,8 +36,8 @@ class AutonManager {
   void setAlliance(const std::shared_ptr<alliance::IAlliance>& alliance);
 
   /// @brief Sets the auton used in the autonomous manager
-  /// @param auton __std::unique_ptr<auton::IAuton>&__ The auton to use
-  void setAuton(std::unique_ptr<auton::IAuton>& auton);
+  /// @param auton __std::unique_ptr<auton::AAuton>&__ The auton to use
+  void setAuton(std::unique_ptr<auton::AAuton>& auton);
 
   /// @brief Initializes the selected auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use

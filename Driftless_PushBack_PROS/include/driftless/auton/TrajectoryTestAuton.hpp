@@ -1,7 +1,7 @@
 #ifndef __TRAJECTORY_TEST_AUTON_HPP__
 #define __TRAJECTORY_TEST_AUTON_HPP__
 
-#include "driftless/auton/IAuton.hpp"
+#include "driftless/auton/AAuton.hpp"
 #include "driftless/control/trajectory/trajectory_generator/TrajectoryGenerator.hpp"
 #include "driftless/control/trajectory/trajectory_generator/TrajectoryProcessor.hpp"
 #include "driftless/control/trajectory/trajectory_generator/kinematics/LinearAccelerationConstraintBuilder.hpp"
@@ -15,7 +15,7 @@
 
 namespace driftless {
 namespace auton {
-class TrajectoryTestAuton : public IAuton {
+class TrajectoryTestAuton : public AAuton {
  private:
   static constexpr uint8_t LOOP_DELAY{10};
 

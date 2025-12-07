@@ -1,5 +1,5 @@
-#ifndef __I_AUTON_HPP__
-#define __I_AUTON_HPP__
+#ifndef __A_AUTON_HPP__
+#define __A_AUTON_HPP__
 
 #include <string>
 
@@ -28,12 +28,12 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Interface for a generic autonomous routine
+/// @brief Abstract class for a generic autonomous routine
 /// @author Matthew Backman
-class IAuton {
+class AAuton {
  public:
   /// @brief Deletes the auton
-  virtual ~IAuton() = default;
+  virtual ~AAuton() = default;
 
   /// @brief Gets the name of the auton
   /// @return __std::string__ The name of the auton
