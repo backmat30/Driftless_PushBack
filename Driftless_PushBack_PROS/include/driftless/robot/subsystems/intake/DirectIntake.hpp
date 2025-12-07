@@ -47,8 +47,6 @@ class DirectIntake : public IIntake {
   /// @brief The task for the intake
   std::unique_ptr<rtos::ITask> m_task{};
 
-  std::unique_ptr<rtos::IClock> m_clock{};
-
   /// @brief The motors used by the front intake
   hal::MotorGroup m_front_motors{};
 
@@ -166,10 +164,6 @@ class DirectIntake : public IIntake {
   /// @brief Sets the task used by the intake
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
   void setTask(std::unique_ptr<rtos::ITask>& task);
-
-  /// @brief Sets the clock used by the intake
-  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
-  void setClock(const std::unique_ptr<rtos::IClock>& clock);
 };
 }  // namespace intake
 }  // namespace subsystems

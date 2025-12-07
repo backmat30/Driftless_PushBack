@@ -304,8 +304,4 @@ void DirectIntake::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
 void DirectIntake::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
 }
-
-void DirectIntake::setClock(const std::unique_ptr<rtos::IClock>& clock) {
-  m_clock = clock->clone();
-}
 }  // namespace driftless::robot::subsystems::intake
