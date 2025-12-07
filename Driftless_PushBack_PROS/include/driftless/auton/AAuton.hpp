@@ -9,6 +9,13 @@
 #include "driftless/control/EControl.hpp"
 #include "driftless/control/EControlCommand.hpp"
 #include "driftless/control/EControlState.hpp"
+#include "driftless/control/trajectory/QuinticBezierSplinePath.hpp"
+#include "driftless/control/trajectory/trajectory_generator/TrajectoryGenerator.hpp"
+#include "driftless/control/trajectory/trajectory_generator/TrajectoryProcessor.hpp"
+#include "driftless/control/trajectory/trajectory_generator/kinematics/CentripetalAccelerationConstraintBuilder.hpp"
+#include "driftless/control/trajectory/trajectory_generator/kinematics/LinearAccelerationConstraintBuilder.hpp"
+#include "driftless/control/trajectory/trajectory_generator/kinematics/MaxVelocityConstraintBuilder.hpp"
+#include "driftless/control/trajectory/trajectory_generator/modifiers/HolonomicSpinModifierBuilder.hpp"
 #include "driftless/processes/EProcess.hpp"
 #include "driftless/processes/EProcessCommand.hpp"
 #include "driftless/processes/EProcessState.hpp"
@@ -17,8 +24,11 @@
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
+#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
+#include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
+#include "driftless/utils/UtilityFunctions.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -31,6 +41,23 @@ namespace auton {
 /// @brief Abstract class for a generic autonomous routine
 /// @author Matthew Backman
 class AAuton {
+ protected:
+  uint32_t getTime();
+
+  robot::subsystems::odometry::Position getOdomPosition();
+
+  void setOdomPosition(double x, double y, double theta);
+
+  void followTrajectory(
+      std::vector<control::trajectory::TrajectoryPoint>& trajectory);
+
+  bool trajectoryTargetReached();
+
+  void waitForTrajectory(control::trajectory::TrajectoryPoint& endpoint,
+                         double tolerance, uint32_t timeout);
+
+  void stopMotion();
+
  public:
   /// @brief Deletes the auton
   virtual ~AAuton() = default;
