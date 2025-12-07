@@ -116,10 +116,24 @@ void DirectIntake::intakeBack() {
   }
 
   m_running_forward = false;
-  m_front_motors.setVoltage(0.0);
-  m_back_motors.setVoltage(12.0);
-  m_vertical_motors.setVoltage(12.0);
+  if (m_color_sensor->getProximity() < 100) {
+    m_latest_empty_intake_time = m_clock->getTime();
+  }
+
+  if (m_latest_empty_intake_time + 200 < m_clock->getTime()) {
+    m_front_motors.setVoltage(0.0);
+    m_front_motors.setCurrentLimit(2.5);
+
+    m_vertical_motors.setVoltage(12.0);
+  } else {
+    m_front_motors.setVoltage(-12.0);
+    m_front_motors.setCurrentLimit(1.25);
+
+    m_vertical_motors.setVoltage(-12.0);
+  }
+
   m_intermediary_motors.setVoltage(12.0);
+  m_back_motors.setVoltage(12.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -240,5 +254,9 @@ void DirectIntake::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
 
 void DirectIntake::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
+}
+
+void DirectIntake::setClock(const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
 }
 }  // namespace driftless::robot::subsystems::intake

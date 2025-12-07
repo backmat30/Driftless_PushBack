@@ -8,6 +8,7 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
+#include "driftless/rtos/IClock.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -46,6 +47,8 @@ class DirectIntake : public IIntake {
   /// @brief The task for the intake
   std::unique_ptr<rtos::ITask> m_task{};
 
+  std::unique_ptr<rtos::IClock> m_clock{};
+
   /// @brief The motors used by the front intake
   hal::MotorGroup m_front_motors{};
 
@@ -69,6 +72,8 @@ class DirectIntake : public IIntake {
   bool m_color_sort_paused{true};
 
   bool m_running_forward{};
+
+  double m_latest_empty_intake_time{};
 
   double m_latest_opposing_block_pos{-__DBL_MAX__};
 
@@ -153,6 +158,10 @@ class DirectIntake : public IIntake {
   /// @brief Sets the task used by the intake
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
   void setTask(std::unique_ptr<rtos::ITask>& task);
+
+  /// @brief Sets the clock used by the intake
+  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
+  void setClock(const std::unique_ptr<rtos::IClock>& clock);
 };
 }  // namespace intake
 }  // namespace subsystems
