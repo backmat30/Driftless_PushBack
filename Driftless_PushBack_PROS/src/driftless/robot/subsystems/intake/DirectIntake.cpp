@@ -95,6 +95,8 @@ void DirectIntake::intakeFront(bool reversed) {
   }
 
   m_running_forward = !reversed;
+  m_back_intake_to_hood = false;
+
   double voltage = 12.0 * (reversed ? -1.0 : 1.0);
   m_front_motors.setVoltage(voltage);
   m_vertical_motors.setVoltage(voltage);
@@ -116,10 +118,29 @@ void DirectIntake::intakeBack() {
   }
 
   m_running_forward = false;
-  m_front_motors.setVoltage(0.0);
-  m_back_motors.setVoltage(12.0);
-  m_vertical_motors.setVoltage(12.0);
+  if (m_color_sensor->getProximity() < 100) {
+    m_latest_empty_intake_time = m_clock->getTime();
+  }
+
+  if (m_latest_empty_intake_time + 500 < m_clock->getTime()) {
+    m_back_intake_to_hood = true;
+  }
+  if(m_back_intake_to_hood) {
+    m_front_motors.setVoltage(0.0);
+    m_front_motors.setCurrentLimit(2.5);
+
+    m_vertical_motors.setVoltage(12.0);
+    m_vertical_motors.setCurrentLimit(2.5);
+  } else {
+    m_front_motors.setVoltage(-12.0);
+    m_front_motors.setCurrentLimit(0.3);
+
+    m_vertical_motors.setVoltage(-12.0);
+    m_vertical_motors.setCurrentLimit(1.5);
+  }
+
   m_intermediary_motors.setVoltage(12.0);
+  m_back_motors.setVoltage(12.0);
 
   if (m_mutex) {
     m_mutex->give();
@@ -132,6 +153,8 @@ void DirectIntake::stopIntake() {
   }
 
   m_running_forward = false;
+  m_back_intake_to_hood = false;
+  
   m_front_motors.setVoltage(0.0);
   m_back_motors.setVoltage(0.0);
   m_intermediary_motors.setVoltage(0.0);
@@ -240,5 +263,9 @@ void DirectIntake::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
 
 void DirectIntake::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
+}
+
+void DirectIntake::setClock(const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
 }
 }  // namespace driftless::robot::subsystems::intake

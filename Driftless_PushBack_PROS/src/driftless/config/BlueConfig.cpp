@@ -351,8 +351,12 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // rtos
   std::unique_ptr<rtos::IDelayer> intake_delayer{
       std::make_unique<pros_adapters::ProsDelayer>()};
-  std::unique_ptr<rtos::IMutex> intake_mutex{std::make_unique<pros_adapters::ProsMutex>()};
-  std::unique_ptr<rtos::ITask> intake_task{std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> intake_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+  std::unique_ptr<rtos::ITask> intake_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IClock> intake_clock{
+      std::make_unique<pros_adapters::ProsClock>()};
 
   // build the intake
   robot::subsystems::intake::DirectIntakeBuilder intake_builder{};
@@ -367,6 +371,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
           ->withDelayer(intake_delayer)
           ->withMutex(intake_mutex)
           ->withTask(intake_task)
+          ->withClock(intake_clock)
           ->build()};
 
   // build the subsystem

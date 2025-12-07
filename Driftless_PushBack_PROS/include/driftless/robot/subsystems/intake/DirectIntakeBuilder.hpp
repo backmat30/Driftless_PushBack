@@ -48,6 +48,8 @@ class DirectIntakeBuilder {
 
   std::unique_ptr<rtos::ITask> m_task{};
 
+  std::unique_ptr<rtos::IClock> m_clock{};
+
  public:
   /// @brief Add a front motor to the builder
   /// @param motor __std::unique_ptr<io::IMotor>&__ The motor to add
@@ -94,6 +96,11 @@ class DirectIntakeBuilder {
   /// @param piston __std::unique_ptr<rtos::ITask>&__ The task to add
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
   DirectIntakeBuilder* withTask(std::unique_ptr<rtos::ITask>& task);
+
+  /// @brief Add a clock to the builder
+  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to add
+  /// @return __DirectIntakeBuilder*__ Pointer to this builder
+  DirectIntakeBuilder* withClock(const std::unique_ptr<rtos::IClock>& clock);
 
   /// @brief Builds the DirectIntake object
   /// @return __std::unique_ptr<IIntake>__ Pointer to the newly built

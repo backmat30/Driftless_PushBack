@@ -48,6 +48,11 @@ DirectIntakeBuilder* DirectIntakeBuilder::withTask(std::unique_ptr<rtos::ITask>&
   return this;
 }
 
+DirectIntakeBuilder* DirectIntakeBuilder::withClock(const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
+  return this;
+}
+
 std::unique_ptr<IIntake> DirectIntakeBuilder::build() {
   std::unique_ptr<DirectIntake> direct_intake{std::make_unique<DirectIntake>()};
   direct_intake->setFrontMotors(m_front_motors);
@@ -59,6 +64,7 @@ std::unique_ptr<IIntake> DirectIntakeBuilder::build() {
   direct_intake->setDelayer(m_delayer);
   direct_intake->setMutex(m_mutex);
   direct_intake->setTask(m_task);
+  direct_intake->setClock(m_clock);
 
   return direct_intake;
 }
