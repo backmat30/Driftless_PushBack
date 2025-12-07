@@ -130,6 +130,7 @@ class AAuton {
   /// @brief Constructs a new AAuton object
   /// @param name __std::string__ The name of the auton
   AAuton(std::string name);
+  
   /// @brief Deletes the auton
   virtual ~AAuton() = default;
 
