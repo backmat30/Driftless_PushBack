@@ -95,6 +95,10 @@ class DirectHood : public IHood {
   /// @brief Toggles the hood bump
   void toggleBump() override;
 
+  /// @brief Sets the current limit of the rollers
+  /// @param amps __double__ The limit in amps
+  void setCurrentLimit(double amps) override;
+
   /// @brief Checks if the hood is raised
   /// @return __bool__ True if the hood is raised, false otherwise
   bool isRaised() override;
@@ -102,6 +106,10 @@ class DirectHood : public IHood {
   /// @brief Checks if the hood bump is extended
   /// @return __bool__ True if the hood is bumped up, false otherwise
   bool isBumped() override;
+
+  /// @brief Checks if the hood door is open
+  /// @return __bool__ True if the door is open, false otherwise
+  bool isOpen() override;
 
   /// @brief Sets the motors used by the hood
   /// @param motors __hal::MotorGroup&__ The motors to use

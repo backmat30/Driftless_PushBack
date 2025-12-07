@@ -51,6 +51,10 @@ class IMotor {
   /// @param volts __double__ The desired voltage
   virtual void setVoltage(double volts) = 0;
 
+  /// @brief Sets the max current of the motor in amps
+  /// @param amps __double__ The desired current limit
+  virtual void setCurrentLimit(double amps) = 0;
+
   /// @brief Sets the motor encoder to be a new position
   /// @param position __double__ the desired position
   virtual void setPosition(double position) = 0;
