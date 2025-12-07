@@ -97,11 +97,6 @@ class DirectIntakeBuilder {
   /// @return __DirectIntakeBuilder*__ Pointer to this builder
   DirectIntakeBuilder* withTask(std::unique_ptr<rtos::ITask>& task);
 
-  /// @brief Add a clock to the builder
-  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to add
-  /// @return __DirectIntakeBuilder*__ Pointer to this builder
-  DirectIntakeBuilder* withClock(const std::unique_ptr<rtos::IClock>& clock);
-
   /// @brief Builds the DirectIntake object
   /// @return __std::unique_ptr<IIntake>__ Pointer to the newly built
   /// DirectIntake

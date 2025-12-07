@@ -39,6 +39,9 @@ class IIntake {
   /// @brief Runs the intake to intake from the back
   virtual void intakeBack() = 0;
 
+  /// @brief Intakes from the back straight to the hood
+  virtual void intakeBackToHood() = 0;
+
   /// @brief Stops all intake motors
   virtual void stopIntake() = 0;
 
