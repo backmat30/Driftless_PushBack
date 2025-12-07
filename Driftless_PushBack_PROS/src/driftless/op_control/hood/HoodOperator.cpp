@@ -147,12 +147,16 @@ void HoodOperator::updateHoodRollers(EControllerDigital spin_forwards_front,
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
-    }
-  } else {
-    m_robot->sendCommand(
+    } else {
+      m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
+    }
+  } else {
     if (spin_backwards_pressed) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
       setMotorVoltage(-12.0);
     } else {
       setMotorVoltage(0.0);
