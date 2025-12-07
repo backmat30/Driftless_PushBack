@@ -73,6 +73,8 @@ class DirectIntake : public IIntake {
 
   bool m_running_forward{};
 
+  bool m_back_intake_to_hood{};
+
   double m_latest_empty_intake_time{};
 
   double m_latest_opposing_block_pos{-__DBL_MAX__};
