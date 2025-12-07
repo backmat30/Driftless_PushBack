@@ -5,10 +5,10 @@
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
+#include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
-#include "driftless/rtos/IClock.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -103,6 +103,9 @@ class DirectIntake : public IIntake {
 
   /// @brief Runs the intake to intake from the back
   void intakeBack() override;
+
+  /// @brief Intakes from the back straight to the hood
+  void intakeBackToHood() override;
 
   /// @brief Stops all intake motors
   void stopIntake() override;

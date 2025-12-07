@@ -188,6 +188,30 @@ void DirectIntake::intakeBack() {
   }
 }
 
+void DirectIntake::intakeBackToHood() {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  m_running_forward = false;
+
+  m_front_motors.setVoltage(0.0);
+  m_front_motors.setCurrentLimit(2.5);
+
+  m_vertical_motors.setVoltage(12.0);
+  m_vertical_motors.setCurrentLimit(2.5);
+
+  m_intermediary_motors.setVoltage(12.0);
+  m_intermediary_motors.setCurrentLimit(2.5);
+
+  m_back_motors.setVoltage(12.0);
+  m_back_motors.setCurrentLimit(1.0);
+
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
 void DirectIntake::stopIntake() {
   if (m_mutex) {
     m_mutex->take();
