@@ -17,6 +17,10 @@ namespace auton {
 class BlueSkillsAuton : public AAuton {
  private:
  public:
+ 
+  /// @brief Constructs a new blue skills auton object
+  BlueSkillsAuton();
+
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
   /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
