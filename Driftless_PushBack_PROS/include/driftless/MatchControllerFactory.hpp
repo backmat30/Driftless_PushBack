@@ -14,6 +14,7 @@
 
 // auton includes
 #include "driftless/auton/BlueSkillsAuton.hpp"
+#include "driftless/auton/BluePumpNDumpAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"
