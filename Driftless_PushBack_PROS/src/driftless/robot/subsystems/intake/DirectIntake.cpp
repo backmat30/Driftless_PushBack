@@ -213,19 +213,8 @@ void DirectIntake::intakeBackToHood() {
   }
 
   m_running_forward = false;
-  m_running_back_intake = false;
-
-  m_front_motors.setVoltage(0.0);
-  m_front_motors.setCurrentLimit(2.5);
-
-  m_vertical_motors.setVoltage(12.0);
-  m_vertical_motors.setCurrentLimit(2.5);
-
-  m_intermediary_motors.setVoltage(12.0);
-  m_intermediary_motors.setCurrentLimit(2.5);
-
-  m_back_motors.setVoltage(12.0);
-  m_back_motors.setCurrentLimit(1.0);
+  m_running_back_intake = true;
+  m_back_intake_to_hood = true;
 
   if (m_mutex) {
     m_mutex->give();
