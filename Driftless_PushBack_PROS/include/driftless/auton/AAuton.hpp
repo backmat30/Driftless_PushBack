@@ -31,6 +31,8 @@
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
 
+#include "pros/screen.hpp"
+
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
@@ -83,6 +85,8 @@ class AAuton {
   void waitForGoToPoint(control::Point target_point, double tolerance,
                         uint32_t timeout);
 
+  void setGoToPointVelocity(double velocity);
+
   void turnToPoint(control::Point target_point, double target_velocity,
                    control::motion::ETurnDirection direction =
                        control::motion::ETurnDirection::AUTO);
@@ -108,9 +112,15 @@ class AAuton {
 
   void intakeBackToHood();
 
+  void intakeStop();
+
   void deployBackIntakeArms();
 
   void retractBackIntakeArms();
+
+  void startColorSort(alliance::EAlliance alliance);
+
+  void pauseColorSort();
 
   void hoodRaise();
 
@@ -122,6 +132,8 @@ class AAuton {
 
   void hoodCloseDoor();
 
+  void hoodSetVoltage(double voltage);
+
   void deployRake();
 
   void retractRake();
@@ -130,7 +142,7 @@ class AAuton {
   /// @brief Constructs a new AAuton object
   /// @param name __std::string__ The name of the auton
   AAuton(std::string name);
-  
+
   /// @brief Deletes the auton
   virtual ~AAuton() = default;
 

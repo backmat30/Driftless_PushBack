@@ -105,6 +105,12 @@ void AAuton::waitForGoToPoint(control::Point target_point, double tolerance,
   }
 }
 
+void AAuton::setGoToPointVelocity(double velocity) {
+  m_control_system->sendCommand(
+      control::EControl::MOTION,
+      control::EControlCommand::GO_TO_POINT_SET_VELOCITY, velocity);
+}
+
 void AAuton::turnToPoint(control::Point target_point, double target_velocity,
                          control::motion::ETurnDirection direction) {
   m_control_system->sendCommand(control::EControl::MOTION,
@@ -162,10 +168,7 @@ void AAuton::waitForTurnToAngle(double heading, double tolerance,
 }
 
 void AAuton::stopMotion() {
-  m_control_system->sendCommand(
-      control::EControl::TRAJECTORY_FOLLOWER,
-      control::EControlCommand::FOLLOW_TRAJECTORY, m_robot,
-      std::vector<control::trajectory::TrajectoryPoint>{});
+  m_control_system->pause();
 
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
@@ -189,7 +192,7 @@ void AAuton::intakeFront() {
   if (!is_hood_open) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
-        robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
+        robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 1.35);
   } else {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
@@ -234,6 +237,15 @@ void AAuton::intakeBackToHood() {
       robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
 }
 
+void AAuton::intakeStop() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_STOP_MOTION);
+  m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                       robot::subsystems::ESubsystemCommand::HOOD_SET_VOLTAGE,
+                       0.0);
+}
+
 void AAuton::deployBackIntakeArms() {
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::INTAKE,
@@ -244,6 +256,18 @@ void AAuton::retractBackIntakeArms() {
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::INTAKE,
       robot::subsystems::ESubsystemCommand::INTAKE_RETRACT_ARMS);
+}
+
+void AAuton::startColorSort(alliance::EAlliance alliance) {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_START_COLOR_SORT, alliance);
+}
+
+void AAuton::pauseColorSort() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::INTAKE,
+      robot::subsystems::ESubsystemCommand::INTAKE_PAUSE_COLOR_SORT);
 }
 
 void AAuton::hoodRaise() {
@@ -273,6 +297,12 @@ void AAuton::hoodOpenDoor() {
 void AAuton::hoodCloseDoor() {
   m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                        robot::subsystems::ESubsystemCommand::HOOD_CLOSE_GATE);
+}
+
+void AAuton::hoodSetVoltage(double voltage) {
+  m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                       robot::subsystems::ESubsystemCommand::HOOD_SET_VOLTAGE,
+                       voltage);
 }
 
 void AAuton::deployRake() {
