@@ -1,7 +1,7 @@
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 
 namespace driftless::auton {
-BluePumpNDumpAuton::BluePumpNDumpAuton() : AAuton("Blue Pump N' Dump TM") {}
+BluePumpNDumpAuton::BluePumpNDumpAuton() : AAuton("Blue_PumpDump") {}
 
 void BluePumpNDumpAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
@@ -24,31 +24,33 @@ void BluePumpNDumpAuton::run(
 
   uint32_t start_time{getTime()};
   setOdomPosition(56.0, 20.0, 0.0);
-  hoodRaise();
+  startColorSort(m_alliance->getAlliance());
+  intakeFront();
 
   // go to matchloader
   goToPoint(matchload_lineup, MAX_VELOCITY);
   delay(750);
-  setGoToPointVelocity(MAX_VELOCITY / 3.0);
+  setGoToPointVelocity(MAX_VELOCITY / 2.0);
   delay(200);
   goToPoint(matchload, MAX_VELOCITY / 2.0);
   waitForGoToPoint(matchload, 2.0, 1500);
-  hoodLower();
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(1750);
-  intakeStop();
+  delay(2000);
+  outtakeFront();
 
   // score blocks from match loader
-  goToPoint(long_goal, MAX_VELOCITY);
-  delay(500);
+  goToPoint(long_goal, MAX_VELOCITY / 1.25);
+  delay(750);
+  intakeFront();
   hoodRaise();
   retractBackIntakeArms();
-  setGoToPointVelocity(MAX_VELOCITY / 3.0);
+  setGoToPointVelocity(MAX_VELOCITY / 3.5);
   waitForGoToPoint(long_goal, 2.0, 1000);
   hoodOpenDoor();
-  intakeBackToHood();
+
+  delay(1500);
 
   // leave at end
   stopMotion();
