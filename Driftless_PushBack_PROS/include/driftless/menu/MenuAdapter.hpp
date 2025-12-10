@@ -37,7 +37,7 @@ class MenuAdapter : public IMenu {
   // Available alliances
   std::vector<std::shared_ptr<alliance::IAlliance>> alliances{};
 
-  std::vector<std::unique_ptr<auton::IAuton>> autons{};
+  std::vector<std::unique_ptr<auton::AAuton>> autons{};
 
   // Available configs
   std::vector<std::unique_ptr<config::IConfig>> configs{};
@@ -55,9 +55,9 @@ class MenuAdapter : public IMenu {
   void addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) override;
 
   /// @brief Adds an auton to the menu
-  /// @param auton __std::unique_ptr<auton::IAuton>&__ Reference to the auton
+  /// @param auton __std::unique_ptr<auton::AAuton>&__ Reference to the auton
   /// being added
-  void addAuton(std::unique_ptr<auton::IAuton>& auton) override;
+  void addAuton(std::unique_ptr<auton::AAuton>& auton) override;
 
   /// @brief Adds a config to the menu
   /// @param config __std::unique_ptr<config::IConfig>&__ Reference to the

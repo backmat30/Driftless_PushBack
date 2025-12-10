@@ -10,6 +10,10 @@
 // alliance includes
 #include "driftless/alliance/BlueAlliance.hpp"
 #include "driftless/alliance/RedAlliance.hpp"
+#include "driftless/alliance/SkillsAlliance.hpp"
+
+// auton includes
+#include "driftless/auton/BlueSkillsAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"

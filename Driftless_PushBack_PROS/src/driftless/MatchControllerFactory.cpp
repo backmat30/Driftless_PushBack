@@ -13,7 +13,14 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_shared<alliance::RedAlliance>()};
   lvgl_menu->addAlliance(red_alliance);
 
+  std::shared_ptr<alliance::IAlliance> skills_alliance{
+      std::make_shared<alliance::SkillsAlliance>()};
+  lvgl_menu->addAlliance(skills_alliance);
+
   // add auton routes
+  std::unique_ptr<auton::AAuton> blue_skills_auton{
+      std::make_unique<auton::BlueSkillsAuton>()};
+  lvgl_menu->addAuton(blue_skills_auton);
 
   // add configs
   std::unique_ptr<config::IConfig> blue_config{

@@ -16,10 +16,10 @@ void MenuAdapter::addAlliance(std::shared_ptr<alliance::IAlliance>& alliance) {
   }
 }
 
-void MenuAdapter::addAuton(std::unique_ptr<auton::IAuton>& auton) {
+void MenuAdapter::addAuton(std::unique_ptr<auton::AAuton>& auton) {
   bool unique{true};
 
-  for (std::unique_ptr<auton::IAuton>& current_auton : autons) {
+  for (std::unique_ptr<auton::AAuton>& current_auton : autons) {
     if (current_auton->getName() == auton->getName()) {
       unique = false;
       break;

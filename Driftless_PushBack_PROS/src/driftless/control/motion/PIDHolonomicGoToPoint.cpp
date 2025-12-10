@@ -33,6 +33,15 @@ void PIDHolonomicGoToPoint::updateVelocity(double x_distance, double y_distance,
                                            double angular_distance) {
   double x_velocity{m_x_pid.getControlValue(0, x_distance)};
   double y_velocity{m_y_pid.getControlValue(0, y_distance)};
+
+  double velocity_scalar{1.0};
+  double velocity{std::sqrt(x_velocity * x_velocity + y_velocity * y_velocity)};
+  if (velocity > m_max_velocity) {
+    velocity_scalar = m_max_velocity / velocity;
+  }
+  x_velocity *= velocity_scalar;
+  y_velocity *= velocity_scalar;
+
   double angular_velocity{
       m_rotational_pid.getControlValue(0, angular_distance)};
 

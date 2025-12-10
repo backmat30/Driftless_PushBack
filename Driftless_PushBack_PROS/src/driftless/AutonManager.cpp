@@ -10,7 +10,7 @@ void AutonManager::setAlliance(
   m_alliance = alliance;
 }
 
-void AutonManager::setAuton(std::unique_ptr<auton::IAuton>& auton) {
+void AutonManager::setAuton(std::unique_ptr<auton::AAuton>& auton) {
   m_auton = std::move(auton);
 }
 

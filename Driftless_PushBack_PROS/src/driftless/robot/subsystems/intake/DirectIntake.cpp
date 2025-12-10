@@ -52,30 +52,93 @@ void DirectIntake::taskUpdate() {
   //   pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "latest pos: %7.2f",
   //                       m_latest_opposing_block_pos);
   // }
-  // pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "current pos: %7.2f",
+  // pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 6, "current pos: %7.2f",
   //                     m_front_motors.getPosition());
+  // pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "first pos: %7.2f",
+  //                     m_first_matchloader_block_pos);
 
-  pros::screen::print(
-      pros::E_TEXT_MEDIUM_CENTER, 6, "first block: %d  second block: %d",
-      m_has_first_matchloader_block, m_has_second_matchloader_block);
-  pros::screen::print(
-      pros::E_TEXT_MEDIUM_CENTER, 7, "first pos: %7.2f second pos: %7.2f",
-      m_first_matchloader_block_pos, m_second_matchloader_block_pos);
+  if (m_running_back_intake) {
+    // detect first block and record position
+    if (m_color_sensor->getProximity() > 250 &&
+        !m_has_first_matchloader_block) {
+      m_first_matchloader_block_pos = m_front_motors.getPosition();
+      m_has_first_matchloader_block = true;
+      // if we have the first block, are not yet ready for the second block, and
+      // there is either no block visible or we have moved the front intake far
+      // enough, declare that we are ready for block 2
+    } else if (m_has_first_matchloader_block &&
+               !m_ready_for_second_matchloader_block &&
+               (m_front_motors.getPosition() <
+                    m_first_matchloader_block_pos - 0.5 ||
+                m_color_sensor->getProximity() < 100)) {
+      m_ready_for_second_matchloader_block = true;
+      // if we are ready for a second block but do not have a second block,
+      // check if we can see a second block and update flag
+    } else if (m_ready_for_second_matchloader_block &&
+               !m_has_second_matchloader_block &&
+               m_color_sensor->getProximity() > 200) {
+      m_has_second_matchloader_block = true;
+      // wait for the front intake to go far enough, then update the flag to
+      // direct blocks to the hood
+    } else if (m_has_second_matchloader_block &&
+               m_front_motors.getPosition() <
+                   m_first_matchloader_block_pos - 2.45) {
+      m_back_intake_to_hood = true;
+    }
 
-  if (!m_color_sort_paused && m_running_forward && hasOpposingBlock()) {
-    m_latest_opposing_block_pos = m_front_motors.getPosition();
-  }
-  if (m_front_motors.getPosition() >
-          m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
-      m_front_motors.getPosition() <
-          m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
-    m_latest_opposing_block_pos = -__DBL_MAX__;
-  } else if (m_front_motors.getPosition() <
-                 m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
-             m_running_forward) {
-    m_back_motors.setVoltage(-12.0);
-    m_intermediary_motors.setVoltage(-12.0);
+    if (m_back_intake_to_hood) {
+      m_front_motors.setVoltage(0.0);
+      m_front_motors.setCurrentLimit(2.5);
+
+      m_vertical_motors.setVoltage(12.0);
+      m_vertical_motors.setCurrentLimit(2.5);
+    } else if (m_has_first_matchloader_block &&
+               !m_ready_for_second_matchloader_block) {
+      m_front_motors.setVoltage(-8.0);
+      m_front_motors.setCurrentLimit(2.5);
+
+      m_vertical_motors.setVoltage(-12.0);
+      m_vertical_motors.setCurrentLimit(1.0);
+    } else if (m_has_second_matchloader_block &&
+               m_front_motors.getPosition() >
+                   m_first_matchloader_block_pos - 2.45) {
+      m_front_motors.setVoltage(-4.0);
+      m_front_motors.setCurrentLimit(2.5);
+
+      m_vertical_motors.setVoltage(-10.0);
+      m_vertical_motors.setCurrentLimit(1.0);
+    } else {
+      m_front_motors.setVoltage(0.0);
+
+      m_vertical_motors.setVoltage(-6.0);
+      m_vertical_motors.setCurrentLimit(1.0);
+    }
+
+    m_intermediary_motors.setVoltage(12.0);
     m_intermediary_motors.setCurrentLimit(2.5);
+
+    m_back_motors.setVoltage(12.0);
+    m_back_motors.setCurrentLimit(1.0);
+  } else if(!m_color_sort_paused && m_running_forward){
+    if (m_running_forward && hasOpposingBlock()) {
+      m_latest_opposing_block_pos = m_front_motors.getPosition();
+    }
+    if (m_front_motors.getPosition() >
+            m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
+        m_front_motors.getPosition() <
+            m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
+      m_latest_opposing_block_pos = -__DBL_MAX__;
+      m_back_motors.setVoltage(-6.0);
+      m_back_motors.setCurrentLimit(1.25);
+      m_intermediary_motors.setVoltage(12.0);
+      m_intermediary_motors.setCurrentLimit(1.5);
+    } else if (m_front_motors.getPosition() <
+                   m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
+               m_running_forward) {
+      m_back_motors.setVoltage(-12.0);
+      m_intermediary_motors.setVoltage(-12.0);
+      m_intermediary_motors.setCurrentLimit(2.5);
+    }
   }
 
   if (m_mutex) {
@@ -107,7 +170,8 @@ void DirectIntake::intakeFront(bool reversed) {
   m_has_first_matchloader_block = false;
   m_first_matchloader_block_pos = -__DBL_MAX__;
   m_has_second_matchloader_block = false;
-  m_second_matchloader_block_pos = -__DBL_MAX__;
+  m_ready_for_second_matchloader_block = false;
+  m_running_back_intake = false;
 
   double voltage = 12.0 * (reversed ? -1.0 : 1.0);
   m_front_motors.setVoltage(voltage);
@@ -119,7 +183,7 @@ void DirectIntake::intakeFront(bool reversed) {
   if (m_front_motors.getPosition() >
       m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END) {
     m_back_motors.setVoltage(reversed ? 12.0 : 6.0);
-    m_back_motors.setCurrentLimit(0.75);
+    m_back_motors.setCurrentLimit(1.25);
 
     m_intermediary_motors.setVoltage(voltage);
     m_intermediary_motors.setCurrentLimit(1.5);
@@ -136,52 +200,7 @@ void DirectIntake::intakeBack() {
   }
 
   m_running_forward = false;
-
-  if (m_color_sensor->getProximity() > 250 && !m_has_first_matchloader_block) {
-    m_first_matchloader_block_pos = m_front_motors.getPosition();
-    m_has_first_matchloader_block = true;
-  } else if (m_has_first_matchloader_block && !m_has_second_matchloader_block &&
-             m_front_motors.getPosition() <
-                 m_first_matchloader_block_pos - 1.5 &&
-             m_color_sensor->getProximity() > 250) {
-    m_second_matchloader_block_pos = m_front_motors.getPosition();
-    m_has_second_matchloader_block = true;
-  } else if (m_has_second_matchloader_block &&
-             m_front_motors.getPosition() <
-                 m_second_matchloader_block_pos - 1.5) {
-    m_back_intake_to_hood = true;
-  }
-
-  if (m_back_intake_to_hood) {
-    m_front_motors.setVoltage(0.0);
-    m_front_motors.setCurrentLimit(2.5);
-
-    m_vertical_motors.setVoltage(12.0);
-    m_vertical_motors.setCurrentLimit(2.5);
-  } else if (!m_has_first_matchloader_block ||
-             (m_has_first_matchloader_block &&
-              m_front_motors.getPosition() >
-                  m_first_matchloader_block_pos - 1.5) ||
-             (m_has_second_matchloader_block &&
-              m_front_motors.getPosition() >
-                  m_second_matchloader_block_pos - 1.5)) {
-    m_front_motors.setVoltage(-8.0);
-    m_front_motors.setCurrentLimit(2.5);
-
-    m_vertical_motors.setVoltage(-12.0);
-    m_vertical_motors.setCurrentLimit(1.0);
-  } else {
-    m_front_motors.setVoltage(0.0);
-
-    m_vertical_motors.setVoltage(-12.0);
-    m_vertical_motors.setCurrentLimit(1.0);
-  }
-
-  m_intermediary_motors.setVoltage(12.0);
-  m_intermediary_motors.setCurrentLimit(2.5);
-
-  m_back_motors.setVoltage(12.0);
-  m_back_motors.setCurrentLimit(1.0);
+  m_running_back_intake = true;
 
   if (m_mutex) {
     m_mutex->give();
@@ -194,6 +213,7 @@ void DirectIntake::intakeBackToHood() {
   }
 
   m_running_forward = false;
+  m_running_back_intake = false;
 
   m_front_motors.setVoltage(0.0);
   m_front_motors.setCurrentLimit(2.5);
@@ -218,6 +238,7 @@ void DirectIntake::stopIntake() {
   }
 
   m_running_forward = false;
+  m_running_back_intake = false;
 
   m_front_motors.setVoltage(0.0);
   m_back_motors.setVoltage(0.0);
