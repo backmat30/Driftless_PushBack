@@ -102,17 +102,17 @@ class BlueConfig : public IConfig {
 
   // ## TRAJECTORY FOLLOWER ##
 
-  static constexpr double TRAJECTORY_FOLLOWER_X_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KP{20.0};
   static constexpr double TRAJECTORY_FOLLOWER_X_KI{0.0};
-  static constexpr double TRAJECTORY_FOLLOWER_X_KD{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KD{1500.0};
 
-  static constexpr double TRAJECTORY_FOLLOWER_Y_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KP{20.0};
   static constexpr double TRAJECTORY_FOLLOWER_Y_KI{0.0};
-  static constexpr double TRAJECTORY_FOLLOWER_Y_KD{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KD{1500.0};
 
-  static constexpr double TRAJECTORY_FOLLOWER_THETA_KP{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KP{14.0};
   static constexpr double TRAJECTORY_FOLLOWER_THETA_KI{0.0};
-  static constexpr double TRAJECTORY_FOLLOWER_THETA_KD{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KD{600.0};
 
   static constexpr double TRAJECTORY_FOLLOWER_TARGET_TOLERANCE{2.0};
   static constexpr double TRAJECTORY_FOLLOWER_TARGET_VELOCITY{1.0};
