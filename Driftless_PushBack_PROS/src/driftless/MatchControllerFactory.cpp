@@ -34,6 +34,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<profiles::IProfile> ethan_profile{
       std::make_unique<driftless::profiles::EthanProfile>()};
   lvgl_menu->addProfile(ethan_profile);
+  std::unique_ptr<profiles::IProfile> asher_profile{
+      std::make_unique<profiles::AsherProfile>()};
+  lvgl_menu->addProfile(asher_profile);
 
   // create RTOS
   std::shared_ptr<rtos::IClock> clock{
