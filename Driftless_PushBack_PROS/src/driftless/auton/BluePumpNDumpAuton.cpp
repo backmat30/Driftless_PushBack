@@ -84,12 +84,10 @@ void BluePumpNDumpAuton::run(
 
   // block goal until almost end of auton
   delay(2500);
-  goToPoint(matchload_lineup, MAX_VELOCITY);
-  delay(500);
-  setGoToPointVelocity(MAX_VELOCITY / 3.0);
+  goToPoint(matchload_lineup, MAX_VELOCITY / 2.0);
+  delay(250);
   hoodCloseDoor();
   intakeStop();
-  waitForGoToPoint(matchload_lineup, 4.0, 1500);
   goToPoint(long_goal, MAX_VELOCITY / 1.25);
   waitForGoToPoint(long_goal, 2.0, 2000);
   stopMotion();
@@ -107,7 +105,6 @@ void BluePumpNDumpAuton::run(
   goToPoint(end_descore, MAX_VELOCITY / 3.0);
   waitForGoToPoint(end_descore, 2.0, 3000);
   stopMotion();
-
 
   // leave at end
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",
