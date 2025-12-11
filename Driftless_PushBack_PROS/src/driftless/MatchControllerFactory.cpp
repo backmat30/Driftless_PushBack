@@ -29,6 +29,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<config::IConfig> blue_config{
       std::make_unique<config::BlueConfig>()};
   lvgl_menu->addConfig(blue_config);
+  std::unique_ptr<config::IConfig> orange_config{
+      std::make_unique<config::OrangeConfig>()};
+  lvgl_menu->addConfig(orange_config);
 
   // add profiles
   std::unique_ptr<profiles::IProfile> ethan_profile{
