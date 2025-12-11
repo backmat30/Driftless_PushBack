@@ -308,6 +308,18 @@ void AAuton::retractRake() {
                        robot::subsystems::ESubsystemCommand::RAKE_RETRACT);
 }
 
+void AAuton::deployDescore() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOOD,
+      robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
+}
+
+void AAuton::retractDescore() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOOD,
+      robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
+}
+
 AAuton::AAuton(std::string name) : m_name{name} {}
 
 std::string AAuton::getName() { return m_name; }
