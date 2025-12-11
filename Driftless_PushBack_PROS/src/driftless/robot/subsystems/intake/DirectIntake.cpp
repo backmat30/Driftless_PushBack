@@ -38,6 +38,36 @@ bool DirectIntake::hasOpposingBlock() {
   return result;
 }
 
+bool DirectIntake::hasAllianceBlock() {
+  bool result{};
+
+  if (m_alliance == alliance::EAlliance::NONE) {
+    result = true;
+  } else if (m_color_sensor) {
+    double red{m_color_sensor->getRGB().red};
+    double blue{m_color_sensor->getRGB().blue};
+
+    if (m_color_sensor->getProximity() >= 200) {
+      switch (m_alliance) {
+        case alliance::EAlliance::BLUE: {
+          if (blue > red * 1.25) {
+            result = true;
+          }
+          break;
+        }
+        case alliance::EAlliance::RED: {
+          if (red > blue * 1.25) {
+            result = true;
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
 void DirectIntake::taskUpdate() {
   if (m_mutex) {
     m_mutex->take();
@@ -59,8 +89,7 @@ void DirectIntake::taskUpdate() {
 
   if (m_running_back_intake) {
     // detect first block and record position
-    if (m_color_sensor->getProximity() > 250 &&
-        !m_has_first_matchloader_block) {
+    if (hasAllianceBlock() && !m_has_first_matchloader_block) {
       m_first_matchloader_block_pos = m_front_motors.getPosition();
       m_has_first_matchloader_block = true;
       // if we have the first block, are not yet ready for the second block, and
@@ -76,13 +105,13 @@ void DirectIntake::taskUpdate() {
       // check if we can see a second block and update flag
     } else if (m_ready_for_second_matchloader_block &&
                !m_has_second_matchloader_block &&
-               m_color_sensor->getProximity() > 200) {
+               hasAllianceBlock()) {
       m_has_second_matchloader_block = true;
       // wait for the front intake to go far enough, then update the flag to
       // direct blocks to the hood
     } else if (m_has_second_matchloader_block &&
                m_front_motors.getPosition() <
-                   m_first_matchloader_block_pos - 2.45) {
+                   m_first_matchloader_block_pos - 2.25) {
       m_back_intake_to_hood = true;
     }
 
@@ -101,7 +130,7 @@ void DirectIntake::taskUpdate() {
       m_vertical_motors.setCurrentLimit(1.0);
     } else if (m_has_second_matchloader_block &&
                m_front_motors.getPosition() >
-                   m_first_matchloader_block_pos - 2.45) {
+                   m_first_matchloader_block_pos - 2.25) {
       m_front_motors.setVoltage(-4.0);
       m_front_motors.setCurrentLimit(2.5);
 
@@ -119,7 +148,7 @@ void DirectIntake::taskUpdate() {
 
     m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.0);
-  } else if(!m_color_sort_paused && m_running_forward){
+  } else if (!m_color_sort_paused && m_running_forward) {
     if (m_running_forward && hasOpposingBlock()) {
       m_latest_opposing_block_pos = m_front_motors.getPosition();
     }
@@ -185,8 +214,8 @@ void DirectIntake::intakeFront(bool reversed) {
     m_back_motors.setVoltage(reversed ? 12.0 : 6.0);
     m_back_motors.setCurrentLimit(1.25);
 
-    m_intermediary_motors.setVoltage(voltage);
-    m_intermediary_motors.setCurrentLimit(1.5);
+    m_intermediary_motors.setVoltage(reversed ? -6.0 : 12.0);
+    m_intermediary_motors.setCurrentLimit(2.5);
   }
 
   if (m_mutex) {
@@ -213,19 +242,8 @@ void DirectIntake::intakeBackToHood() {
   }
 
   m_running_forward = false;
-  m_running_back_intake = false;
-
-  m_front_motors.setVoltage(0.0);
-  m_front_motors.setCurrentLimit(2.5);
-
-  m_vertical_motors.setVoltage(12.0);
-  m_vertical_motors.setCurrentLimit(2.5);
-
-  m_intermediary_motors.setVoltage(12.0);
-  m_intermediary_motors.setCurrentLimit(2.5);
-
-  m_back_motors.setVoltage(12.0);
-  m_back_motors.setCurrentLimit(1.0);
+  m_running_back_intake = true;
+  m_back_intake_to_hood = true;
 
   if (m_mutex) {
     m_mutex->give();

@@ -203,13 +203,6 @@ void AAuton::intakeFront() {
 void AAuton::outtakeFront() {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
                        robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
-
-  m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                       robot::subsystems::ESubsystemCommand::HOOD_SET_VOLTAGE,
-                       -12.0);
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::HOOD,
-      robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
 }
 
 void AAuton::intakeBack() {
@@ -221,7 +214,7 @@ void AAuton::intakeBack() {
                        12.0);
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::HOOD,
-      robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
+      robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 1.35);
 }
 
 void AAuton::intakeBackToHood() {
@@ -234,7 +227,7 @@ void AAuton::intakeBackToHood() {
                        12.0);
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::HOOD,
-      robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
+      robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 1.35);
 }
 
 void AAuton::intakeStop() {
@@ -313,6 +306,18 @@ void AAuton::deployRake() {
 void AAuton::retractRake() {
   m_robot->sendCommand(robot::subsystems::ESubsystem::RAKE,
                        robot::subsystems::ESubsystemCommand::RAKE_RETRACT);
+}
+
+void AAuton::deployDescore() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOOD,
+      robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
+}
+
+void AAuton::retractDescore() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOOD,
+      robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
 }
 
 AAuton::AAuton(std::string name) : m_name{name} {}

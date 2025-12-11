@@ -1,7 +1,7 @@
 #include "driftless/auton/BlueSkillsAuton.hpp"
 
 namespace driftless::auton {
-BlueSkillsAuton::BlueSkillsAuton() : AAuton("Blue Skills") {}
+BlueSkillsAuton::BlueSkillsAuton() : AAuton("Blue_Skills") {}
 
 void BlueSkillsAuton::init(
     std::shared_ptr<robot::Robot>& robot,

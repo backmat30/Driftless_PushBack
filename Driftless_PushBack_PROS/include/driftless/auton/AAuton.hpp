@@ -138,6 +138,10 @@ class AAuton {
 
   void retractRake();
 
+  void deployDescore();
+
+  void retractDescore();
+
  public:
   /// @brief Constructs a new AAuton object
   /// @param name __std::string__ The name of the auton

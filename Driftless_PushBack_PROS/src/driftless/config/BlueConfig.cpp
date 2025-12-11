@@ -322,6 +322,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::Motor>(INTAKE_FRONT_MOTOR_1_PORT)};
   std::unique_ptr<pros::Motor> pros_intake_intermediary_motor_1{
       std::make_unique<pros::Motor>(INTAKE_INTERMEDIARY_MOTOR_1_PORT)};
+  std::unique_ptr<pros::Motor> pros_intake_intermediary_motor_2{
+      std::make_unique<pros::Motor>(INTAKE_INTERMEDIARY_MOTOR_2_PORT)};
   std::unique_ptr<pros::Motor> pros_intake_back_motor_1{
       std::make_unique<pros::Motor>(INTAKE_BACK_MOTOR_1_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_intake_back_arms{
@@ -337,6 +339,9 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::unique_ptr<io::IMotor> intake_intermediary_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(
           pros_intake_intermediary_motor_1)};
+  std::unique_ptr<io::IMotor> intake_intermediary_motor_2{
+      std::make_unique<pros_adapters::ProsV5Motor>(
+          pros_intake_intermediary_motor_2)};
   std::unique_ptr<io::IMotor> intake_back_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(pros_intake_back_motor_1)};
   std::unique_ptr<io::IPiston> intake_back_arms{
@@ -362,6 +367,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   std::unique_ptr<robot::subsystems::intake::IIntake> intake{
       intake_builder.withFrontMotor(intake_front_motor_1)
           ->withIntermediaryMotor(intake_intermediary_motor_1)
+          ->withIntermediaryMotor(intake_intermediary_motor_2)
           ->withBackMotor(intake_back_motor_1)
           ->withVerticalMotor(intake_vertical_motor_1)
           ->withBackPiston(intake_back_arms)

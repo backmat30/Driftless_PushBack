@@ -21,6 +21,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> blue_skills_auton{
       std::make_unique<auton::BlueSkillsAuton>()};
   lvgl_menu->addAuton(blue_skills_auton);
+  std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
+      std::make_unique<auton::BluePumpNDumpAuton>()};
+  lvgl_menu->addAuton(blue_pump_n_dump_auton);
 
   // add configs
   std::unique_ptr<config::IConfig> blue_config{

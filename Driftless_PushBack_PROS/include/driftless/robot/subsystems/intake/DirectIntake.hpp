@@ -89,6 +89,11 @@ class DirectIntake : public IIntake {
   /// @return __bool__ True if there is an opposing block, false otherwise
   bool hasOpposingBlock();
 
+  /// @brief Checks if there is a block of the current alliance in the intake
+  /// @return __bool__ True if there is an alliance block, false otherwise
+  /// @return 
+  bool hasAllianceBlock();
+
   /// @brief Performs all instance related updates
   void taskUpdate();
 
