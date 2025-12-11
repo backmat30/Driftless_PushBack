@@ -18,6 +18,7 @@
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"
+#include "driftless/config/OrangeConfig.hpp"
 
 // profile includes
 #include "driftless/profiles/AsherProfile.hpp"
