@@ -24,7 +24,7 @@ void OrangeSkillsAuton::run(
 
   // start auton
   uint32_t start_time{getTime()};
-  setOdomPosition(68.25, 25.0, 0);
+  setOdomPosition(88.0, 20.0, M_PI);
 
   // leave at end
   stopMotion();
