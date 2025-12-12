@@ -43,14 +43,16 @@ namespace driftless::auton
 
     //score blocks from match loader
     goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
+    waitForGoToPoint(long_goal_lineup, 10.0, 1500);
+    retractBackIntakeArms();
     waitForGoToPoint(long_goal_lineup, 8.0, 1500);
     goToPoint(long_goal_lineup_2, MAX_VELOCITY / 1.75);
     waitForGoToPoint(long_goal_lineup_2, 4.0, 1500);
     intakeFront();
     hoodRaise();
-    retractBackIntakeArms();
     goToPoint(long_goal, MAX_VELOCITY / 3.5);
     waitForGoToPoint(long_goal, 2.0, 2000);
+
     hoodOpenDoor();
 
     delay(1250);
@@ -79,11 +81,12 @@ namespace driftless::auton
     hoodLower();
     retractDescore();
     intakeFront();
-    delay(500);
-    goToPoint(center_two_blocks, MAX_VELOCITY / 3.0);
-    waitForGoToPoint(center_two_blocks, 2.0, 2000);
+    delay(250);
+    // goToPoint(center_two_blocks, MAX_VELOCITY / 3.0);
+    // waitForGoToPoint(center_two_blocks, 2.0, 2000);
     goToPoint(center_two_blocks_2, MAX_VELOCITY / 3.0);
     waitForGoToPoint(center_two_blocks_2, 1.0, 2000);
+    delay(100);
     goToPoint(center_two_blocks_3, MAX_VELOCITY / 3.0);
     waitForGoToPoint(center_two_blocks_3, 1.0, 2000);
 
@@ -95,18 +98,18 @@ namespace driftless::auton
     waitForGoToPoint(center_six_blocks, 1.0, 2000);
     // goToPoint(center_six_blocks_2, MAX_VELOCITY / 3.0);
     // waitForGoToPoint(center_six_blocks_2, 1, 2000);
-    goToPoint(center_six_blocks_3, MAX_VELOCITY / 3.0);
+    goToPoint(center_six_blocks_3, MAX_VELOCITY / 3.5);
     waitForGoToPoint(center_six_blocks_3, 1.5, 2000);
 
     // go bottom goal
-    goToPoint(bottom_goal_lineup, MAX_VELOCITY / 2.0);
-    waitForGoToPoint(bottom_goal_lineup, 1.0, 2000);
+    // goToPoint(bottom_goal_lineup, MAX_VELOCITY / 2.0);
+    // waitForGoToPoint(bottom_goal_lineup, 1.0, 2000);
     //goToPoint(bottom_goal, MAX_VELOCITY / 2.0);
     //waitForGoToPoint(bottom_goal, 2.0, 2000);
-    goToPoint(bottom_goal_1, MAX_VELOCITY / 2.0);
-    waitForGoToPoint(bottom_goal_1, 2.0, 2000);
+    goToPoint(bottom_goal_1, MAX_VELOCITY);
+    waitForGoToPoint(bottom_goal_1, 5.0, 1750);
     goToPoint(bottom_goal_2, MAX_VELOCITY / 2);
-    waitForGoToPoint(bottom_goal_2, 1, 400);
+    waitForGoToPoint(bottom_goal_2, 1.0, 400);
     delay(100);
 
     hoodSetVoltage(-12.0);
@@ -121,20 +124,21 @@ namespace driftless::auton
     goToPoint(matchload, MAX_VELOCITY / 2.0);
     waitForGoToPoint(matchload, 2.0, 1500);
     deployBackIntakeArms();
-    intakeBackToHood();
+    intakeBack();
 
-    delay(1250);
+    delay(1000);
     outtakeFront();
 
     // go park
     goToPoint(park_lineup, MAX_VELOCITY);
-    delay(500);
+    delay(200);
+    retractBackIntakeArms();
     intakeStop();
     waitForGoToPoint(park_lineup, 2.0, 2000);
     goToPoint(park_lineup_2, MAX_VELOCITY);
     waitForGoToPoint(park_lineup_2, 2.0, 2000);
-    goToPoint(park_lineup, MAX_VELOCITY);
-    delay(5000);
+    goToPoint(park_zone, MAX_VELOCITY);
+    delay(3000);
 
 
     stopMotion();
