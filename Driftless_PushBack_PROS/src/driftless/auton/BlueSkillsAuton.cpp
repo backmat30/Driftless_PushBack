@@ -84,7 +84,7 @@ void BlueSkillsAuton::run(
   deployBackIntakeArms();
   stopMotion();
 
-  delay(3000);
+  delay(2500);
   intakeStop();
   hoodRaise();
 
@@ -97,7 +97,7 @@ void BlueSkillsAuton::run(
   hoodOpenDoor();
   intakeFront();
 
-  delay(2250);
+  delay(2000);
 
   // grab 2 blocks on the left wall
   goToPoint(front_left_wall_blocks_lineup_1, MAX_VELOCITY / 2.0);
@@ -160,11 +160,11 @@ void BlueSkillsAuton::run(
   stopMotion();
   hoodOpenDoor();
   intakeFront();
-  hoodSetVoltage(4.0);
+  hoodSetVoltage(6.0);
 
-  delay(1500);
-  hoodSetVoltage(8.0);
-  delay(1000);
+  delay(1200);
+  hoodSetVoltage(9.0);
+  delay(1200);
   hoodRaise();
 
   // block lower middle goal for other bot
@@ -191,7 +191,7 @@ void BlueSkillsAuton::run(
   goToPoint(back_left_wall_blocks_end, MAX_VELOCITY / 4.0);
   waitForGoToPoint(back_left_wall_blocks_end, 20.0, 2000);
   setGoToPointVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPoint(back_left_wall_blocks_end, 2.0, 2000);
+  waitForGoToPoint(back_left_wall_blocks_end, 2.0, 1750);
   turnToHeading(M_PI * 150 / 180.0, M_PI / 2.0);
   delay(250);
   stopMotion();
@@ -226,7 +226,7 @@ void BlueSkillsAuton::run(
   delay(2250);
 
   // go back to match loader quick in case we didnt get all
-  goToPoint(second_matchload, MAX_VELOCITY);
+  goToPoint(second_matchload, MAX_VELOCITY / 1.5);
   waitForGoToPoint(second_matchload, 2.0, 2000);
   deployBackIntakeArms();
   hoodLower();
