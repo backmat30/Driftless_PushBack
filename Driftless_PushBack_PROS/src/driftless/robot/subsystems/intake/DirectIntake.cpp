@@ -149,25 +149,31 @@ void DirectIntake::taskUpdate() {
 
     m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.0);
-  } else if (!m_color_sort_paused && m_running_forward) {
-    if (m_running_forward && hasOpposingBlock()) {
-      m_latest_opposing_block_pos = m_front_motors.getPosition();
+  } else if (m_running_forward) {
+    if (!m_color_sort_paused) {
+      if (hasOpposingBlock()) {
+        m_latest_opposing_block_pos = m_front_motors.getPosition();
+      }
+      if (m_front_motors.getPosition() >
+              m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
+          m_front_motors.getPosition() <
+              m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
+        m_latest_opposing_block_pos = -__DBL_MAX__;
+      } else if (m_front_motors.getPosition() <
+                     m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
+                 m_running_forward) {
+        m_back_motors.setVoltage(-12.0);
+        m_intermediary_motors.setVoltage(-12.0);
+        m_intermediary_motors.setCurrentLimit(2.5);
+      }
     }
+
     if (m_front_motors.getPosition() >
-            m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
-        m_front_motors.getPosition() <
-            m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
-      m_latest_opposing_block_pos = -__DBL_MAX__;
+        m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END) {
       m_back_motors.setVoltage(-6.0);
       m_back_motors.setCurrentLimit(1.25);
       m_intermediary_motors.setVoltage(12.0);
       m_intermediary_motors.setCurrentLimit(1.5);
-    } else if (m_front_motors.getPosition() <
-                   m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
-               m_running_forward) {
-      m_back_motors.setVoltage(-12.0);
-      m_intermediary_motors.setVoltage(-12.0);
-      m_intermediary_motors.setCurrentLimit(2.5);
     }
   }
 
@@ -211,11 +217,12 @@ void DirectIntake::intakeFront(bool reversed) {
   m_vertical_motors.setCurrentLimit(1.5);
 
   if (m_front_motors.getPosition() >
-      m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END) {
-    m_back_motors.setVoltage(reversed ? 12.0 : 6.0);
+          m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
+      reversed) {
+    m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.25);
 
-    m_intermediary_motors.setVoltage(reversed ? -6.0 : 12.0);
+    m_intermediary_motors.setVoltage(-6.0);
     m_intermediary_motors.setCurrentLimit(2.5);
   }
 
