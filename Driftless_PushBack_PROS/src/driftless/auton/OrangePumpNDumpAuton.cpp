@@ -1,16 +1,16 @@
-#include "driftless/auton/BluePumpNDumpAuton.hpp"
+#include "driftless/auton/OrangePumpNDumpAuton.hpp"
 
 namespace driftless::auton {
-BluePumpNDumpAuton::BluePumpNDumpAuton() : AAuton("Blue_PumpDump") {}
+OrangePumpNDumpAuton::OrangePumpNDumpAuton() : AAuton("Orange_PumpDump") {}
 
-void BluePumpNDumpAuton::init(
+void OrangePumpNDumpAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system) {
   m_robot = robot;
   m_control_system = control_system;
 }
 
-void BluePumpNDumpAuton::run(
+void OrangePumpNDumpAuton::run(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system,
     std::shared_ptr<driftless::alliance::IAlliance>& alliance,
@@ -23,7 +23,7 @@ void BluePumpNDumpAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(96.5, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
 
@@ -37,7 +37,7 @@ void BluePumpNDumpAuton::run(
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(1250);
+  delay(900);
   outtakeFront();
 
   // score blocks from match loader
@@ -52,7 +52,7 @@ void BluePumpNDumpAuton::run(
   waitForGoToPoint(long_goal, 2.0, 2000);
   hoodOpenDoor();
 
-  delay(1250);
+  delay(1000);
 
   // go back to match loader
   intakeStop();
@@ -73,12 +73,12 @@ void BluePumpNDumpAuton::run(
 
   // score on long goal again
   intakeStop();
-  goToPoint(long_goal, MAX_VELOCITY / 1.25);
-  waitForGoToPoint(long_goal, 12.0, 1000);
+  goToPoint(long_goal_2, MAX_VELOCITY / 1.25);
+  waitForGoToPoint(long_goal_2, 12.0, 1000);
   hoodRaise();
   retractBackIntakeArms();
   setGoToPointVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPoint(long_goal, 2.0, 1000);
+  waitForGoToPoint(long_goal_2, 2.0, 1000);
   hoodOpenDoor();
   intakeFront();
 
@@ -91,10 +91,10 @@ void BluePumpNDumpAuton::run(
   goToPoint(long_goal, MAX_VELOCITY / 1.25);
   waitForGoToPoint(long_goal, 2.0, 2000);
   stopMotion();
-  delayUntil(start_time + 23000);
+  delayUntil(start_time + 22500);
 
   // descore
-  goToPoint(matchload_lineup, MAX_VELOCITY);
+  goToPoint(matchload_lineup, MAX_VELOCITY / 2.0);
   deployDescore();
   waitForGoToPoint(matchload_lineup, 6.0, 1000);
   goToPoint(descore_lineup, MAX_VELOCITY);

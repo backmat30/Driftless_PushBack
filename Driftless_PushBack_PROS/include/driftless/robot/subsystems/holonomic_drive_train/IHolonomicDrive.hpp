@@ -34,7 +34,7 @@ class IHolonomicDrive {
 
   /// @brief Sets the motion vector of the holonomic drive train
   /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
-  virtual void setMotionVector(HolonomicMotionVector motion_ector) = 0;
+  virtual void setMotionVector(HolonomicMotionVector motion_vector) = 0;
 
   /// @brief Sets the X velocity of the holonomic drive train
   /// @param x_velocity The desired X velocity
