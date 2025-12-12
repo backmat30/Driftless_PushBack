@@ -134,17 +134,17 @@ void BlueSkillsAuton::run(
   // grab block 7 for the top middle goal
   turnToHeading(middle_blocks_lineup.getTheta(), M_PI * 1.0);
   delay(500);
-  goToPoint(middle_blocks_lineup, MAX_VELOCITY / 1.5);
+  goToPoint(middle_blocks_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_blocks_lineup, 8.0, 4000);
   goToPoint(middle_blocks_lineup_2, MAX_VELOCITY / 1.5);
   waitForGoToPoint(middle_blocks_lineup_2, 12.0, 1000);
-  setGoToPointVelocity(MAX_VELOCITY / 4.0);
+  setGoToPointVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_blocks_lineup_2, 2.0, 4000);
   stopMotion();
   turnToHeading(middle_blocks_end.getTheta(), M_PI * 3.0);
   delay(500);
   retractRake();
-  goToPoint(middle_blocks_end, MAX_VELOCITY / 3.0);
+  goToPoint(middle_blocks_end, MAX_VELOCITY / 2.5);
   waitForGoToPoint(middle_blocks_end, 2.0, 2000);
   stopMotion();
 
@@ -152,6 +152,7 @@ void BlueSkillsAuton::run(
   intakeStop();
 
   // score on middle goal top
+  startColorSort(alliance::EAlliance::BLUE);
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_top_goal_lineup, 2.0, 4000);
   hoodBumpUp();
@@ -166,6 +167,7 @@ void BlueSkillsAuton::run(
   hoodSetVoltage(9.0);
   delay(1200);
   hoodRaise();
+  pauseColorSort();
 
   // block lower middle goal for other bot
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
