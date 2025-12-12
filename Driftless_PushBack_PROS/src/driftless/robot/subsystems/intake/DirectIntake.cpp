@@ -41,8 +41,10 @@ bool DirectIntake::hasOpposingBlock() {
 bool DirectIntake::hasAllianceBlock() {
   bool result{};
 
-  if (m_alliance == alliance::EAlliance::NONE) {
-    result = true;
+  if (m_color_sort_paused) {
+    if (m_color_sensor->getProximity() >= 200) {
+      result = true;
+    }
   } else if (m_color_sensor) {
     double red{m_color_sensor->getRGB().red};
     double blue{m_color_sensor->getRGB().blue};
@@ -104,14 +106,13 @@ void DirectIntake::taskUpdate() {
       // if we are ready for a second block but do not have a second block,
       // check if we can see a second block and update flag
     } else if (m_ready_for_second_matchloader_block &&
-               !m_has_second_matchloader_block &&
-               hasAllianceBlock()) {
+               !m_has_second_matchloader_block && hasAllianceBlock()) {
       m_has_second_matchloader_block = true;
       // wait for the front intake to go far enough, then update the flag to
       // direct blocks to the hood
     } else if (m_has_second_matchloader_block &&
                m_front_motors.getPosition() <
-                   m_first_matchloader_block_pos - 2.25) {
+                   m_first_matchloader_block_pos - 2.0) {
       m_back_intake_to_hood = true;
     }
 
