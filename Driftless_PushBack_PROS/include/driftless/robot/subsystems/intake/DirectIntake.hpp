@@ -32,7 +32,7 @@ class DirectIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
 
-  static constexpr double COLOR_SORT_DISTANCE_TO_END{5.5};
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{3.5};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
