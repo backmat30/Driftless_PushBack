@@ -146,7 +146,7 @@ void HoodOperator::updateHoodRollers(EControllerDigital spin_forwards_front,
     if (!is_hood_open) {
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 0.85);
+          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 1.35);
     } else {
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
