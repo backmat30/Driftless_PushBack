@@ -63,7 +63,7 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point second_matchload_lineup{26.0, 118.0, -M_PI / 2.0};
 
-  control::Point second_matchload{25.0, 138.0, -M_PI / 2.0};
+  control::Point second_matchload{24.0, 138.0, -M_PI / 2.0};
 
   control::Point left_goal_back{24.0, 102.0, -M_PI / 2.0};
 
