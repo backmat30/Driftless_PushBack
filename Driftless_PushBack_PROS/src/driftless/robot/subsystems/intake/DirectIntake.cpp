@@ -112,7 +112,7 @@ void DirectIntake::taskUpdate() {
       // direct blocks to the hood
     } else if (m_has_second_matchloader_block &&
                m_front_motors.getPosition() <
-                   m_first_matchloader_block_pos - 2.0) {
+                   m_first_matchloader_block_pos - 1.8) {
       m_back_intake_to_hood = true;
     }
 
@@ -214,7 +214,7 @@ void DirectIntake::intakeFront(bool reversed) {
   m_front_motors.setCurrentLimit(2.5);
 
   m_vertical_motors.setVoltage(voltage);
-  m_vertical_motors.setCurrentLimit(1.5);
+  m_vertical_motors.setCurrentLimit(2.5);
 
   if (m_front_motors.getPosition() >
           m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
