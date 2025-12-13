@@ -112,7 +112,6 @@ void Coprocessor::fetchLatestSignal() {
     return;
   }
 
-  // Validate (your existing isValidSignal() checks CRC)
   if (m_serial_buffer.size() != package_size || m_serial_buffer[0] != 0xFF ||
       !isValidSignal()) {
     pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 10,
@@ -124,15 +123,15 @@ void Coprocessor::fetchLatestSignal() {
 
 void Coprocessor::processLatestSignal() {
   if (m_serial_buffer.size() < 3) {
-    //std::cout << "Buffer too small" << std::endl;
+    // std::cout << "Buffer too small" << std::endl;
     return;
   }
   if (m_serial_buffer.size() != m_serial_buffer[1]) {
-    //std::cout << "Size mismatch" << std::endl;
+    // std::cout << "Size mismatch" << std::endl;
     return;
   }
   if (!isValidSignal()) {
-    //std::cout << "Invalid CRC" << std::endl;
+    // std::cout << "Invalid CRC" << std::endl;
     return;
   }
 
@@ -163,10 +162,10 @@ bool Coprocessor::isValidSignal() const {
     std::memcpy(&recieved_crc,
                 m_serial_buffer.data() + m_serial_buffer.size() - 2, 2);
   }
-  //std::cout << "Recieved CRC: " << std::hex << recieved_crc << std::endl;
+  // std::cout << "Recieved CRC: " << std::hex << recieved_crc << std::endl;
   uint16_t calculated_crc =
       calculateCRC(m_serial_buffer, m_serial_buffer.size() - 2);
-  //std::cout << "Calculated CRC: " << std::hex << calculated_crc << std::endl;
+  // std::cout << "Calculated CRC: " << std::hex << calculated_crc << std::endl;
   return recieved_crc == calculated_crc;
 }
 
