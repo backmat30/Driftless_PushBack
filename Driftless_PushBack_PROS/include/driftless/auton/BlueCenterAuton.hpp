@@ -19,13 +19,13 @@ class BlueCenterAuton : public AAuton {
 
   control::Point matchload_lineup{26.0, 26.0, M_PI / 2.0};
 
-  control::Point matchload{26.0, 11.5, M_PI / 2.0};
+  control::Point matchload{26, 11.5, M_PI / 2.0};
 
   control::Point long_goal_lineup{28.0, 26.0, M_PI / 4.0};
 
   control::Point long_goal_lineup_2{28.0, 31.0, M_PI / 4.0};
 
-  control::Point long_goal{26.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{25.5, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{12.0, 12.0, M_PI / 2.0};
 
@@ -33,13 +33,13 @@ class BlueCenterAuton : public AAuton {
 
   control::Point start_descore{16.0, 45.0, M_PI / 2.0};
   
-  control::Point end_descore{16.0, 60.0, M_PI / 2.0};
+  control::Point end_descore{16.0, 58.0, M_PI / 2.0};
 
   control::Point center_two_blocks_lineup{12.0, 50.0, M_PI / 5.5};
 
   control::Point center_two_blocks{21.0, 61.0, M_PI / 4.0};
 
-  control::Point center_two_blocks_2{23.0, 62.0, M_PI / 3.0};
+  control::Point center_two_blocks_2{24, 62.0, M_PI / 2.5};
 
   control::Point center_two_blocks_3{26.0, 65.0, M_PI / 2};
 
@@ -49,23 +49,33 @@ class BlueCenterAuton : public AAuton {
 
   control::Point center_six_blocks_2{41.5, 70, M_PI / 6};
 
-  control::Point center_six_blocks_3{52.0, 72.0, M_PI / 5};
+  control::Point center_six_blocks_3{51.5, 72.0, M_PI / 5};
 
   control::Point bottom_goal_lineup{54.0, 78.0, 0.0};
 
   control::Point bottom_goal{58.0, 83.0, 0};
 
-  control::Point bottom_goal_1{61.0, 89.0, 0};
+  control::Point bottom_goal_1{58.0, 85.0, 0};
 
-  control::Point bottom_goal_2{76, 76, - M_PI / 7};
+  control::Point bottom_goal_2{76, 76, - M_PI / 8};
 
   control::Point matchload_lineup_2{38, 38.0, M_PI / 2};
 
-  control::Point park_lineup{35, 20, 0};
+  control::Point top_goal_lineup{50, 50, M_PI / 4};
 
-  control::Point park_lineup_2{38.0, 10.0, 0.0};
+  control::Point top_goal{60.5, 64, M_PI / 4};
 
-  control::Point park_zone{80.0, 6.0, 0.0};
+//   control::Point park_lineup{44, 20, 0};
+
+//   control::Point park_lineup_2{46.0, 10.0, 0.0};
+
+//   control::Point park_zone{80.0, 6.0, 0.0};
+
+  control::Point park_lineup{52.0, 12.0, 0};
+
+  control::Point park_lineup_2{45.0, 10.0, 0.0};
+
+  control::Point park_zone{80.0, 5.0, 0.0};
 
 
  public:

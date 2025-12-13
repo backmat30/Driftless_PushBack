@@ -215,9 +215,7 @@ void DirectIntake::intakeFront(bool reversed) {
   m_vertical_motors.setVoltage(12.0 * (reversed ? -0.75 : 1.0));
   m_vertical_motors.setCurrentLimit(1.5);
 
-  if (m_front_motors.getPosition() >
-          m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
-      reversed) {
+  if (reversed) {
     m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.25);
 
