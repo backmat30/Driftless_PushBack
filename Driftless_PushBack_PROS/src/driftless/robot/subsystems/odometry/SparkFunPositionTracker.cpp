@@ -108,6 +108,7 @@ void SparkFunPositionTracker::sendLocalOffset() {
 
 void SparkFunPositionTracker::init() {
   m_coprocessor->init();
+  m_delayer->delay(500);
   m_coprocessor->addPacketToPackage<char>(
       serial_protocol::ESerialKey::CALIBRATE_ODOM, 0);
   m_delayer->delay(1000);
