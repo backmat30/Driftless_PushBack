@@ -30,7 +30,6 @@
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
-
 #include "pros/screen.hpp"
 
 /// @brief Namespace for driftless library code
@@ -91,9 +90,9 @@ class AAuton {
                    control::motion::ETurnDirection direction =
                        control::motion::ETurnDirection::AUTO);
 
-  void turnToHeading(double heading,
-                     double target_velocity, control::motion::ETurnDirection
-                         direction = control::motion::ETurnDirection::AUTO);
+  void turnToHeading(double heading, double target_velocity,
+                     control::motion::ETurnDirection direction =
+                         control::motion::ETurnDirection::AUTO);
 
   bool turnTargetReached();
 
@@ -102,7 +101,7 @@ class AAuton {
 
   void waitForTurnToAngle(double heading, double tolerance, uint32_t timeout);
 
-   void stopMotion();
+  void stopMotion();
 
   void intakeFront();
 
