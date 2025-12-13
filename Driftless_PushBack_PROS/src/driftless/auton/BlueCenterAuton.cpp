@@ -38,7 +38,7 @@ namespace driftless::auton
     deployBackIntakeArms();
     intakeBackToHood();
 
-    delay(1250);
+    delay(1150);
     outtakeFront();
 
     //score blocks from match loader
@@ -115,18 +115,18 @@ namespace driftless::auton
     hoodSetVoltage(-10.0);
     outtakeFront();
 
-    delay(2250);
+    delay(2300);
 
     // go matchload again
     intakeStop();
     goToPoint(matchload_lineup_2, MAX_VELOCITY);
     waitForGoToPoint(matchload_lineup_2, 4, 3500);
-    goToPoint(matchload, MAX_VELOCITY / 1.5);
-    waitForGoToPoint(matchload, 2.0, 1250);
+    goToPoint(matchload_2, MAX_VELOCITY / 1.5);
+    waitForGoToPoint(matchload_2, 2.0, 1250);
     deployBackIntakeArms();
     intakeBack();
 
-    delay(1250);
+    delay(1350);
     outtakeFront();
 
     // go top goal
@@ -136,7 +136,7 @@ namespace driftless::auton
     intakeStop();
     waitForGoToPoint(top_goal_lineup, 3.0, 2000);
     hoodBumpUp();
-    goToPoint(top_goal, MAX_VELOCITY / 2.5);
+    goToPoint(top_goal, MAX_VELOCITY / 3);
     waitForGoToPoint(top_goal, 2.0, 2000);
     hoodOpenDoor();
     intakeFront();
@@ -152,6 +152,8 @@ namespace driftless::auton
     delay(200);
     retractBackIntakeArms();
     intakeStop();
+    hoodLower();
+    hoodCloseDoor();
     waitForGoToPoint(park_lineup, 4.0, 2000);
     goToPoint(park_lineup_2, MAX_VELOCITY);
     waitForGoToPoint(park_lineup_2, 2.0, 1250);
