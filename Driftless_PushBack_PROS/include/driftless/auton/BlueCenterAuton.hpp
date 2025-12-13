@@ -21,11 +21,13 @@ class BlueCenterAuton : public AAuton {
 
   control::Point matchload{26, 11.5, M_PI / 2.0};
 
+  control::Point matchload_2{27, 11.5, M_PI / 2.0};
+
   control::Point long_goal_lineup{28.0, 26.0, M_PI / 4.0};
 
   control::Point long_goal_lineup_2{28.0, 31.0, M_PI / 4.0};
 
-  control::Point long_goal{25.5, 42.0, M_PI / 2.0};
+  control::Point long_goal{26, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{12.0, 12.0, M_PI / 2.0};
 
@@ -41,11 +43,11 @@ class BlueCenterAuton : public AAuton {
 
   control::Point center_two_blocks_2{24, 62.0, M_PI / 2.5};
 
-  control::Point center_two_blocks_3{26.0, 65.0, M_PI / 2};
+  control::Point center_two_blocks_3{26.0, 64.0, M_PI / 2};
 
   control::Point center_six_blocks_lineup{30.0, 62.0, M_PI / 2};
 
-  control::Point center_six_blocks{31.0, 67.5, M_PI / 4};
+  control::Point center_six_blocks{32.0, 67.5, M_PI / 4};
 
   control::Point center_six_blocks_2{41.5, 70, M_PI / 6};
 
@@ -61,9 +63,9 @@ class BlueCenterAuton : public AAuton {
 
   control::Point matchload_lineup_2{38, 38.0, M_PI / 2};
 
-  control::Point top_goal_lineup{50, 50, M_PI / 4};
+  control::Point top_goal_lineup{51, 48, M_PI / 4};
 
-  control::Point top_goal{60.5, 64, M_PI / 4};
+  control::Point top_goal{61.5, 58.5, M_PI / 4};
 
 //   control::Point park_lineup{44, 20, 0};
 

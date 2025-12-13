@@ -37,8 +37,8 @@ void BlueCenterAuton::run(
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(1250);
-  outtakeFront();
+    delay(1150);
+    outtakeFront();
 
   // score blocks from match loader
   goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
@@ -106,48 +106,50 @@ void BlueCenterAuton::run(
   hoodSetVoltage(-10.0);
   outtakeFront();
 
-  delay(2250);
+    delay(2300);
 
-  // go matchload again
-  intakeStop();
-  goToPoint(matchload_lineup_2, MAX_VELOCITY);
-  waitForGoToPoint(matchload_lineup_2, 4, 3500);
-  goToPoint(matchload, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload, 2.0, 1250);
-  deployBackIntakeArms();
-  intakeBack();
+    // go matchload again
+    intakeStop();
+    goToPoint(matchload_lineup_2, MAX_VELOCITY);
+    waitForGoToPoint(matchload_lineup_2, 4, 3500);
+    goToPoint(matchload_2, MAX_VELOCITY / 1.5);
+    waitForGoToPoint(matchload_2, 2.0, 1250);
+    deployBackIntakeArms();
+    intakeBack();
 
-  delay(1250);
-  outtakeFront();
+    delay(1350);
+    outtakeFront();
 
-  // go top goal
-  goToPoint(top_goal_lineup, MAX_VELOCITY);
-  delay(100);
-  retractBackIntakeArms();
-  intakeStop();
-  waitForGoToPoint(top_goal_lineup, 3.0, 2000);
-  hoodBumpUp();
-  goToPoint(top_goal, MAX_VELOCITY / 2.5);
-  waitForGoToPoint(top_goal, 2.0, 2000);
-  hoodOpenDoor();
-  intakeFront();
-  hoodSetVoltage(6.0);
+    // go top goal
+    goToPoint(top_goal_lineup, MAX_VELOCITY);
+    delay(100);
+    retractBackIntakeArms();
+    intakeStop();
+    waitForGoToPoint(top_goal_lineup, 3.0, 2000);
+    hoodBumpUp();
+    goToPoint(top_goal, MAX_VELOCITY / 3);
+    waitForGoToPoint(top_goal, 2.0, 2000);
+    hoodOpenDoor();
+    intakeFront();
+    hoodSetVoltage(6.0);
 
   delay(1000);
   hoodSetVoltage(9.0);
   delay(1000);
   hoodRaise();
 
-  // go park
-  goToPoint(park_lineup, MAX_VELOCITY);
-  delay(200);
-  retractBackIntakeArms();
-  intakeStop();
-  waitForGoToPoint(park_lineup, 4.0, 2000);
-  goToPoint(park_lineup_2, MAX_VELOCITY);
-  waitForGoToPoint(park_lineup_2, 2.0, 1250);
-  goToPoint(park_zone, MAX_VELOCITY);
-  delayUntil(29500);
+    // go park
+    goToPoint(park_lineup, MAX_VELOCITY);
+    delay(200);
+    retractBackIntakeArms();
+    intakeStop();
+    hoodLower();
+    hoodCloseDoor();
+    waitForGoToPoint(park_lineup, 4.0, 2000);
+    goToPoint(park_lineup_2, MAX_VELOCITY);
+    waitForGoToPoint(park_lineup_2, 2.0, 1250);
+    goToPoint(park_zone, MAX_VELOCITY);
+    delay(2500);
 
   stopMotion();
 
