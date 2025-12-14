@@ -60,6 +60,10 @@ class MotorGroup {
   /// @param voltage __double__ The new voltage
   void setVoltage(double voltage);
 
+  /// @brief Sets the current limit of all motors in the group
+  /// @param amps __double__ The new current limit
+  void setCurrentLimit(double amps);
+
   /// @brief Sets the encoder position of all motors in the group
   /// @param position __double__ The new position
   void setPosition(double position);

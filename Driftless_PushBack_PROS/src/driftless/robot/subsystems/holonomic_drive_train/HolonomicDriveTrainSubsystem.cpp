@@ -14,12 +14,11 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
                                            va_list& args) {
   switch (command_name) {
     case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_MOTION_VECTOR: {
-      double magnitude = va_arg(args, double);
-      double direction = va_arg(args, double);
+      double x = va_arg(args, double);
+      double y = va_arg(args, double);
       double angular_velocity = va_arg(args, double);
 
-      HolonomicMotionVector motion_vector{magnitude, direction,
-                                          angular_velocity};
+      HolonomicMotionVector motion_vector{x, y, angular_velocity};
       m_drive_train->setMotionVector(motion_vector);
       break;
     }
@@ -32,6 +31,31 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
       HolonomicMotionVector motion_vector{magnitude, direction,
                                           angular_velocity};
       m_drive_train->setNormalizedMotionVector(motion_vector);
+      break;
+    }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_LINEAR_VELOCITY: {
+      double x_velocity = va_arg(args, double);
+      double y_velocity = va_arg(args, double);
+      m_drive_train->setLinearVelocity(x_velocity, y_velocity);
+      break;
+    }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_ANGULAR_VELOCITY: {
+      double angular_velocity = va_arg(args, double);
+      m_drive_train->setAngularVelocity(angular_velocity);
+      break;
+    }
+    case ESubsystemCommand::
+        HOLONOMIC_DRIVE_TRAIN_SET_NORMALIZED_LINEAR_VELOCITY: {
+      double normalized_x_velocity = va_arg(args, double);
+      double normalized_y_velocity = va_arg(args, double);
+      m_drive_train->setNormalizedLinearVelocity(normalized_x_velocity,
+                                                 normalized_y_velocity);
+      break;
+    }
+    case ESubsystemCommand::
+        HOLONOMIC_DRIVE_TRAIN_SET_NORMALIZED_ANGULAR_VELOCITY: {
+      double normalized_angular_velocity = va_arg(args, double);
+      m_drive_train->setNormalizedAngularVelocity(normalized_angular_velocity);
       break;
     }
   }

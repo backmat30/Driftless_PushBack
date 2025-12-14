@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "driftless/alliance/IAlliance.hpp"
-#include "driftless/auton/IAuton.hpp"
+#include "driftless/auton/AAuton.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 
@@ -17,7 +17,7 @@ class AutonManager {
  private:
   std::shared_ptr<alliance::IAlliance> m_alliance{};
 
-  std::unique_ptr<auton::IAuton> m_auton{};
+  std::unique_ptr<auton::AAuton> m_auton{};
 
   std::shared_ptr<rtos::IClock> m_clock{};
 
@@ -36,32 +36,24 @@ class AutonManager {
   void setAlliance(const std::shared_ptr<alliance::IAlliance>& alliance);
 
   /// @brief Sets the auton used in the autonomous manager
-  /// @param auton __std::unique_ptr<auton::IAuton>&__ The auton to use
-  void setAuton(std::unique_ptr<auton::IAuton>& auton);
+  /// @param auton __std::unique_ptr<auton::AAuton>&__ The auton to use
+  void setAuton(std::unique_ptr<auton::AAuton>& auton);
 
   /// @brief Initializes the selected auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
   /// control system to use
-  /// @param process_system
-  /// __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process
-  /// system to use
   void initAuton(
       std::shared_ptr<robot::Robot>& robot,
-      std::shared_ptr<control::ControlSystem>& control_system,
-      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
+      std::shared_ptr<control::ControlSystem>& control_system);
 
   /// @brief Runs the selected auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot to use
   /// @param control_system __std::shared_ptr<control::ControlSystem>&__ The
   /// control system to use
-  /// @param process_system
-  /// __std::shared_ptr<driftless::processes::ProcessSystem>&__ The process
-  /// system to use
   void runAuton(
       std::shared_ptr<driftless::robot::Robot>& robot,
-      std::shared_ptr<driftless::control::ControlSystem>& control_system,
-      std::shared_ptr<driftless::processes::ProcessSystem>& process_system);
+      std::shared_ptr<driftless::control::ControlSystem>& control_system);
 };
 }  // namespace driftless
 #endif

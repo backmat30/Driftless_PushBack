@@ -30,6 +30,16 @@ class ModularHolonomicDriveBuilder {
   std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>
       m_modules{};
 
+  std::unique_ptr<rtos::ITask> m_task{};
+
+  std::unique_ptr<rtos::IDelayer> m_delayer{};
+
+  std::unique_ptr<rtos::IMutex> m_mutex{};
+
+  double m_max_linear_velocity{};
+
+  double m_max_angular_velocity{};
+
  public:
   /// @brief Adds a module to the drive train
   /// @param module
@@ -38,6 +48,34 @@ class ModularHolonomicDriveBuilder {
   /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
   ModularHolonomicDriveBuilder* withModule(
       std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>& module);
+
+  /// @brief Adds a task to the drive train
+  /// @param task __std::unique_ptr<rtos::ITask>&__ The task to be used
+  /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
+  ModularHolonomicDriveBuilder* withTask(std::unique_ptr<rtos::ITask>& task);
+
+  /// @brief Adds a delayer to the drive train
+  /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to be used
+  /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
+  ModularHolonomicDriveBuilder* withDelayer(
+      std::unique_ptr<rtos::IDelayer>& delayer);
+
+  /// @brief Adds a mutex to the drive train
+  /// @param mutex __std::unique_ptr<rtos::IMutex>&__ The mutex to be used
+  /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
+  ModularHolonomicDriveBuilder* withMutex(std::unique_ptr<rtos::IMutex>& mutex);
+
+  /// @brief Adds a maximum linear velocity to the drive train
+  /// @param max_linear_velocity __double__ The maximum linear velocity to be used
+  /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
+  ModularHolonomicDriveBuilder* withMaxLinearVelocity(
+      double max_linear_velocity);
+
+  /// @brief Adds a maximum angular velocity to the drive train
+  /// @param max_angular_velocity __double__ The maximum angular velocity to be used
+  /// @return __ModularHolonomicDriveBuilder*__ A pointer to this builder
+  ModularHolonomicDriveBuilder* withMaxAngularVelocity(
+      double max_angular_velocity);
 
   /// @brief Builds the ModularHolonomicDrive
   /// @return __std::unique_ptr<IHolonomicDrive>__ A unique pointer to the

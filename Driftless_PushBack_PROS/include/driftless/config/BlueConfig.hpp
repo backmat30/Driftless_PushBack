@@ -16,7 +16,6 @@
 #include "pros/rotation.hpp"
 
 // hardware interface includes
-#include "driftless/hal/SparkfunOTOS.hpp"
 #include "driftless/hal/TrackingWheel.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/io/IController.hpp"
@@ -54,42 +53,169 @@
 #include "driftless/control/motion/MotionControl.hpp"
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
+#include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollowerBuilder.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
+
+// arduino includes
+#include "driftless/hal/CoprocessorBuilder.hpp"
 
 // holonomic drive subsystem includes
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicDriveTrainSubsystem.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/ModularHolonomicDriveBuilder.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/holonomic_drive_module/XDriveModuleBuilder.hpp"
 
+// intake includes
+#include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
+#include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
+
+// hood includes
+#include "driftless/robot/subsystems/hood/DirectHoodBuilder.hpp"
+#include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
+
+// odometry includes
+#include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
+#include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
+
+// Brake includes
+#include "driftless/robot/subsystems/brake/BrakeSubsystem.hpp"
+#include "driftless/robot/subsystems/brake/PneumaticBrakeBuilder.hpp"
+
+// Rake includes
+#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
+#include "driftless/robot/subsystems/rake/PneumaticRakeBuilder.hpp"
+
 namespace driftless {
 namespace config {
 class BlueConfig : public IConfig {
  private:
- static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
+  static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
 
- // #### PORT NUMBERS ####
- 
- // ## DRIVE MOTORS ##
+  // #### CONTROL SYSTEM CONSTANTS ####
 
- static constexpr int DRIVE_FRONT_LEFT_PORT{1};
- static constexpr int DRIVE_FRONT_RIGHT_PORT{4};
- static constexpr int DRIVE_BACK_LEFT_PORT{2};
- static constexpr int DRIVE_BACK_RIGHT_PORT{5};
+  // ## TRAJECTORY FOLLOWER ##
 
- // #### ROBOT CONSTANTS ####
+  static constexpr double TRAJECTORY_FOLLOWER_X_KP{20.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_X_KD{1500.0};
 
- // ## DRIVE ##
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KP{20.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_Y_KD{1500.0};
 
- static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
- static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{-M_PI / 4};
-  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{M_PI / 4}; 
- static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3* -M_PI / 4};
- static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * M_PI / 4};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KP{14.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KI{0.0};
+  static constexpr double TRAJECTORY_FOLLOWER_THETA_KD{600.0};
+
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_TOLERANCE{2.0};
+  static constexpr double TRAJECTORY_FOLLOWER_TARGET_VELOCITY{1.0};
+
+  // ## BASIC MOTION CONTROLLERS ##
+
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KP{0.0};
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KI{0.0};
+  static constexpr double DRIVE_STRAIGHT_LINEAR_KD{0.0};
+
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KP{0.0};
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KI{0.0};
+  static constexpr double DRIVE_STRAIGHT_ANGULAR_KD{0.0};
+
+  static constexpr double TURN_KP{28.0};
+  static constexpr double TURN_KI{0.0};
+  static constexpr double TURN_KD{1200.0};
+
+  static constexpr double GO_TO_POINT_X_KP{40.0};
+  static constexpr double GO_TO_POINT_X_KI{0.0};
+  static constexpr double GO_TO_POINT_X_KD{3000.0};
+
+  static constexpr double GO_TO_POINT_Y_KP{40.0};
+  static constexpr double GO_TO_POINT_Y_KI{0.0};
+  static constexpr double GO_TO_POINT_Y_KD{3000.0};
+
+  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
+  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
+
+  static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
+  static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};
+  static constexpr double MOTION_LINEAR_DISTANCE_TOLERANCE{1.0};
+  static constexpr double MOTION_ANGULAR_DISTANCE_TOLERANCE{M_PI / 45};
+
+  // #### PORT NUMBERS ####
+
+  // ## ARDUINO PORT ##
+
+  static constexpr int ARDUINO_PORT{16};
+
+  // ## DRIVE MOTORS ##
+
+  static constexpr int DRIVE_FRONT_LEFT_TOP_PORT{11};
+  static constexpr int DRIVE_FRONT_LEFT_BOTTOM_PORT{-12};
+  static constexpr int DRIVE_FRONT_RIGHT_TOP_PORT{15};
+  static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
+  static constexpr int DRIVE_BACK_LEFT_TOP_PORT{19};
+  static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-20};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{18};
+  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-17};
+
+  // ## INTAKE MOTORS ##
+
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
+  static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
+  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
+
+  // ## INTAKE SENSORS ##
+
+  static constexpr int INTAKE_COLOR_SENSOR_PORT{5};
+
+  // ## INTAKE PNEUMATICS ##
+
+  static constexpr int INTAKE_BACK_ARMS_PORT{2};
+
+  // ## HOOD MOTORS ##
+
+  static constexpr int HOOD_MOTOR_1_PORT{10};
+
+  // ## HOOD PNEUMATICS ##
+
+  static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
+  static constexpr int HOOD_GATE_PISTONS_PORT{4};
+  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_BUMP_PISTONS_PORT{7};
+
+  // ## BRAKE PNEUMATICS ##
+
+  static constexpr int BRAKE_PISTON_PORT{1};
+
+  // ## RAKE PNEUMATICS ##
+
+  static constexpr int RAKE_PISTON_PORT{6};
+
+  // #### ROBOT CONSTANTS ####
+
+  // ## DRIVE ##
+
+  static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
+  static constexpr double DRIVE_FRONT_LEFT_ANGLE_OFFSET{M_PI / 4};
+  static constexpr double DRIVE_FRONT_RIGHT_ANGLE_OFFSET{-M_PI / 4};
+  static constexpr double DRIVE_BACK_LEFT_ANGLE_OFFSET{3 * M_PI / 4};
+  static constexpr double DRIVE_BACK_RIGHT_ANGLE_OFFSET{3 * -M_PI / 4};
+  static constexpr double DRIVE_MAX_LINEAR_VELOCITY{80.0};
+  static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
+
+  // ## ODOMETRY ##
+  static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
  public:
   std::string getName() override;

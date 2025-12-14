@@ -13,17 +13,41 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_shared<alliance::RedAlliance>()};
   lvgl_menu->addAlliance(red_alliance);
 
+  std::shared_ptr<alliance::IAlliance> skills_alliance{
+      std::make_shared<alliance::SkillsAlliance>()};
+  lvgl_menu->addAlliance(skills_alliance);
+
   // add auton routes
+  std::unique_ptr<auton::AAuton> blue_skills_auton{
+      std::make_unique<auton::BlueSkillsAuton>()};
+  lvgl_menu->addAuton(blue_skills_auton);
+  std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
+      std::make_unique<auton::BluePumpNDumpAuton>()};
+  lvgl_menu->addAuton(blue_pump_n_dump_auton);
+    std::unique_ptr<auton::AAuton> blue_center_auton{std::make_unique<auton::BlueCenterAuton>()};
+    lvgl_menu->addAuton(blue_center_auton);
+  std::unique_ptr<auton::AAuton> orange_pump_n_dump_auton{
+      std::make_unique<auton::OrangePumpNDumpAuton>()};
+  lvgl_menu->addAuton(orange_pump_n_dump_auton);
+  std::unique_ptr<auton::AAuton> orange_skills_auton{
+      std::make_unique<auton::OrangeSkillsAuton>()};
+  lvgl_menu->addAuton(orange_skills_auton);
 
   // add configs
   std::unique_ptr<config::IConfig> blue_config{
       std::make_unique<config::BlueConfig>()};
   lvgl_menu->addConfig(blue_config);
+  std::unique_ptr<config::IConfig> orange_config{
+      std::make_unique<config::OrangeConfig>()};
+  lvgl_menu->addConfig(orange_config);
 
   // add profiles
   std::unique_ptr<profiles::IProfile> ethan_profile{
       std::make_unique<driftless::profiles::EthanProfile>()};
   lvgl_menu->addProfile(ethan_profile);
+  std::unique_ptr<profiles::IProfile> asher_profile{
+      std::make_unique<profiles::AsherProfile>()};
+  lvgl_menu->addProfile(asher_profile);
 
   // create RTOS
   std::shared_ptr<rtos::IClock> clock{

@@ -1,7 +1,7 @@
 #include "driftless/pros_adapters/ProsV5Motor.hpp"
 namespace driftless {
 namespace pros_adapters {
-ProsV5Motor::ProsV5Motor(std::unique_ptr<pros::Motor> &motor)
+ProsV5Motor::ProsV5Motor(std::unique_ptr<pros::Motor>& motor)
     : m_motor{std::move(motor)} {}
 
 void ProsV5Motor::initialize() {
@@ -9,7 +9,8 @@ void ProsV5Motor::initialize() {
     m_motor->move_voltage(0);
     m_motor->tare_position();
     m_motor->set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-    m_motor->set_encoder_units(pros::motor_encoder_units_e_t::E_MOTOR_ENCODER_ROTATIONS);
+    m_motor->set_encoder_units(
+        pros::motor_encoder_units_e_t::E_MOTOR_ENCODER_ROTATIONS);
   }
 }
 
@@ -55,7 +56,7 @@ double ProsV5Motor::getPosition() {
 double ProsV5Motor::getEfficiency() {
   double efficiency{0.0};
 
-  if(m_motor) {
+  if (m_motor) {
     efficiency = m_motor->get_efficiency();
   }
   return efficiency;
@@ -69,9 +70,19 @@ void ProsV5Motor::setVoltage(double volts) {
   if (m_motor) m_motor->move_voltage(millivolts);
 }
 
+void ProsV5Motor::setCurrentLimit(double amps) {
+  int milliamps{static_cast<int>(amps * CURRENT_CONVERSION)};
+  milliamps = std::max(milliamps, 0);
+  milliamps = std::min(milliamps, MAX_MILLIAMPS);
+
+  if (m_motor) {
+    m_motor->set_current_limit(milliamps);
+  }
+}
+
 void ProsV5Motor::setPosition(double position) {
   position_offset = position;
-  m_motor->tare_position();
+  if (m_motor) m_motor->tare_position();
 }
 }  // namespace pros_adapters
 }  // namespace driftless

@@ -67,7 +67,7 @@ void MatchController::init(bool fast_init) {
   }
 
   // initialize the auton and op control managers
-  auton_manager.initAuton(robot, control_system, process_system);
+  auton_manager.initAuton(robot, control_system);
   op_control_manager.init(control_system, process_system, controller, robot);
 }
 
@@ -76,7 +76,7 @@ void MatchController::disabled() {}
 void MatchController::competitionInit() {}
 
 void MatchController::autonomous() {
-  auton_manager.runAuton(robot, control_system, process_system);
+  auton_manager.runAuton(robot, control_system);
 }
 
 void MatchController::operatorControl() {
