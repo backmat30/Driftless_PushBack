@@ -209,18 +209,17 @@ void DirectIntake::intakeFront(bool reversed) {
   m_ready_for_second_matchloader_block = false;
   m_running_back_intake = false;
 
-  m_front_motors.setVoltage(12.0 * (reversed ? -0.75 : 1.0));
+  m_front_motors.setVoltage(12.0 * (reversed ? -1.0 : 1.0));
   m_front_motors.setCurrentLimit(2.5);
 
-  m_vertical_motors.setVoltage(12.0 * (reversed ? -0.75 : 1.0));
-  m_vertical_motors.setCurrentLimit(1.5);
+  m_vertical_motors.setVoltage(12.0 * (reversed ? -1.0 : 1.0));
+  m_vertical_motors.setCurrentLimit(2.5);
 
   if (reversed) {
     m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.25);
 
-    m_intermediary_motors.setVoltage(-6.0);
-    m_intermediary_motors.setCurrentLimit(2.5);
+    m_intermediary_motors.setVoltage(0.0);
   }
 
   if (m_mutex) {

@@ -84,8 +84,8 @@ void OrangeSkillsAuton::run(
   setGoToPointVelocity(MAX_VELOCITY / 2.5);
   waitForGoToPoint(park_zone_blocks_lineup, 4.0, 2000);
   goToPoint(park_zone_blocks, MAX_VELOCITY / 2.0);
-  waitForGoToPoint(park_zone_blocks, 14.0, 1000);
-  setGoToPointVelocity(MAX_VELOCITY / 6.0);
+  waitForGoToPoint(park_zone_blocks, 12.0, 1000);
+  setGoToPointVelocity(MAX_VELOCITY / 5.0);
   waitForGoToPoint(park_zone_blocks, 2.0, 1750);
   deployRake();
   delay(500);
@@ -120,6 +120,29 @@ void OrangeSkillsAuton::run(
   hoodSetVoltage(-12.0);
 
   delay(2500);
+
+  // go to front matchloader
+  goToPoint(front_match_load, MAX_VELOCITY / 1.25);
+  waitForGoToPoint(front_match_load, 16.0, 4000);
+  setGoToPointVelocity(MAX_VELOCITY / 3.0);
+  waitForGoToPoint(front_match_load, 2.0, 3000);
+  intakeBack();
+  deployBackIntakeArms();
+
+  delay(2000);
+
+  // go to goal
+  goToPoint(front_right_long_goal, MAX_VELOCITY / 2.0);
+  delay(300);
+  retractBackIntakeArms();
+  intakeStop();
+  hoodRaise();
+  waitForGoToPoint(front_right_long_goal, 2.0, 3000);
+  intakeFront();
+  hoodOpenDoor();
+
+  delay(3000);
+
   // leave at end
   stopMotion();
   // intakeFront();

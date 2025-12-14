@@ -11,30 +11,31 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the orange robot's pump and dump match auton
+/// @brief Class representing the autonomous routine for the orange robot's pump
+/// and dump match auton
 /// @author Matthew Backman
 class OrangePumpNDumpAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point matchload_lineup{118.0, 24.0, M_PI / 2.0};
+  control::Point matchload_lineup{120.0, 28.0, M_PI / 2.0};
 
-  control::Point matchload{118.0, 11.0, M_PI / 2.0};
+  control::Point matchload{120.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal_lineup{120.0, 20.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup{121.0, 20.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal_lineup_2{120.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup_2{121.0, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{118.5, 42.0, M_PI / 2.0};
+  control::Point long_goal{120.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_2{120.5, 42.0, M_PI / 2.0};
+  control::Point long_goal_2{120.0, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{118.0, 12.0, M_PI / 2.0};
 
-  control::Point descore_lineup{130.0, 38.0, M_PI / 2.0};
+  control::Point descore_lineup{131.0, 38.0, M_PI / 2.0};
 
   control::Point start_descore{130.0, 48.0, M_PI / 2.0};
-  
+
   control::Point end_descore{130.0, 60.0, M_PI / 2.0};
 
  public:

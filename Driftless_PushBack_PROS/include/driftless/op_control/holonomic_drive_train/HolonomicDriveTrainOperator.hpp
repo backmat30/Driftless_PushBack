@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "driftless/control/ControlSystem.hpp"
+#include "driftless/control/motion/ETurnDirection.hpp"
 #include "driftless/io/IController.hpp"
 #include "driftless/op_control/EControllerAnalog.hpp"
 #include "driftless/profiles/IProfile.hpp"
@@ -14,7 +15,6 @@
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
-#include "driftless/control/motion/ETurnDirection.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -32,12 +32,7 @@ namespace holonomic_drive_train {
 /// @author Matthew Backman
 class HolonomicDriveTrainOperator {
  private:
-
-  enum LockDirection{
-    NONE,
-    NEAREST_90,
-    NEAREST_45
-  };
+  enum LockDirection { NONE, NEAREST_90, NEAREST_45 };
   /// @brief The controller used by the driver
   std::shared_ptr<io::IController> m_controller{};
 
@@ -49,6 +44,8 @@ class HolonomicDriveTrainOperator {
   LockDirection lock_direction{LockDirection::NONE};
 
   double target_angle{};
+
+  bool use_field_centric{true};
 
   /// @brief Updates the drive motion vector based on controller inputs
   /// @param forward __EControllerAnalog__ The analog input for forward/backward

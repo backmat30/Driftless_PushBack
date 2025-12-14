@@ -34,7 +34,7 @@ class OrangeSkillsAuton : public AAuton {
 
   control::Point park_zone_blocks_lineup{70.0, 94.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks{72.0, 122.0, M_PI / 2.0};
+  control::Point park_zone_blocks{73.0, 122.0, M_PI / 2.0};
 
   control::Point wall_blocks_start{134.0, 128.0, -M_PI / 6.0};
 
@@ -45,6 +45,10 @@ class OrangeSkillsAuton : public AAuton {
   control::Point middle_goal_lineup{96.0, 48.0, M_PI * 3.0 / 4.0};
 
   control::Point middle_goal{80.0, 59.0, M_PI * 3.0 / 4.0};
+
+  control::Point front_match_load{120.0, 12.0, M_PI / 2.0};
+
+  control::Point front_right_long_goal{120.0, 44.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new orange skills auton object

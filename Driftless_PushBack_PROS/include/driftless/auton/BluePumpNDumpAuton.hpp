@@ -11,7 +11,8 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the blue robot's pump and dump match auton
+/// @brief Class representing the autonomous routine for the blue robot's pump
+/// and dump match auton
 /// @author Matthew Backman
 class BluePumpNDumpAuton : public AAuton {
  private:
@@ -25,14 +26,14 @@ class BluePumpNDumpAuton : public AAuton {
 
   control::Point long_goal_lineup_2{30.0, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{26.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{24.0, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{12.0, 12.0, M_PI / 2.0};
 
   control::Point descore_lineup{14.0, 38.0, M_PI / 2.0};
 
   control::Point start_descore{16.0, 48.0, M_PI / 2.0};
-  
+
   control::Point end_descore{16.0, 62.0, M_PI / 2.0};
 
  public:

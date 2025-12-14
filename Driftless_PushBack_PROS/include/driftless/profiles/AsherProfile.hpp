@@ -67,7 +67,9 @@ class AsherProfile : public IProfile {
           {op_control::EControl::HOLONOMIC_LOCK_90,
            op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::HOLONOMIC_LOCK_45,
-           op_control::EControllerDigital::BUTTON_X}};
+           op_control::EControllerDigital::BUTTON_X},
+          {op_control::EControl::HOLONOMIC_CANCEL_FIELD_CENTRIC,
+           op_control::EControllerDigital::DPAD_LEFT}};
 
   /// @brief Maps startup configurations to their values
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{};
