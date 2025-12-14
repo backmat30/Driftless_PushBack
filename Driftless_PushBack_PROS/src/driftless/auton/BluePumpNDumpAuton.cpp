@@ -37,8 +37,8 @@ void BluePumpNDumpAuton::run(
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(1250);
-  outtakeFront();
+  delay(850);
+  intakeStop();
 
   // score blocks from match loader
   goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
@@ -72,15 +72,16 @@ void BluePumpNDumpAuton::run(
   delay(1750);
 
   // score on long goal again
-  intakeStop();
-  goToPoint(long_goal, MAX_VELOCITY / 1.25);
-  waitForGoToPoint(long_goal, 12.0, 1000);
+  goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
+  waitForGoToPoint(long_goal_lineup, 8.0, 1500);
+  goToPoint(long_goal_lineup_2, MAX_VELOCITY / 1.75);
+  waitForGoToPoint(long_goal_lineup_2, 4.0, 1500);
+  intakeFront();
   hoodRaise();
   retractBackIntakeArms();
-  setGoToPointVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPoint(long_goal, 2.0, 1000);
+  goToPoint(long_goal, MAX_VELOCITY / 3.5);
+  waitForGoToPoint(long_goal, 2.0, 2000);
   hoodOpenDoor();
-  intakeFront();
 
   // block goal until almost end of auton
   delay(2500);

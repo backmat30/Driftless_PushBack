@@ -1,9 +1,10 @@
-#include "SparkFun_Qwiic_OTOS_Arduino_Library.h"
-#include "Wire.h"
 #include <map>
 #include <vector>
 
-//#define DEBUG
+#include "SparkFun_Qwiic_OTOS_Arduino_Library.h"
+#include "Wire.h"
+
+// #define DEBUG
 
 /**
  * Arduino code to recieve odometry information from a
@@ -19,12 +20,9 @@ enum class EErrorCode {
   INVALID_KEY = 2
 };
 
-constexpr char START_DELIMETER{ '/' };
-const std::map<char, uint8_t> key_size{ { 'R', 1 },
-                                        { 'X', 4 },
-                                        { 'Y', 4 },
-                                        { 'H', 4 },
-                                        { 'C', 1 } };
+constexpr char START_DELIMETER{'/'};
+const std::map<char, uint8_t> key_size{
+    {'R', 1}, {'X', 4}, {'Y', 4}, {'H', 4}, {'C', 1}};
 
 bool isValidPackage(const std::vector<uint8_t>& data);
 uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size);
@@ -35,11 +33,12 @@ void handleSetYCommand(const uint8_t* data);
 void handleSetHeadingCommand(const uint8_t* data);
 void sendInvalidPackageError(const uint8_t error_code);
 
-std::map<char, void (*)(const uint8_t*)> command_handlers{ { 'R', handleRequestCommand },
-                                                           { 'C', handleCalibrateCommand },
-                                                           { 'X', handleSetXCommand },
-                                                           { 'Y', handleSetYCommand },
-                                                           { 'H', handleSetHeadingCommand } };
+std::map<char, void (*)(const uint8_t*)> command_handlers{
+    {'R', handleRequestCommand},
+    {'C', handleCalibrateCommand},
+    {'X', handleSetXCommand},
+    {'Y', handleSetYCommand},
+    {'H', handleSetHeadingCommand}};
 // Create an Optical Tracking Odometry Sensor object
 QwiicOTOS odom_sensor;
 
@@ -87,8 +86,7 @@ void loop() {
     }
   }
   if (!found_delim) {
-    // Timeout: optional send error or just skip
-    return;  // Or delay and retry next loop
+    return;
   }
 
   // Read size byte
@@ -134,7 +132,7 @@ void loop() {
     return;
   }
 
-  // Now validate
+  // validate
   if (recieved_data.size() != expected_size || recieved_data[0] != 0xFF) {
 #ifdef DEBUG
     Serial.println("Size or delim mismatch");
@@ -181,7 +179,8 @@ void loop() {
 
     packet_offset += size;
 #ifdef DEBUG
-    Serial.println("packet " + String(i) + " of " + String(packets_recieved) + " read");
+    Serial.println("packet " + String(i) + " of " + String(packets_recieved) +
+                   " read");
 #endif
   }
 
@@ -194,36 +193,33 @@ void loop() {
     for (char& requested_key : packets_requested) {
       output_package.push_back(static_cast<uint8_t>(requested_key));
 
-      uint8_t value_size{ key_size.at(requested_key) };
+      uint8_t value_size{key_size.at(requested_key)};
       uint8_t value[value_size];
       switch (requested_key) {
-        case 'X':
-          {
-            sfe_otos_pose2d_t position;
-            odom_sensor.getPosition(position);
-            float xPos = position.x;
+        case 'X': {
+          sfe_otos_pose2d_t position;
+          odom_sensor.getPosition(position);
+          float xPos = position.x;
 
-            memcpy(&value, &xPos, value_size);
-            break;
-          }
-        case 'Y':
-          {
-            sfe_otos_pose2d_t position;
-            odom_sensor.getPosition(position);
-            float yPos = position.y;
+          memcpy(&value, &xPos, value_size);
+          break;
+        }
+        case 'Y': {
+          sfe_otos_pose2d_t position;
+          odom_sensor.getPosition(position);
+          float yPos = position.y;
 
-            memcpy(&value, &yPos, value_size);
-            break;
-          }
-        case 'H':
-          {
-            sfe_otos_pose2d_t position;
-            odom_sensor.getPosition(position);
-            float heading = position.h;
+          memcpy(&value, &yPos, value_size);
+          break;
+        }
+        case 'H': {
+          sfe_otos_pose2d_t position;
+          odom_sensor.getPosition(position);
+          float heading = position.h;
 
-            memcpy(&value, &heading, value_size);
-            break;
-          }
+          memcpy(&value, &heading, value_size);
+          break;
+        }
       }
 #ifdef DEBUG
       Serial.print("Value of: " + String(requested_key) + ": ");
@@ -238,7 +234,7 @@ void loop() {
     output_package[1] = output_package.size() + 2;
 
     // calculate crc for validation
-    uint16_t crc{ computeCRC(output_package, output_package.size()) };
+    uint16_t crc{computeCRC(output_package, output_package.size())};
     uint8_t crc_bytes[2];
     memcpy(&crc_bytes, &crc, 2);
     output_package.insert(output_package.end(), crc_bytes, crc_bytes + 2);
@@ -258,19 +254,19 @@ void loop() {
     }
   }
 
-  int32_t delay_time{ 10 - (millis() - start_time) };
+  int32_t delay_time{10 - (millis() - start_time)};
   if (delay_time > 0) {
     delay(delay_time);
   }
 }
 
 /** Computes the CRC of a package
-* @param data the base package
-* @param length the size of the package
-* @return CRC value
-*/
+ * @param data the base package
+ * @param length the size of the package
+ * @return CRC value
+ */
 uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size) {
-  uint16_t crc{ 0xFFFF };
+  uint16_t crc{0xFFFF};
   for (size_t i = 0; i < size; ++i) {
     crc ^= static_cast<uint8_t>(data[i]);
     for (uint8_t i = 0; i < 8; ++i) {
@@ -284,14 +280,14 @@ uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size) {
 }
 
 /** Validates a package by checking the CRC value
-* @param data The package recieved
-* @return True if the packet was transmitted correctly
-*/
+ * @param data The package recieved
+ * @return True if the packet was transmitted correctly
+ */
 bool isValidPackage(const std::vector<uint8_t>& data) {
   uint16_t actual_crc{};
 
   memcpy(&actual_crc, &data[data.size() - 2], 2);
-  uint16_t calculated_crc{ computeCRC(data, data.size() - 2) };
+  uint16_t calculated_crc{computeCRC(data, data.size() - 2)};
 
   return actual_crc == calculated_crc;
 }
@@ -362,7 +358,7 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   package.push_back(static_cast<uint8_t>('E'));
   package.push_back(static_cast<uint8_t>(error_code));
 
-  uint16_t crc{ computeCRC(package, 4) };
+  uint16_t crc{computeCRC(package, 4)};
   uint8_t crc_bytes[2];
   memcpy(crc_bytes, &crc, 2);
   package.insert(package.end(), crc_bytes, crc_bytes + 2);
@@ -370,9 +366,13 @@ void sendInvalidPackageError(const EErrorCode error_code) {
   Serial8.write(package.data(), package.size());
 #ifdef DEBUG
   Serial.println("");
-  Serial.println("=============================================\n=============================================");
+  Serial.println(
+      "=============================================\n========================="
+      "====================");
   Serial.println("Error: " + String(static_cast<int>(error_code)));
-  Serial.println("=============================================\n=============================================");
+  Serial.println(
+      "=============================================\n========================="
+      "====================");
   Serial.println("");
 #endif DEBUG
 }

@@ -84,7 +84,7 @@ void BlueSkillsAuton::run(
   deployBackIntakeArms();
   stopMotion();
 
-  delay(3000);
+  delay(2500);
   intakeStop();
   hoodRaise();
 
@@ -97,7 +97,7 @@ void BlueSkillsAuton::run(
   hoodOpenDoor();
   intakeFront();
 
-  delay(2250);
+  delay(2000);
 
   // grab 2 blocks on the left wall
   goToPoint(front_left_wall_blocks_lineup_1, MAX_VELOCITY / 2.0);
@@ -134,17 +134,17 @@ void BlueSkillsAuton::run(
   // grab block 7 for the top middle goal
   turnToHeading(middle_blocks_lineup.getTheta(), M_PI * 1.0);
   delay(500);
-  goToPoint(middle_blocks_lineup, MAX_VELOCITY / 1.5);
+  goToPoint(middle_blocks_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_blocks_lineup, 8.0, 4000);
   goToPoint(middle_blocks_lineup_2, MAX_VELOCITY / 1.5);
   waitForGoToPoint(middle_blocks_lineup_2, 12.0, 1000);
-  setGoToPointVelocity(MAX_VELOCITY / 4.0);
+  setGoToPointVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_blocks_lineup_2, 2.0, 4000);
   stopMotion();
   turnToHeading(middle_blocks_end.getTheta(), M_PI * 3.0);
   delay(500);
   retractRake();
-  goToPoint(middle_blocks_end, MAX_VELOCITY / 3.0);
+  goToPoint(middle_blocks_end, MAX_VELOCITY / 2.5);
   waitForGoToPoint(middle_blocks_end, 2.0, 2000);
   stopMotion();
 
@@ -152,6 +152,7 @@ void BlueSkillsAuton::run(
   intakeStop();
 
   // score on middle goal top
+  startColorSort(alliance::EAlliance::BLUE);
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_top_goal_lineup, 2.0, 4000);
   hoodBumpUp();
@@ -160,12 +161,13 @@ void BlueSkillsAuton::run(
   stopMotion();
   hoodOpenDoor();
   intakeFront();
-  hoodSetVoltage(4.0);
+  hoodSetVoltage(6.0);
 
-  delay(1500);
-  hoodSetVoltage(8.0);
-  delay(1000);
+  delay(1200);
+  hoodSetVoltage(9.0);
+  delay(1200);
   hoodRaise();
+  pauseColorSort();
 
   // block lower middle goal for other bot
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
@@ -191,7 +193,7 @@ void BlueSkillsAuton::run(
   goToPoint(back_left_wall_blocks_end, MAX_VELOCITY / 4.0);
   waitForGoToPoint(back_left_wall_blocks_end, 20.0, 2000);
   setGoToPointVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPoint(back_left_wall_blocks_end, 2.0, 2000);
+  waitForGoToPoint(back_left_wall_blocks_end, 2.0, 1750);
   turnToHeading(M_PI * 150 / 180.0, M_PI / 2.0);
   delay(250);
   stopMotion();
@@ -226,7 +228,7 @@ void BlueSkillsAuton::run(
   delay(2250);
 
   // go back to match loader quick in case we didnt get all
-  goToPoint(second_matchload, MAX_VELOCITY);
+  goToPoint(second_matchload, MAX_VELOCITY / 1.5);
   waitForGoToPoint(second_matchload, 2.0, 2000);
   deployBackIntakeArms();
   hoodLower();

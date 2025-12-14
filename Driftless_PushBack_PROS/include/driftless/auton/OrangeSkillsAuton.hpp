@@ -1,5 +1,5 @@
-#ifndef __ORANGE_PUMP_N_DUMP_AUTON_HPP__
-#define __ORANGE_PUMP_N_DUMP_AUTON_HPP__
+#ifndef __ORANGE_SKILLS_AUTON_HPP__
+#define __ORANGE_SKILLS_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
@@ -11,36 +11,48 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the orange robot's pump
-/// and dump match auton
+/// @brief Class representing the autonomous routine for the orange robot's
+/// skills route
 /// @author Matthew Backman
-class OrangePumpNDumpAuton : public AAuton {
+class OrangeSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point matchload_lineup{120.0, 28.0, M_PI / 2.0};
+  control::Point middle_blues_lineup_1{128.0, 32.0, -M_PI / 2.0};
 
-  control::Point matchload{120.0, 11.0, M_PI / 2.0};
+  control::Point middle_blues_lineup_2{128.0, 77.5, M_PI};
 
-  control::Point long_goal_lineup{121.0, 20.0, M_PI * 3.0 / 4.0};
+  control::Point middle_blues{118.0, 77.5, M_PI};
 
-  control::Point long_goal_lineup_2{121.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point back_matchload_lineup{96.0, 95.0, -M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{120.0, 42.0, M_PI / 2.0};
+  control::Point back_matchload_lineup_2{118.0, 116.0, -M_PI * 3.0 / 4.0};
 
-  control::Point long_goal_2{120.0, 42.0, M_PI / 2.0};
+  control::Point back_matchload{120.0, 134.0, -M_PI / 2.0};
 
-  control::Point long_goal_to_matchload{118.0, 12.0, M_PI / 2.0};
+  control::Point back_long_goal{120.0, 96.0, -M_PI / 2.0};
 
-  control::Point descore_lineup{131.0, 38.0, M_PI / 2.0};
+  control::Point park_zone_blocks_lineup{70.0, 94.0, M_PI / 2.0};
 
-  control::Point start_descore{130.0, 48.0, M_PI / 2.0};
+  control::Point park_zone_blocks{73.0, 122.0, M_PI / 2.0};
 
-  control::Point end_descore{130.0, 60.0, M_PI / 2.0};
+  control::Point wall_blocks_start{134.0, 128.0, -M_PI / 6.0};
+
+  control::Point wall_blocks_end{135.0, 64.0, -M_PI / 6.0};
+
+  control::Point middle_reds{118.0, 64.0, M_PI};
+
+  control::Point middle_goal_lineup{96.0, 48.0, M_PI * 3.0 / 4.0};
+
+  control::Point middle_goal{80.0, 59.0, M_PI * 3.0 / 4.0};
+
+  control::Point front_match_load{120.0, 12.0, M_PI / 2.0};
+
+  control::Point front_right_long_goal{120.0, 44.0, M_PI / 2.0};
 
  public:
-  /// @brief Constructs a new orange pump n dump auton object
-  OrangePumpNDumpAuton();
+  /// @brief Constructs a new orange skills auton object
+  OrangeSkillsAuton();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
