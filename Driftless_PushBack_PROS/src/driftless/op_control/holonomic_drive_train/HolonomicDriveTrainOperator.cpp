@@ -14,6 +14,10 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
           robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION));
   double heading = position.theta;
 
+  if (!use_field_centric) {
+    heading = M_PI / 2.0;
+  }
+
   // Create a motion vector based on controller inputs
   robot::subsystems::holonomic_drive_train::HolonomicMotionVector motion_vector;
 
@@ -129,6 +133,12 @@ void HolonomicDriveTrainOperator::update(
       op_control::EControl::HOLONOMIC_LOCK_90)};
   EControllerDigital lock_45_control{profile->getDigitalControlMapping(
       op_control::EControl::HOLONOMIC_LOCK_45)};
+  EControllerDigital remove_field_centric{profile->getDigitalControlMapping(
+      op_control::EControl::HOLONOMIC_CANCEL_FIELD_CENTRIC)};
+
+  if (m_controller->getNewDigital(remove_field_centric)) {
+    use_field_centric = false;
+  }
 
   // Update the drive motion vector based on the profile
   updateHeadingLock(lock_90_control, lock_45_control);

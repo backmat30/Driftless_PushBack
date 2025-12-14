@@ -37,42 +37,44 @@ void OrangePumpNDumpAuton::run(
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(900);
-  outtakeFront();
+  delay(800);
+  intakeStop();
+  retractBackIntakeArms();
 
   // score blocks from match loader
   goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
   waitForGoToPoint(long_goal_lineup, 8.0, 1500);
+  intakeFront();
   goToPoint(long_goal_lineup_2, MAX_VELOCITY / 1.75);
   waitForGoToPoint(long_goal_lineup_2, 4.0, 1500);
-  intakeFront();
   hoodRaise();
-  retractBackIntakeArms();
   goToPoint(long_goal, MAX_VELOCITY / 3.5);
   waitForGoToPoint(long_goal, 2.0, 2000);
   hoodOpenDoor();
 
-  delay(1000);
+  delay(1250);
 
   // go back to match loader
   intakeStop();
   goToPoint(long_goal_to_matchload, MAX_VELOCITY);
   waitForGoToPoint(long_goal_to_matchload, 16.0, 1500);
-  goToPoint(matchload_lineup, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 4.0, 2000);
+  setGoToPointVelocity(MAX_VELOCITY / 2.5);
+  waitForGoToPoint(long_goal_to_matchload, 6.0, 2000);
   goToPoint(matchload, MAX_VELOCITY);
   intakeBack();
-  waitForGoToPoint(matchload, 12.0, 1000);
+  waitForGoToPoint(matchload, 12.0, 2000);
   hoodLower();
   hoodCloseDoor();
   setGoToPointVelocity(MAX_VELOCITY / 2.5);
-  waitForGoToPoint(matchload, 2.0, 1000);
+  waitForGoToPoint(matchload, 2.0, 2000);
   deployBackIntakeArms();
 
-  delay(1750);
+  delay(3500);
 
   // score on long goal again
   intakeStop();
+  goToPoint(long_goal_lineup, MAX_VELOCITY / 1.5);
+  waitForGoToPoint(long_goal_lineup, 6.0, 2000);
   goToPoint(long_goal_2, MAX_VELOCITY / 1.25);
   waitForGoToPoint(long_goal_2, 12.0, 1000);
   hoodRaise();
@@ -91,7 +93,7 @@ void OrangePumpNDumpAuton::run(
   goToPoint(long_goal, MAX_VELOCITY / 1.25);
   waitForGoToPoint(long_goal, 2.0, 2000);
   stopMotion();
-  delayUntil(start_time + 22500);
+  delayUntil(start_time + 27000);
 
   // descore
   goToPoint(matchload_lineup, MAX_VELOCITY / 2.0);
@@ -101,8 +103,10 @@ void OrangePumpNDumpAuton::run(
   waitForGoToPoint(descore_lineup, 2.0, 2000);
   goToPoint(start_descore, MAX_VELOCITY / 2.0);
   waitForGoToPoint(start_descore, 2.0, 2000);
+  stopMotion();
   retractDescore();
-  goToPoint(end_descore, MAX_VELOCITY / 3.0);
+  delay(250);
+  goToPoint(end_descore, MAX_VELOCITY / 2.0);
   waitForGoToPoint(end_descore, 2.0, 3000);
   stopMotion();
 

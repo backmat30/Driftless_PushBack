@@ -32,7 +32,7 @@ class DirectIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
 
-  static constexpr double COLOR_SORT_DISTANCE_TO_END{5.5};
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{3.25};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
@@ -91,7 +91,6 @@ class DirectIntake : public IIntake {
 
   /// @brief Checks if there is a block of the current alliance in the intake
   /// @return __bool__ True if there is an alliance block, false otherwise
-  /// @return 
   bool hasAllianceBlock();
 
   /// @brief Performs all instance related updates

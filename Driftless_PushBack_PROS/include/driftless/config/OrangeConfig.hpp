@@ -81,6 +81,7 @@
 #include "driftless/robot/subsystems/hood/HoodSubsystem.hpp"
 
 // odometry includes
+#include "driftless/robot/subsystems/odometry/InertialPositionTrackerBuilder.hpp"
 #include "driftless/robot/subsystems/odometry/OdometrySubsystem.hpp"
 #include "driftless/robot/subsystems/odometry/SparkFunPositionTrackerBuilder.hpp"
 
@@ -162,7 +163,7 @@ class OrangeConfig : public IConfig {
   static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
   static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
   static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-19};
-  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{17};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{14};
   static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-18};
 
   // ## INTAKE MOTORS ##
@@ -200,6 +201,12 @@ class OrangeConfig : public IConfig {
 
   static constexpr int RAKE_PISTON_PORT{6};
 
+  // ## ODOM PORTS ##
+
+  static constexpr int VERTICAL_TRACKING_WHEEL_PORT{-1};
+  static constexpr int HORIZONTAL_TRACKING_WHEEL_PORT{2};
+  static constexpr int IMU_PORT{3};
+
   // #### ROBOT CONSTANTS ####
 
   // ## DRIVE ##
@@ -213,9 +220,8 @@ class OrangeConfig : public IConfig {
   static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
 
   // ## ODOMETRY ##
-  static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
-  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
-  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
+  static constexpr double LINEAR_DISTANCE_TRACKER_OFFSET{5.5};
+  static constexpr double STRAFE_DISTANCE_TRACKER_OFFSET{0.5};
 
  public:
   std::string getName() override;
