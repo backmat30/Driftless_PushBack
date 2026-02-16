@@ -430,50 +430,30 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
 
   // ## ODOMETRY SUBSYSTEM ##
 
-  // pros objects
-  std::unique_ptr<pros::Rotation> pros_vertical_tracking{
-      std::make_unique<pros::Rotation>(VERTICAL_TRACKING_WHEEL_PORT)};
-  std::unique_ptr<pros::Rotation> pros_horizontal_tracking{
-      std::make_unique<pros::Rotation>(HORIZONTAL_TRACKING_WHEEL_PORT)};
-  std::unique_ptr<pros::Imu> pros_imu{std::make_unique<pros::Imu>(IMU_PORT)};
-
   // create pros adapters
+  std::unique_ptr<rtos::IClock> odom_clock{
+      std::make_unique<pros_adapters::ProsClock>()};
   std::unique_ptr<rtos::IDelayer> odom_delayer{
       std::make_unique<pros_adapters::ProsDelayer>()};
   std::unique_ptr<rtos::IMutex> odom_mutex{
       std::make_unique<pros_adapters::ProsMutex>()};
   std::unique_ptr<rtos::ITask> odom_task{
       std::make_unique<pros_adapters::ProsTask>()};
-  std::unique_ptr<io::IRotationSensor> vertical_rotation{
-      std::make_unique<pros_adapters::ProsRotationSensor>(
-          pros_vertical_tracking)};
-  std::unique_ptr<io::IRotationSensor> horizontal_rotation{
-      std::make_unique<pros_adapters::ProsRotationSensor>(
-          pros_horizontal_tracking)};
-  std::unique_ptr<io::IInertialSensor> odom_imu{
-      std::make_unique<pros_adapters::ProsInertialSensor>(pros_imu)};
-
-  // distance trackers
-  std::unique_ptr<io::IDistanceTracker> linear_tracker{
-      std::make_unique<hal::TrackingWheel>(vertical_rotation, 1.125)};
-  std::unique_ptr<io::IDistanceTracker> strafe_tracker{
-      std::make_unique<hal::TrackingWheel>(horizontal_rotation, 1.125)};
 
   // build the arduino position tracker
-  robot::subsystems::odometry::InertialPositionTrackerBuilder
+  robot::subsystems::odometry::SparkFunPositionTrackerBuilder
       position_tracker_builder{};
 
   std::unique_ptr<robot::subsystems::odometry::IPositionTracker>
-      position_tracker{
-          position_tracker_builder.withDelayer(odom_delayer)
-              ->withMutex(odom_mutex)
-              ->withTask(odom_task)
-              ->withLinearDistanceTracker(linear_tracker)
-              ->withLinearDistanceTrackerOffset(LINEAR_DISTANCE_TRACKER_OFFSET)
-              ->withStrafeDistanceTracker(strafe_tracker)
-              ->withStrafeDistanceTrackerOffset(STRAFE_DISTANCE_TRACKER_OFFSET)
-              ->withInertialSensor(odom_imu)
-              ->build()};
+      position_tracker{position_tracker_builder.withClock(odom_clock)
+                           ->withDelayer(odom_delayer)
+                           ->withMutex(odom_mutex)
+                           ->withTask(odom_task)
+                           ->withCoprocessor(arduino_coprocessor)
+                           ->withLocalXOffset(ODOMETRY_LOCAL_X_OFFSET)
+                           ->withLocalYOffset(ODOMETRY_LOCAL_Y_OFFSET)
+                           ->withLocalThetaOffset(ODOMETRY_LOCAL_THETA_OFFSET)
+                           ->build()};
 
   std::unique_ptr<robot::subsystems::ASubsystem> odometry_subsystem{
       std::make_unique<robot::subsystems::odometry::OdometrySubsystem>(

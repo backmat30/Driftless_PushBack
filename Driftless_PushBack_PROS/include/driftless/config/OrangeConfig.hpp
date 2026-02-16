@@ -220,8 +220,9 @@ class OrangeConfig : public IConfig {
   static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
 
   // ## ODOMETRY ##
-  static constexpr double LINEAR_DISTANCE_TRACKER_OFFSET{5.5};
-  static constexpr double STRAFE_DISTANCE_TRACKER_OFFSET{0.5};
+  static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
  public:
   std::string getName() override;
