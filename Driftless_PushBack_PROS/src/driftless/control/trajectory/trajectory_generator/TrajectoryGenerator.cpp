@@ -67,7 +67,9 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
 
     double max_velocity{__DBL_MAX__};
     for (auto& constraint : m_constraints) {
-      max_velocity = std::min(constraint->getMaxVelocity(path, last_point, m_delta_d, t), max_velocity);
+      max_velocity =
+          std::min(constraint->getMaxVelocity(path, last_point, m_delta_d, t),
+                   max_velocity);
     }
 
     Point derivative{path->getDerivative(t)};
@@ -95,14 +97,15 @@ void TrajectoryGenerator::generateTrajectory(std::unique_ptr<IPath>& path) {
   double current_distance{};
   double delta_t = 0.02;
   double current_time{};
-  while (static_cast<int>(current_distance / m_delta_d) < dist_trajectory.size()) {
+  while (static_cast<int>(current_distance / m_delta_d) <
+         dist_trajectory.size()) {
     TrajectoryPoint point =
         dist_trajectory[static_cast<int>(current_distance / m_delta_d)];
-        if(point.m_velocity != 0) {
-    current_distance += point.m_velocity * delta_t;
-        } else {
-          current_distance += m_delta_d;
-        }
+    if (point.m_velocity != 0) {
+      current_distance += point.m_velocity * delta_t;
+    } else {
+      current_distance += m_delta_d;
+    }
     // get x and y velocities
     point.m_x_velocity = point.m_velocity * std::cos(point.m_heading);
     point.m_y_velocity = point.m_velocity * std::sin(point.m_heading);

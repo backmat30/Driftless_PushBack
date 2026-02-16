@@ -54,12 +54,12 @@
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
-#include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
+#include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
-#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
 #include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollowerBuilder.hpp"
+#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -89,8 +89,8 @@
 #include "driftless/robot/subsystems/brake/PneumaticBrakeBuilder.hpp"
 
 // Rake includes
-#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
 #include "driftless/robot/subsystems/rake/PneumaticRakeBuilder.hpp"
+#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
 
 namespace driftless {
 namespace config {
@@ -167,7 +167,7 @@ class BlueConfig : public IConfig {
 
   // ## INTAKE MOTORS ##
 
-  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
