@@ -85,7 +85,7 @@ void BlueSkillsAuton::run(
   stopMotion();
 
   delay(2500);
-  intakeStop();
+  intakeFront();
   hoodRaise();
 
   // score all blocks in robot
@@ -97,23 +97,23 @@ void BlueSkillsAuton::run(
   hoodOpenDoor();
   intakeFront();
 
-  delay(2000);
+  delay(2250);
+
+  goToPoint(first_matchload, MAX_VELOCITY / 2.0);
+  delay(500);
+  hoodCloseDoor();
+  goToPoint(left_goal_front, MAX_VELOCITY / 2.5);
+  waitForGoToPoint(left_goal_front, 1.0, 1250);
 
   // grab 2 blocks on the left wall
-  goToPoint(front_left_wall_blocks_lineup_1, MAX_VELOCITY / 2.0);
+  goToPoint(front_left_wall_blocks_lineup, MAX_VELOCITY / 2.0);
   intakeFront();
-  waitForGoToPoint(front_left_wall_blocks_lineup_1, 6.0, 1000);
+  waitForGoToPoint(front_left_wall_blocks_lineup, 6.0, 1000);
   hoodLower();
-  hoodCloseDoor();
-  goToPoint(front_left_wall_blocks_lineup_2, MAX_VELOCITY / 2.0);
-  waitForGoToPoint(front_left_wall_blocks_lineup_2, 4.0, 1000);
-  goToPoint(front_left_wall_blocks_mid, MAX_VELOCITY / 4.0);
-  waitForGoToPoint(front_left_wall_blocks_mid, 8.0, 3000);
-  goToPoint(front_left_wall_blocks_end, MAX_VELOCITY);
-  waitForGoToPoint(front_left_wall_blocks_end, 2.0, 1000);
+  goToPoint(front_left_wall_blocks, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(front_left_wall_blocks, 2.0, 1500);
   stopMotion();
-
-  delay(500);
+  delay(1250);
 
   // grab park zone blocks
   goToPoint(park_zone_blocks_lineup, MAX_VELOCITY);
@@ -149,7 +149,6 @@ void BlueSkillsAuton::run(
   stopMotion();
 
   delay(500);
-  intakeStop();
 
   // score on middle goal top
   startColorSort(alliance::EAlliance::BLUE);
@@ -186,17 +185,16 @@ void BlueSkillsAuton::run(
   // left wall blocks on the far side
   startColorSort(alliance::EAlliance::RED);
   intakeFront();
-  goToPoint(back_left_wall_blocks_lineup, MAX_VELOCITY);
-  waitForGoToPoint(back_left_wall_blocks_lineup, 16.0, 5000);
-  goToPoint(back_left_wall_blocks_start, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(back_left_wall_blocks_start, 2.0, 2000);
-  goToPoint(back_left_wall_blocks_end, MAX_VELOCITY / 4.0);
-  waitForGoToPoint(back_left_wall_blocks_end, 20.0, 2000);
-  setGoToPointVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPoint(back_left_wall_blocks_end, 2.0, 1750);
-  turnToHeading(M_PI * 150 / 180.0, M_PI / 2.0);
-  delay(250);
+  goToPoint(back_left_wall_blocks_lineup_1, MAX_VELOCITY);
+  waitForGoToPoint(back_left_wall_blocks_lineup_1, 16.0, 5000);
+  goToPoint(back_left_wall_blocks_lineup_2, MAX_VELOCITY / 1.5);
+  waitForGoToPoint(back_left_wall_blocks_lineup_2, 2.0, 2000);
+  goToPoint(back_left_wall_blocks, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(back_left_wall_blocks, 16.0, 2000);
+  setGoToPointVelocity(MAX_VELOCITY / 4.0);
+  waitForGoToPoint(back_left_wall_blocks, 2.0, 1750);
   stopMotion();
+  delay(1000);
   intakeStop();
   pauseColorSort();
 
@@ -229,7 +227,7 @@ void BlueSkillsAuton::run(
 
   // go back to match loader quick in case we didnt get all
   goToPoint(second_matchload, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(second_matchload, 2.0, 2000);
+  waitForGoToPoint(second_matchload, 2.0, 1500);
   deployBackIntakeArms();
   hoodLower();
   hoodCloseDoor();
@@ -243,7 +241,7 @@ void BlueSkillsAuton::run(
   waitForGoToPoint(park_lineup_1, 10.0, 2000);
   goToPoint(park_lineup_2, MAX_VELOCITY);
   waitForGoToPoint(park_lineup_2, 10.0, 2000);
-  goToPoint(park_zone, MAX_VELOCITY);
+  goToPoint(park_zone, MAX_VELOCITY / 2.0);
 
   delayUntil(start_time + 60000);
 
