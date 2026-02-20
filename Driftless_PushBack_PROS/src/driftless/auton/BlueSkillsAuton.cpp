@@ -150,6 +150,18 @@ void BlueSkillsAuton::run(
 
   delay(500);
 
+  // block lower middle goal for other bot
+  goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
+  waitForGoToPoint(middle_top_goal_lineup, 2.0, 1000);
+  intakeStop();
+  goToPoint(middle_lower_goal_lineup, MAX_VELOCITY);
+  waitForGoToPoint(middle_lower_goal_lineup, 2.0, 2000);
+  goToPoint(middle_lower_goal, MAX_VELOCITY / 3.0);
+  waitForGoToPoint(middle_lower_goal, 2.0, 2000);
+  stopMotion();
+
+  delay(3250);
+
   // score on middle goal top
   startColorSort(alliance::EAlliance::BLUE);
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
@@ -168,19 +180,11 @@ void BlueSkillsAuton::run(
   hoodRaise();
   pauseColorSort();
 
-  // block lower middle goal for other bot
   goToPoint(middle_top_goal_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_top_goal_lineup, 2.0, 1000);
   intakeStop();
   hoodLower();
   hoodCloseDoor();
-  goToPoint(middle_lower_goal_lineup, MAX_VELOCITY);
-  waitForGoToPoint(middle_lower_goal_lineup, 2.0, 2000);
-  goToPoint(middle_lower_goal, MAX_VELOCITY / 3.0);
-  waitForGoToPoint(middle_lower_goal, 2.0, 2000);
-  stopMotion();
-
-  delay(2500);
 
   // left wall blocks on the far side
   startColorSort(alliance::EAlliance::RED);

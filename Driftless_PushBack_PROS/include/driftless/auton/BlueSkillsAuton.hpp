@@ -18,7 +18,7 @@ class BlueSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point orange_preload{80.0, 25.0, 0.0};
+  control::Point orange_preload{80.0, 27.0, 0.0};
 
   control::Point first_matchload_lineup{31.0, 28.0, M_PI / 2};
 
@@ -28,7 +28,7 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point front_left_wall_blocks_lineup{26.0, 24.0, M_PI / 2.0};
 
-  control::Point front_left_wall_blocks{10.0, 24.0, M_PI};
+  control::Point front_left_wall_blocks{10.0, 26.0, M_PI};
 
   control::Point park_zone_blocks_lineup{73.0, 44.0, -M_PI / 2.0};
 
