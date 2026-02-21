@@ -26,7 +26,7 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point left_goal_front{26.0, 42.0, M_PI / 2.0};
 
-  control::Point front_left_wall_blocks_lineup{26.0, 24.0, M_PI / 2.0};
+  control::Point front_left_wall_blocks_lineup{26.0, 24.0, M_PI};
 
   control::Point front_left_wall_blocks{10.0, 26.0, M_PI};
 
@@ -38,7 +38,7 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point middle_blocks_lineup{44.0, 56.0, 3 * M_PI / 4.0};
 
-  control::Point middle_blocks_lineup_2{46.0, 92.0, M_PI};
+  control::Point middle_blocks_lineup_2{48.0, 92.0, M_PI};
 
   control::Point middle_blocks_end{20.0, 72.0, -3.0 * M_PI / 4.0};
 
@@ -48,19 +48,19 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point middle_lower_goal_lineup{50.0, 84.0, M_PI / 4.0};
 
-  control::Point middle_lower_goal{66.0, 85.0, M_PI / 4.0};
+  control::Point middle_lower_goal{60.0, 88.0, M_PI / 4.0};
 
   control::Point back_left_wall_blocks_lineup_1{42.0, 74.0, M_PI / 4.0};
 
   control::Point back_left_wall_blocks_lineup_2{42.0, 120.0, M_PI};
 
-  control::Point back_left_wall_blocks{9.0, 124.0, M_PI};
+  control::Point back_left_wall_blocks{9.0, 122.0, M_PI};
 
   control::Point second_matchload_lineup{28.0, 118.0, -M_PI / 2.0};
 
-  control::Point second_matchload{27.0, 138.0, -M_PI / 2.0};
+  control::Point second_matchload{28.0, 138.0, -M_PI / 2.0};
 
-  control::Point left_goal_back{24.0, 102.0, -M_PI / 2.0};
+  control::Point left_goal_back{26.0, 103.0, -M_PI / 2.0};
 
   control::Point park_lineup_1{52.0, 92.0, M_PI / 2.0};
 
