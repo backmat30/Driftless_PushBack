@@ -166,7 +166,7 @@ void BlueSkillsAuton::run(
   waitForGoToPoint(middle_lower_goal, 2.0, 2000);
   stopMotion();
 
-  delay(3250);
+  delay(4500);
 
   goToPoint(middle_lower_goal_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_lower_goal_lineup, 4.0, 2000);
