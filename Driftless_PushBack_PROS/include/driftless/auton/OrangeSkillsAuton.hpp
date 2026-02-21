@@ -18,11 +18,11 @@ class OrangeSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point middle_blues_lineup_1{130.0, 36.0, M_PI};
+  control::Point middle_blues_lineup_1{130.0, 34.0, M_PI};
 
-  control::Point middle_blues_lineup_2{128.0, 79.0, M_PI};
+  control::Point middle_blues_lineup_2{132.0, 78.0, M_PI};
 
-  control::Point middle_blues{118.0, 78.5, M_PI};
+  control::Point middle_blues{118.0, 76.0, M_PI};
 
   control::Point back_matchload_lineup{102.0, 93.0, M_PI};
 
@@ -34,15 +34,15 @@ class OrangeSkillsAuton : public AAuton {
 
   control::Point park_zone_blocks_lineup{73.0, 94.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks{73.0, 121.0, M_PI / 2.0};
+  control::Point park_zone_blocks{72.0, 120.0, M_PI / 2.0};
 
   control::Point wall_blocks_lineup{100.0, 116.0, 0.0};
 
   control::Point wall_blocks_start{134.0, 118.0, 0.0};
 
-  control::Point wall_blocks_end{134.0, 70.0, -M_PI / 2.0};
+  control::Point wall_blocks_end{136.0, 74.0, -M_PI / 2.0};
 
-  control::Point middle_reds{110.0, 66.0, M_PI};
+  control::Point middle_reds{110.0, 68.0, M_PI};
 
   control::Point middle_goal_lineup{96.0, 48.0, M_PI * 3.0 / 4.0};
 
@@ -50,19 +50,19 @@ class OrangeSkillsAuton : public AAuton {
 
   control::Point middle_goal_top_lineup{96.0, 92.0, -M_PI * 3.0 / 4.0};
 
-  control::Point middle_goal_top{83.0, 84.0, -M_PI * 3.0 / 4.0};
+  control::Point middle_goal_top{85.0, 86.0, -M_PI * 3.0 / 4.0};
 
   control::Point front_wall_blocks_lineup{100.0, 28.0, 0.0};
 
-  control::Point front_wall_blocks_start{130.0, 24.0, 0.0};
+  control::Point front_wall_blocks_start{132.0, 24.0, 0.0};
 
   control::Point front_wall_blocks_end{116.0, 24.0, 0.0};
 
-  control::Point front_match_load_lineup{120.0, 32.0, M_PI / 2.0};
+  control::Point front_match_load_lineup{118.0, 32.0, M_PI / 2.0};
 
-  control::Point front_match_load{116.0, 11.0, M_PI / 2.0};
+  control::Point front_match_load{117.0, 11.0, M_PI / 2.0};
 
-  control::Point front_right_long_goal{117.0, 42.0, M_PI / 2.0};
+  control::Point front_right_long_goal{118.0, 43.0, M_PI / 2.0};
 
   control::Point park_lineup{92.0, 12.0, 0.0};
 

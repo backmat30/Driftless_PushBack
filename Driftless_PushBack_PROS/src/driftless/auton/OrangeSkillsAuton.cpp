@@ -28,12 +28,12 @@ void OrangeSkillsAuton::run(
 
   // head to the blues under the long goal
   goToPoint(middle_blues_lineup_1, MAX_VELOCITY);
-  waitForGoToPoint(middle_blues_lineup_1, 14.0, 3000);
-  setGoToPointVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPoint(middle_blues_lineup_1, 14.0, 3000);
+  waitForGoToPoint(middle_blues_lineup_1, 12.0, 3000);
+  setGoToPointVelocity(MAX_VELOCITY / 2.0);
+  waitForGoToPoint(middle_blues_lineup_1, 8.0, 3000);
   goToPoint(middle_blues_lineup_2, MAX_VELOCITY);
   waitForGoToPoint(middle_blues_lineup_2, 18.0, 3000);
-  setGoToPointVelocity(MAX_VELOCITY / 5.0);
+  setGoToPointVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_blues_lineup_2, 2.0, 2000);
   deployRake();
   intakeFront();
@@ -56,7 +56,7 @@ void OrangeSkillsAuton::run(
   intakeBack();
   deployBackIntakeArms();
 
-  delay(2500);
+  delay(2250);
 
   // score on the goal
   hoodRaise();
@@ -70,7 +70,7 @@ void OrangeSkillsAuton::run(
   hoodOpenDoor();
   retractBackIntakeArms();
 
-  delay(2250);
+  delay(2000);
 
   // back up and close hood
   goToPoint(back_matchload, MAX_VELOCITY / 2.0);
@@ -95,7 +95,7 @@ void OrangeSkillsAuton::run(
   intakeFront();
   delay(500);
   goToPoint(park_zone_blocks_lineup, MAX_VELOCITY / 3.0);
-  waitForGoToPoint(park_zone_blocks_lineup, 2.0, 1750);
+  waitForGoToPoint(park_zone_blocks_lineup, 2.0, 1000);
 
   // grab the red blocks against the wall
   goToPoint(wall_blocks_lineup, MAX_VELOCITY);
@@ -111,23 +111,25 @@ void OrangeSkillsAuton::run(
   retractRake();
   stopMotion();
   delay(400);
-  goToPoint(wall_blocks_start, MAX_VELOCITY / 2.0);
+  goToPoint(wall_blocks_start, MAX_VELOCITY / 1.5);
   waitForGoToPoint(wall_blocks_start, 4.0, 3000);
   delay(500);
-  goToPoint(wall_blocks_end, MAX_VELOCITY / 1.5);
+  goToPoint(wall_blocks_end, MAX_VELOCITY);
   waitForGoToPoint(wall_blocks_end, 4.0, 4000);
 
   // grab reds under long goal
   turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
   delay(500);
-  goToPoint(middle_reds, MAX_VELOCITY / 3.0);
+  goToPoint(middle_reds, MAX_VELOCITY / 2.0);
   waitForGoToPoint(middle_reds, 4.0, 1000);
 
   // deposit blocks in middle goal
-  goToPoint(middle_goal_lineup, MAX_VELOCITY / 2.0);
+  goToPoint(middle_goal_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_goal_lineup, 2.0, 2000);
+  goToPoint(middle_goal, MAX_VELOCITY / 1.5);
+  waitForGoToPoint(middle_goal, 10.0, 3000);
   goToPoint(middle_goal, MAX_VELOCITY / 3.5);
-  waitForGoToPoint(middle_goal, 2.0, 3000);
+  waitForGoToPoint(middle_goal, 2.0, 1000);
   outtakeFront();
   hoodSetVoltage(-12.0);
   pauseColorSort();
@@ -200,14 +202,16 @@ void OrangeSkillsAuton::run(
 
   // park
   goToPoint(park_lineup, MAX_VELOCITY);
-  waitForGoToPoint(park_lineup, 4.0, 3000);
   hoodLower();
+  waitForGoToPoint(park_lineup, 4.0, 3000);
   hoodCloseDoor();
   intakeStop();
-  goToPoint(park, MAX_VELOCITY / 1.5);
+  goToPoint(park, MAX_VELOCITY / 1.25);
 
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",
                       (getTime() - start_time) / 1000.0);
+  delayUntil(start_time + 59500);
+  hoodRaise();
   delayUntil(start_time + 60000);
 
   // leave at end
