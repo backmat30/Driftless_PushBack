@@ -144,6 +144,7 @@ void OrangeSkillsAuton::run(
   hoodLower();
 
   // block top middle goal for blue
+  startColorSort(alliance::EAlliance::BLUE);
   goToPoint(middle_goal_lineup, MAX_VELOCITY / 4.0);
   delay(1000);
   goToPoint(middle_goal_top_lineup, MAX_VELOCITY);
@@ -164,10 +165,11 @@ void OrangeSkillsAuton::run(
   waitForGoToPoint(front_wall_blocks_start, 10.0, 2000);
   setGoToPointVelocity(MAX_VELOCITY / 5.0);
   waitForGoToPoint(front_wall_blocks_start, 2.0, 1500);
+  pauseColorSort();
   deployRake();
   delay(250);
-  goToPoint(front_wall_blocks_end, MAX_VELOCITY / 3.0);
-  waitForGoToPoint(front_wall_blocks_end, 2.0, 4000);
+  goToPoint(front_wall_blocks_end, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(front_wall_blocks_end, 4.0, 1250);
   stopMotion();
   retractRake();
   delay(250);
@@ -179,9 +181,9 @@ void OrangeSkillsAuton::run(
   // go to front matchloader
   goToPoint(front_match_load_lineup, MAX_VELOCITY);
   waitForGoToPoint(front_match_load_lineup, 4.0, 2000);
-  goToPoint(front_match_load, MAX_VELOCITY / 1.25);
+  goToPoint(front_match_load, MAX_VELOCITY);
   waitForGoToPoint(front_match_load, 16.0, 4000);
-  setGoToPointVelocity(MAX_VELOCITY / 3.0);
+  setGoToPointVelocity(MAX_VELOCITY / 2.0);
   waitForGoToPoint(front_match_load, 2.0, 1750);
   intakeBack();
   deployBackIntakeArms();

@@ -30,25 +30,25 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point front_left_wall_blocks{10.0, 26.0, M_PI};
 
-  control::Point park_zone_blocks_lineup{73.0, 44.0, -M_PI / 2.0};
+  control::Point park_zone_blocks_lineup{73.0, 42.0, -M_PI / 2.0};
 
   control::Point park_zone_blocks{73.0, 24.0, -M_PI / 2.0};
 
   control::Point park_zone_grab{73.0, 26.0, -M_PI / 2.0};
 
-  control::Point middle_blocks_lineup{44.0, 56.0, 3 * M_PI / 4.0};
+  control::Point middle_blocks_lineup{44.0, 52.0, 3 * M_PI / 4.0};
 
-  control::Point middle_blocks_lineup_2{48.0, 92.0, M_PI};
+  control::Point middle_blocks_lineup_2{50.0, 92.0, M_PI};
 
   control::Point middle_blocks_end{20.0, 72.0, -3.0 * M_PI / 4.0};
 
-  control::Point middle_top_goal_lineup{50.0, 58.0, M_PI / 4.0};
+  control::Point middle_top_goal_lineup{50.0, 54.0, M_PI / 4.0};
 
-  control::Point middle_top_goal{59.5, 61, M_PI / 4.0};
+  control::Point middle_top_goal{60.5, 59.5, M_PI / 4.0};
 
   control::Point middle_lower_goal_lineup{50.0, 84.0, M_PI / 4.0};
 
-  control::Point middle_lower_goal{60.0, 88.0, M_PI / 4.0};
+  control::Point middle_lower_goal{61.0, 87.0, M_PI / 4.0};
 
   control::Point back_left_wall_blocks_lineup_1{42.0, 74.0, M_PI / 4.0};
 
@@ -64,9 +64,9 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point park_lineup_1{52.0, 92.0, M_PI / 2.0};
 
-  control::Point park_lineup_2{38.0, 14.0, M_PI};
+  control::Point park_lineup_2{38.0, 12.0, M_PI};
 
-  control::Point park_zone{80.0, 10.0, M_PI};
+  control::Point park_zone{80.0, 9.0, M_PI};
 
  public:
   /// @brief Constructs a new blue skills auton object
