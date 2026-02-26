@@ -42,8 +42,11 @@ class DirectHood : public IHood {
   /// @brief The pistons controlling the hood gate
   hal::PistonGroup m_gate_pistons{};
 
-  /// @brief The pistons controlling the descore mechanism
-  hal::PistonGroup m_descore_pistons{};
+  /// @brief The pistons controlling the lower half of the descore mechanism
+  hal::PistonGroup m_lower_descore_pistons{};
+
+  /// @brief The pistons controlling the upper half of the descore mechanism
+  hal::PistonGroup m_upper_descore_pistons{};
 
   /// @brief The pistons controlling the hood bump
   hal::PistonGroup m_bump_pistons{};
@@ -83,8 +86,8 @@ class DirectHood : public IHood {
   /// @brief Retracts the descore mechanism
   void retractDescore() override;
 
-  /// @brief Toggles the descore mechanism between extended and retracted
-  void toggleDescore() override;
+  /// @brief Extends the descore halfway
+  void extendDescoreHalf() override;
 
   /// @brief Bumps the hood up slightly
   void bumpUp() override;
@@ -111,6 +114,11 @@ class DirectHood : public IHood {
   /// @return __bool__ True if the door is open, false otherwise
   bool isOpen() override;
 
+  /// @brief Gets the height of the descore mechanism;
+  /// 0 if fully retracted, 1 if halfway extended, 2 if fully extended
+  /// @return __int__ The height of the descore mechanism
+  int getDescoreHeight() override;
+
   /// @brief Sets the motors used by the hood
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setMotors(hal::MotorGroup& motors);
@@ -123,9 +131,13 @@ class DirectHood : public IHood {
   /// @param pistons __hal::PistonGroup&__ The pistons to use
   void setGatePistons(hal::PistonGroup& pistons);
 
-  /// @brief Sets the pistons to use for descore control
+  /// @brief Sets the pistons to use for the lower half of descore control
   /// @param pistons __hal::PistonGroup&__ The pistons to use
-  void setDescorePistons(hal::PistonGroup& pistons);
+  void setLowerDescorePistons(hal::PistonGroup& pistons);
+
+  /// @brief Sets the pistons to use for the upper half of descore control
+  /// @param pistons __hal::PistonGroup&__ The pistons to use
+  void setUpperDescorePistons(hal::PistonGroup& pistons);
 
   /// @brief Sets the pistons to use for bump control
   /// @param pistons __hal::PistonGroup&__ The pistons to use
