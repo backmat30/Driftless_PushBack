@@ -190,7 +190,8 @@ class OrangeConfig : public IConfig {
 
   static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
   static constexpr int HOOD_GATE_PISTONS_PORT{4};
-  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{1};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
   // ## BRAKE PNEUMATICS ##
