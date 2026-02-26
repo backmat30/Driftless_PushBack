@@ -168,7 +168,7 @@ class OrangeConfig : public IConfig {
 
   // ## INTAKE MOTORS ##
 
-  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};

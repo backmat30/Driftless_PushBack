@@ -48,7 +48,7 @@ void ControlSystem::resume() {
 
 void ControlSystem::sendCommand(EControl control_name,
                                 EControlCommand command_name, ...) {
-  // pauseis the current control if its not the desired control, then sets the
+  // pauses the current control if its not the desired control, then sets the
   // active control to the desired one
   if (control_name != active_control) {
     pause();
