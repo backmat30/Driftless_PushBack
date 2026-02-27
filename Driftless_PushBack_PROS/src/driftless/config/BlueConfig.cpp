@@ -393,8 +393,10 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(HOOD_HEIGHT_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_gate_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_GATE_PISTONS_PORT)};
-  std::unique_ptr<pros::adi::DigitalOut> pros_hood_descore_pistons{
-      std::make_unique<pros::adi::DigitalOut>(HOOD_DESCORE_PISTONS_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_lower_descore_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_LOWER_DESCORE_PISTONS_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_upper_descore_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_UPPER_DESCORE_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_bump_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_BUMP_PISTONS_PORT)};
 
@@ -405,8 +407,12 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_height_pistons)};
   std::unique_ptr<io::IPiston> hood_gate_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_gate_pistons)};
-  std::unique_ptr<io::IPiston> hood_descore_pistons{
-      std::make_unique<pros_adapters::ProsPiston>(pros_hood_descore_pistons)};
+  std::unique_ptr<io::IPiston> hood_lower_descore_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(
+          pros_hood_lower_descore_pistons)};
+  std::unique_ptr<io::IPiston> hood_upper_descore_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(
+          pros_hood_upper_descore_pistons)};
   std::unique_ptr<io::IPiston> hood_bump_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_bump_pistons)};
 
@@ -417,7 +423,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       hood_builder.withMotor(hood_motor_1)
           ->withHeightPiston(hood_height_pistons)
           ->withGatePiston(hood_gate_pistons)
-          ->withDescorePiston(hood_descore_pistons)
+          ->withLowerDescorePiston(hood_lower_descore_pistons)
+          ->withUpperDescorePiston(hood_upper_descore_pistons)
           ->withBumpPiston(hood_bump_pistons)
           ->build()};
 
@@ -461,28 +468,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
 
   // add subsystem to robot
   robot->addSubsystem(odometry_subsystem);
-
-  // ## BRAKE SUBSYSTEM ##
-
-  // create pros objects
-  std::unique_ptr<pros::adi::DigitalOut> pros_brake_piston{
-      std::make_unique<pros::adi::DigitalOut>(BRAKE_PISTON_PORT)};
-
-  // adapt pros objects
-  std::unique_ptr<io::IPiston> adapted_brake_piston{
-      std::make_unique<pros_adapters::ProsPiston>(pros_brake_piston)};
-
-  // build the brake
-  robot::subsystems::brake::PneumaticBrakeBuilder brake_builder{};
-
-  std::unique_ptr<robot::subsystems::brake::IBrake> brake{
-      brake_builder.withBrakePiston(adapted_brake_piston)->build()};
-
-  // create the subsystem
-  std::unique_ptr<robot::subsystems::ASubsystem> brake_subsystem{
-      std::make_unique<robot::subsystems::brake::BrakeSubsystem>(brake)};
-
-  robot->addSubsystem(brake_subsystem);
 
   // ## RAKE SUBSYSTEM ##
 

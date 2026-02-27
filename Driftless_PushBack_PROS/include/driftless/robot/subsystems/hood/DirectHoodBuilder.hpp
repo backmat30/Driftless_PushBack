@@ -32,8 +32,11 @@ class DirectHoodBuilder {
   /// @brief The gate pistons used to build the DirectHood
   hal::PistonGroup m_gate_pistons{};
 
-  /// @brief The descore pistons used to build the DirectHood
-  hal::PistonGroup m_descore_pistons{};
+  /// @brief The lower descore pistons used to build the DirectHood
+  hal::PistonGroup m_lower_descore_pistons{};
+
+  /// @brief The upper descore pistons used to build the DirectHood
+  hal::PistonGroup m_upper_descore_pistons{};
 
   /// @brief The bump pistons used to build the DirectHood
   hal::PistonGroup m_bump_pistons{};
@@ -54,10 +57,19 @@ class DirectHoodBuilder {
   /// @return __DirectHoodBuilder*__ Pointer to this builder
   DirectHoodBuilder* withGatePiston(std::unique_ptr<io::IPiston>& piston);
 
-  /// @brief Adds a descore piston to the builder
-  /// @param piston __std::unique_ptr<io::IPiston>& The descore piston to add
+  /// @brief Adds a lower descore piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>& The lower descore piston to
+  /// add
   /// @return __DirectHoodBuilder*__ Pointer to this builder
-  DirectHoodBuilder* withDescorePiston(std::unique_ptr<io::IPiston>& piston);
+  DirectHoodBuilder* withLowerDescorePiston(
+      std::unique_ptr<io::IPiston>& piston);
+
+  /// @brief Adds an upper descore piston to the builder
+  /// @param piston __std::unique_ptr<io::IPiston>& The upper descore piston to
+  /// add
+  /// @return __DirectHoodBuilder*__ Pointer to this builder
+  DirectHoodBuilder* withUpperDescorePiston(
+      std::unique_ptr<io::IPiston>& piston);
 
   /// @brief Adds a bump piston to the builder
   /// @param piston __std::unique_ptr<io::IPiston>& The bump piston to add

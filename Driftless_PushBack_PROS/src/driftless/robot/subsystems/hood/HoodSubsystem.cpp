@@ -47,8 +47,8 @@ void HoodSubsystem::command(ESubsystemCommand command_name, va_list& args) {
       m_hood->retractDescore();
       break;
     }
-    case ESubsystemCommand::HOOD_TOGGLE_DESCORE: {
-      m_hood->toggleDescore();
+    case ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF: {
+      m_hood->extendDescoreHalf();
       break;
     }
     case ESubsystemCommand::HOOD_BUMP_UP: {
@@ -85,6 +85,10 @@ void* HoodSubsystem::state(ESubsystemState state_name) {
     }
     case ESubsystemState::HOOD_IS_OPEN: {
       state = new bool{m_hood->isOpen()};
+      break;
+    }
+    case ESubsystemState::HOOD_GET_DESCORE_HEIGHT: {
+      state = new int{m_hood->getDescoreHeight()};
       break;
     }
   }
