@@ -77,11 +77,10 @@ void HoodOperator::updateHoodSmartToggle(EControllerDigital toggle_high_goal,
   bool is_hood_bumped{*static_cast<bool*>(
       m_robot->getState(robot::subsystems::ESubsystem::HOOD,
                         robot::subsystems::ESubsystemState::HOOD_IS_BUMPED))};
-  bool is_descore_extended{static_cast<bool>(
+  bool is_descore_extended{
       (*static_cast<int*>(m_robot->getState(
-           robot::subsystems::ESubsystem::HOOD,
-           robot::subsystems::ESubsystemState::HOOD_GET_DESCORE_HEIGHT)) -
-       1))};
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemState::HOOD_GET_DESCORE_HEIGHT))) > 1};
 
   if (toggle_high_goal_pressed) {
     if (is_hood_raised) {
@@ -133,7 +132,7 @@ void HoodOperator::updateHoodSmartToggle(EControllerDigital toggle_high_goal,
                            robot::subsystems::ESubsystemCommand::HOOD_RAISE);
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
+          robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
     }
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
