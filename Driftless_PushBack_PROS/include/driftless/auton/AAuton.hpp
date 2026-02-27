@@ -139,6 +139,8 @@ class AAuton {
 
   void deployDescore();
 
+  void middleDescore();
+
   void retractDescore();
 
  public:

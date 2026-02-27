@@ -314,6 +314,12 @@ void AAuton::deployDescore() {
       robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
 }
 
+void AAuton::middleDescore() {
+  m_robot->sendCommand(
+      robot::subsystems::ESubsystem::HOOD,
+      robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
+}
+
 void AAuton::retractDescore() {
   m_robot->sendCommand(
       robot::subsystems::ESubsystem::HOOD,
