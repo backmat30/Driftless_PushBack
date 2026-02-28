@@ -106,7 +106,7 @@ void DirectIntake::taskUpdate() {
       // if we are ready for a second block but do not have a second block,
       // check if we can see a second block and update flag
     } else if (m_ready_for_second_matchloader_block &&
-               !m_has_second_matchloader_block && hasAllianceBlock()) {
+               !m_has_second_matchloader_block && (m_color_sensor->getProximity() > 100)) {
       m_has_second_matchloader_block = true;
       // wait for the front intake to go far enough, then update the flag to
       // direct blocks to the hood
@@ -122,9 +122,9 @@ void DirectIntake::taskUpdate() {
 
       m_vertical_motors.setVoltage(12.0);
       m_vertical_motors.setCurrentLimit(2.5);
-    } else if (m_has_first_matchloader_block &&
-               !m_ready_for_second_matchloader_block) {
-      m_front_motors.setVoltage(-8.0);
+    } else if (!m_has_first_matchloader_block || (m_has_first_matchloader_block &&
+               !m_ready_for_second_matchloader_block)) {
+      m_front_motors.setVoltage(-12.0);
       m_front_motors.setCurrentLimit(2.5);
 
       m_vertical_motors.setVoltage(-12.0);
