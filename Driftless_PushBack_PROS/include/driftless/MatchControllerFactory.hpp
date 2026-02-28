@@ -19,6 +19,7 @@
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
 #include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/auton/OrangeControlRushAuton.hpp"
+#include "driftless/auton/OrangeWPAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"
