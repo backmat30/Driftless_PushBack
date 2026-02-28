@@ -53,8 +53,8 @@ void setup() {
   Serial.begin(74880);
 #endif
 
-  Wire1.begin();
-  while (!(odom_sensor.begin(Wire1))) {
+  Wire2.begin();
+  while (!(odom_sensor.begin(Wire2))) {
 #ifdef DEBUG
     Serial.println("Odom initializing");
 #endif
