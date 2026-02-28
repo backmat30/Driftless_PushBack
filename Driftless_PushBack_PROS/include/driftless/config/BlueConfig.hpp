@@ -94,6 +94,8 @@
 
 namespace driftless {
 namespace config {
+/// @brief The configurations for the blue robot and its control system
+/// @author Matthew Backman
 class BlueConfig : public IConfig {
  private:
   static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
