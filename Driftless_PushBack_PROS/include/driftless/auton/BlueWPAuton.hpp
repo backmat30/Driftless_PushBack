@@ -30,7 +30,7 @@ class BlueWPAuton : public AAuton {
   control::Point long_goal{27.5, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{14.5, 37.0, M_PI / 2.0};
+  control::Point descore_lineup{15.5, 37.0, M_PI / 2.0};
   
   control::Point end_descore{16.0, 58.0, M_PI / 2.0};
 

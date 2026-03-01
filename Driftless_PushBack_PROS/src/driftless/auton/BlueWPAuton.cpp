@@ -41,7 +41,7 @@ void BlueWPAuton::run(
   delay(450);
   hoodRaise();
 
-  delay(175);
+  delay(225);
   retractBackIntakeArms();
 
   // score blocks from match loader
@@ -91,7 +91,7 @@ void BlueWPAuton::run(
   goToPoint(line_blocks_lineup_2, MAX_VELOCITY / 5.0);
   waitForGoToPoint(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPoint(line_blocks, MAX_VELOCITY / 2.5);
+  goToPoint(line_blocks, MAX_VELOCITY / 3.0);
   waitForGoToPoint(line_blocks, 1.0, 3500);
 
   // go bottom goal
@@ -129,6 +129,7 @@ void BlueWPAuton::run(
   hoodOpenDoor();
   intakeFront();
   hoodSetVoltage(6.0);
+  
 
   delay(1000);
   hoodSetVoltage(9.0);
