@@ -26,7 +26,7 @@ class OrangeControlRushAuton : public AAuton {
 
  control::Point descore_lineup{128.5, 33.0, M_PI / 2.0};
 
- control::Point end_descore{130.5, 61.0, M_PI / 2.0};
+ control::Point end_descore{130, 60.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object
