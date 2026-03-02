@@ -106,7 +106,8 @@ void DirectIntake::taskUpdate() {
       // if we are ready for a second block but do not have a second block,
       // check if we can see a second block and update flag
     } else if (m_ready_for_second_matchloader_block &&
-               !m_has_second_matchloader_block && (m_color_sensor->getProximity() > 100)) {
+               !m_has_second_matchloader_block &&
+               (m_color_sensor->getProximity() > 100)) {
       m_has_second_matchloader_block = true;
       // wait for the front intake to go far enough, then update the flag to
       // direct blocks to the hood
@@ -122,8 +123,9 @@ void DirectIntake::taskUpdate() {
 
       m_vertical_motors.setVoltage(12.0);
       m_vertical_motors.setCurrentLimit(2.5);
-    } else if (!m_has_first_matchloader_block || (m_has_first_matchloader_block &&
-               !m_ready_for_second_matchloader_block)) {
+    } else if (!m_has_first_matchloader_block ||
+               (m_has_first_matchloader_block &&
+                !m_ready_for_second_matchloader_block)) {
       m_front_motors.setVoltage(-12.0);
       m_front_motors.setCurrentLimit(2.5);
 
@@ -196,12 +198,12 @@ void DirectIntake::init() {
 
 void DirectIntake::run() { m_task->start(&taskLoop, this); }
 
-void DirectIntake::intakeFront(bool reversed) {
+void DirectIntake::intakeFront(double voltage) {
   if (m_mutex) {
     m_mutex->take();
   }
 
-  m_running_forward = !reversed;
+  m_running_forward = voltage > 0.0;
   m_back_intake_to_hood = false;
   m_has_first_matchloader_block = false;
   m_first_matchloader_block_pos = -__DBL_MAX__;
@@ -209,13 +211,13 @@ void DirectIntake::intakeFront(bool reversed) {
   m_ready_for_second_matchloader_block = false;
   m_running_back_intake = false;
 
-  m_front_motors.setVoltage(12.0 * (reversed ? -1.0 : 1.0));
+  m_front_motors.setVoltage(voltage);
   m_front_motors.setCurrentLimit(2.5);
 
-  m_vertical_motors.setVoltage(12.0 * (reversed ? -1.0 : 1.0));
+  m_vertical_motors.setVoltage(voltage);
   m_vertical_motors.setCurrentLimit(2.5);
 
-  if (reversed) {
+  if (!m_running_forward) {
     m_back_motors.setVoltage(12.0);
     m_back_motors.setCurrentLimit(1.25);
 
@@ -263,9 +265,13 @@ void DirectIntake::stopIntake() {
   m_running_back_intake = false;
 
   m_front_motors.setVoltage(0.0);
+  m_front_motors.setCurrentLimit(0.0);
   m_back_motors.setVoltage(0.0);
+  m_back_motors.setCurrentLimit(0.0);
   m_intermediary_motors.setVoltage(0.0);
+  m_intermediary_motors.setCurrentLimit(0.0);
   m_vertical_motors.setVoltage(0.0);
+  m_vertical_motors.setCurrentLimit(0.0);
 
   if (m_mutex) {
     m_mutex->give();
