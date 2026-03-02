@@ -24,9 +24,12 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
       std::make_unique<auton::BluePumpNDumpAuton>()};
   lvgl_menu->addAuton(blue_pump_n_dump_auton);
-  std::unique_ptr<auton::AAuton> blue_center_auton{
-      std::make_unique<auton::BlueCenterAuton>()};
-  lvgl_menu->addAuton(blue_center_auton);
+  std::unique_ptr<auton::AAuton> blue_control_rush_auton{
+      std::make_unique<auton::BlueControlRushAuton>()};
+  lvgl_menu->addAuton(blue_control_rush_auton);
+  std::unique_ptr<auton::AAuton> blue_win_point_auton{
+      std::make_unique<auton::BlueWPAuton>()};
+  lvgl_menu->addAuton(blue_win_point_auton);
   std::unique_ptr<auton::AAuton> orange_pump_n_dump_auton{
       std::make_unique<auton::OrangePumpNDumpAuton>()};
   lvgl_menu->addAuton(orange_pump_n_dump_auton);

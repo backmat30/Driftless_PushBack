@@ -1,5 +1,5 @@
-#ifndef __BLUE_PUMP_N_DUMP_AUTON_HPP__
-#define __BLUE_PUMP_N_DUMP_AUTON_HPP__
+#ifndef __BLUE_CONTROL_RUSH_AUTON_HPP__
+#define __BLUE_CONTROL_RUSH_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
@@ -11,30 +11,32 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the blue robot's pump
-/// and dump match auton
-/// @author Matthew Backman
-class BluePumpNDumpAuton : public AAuton {
+/// @brief Class representing the autonomous routine for the blue robot's win point auton
+/// @author Ethan jacobson
+class BlueControlRushAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
+  // matchload points
   control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
+
+  control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
 
   control::Point matchload{26.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal{27.0, 42.0, M_PI / 2.0};
+  control::Point matchload_2{28.0, 11.5, M_PI / 2.0};
 
-  control::Point long_goal_2{27.0, 42.0, M_PI / 2.0};
+  // long goal points
+  control::Point long_goal{27.5, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_to_matchload{25.0, 12.0, M_PI / 2.0};
-
-  control::Point descore_lineup{38.0, 36.0, M_PI / 2.0};
+  // descore points
+  control::Point descore_lineup{38.0, 37.0, M_PI / 2.0};
   
   control::Point end_descore{37.0, 60.5, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object
-  BluePumpNDumpAuton();
+  BlueControlRushAuton();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled
