@@ -1,5 +1,5 @@
-#ifndef __BLUE_WIN_POINT_AUTON_HPP__
-#define __BLUE_WIN_POINT_AUTON_HPP__
+#ifndef __BLUE_CONTROL_RUSH_AUTON_HPP__
+#define __BLUE_CONTROL_RUSH_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
@@ -13,7 +13,7 @@ namespace auton {
 
 /// @brief Class representing the autonomous routine for the blue robot's win point auton
 /// @author Ethan jacobson
-class BlueWPAuton : public AAuton {
+class BlueControlRushAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
@@ -30,13 +30,13 @@ class BlueWPAuton : public AAuton {
   control::Point long_goal{27.5, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{39.5, 37.0, M_PI / 2.0};
+  control::Point descore_lineup{38.0, 37.0, M_PI / 2.0};
   
-  control::Point end_descore{39.0, 58.0, M_PI / 2.0};
+  control::Point end_descore{37.0, 60.5, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object
-  BlueWPAuton();
+  BlueControlRushAuton();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled

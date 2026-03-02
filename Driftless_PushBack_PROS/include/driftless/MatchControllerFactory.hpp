@@ -14,11 +14,12 @@
 
 // auton includes
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
+#include "driftless/auton/BlueControlRushAuton.hpp"
 #include "driftless/auton/BlueWPAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
-#include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/auton/OrangeControlRushAuton.hpp"
+#include "driftless/auton/OrangeSkillsAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"
