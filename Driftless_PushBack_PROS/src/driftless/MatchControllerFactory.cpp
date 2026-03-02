@@ -39,6 +39,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> orange_control_rush_auton{
       std::make_unique<auton::OrangeControlRushAuton>()};
   lvgl_menu->addAuton(orange_control_rush_auton);
+  std::unique_ptr<auton::AAuton> orange_win_point_auton{
+      std::make_unique<auton::OrangeWPAuton>()};
+  lvgl_menu->addAuton(orange_win_point_auton);
 
   // add configs
   std::unique_ptr<config::IConfig> blue_config{
