@@ -119,7 +119,7 @@ void DirectIntake::taskUpdate() {
 
     if (m_back_intake_to_hood) {
       m_front_motors.setVoltage(0.0);
-      m_front_motors.setCurrentLimit(2.5);
+      m_front_motors.setCurrentLimit(0.0);
 
       m_vertical_motors.setVoltage(12.0);
       m_vertical_motors.setCurrentLimit(2.5);
@@ -141,6 +141,7 @@ void DirectIntake::taskUpdate() {
       m_vertical_motors.setCurrentLimit(1.0);
     } else {
       m_front_motors.setVoltage(0.0);
+      m_front_motors.setCurrentLimit(0.0);
 
       m_vertical_motors.setVoltage(-6.0);
       m_vertical_motors.setCurrentLimit(1.0);
@@ -165,6 +166,7 @@ void DirectIntake::taskUpdate() {
                      m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
                  m_running_forward) {
         m_back_motors.setVoltage(-12.0);
+        m_back_motors.setCurrentLimit(2.5);
         m_intermediary_motors.setVoltage(-12.0);
         m_intermediary_motors.setCurrentLimit(2.5);
       }
@@ -222,6 +224,7 @@ void DirectIntake::intakeFront(double voltage) {
     m_back_motors.setCurrentLimit(1.25);
 
     m_intermediary_motors.setVoltage(0.0);
+    m_intermediary_motors.setCurrentLimit(0.0);
   }
 
   if (m_mutex) {
