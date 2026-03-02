@@ -18,23 +18,19 @@ class BluePumpNDumpAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point matchload_lineup{26.0, 24.0, M_PI / 2.0};
+  control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
 
   control::Point matchload{26.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal_lineup{32.0, 26.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal{27.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_lineup_2{30.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_2{27.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal{24.0, 42.0, M_PI / 2.0};
+  control::Point long_goal_to_matchload{25.0, 12.0, M_PI / 2.0};
 
-  control::Point long_goal_to_matchload{12.0, 12.0, M_PI / 2.0};
-
-  control::Point descore_lineup{14.0, 38.0, M_PI / 2.0};
-
-  control::Point start_descore{16.0, 48.0, M_PI / 2.0};
-
-  control::Point end_descore{16.0, 62.0, M_PI / 2.0};
+  control::Point descore_lineup{38.0, 36.0, M_PI / 2.0};
+  
+  control::Point end_descore{37.0, 60.5, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object
