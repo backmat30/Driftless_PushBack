@@ -149,6 +149,12 @@ void MotionControl::command(EControlCommand command_name, va_list& args) {
   } else if (command_name == EControlCommand::GO_TO_POINT_SET_VELOCITY) {
     double velocity{va_arg(args, double)};
     m_go_to_point->setVelocity(velocity);
+  } else if (command_name == EControlCommand::GO_TO_POSE_SET_VELOCITY) {
+    double velocity{va_arg(args, double)};
+    m_go_to_pose->setVelocity(velocity);
+  } else if (command_name == EControlCommand::GO_TO_POSE_SET_ANGULAR_VELOCITY) {
+    double angular_velocity{va_arg(args, double)};
+    m_go_to_pose->setAngularVelocity(angular_velocity);
   }
 }
 
@@ -158,6 +164,8 @@ void* MotionControl::state(EControlState state_name) {
     result = new bool{m_drive_straight->targetReached()};
   } else if (state_name == EControlState::GO_TO_POINT_TARGET_REACHED) {
     result = new bool{m_go_to_point->targetReached()};
+  } else if (state_name == EControlState::GO_TO_POSE_TARGET_REACHED) {
+    result = new bool{m_go_to_pose->targetReached()};
   } else if (state_name == EControlState::TURN_TARGET_REACHED) {
     result = new bool{m_turn->targetReached()};
   }
