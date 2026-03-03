@@ -95,6 +95,7 @@ void PIDHolonomicGoToPose::taskUpdate() {
 void PIDHolonomicGoToPose::init() {
   m_x_pid.reset();
   m_y_pid.reset();
+  m_rotational_pid.reset();
 }
 
 void PIDHolonomicGoToPose::run() {
@@ -143,6 +144,7 @@ void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
 
   m_x_pid.reset();
   m_y_pid.reset();
+  m_rotational_pid.reset();
 
   if (m_mutex) {
     m_mutex->give();
