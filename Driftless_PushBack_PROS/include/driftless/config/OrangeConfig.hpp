@@ -217,7 +217,7 @@ class OrangeConfig : public IConfig {
 
   // ## COPROCESSOR ##
 
-  static constexpr uint16_t COPROCESSOR_BAUD_RATE{115200};
+  static constexpr int32_t COPROCESSOR_BAUD_RATE{115200};
 
   // ## DRIVE ##
 
