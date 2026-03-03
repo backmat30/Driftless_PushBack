@@ -185,7 +185,7 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   // ## ARDUINO ##
   // create pros objects
   std::unique_ptr<pros::Serial> pros_arduino_serial{
-      std::make_unique<pros::Serial>(ARDUINO_PORT, 115200)};
+      std::make_unique<pros::Serial>(ARDUINO_PORT, COPROCESSOR_BAUD_RATE)};
 
   // adapt the pros objects
   std::unique_ptr<io::ISerialDevice> arduino_serial{
