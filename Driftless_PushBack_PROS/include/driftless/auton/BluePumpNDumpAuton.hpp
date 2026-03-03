@@ -18,6 +18,8 @@ class BluePumpNDumpAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+
   control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
 
   control::Point matchload{26.0, 11.0, M_PI / 2.0};
@@ -29,7 +31,7 @@ class BluePumpNDumpAuton : public AAuton {
   control::Point long_goal_to_matchload{25.0, 12.0, M_PI / 2.0};
 
   control::Point descore_lineup{38.0, 36.0, M_PI / 2.0};
-  
+
   control::Point end_descore{37.0, 60.5, M_PI / 2.0};
 
  public:

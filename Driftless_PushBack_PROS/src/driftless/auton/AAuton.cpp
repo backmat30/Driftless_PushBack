@@ -75,10 +75,9 @@ void AAuton::waitForTrajectory(control::trajectory::TrajectoryPoint& endpoint,
 }
 
 void AAuton::goToPoint(control::Point target_point, double target_velocity) {
-  m_control_system->sendCommand(control::EControl::MOTION,
-                                control::EControlCommand::GO_TO_POINT, m_robot,
-                                target_velocity, target_point.getX(),
-                                target_point.getY(), target_point.getTheta());
+  m_control_system->sendCommand(
+      control::EControl::MOTION, control::EControlCommand::GO_TO_POINT, m_robot,
+      target_velocity, target_point.getX(), target_point.getY());
 }
 
 bool AAuton::goToPointTargetReached() {
@@ -109,6 +108,51 @@ void AAuton::setGoToPointVelocity(double velocity) {
   m_control_system->sendCommand(
       control::EControl::MOTION,
       control::EControlCommand::GO_TO_POINT_SET_VELOCITY, velocity);
+}
+
+void AAuton::goToPose(control::Point target_point, double target_velocity,
+                      double target_angular_velocity) {
+  m_control_system->sendCommand(
+      control::EControl::MOTION, control::EControlCommand::GO_TO_POSE, m_robot,
+      target_velocity, target_point.getX(), target_point.getY(),
+      target_point.getTheta(), target_angular_velocity);
+}
+
+bool AAuton::goToPoseTargetReached() {
+  bool target_reached{*static_cast<bool*>(m_control_system->getState(
+      control::EControl::MOTION,
+      control::EControlState::GO_TO_POSE_TARGET_REACHED))};
+
+  return target_reached;
+}
+
+void AAuton::waitForGoToPose(control::Point target_point,
+                             double position_tolerance, uint32_t timeout) {
+  uint32_t start_time{getTime()};
+  robot::subsystems::odometry::Position current_position{getOdomPosition()};
+  double distance_to_target{distance(current_position.x, current_position.y,
+                                     target_point.getX(), target_point.getY())};
+
+  while (getTime() < start_time + timeout && !goToPoseTargetReached() &&
+         std::abs(distance_to_target) > position_tolerance) {
+    current_position = getOdomPosition();
+    distance_to_target = distance(current_position.x, current_position.y,
+                                  target_point.getX(), target_point.getY());
+    delay(LOOP_DELAY);
+  }
+}
+
+void AAuton::setGoToPoseVelocity(double velocity) {
+  m_control_system->sendCommand(
+      control::EControl::MOTION,
+      control::EControlCommand::GO_TO_POSE_SET_VELOCITY, velocity);
+}
+
+void AAuton::setGoToPoseAngularVelocity(double angular_velocity) {
+  m_control_system->sendCommand(
+      control::EControl::MOTION,
+      control::EControlCommand::GO_TO_POSE_SET_ANGULAR_VELOCITY,
+      angular_velocity);
 }
 
 void AAuton::turnToPoint(control::Point target_point, double target_velocity,

@@ -16,17 +16,19 @@ namespace auton {
 /// @author Ethan jacobson
 class OrangeControlRushAuton : public AAuton {
  private:
- static constexpr double MAX_VELOCITY{80.0};
+  static constexpr double MAX_VELOCITY{80.0};
 
- control::Point matchload_lineup{120.0, 24.0, M_PI / 2.0};
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
 
- control::Point matchload{120.0, 11.0, M_PI / 2.0};
+  control::Point matchload_lineup{120.0, 24.0, M_PI / 2.0};
 
- control::Point long_goal{120.0, 42.0, M_PI / 2.0};
+  control::Point matchload{120.0, 11.0, M_PI / 2.0};
 
- control::Point descore_lineup{128.5, 33.0, M_PI / 2.0};
+  control::Point long_goal{120.0, 42.0, M_PI / 2.0};
 
- control::Point end_descore{130, 60.0, M_PI / 2.0};
+  control::Point descore_lineup{128.5, 33.0, M_PI / 2.0};
+
+  control::Point end_descore{130, 60.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object

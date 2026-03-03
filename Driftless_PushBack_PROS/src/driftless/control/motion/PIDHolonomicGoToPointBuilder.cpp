@@ -31,12 +31,6 @@ PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withYPID(
   return this;
 }
 
-PIDHolonomicGoToPointBuilder* PIDHolonomicGoToPointBuilder::withRotationalPID(
-    const PID& pid) {
-  m_rotational_pid = pid;
-  return this;
-}
-
 PIDHolonomicGoToPointBuilder*
 PIDHolonomicGoToPointBuilder::withDistanceTolerance(double tolerance) {
   m_distance_tolerance = tolerance;
@@ -49,12 +43,6 @@ PIDHolonomicGoToPointBuilder::withVelocityTolerance(double tolerance) {
   return this;
 }
 
-PIDHolonomicGoToPointBuilder*
-PIDHolonomicGoToPointBuilder::withAngularTolerance(double tolerance) {
-  m_angular_tolerance = tolerance;
-  return this;
-}
-
 std::unique_ptr<PIDHolonomicGoToPoint> PIDHolonomicGoToPointBuilder::build() {
   std::unique_ptr<PIDHolonomicGoToPoint> go_to_point{
       std::make_unique<PIDHolonomicGoToPoint>()};
@@ -64,11 +52,8 @@ std::unique_ptr<PIDHolonomicGoToPoint> PIDHolonomicGoToPointBuilder::build() {
   go_to_point->setTask(m_task);
   go_to_point->setXPID(m_x_pid);
   go_to_point->setYPID(m_y_pid);
-  go_to_point->setRotationalPID(m_rotational_pid);
   go_to_point->setDistanceTolerance(m_distance_tolerance);
   go_to_point->setVelocityTolerance(m_velocity_tolerance);
-  go_to_point->setAngularTolerance(m_angular_tolerance);
-
   return go_to_point;
 }
 }  // namespace driftless::control::motion
