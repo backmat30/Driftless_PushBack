@@ -7,6 +7,7 @@
 #include "driftless/control/motion/EMotionType.hpp"
 #include "driftless/control/motion/IDriveStraight.hpp"
 #include "driftless/control/motion/IGoToPoint.hpp"
+#include "driftless/control/motion/IGoToPose.hpp"
 #include "driftless/control/motion/ITurn.hpp"
 
 /// @brief Namespace for driftless library code
@@ -32,6 +33,9 @@ class MotionControl : public driftless::control::AControl {
   /// @brief The algorithm to go to a point
   std::unique_ptr<driftless::control::motion::IGoToPoint> m_go_to_point{};
 
+  /// @brief The algorithm to go to a pose
+  std::unique_ptr<driftless::control::motion::IGoToPose> m_go_to_pose{};
+
   /// @brief The algorithm to turn
   std::unique_ptr<driftless::control::motion::ITurn> m_turn{};
 
@@ -44,11 +48,14 @@ class MotionControl : public driftless::control::AControl {
   /// used to drive straight
   /// @param go_to_point __std::unique_ptr<IGoToPoint>&__ The algorithm used to
   /// go to a point
+  /// @param go_to_pose __std::unique_ptr<IGoToPose>&__ The algorithm used to
+  /// go to a pose
   /// @param turn __std::unique_ptr<ITurn>&__ The algorithm used to turn
   MotionControl(
       std::unique_ptr<driftless::control::motion::IDriveStraight>&
           drive_straight,
       std::unique_ptr<driftless::control::motion::IGoToPoint>& go_to_point,
+      std::unique_ptr<driftless::control::motion::IGoToPose>& go_to_pose,
       std::unique_ptr<driftless::control::motion::ITurn>& turn);
 
   /// @brief Initializes the motion control

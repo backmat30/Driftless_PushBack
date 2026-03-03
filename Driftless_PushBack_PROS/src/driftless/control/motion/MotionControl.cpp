@@ -7,6 +7,7 @@ namespace motion {
 MotionControl::MotionControl(
     std::unique_ptr<driftless::control::motion::IDriveStraight>& drive_straight,
     std::unique_ptr<driftless::control::motion::IGoToPoint>& go_to_point,
+    std::unique_ptr<driftless::control::motion::IGoToPose>& go_to_pose,
     std::unique_ptr<driftless::control::motion::ITurn>& turn)
     : AControl{EControl::MOTION},
       m_drive_straight{std::move(drive_straight)},
@@ -16,12 +17,14 @@ MotionControl::MotionControl(
 void MotionControl::init() {
   m_drive_straight->init();
   m_go_to_point->init();
+  m_go_to_pose->init();
   m_turn->init();
 }
 
 void MotionControl::run() {
   m_drive_straight->run();
   m_go_to_point->run();
+  m_go_to_pose->run();
   m_turn->run();
 }
 
@@ -32,6 +35,9 @@ void MotionControl::pause() {
       break;
     case EMotionType::GO_TO_POINT:
       m_go_to_point->pause();
+      break;
+    case EMotionType::GO_TO_POSE:
+      m_go_to_pose->pause();
       break;
     case EMotionType::TURN:
       m_turn->pause();
@@ -47,6 +53,8 @@ void MotionControl::resume() {
     case EMotionType::GO_TO_POINT:
       m_go_to_point->resume();
       break;
+    case EMotionType::GO_TO_POSE:
+      m_go_to_pose->resume();
     case EMotionType::TURN:
       m_turn->resume();
       break;
@@ -85,6 +93,23 @@ void MotionControl::command(EControlCommand command_name, va_list& args) {
     Point point{x, y, theta};
 
     m_go_to_point->goToPoint(robot, velocity, point);
+  } else if (command_name == EControlCommand::GO_TO_POSE) {
+    if (m_motion_type != EMotionType::GO_TO_POSE) {
+      pause();
+      m_motion_type = EMotionType::GO_TO_POSE;
+    }
+
+    void* temp_robot{va_arg(args, void*)};
+    std::shared_ptr<driftless::robot::Robot> robot{
+        *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
+    double velocity{va_arg(args, double)};
+    double angular_velocity{va_arg(args, double)};
+    double x{va_arg(args, double)};
+    double y{va_arg(args, double)};
+    double theta{va_arg(args, double)};
+    Point point{x, y, theta};
+
+    m_go_to_pose->goToPose(robot, velocity, angular_velocity, point);
 
   } else if (command_name == EControlCommand::TURN_TO_ANGLE) {
     if (m_motion_type != EMotionType::TURN) {
