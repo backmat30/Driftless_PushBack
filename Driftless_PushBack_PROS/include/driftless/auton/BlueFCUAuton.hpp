@@ -18,6 +18,8 @@ class BlueFCUAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+
   // matchload points
   control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
 
