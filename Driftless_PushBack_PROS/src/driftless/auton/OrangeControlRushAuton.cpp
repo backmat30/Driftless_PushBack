@@ -1,7 +1,8 @@
 #include "driftless/auton/OrangeControlRushAuton.hpp"
 
 namespace driftless::auton {
-OrangeControlRushAuton::OrangeControlRushAuton() : AAuton("Orange_ControlRush") {}
+OrangeControlRushAuton::OrangeControlRushAuton()
+    : AAuton("Orange_ControlRush") {}
 
 void OrangeControlRushAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
@@ -25,17 +26,17 @@ void OrangeControlRushAuton::run(
   uint32_t start_time{getTime()};
   setOdomPosition(91, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
-  
+
   // ROUTE GOES HERE
   intakeFront();
 
   // go to matchloader
-  goToPoint(matchload_lineup, MAX_VELOCITY);
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
-  setGoToPointVelocity(MAX_VELOCITY / 1.5);
+  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
   delay(200);
-  goToPoint(matchload, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload, 2.0, 1500);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
@@ -46,28 +47,27 @@ void OrangeControlRushAuton::run(
   retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPoint(long_goal, MAX_VELOCITY / 1.5);
+  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   delay(100);
   intakeStop();
   delay(150);
-  waitForGoToPoint(long_goal, 10.0, 1250);
+  waitForGoToPose(long_goal, 10.0, 1250);
   intakeFront();
 
-  waitForGoToPoint(long_goal, 2.0, 750);
+  waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
   delay(800);
 
   // go to descore
-  goToPoint(descore_lineup, MAX_VELOCITY / 2.0);
+  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   middleDescore();
   delay(100);
   intakeStop();
-  waitForGoToPoint(descore_lineup, 1.0, 2000);
+  waitForGoToPose(descore_lineup, 1.0, 2000);
 
-  goToPoint(end_descore, MAX_VELOCITY / 3.0);
-  waitForGoToPoint(end_descore, 2.5, 3000);
-
+  goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(end_descore, 2.5, 3000);
 
   // leave at end
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",

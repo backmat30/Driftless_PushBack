@@ -18,6 +18,8 @@ class BlueSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+
   control::Point orange_preload{80.0, 27.0, 0.0};
 
   control::Point first_matchload_lineup{31.0, 28.0, M_PI / 2};
