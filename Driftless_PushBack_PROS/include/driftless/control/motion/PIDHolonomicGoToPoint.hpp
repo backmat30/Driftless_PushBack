@@ -10,12 +10,12 @@
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
+#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
 #include "driftless/utils/UtilityFunctions.hpp"
-#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -32,7 +32,7 @@ namespace motion {
 /// @brief Class representing a go to point algorithm using PID
 /// @author Matthew Backman
 class PIDHolonomicGoToPoint : public IGoToPoint {
-  private:
+ private:
   // the task delay
   static constexpr uint8_t TASK_DELAY{10};
 
@@ -52,15 +52,11 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
 
   PID m_y_pid{};
 
-  PID m_rotational_pid{};
-
   double m_max_velocity{};
 
   double m_distance_tolerance{};
 
   double m_velocity_tolerance{};
-
-  double m_angular_tolerance{};
 
   Point m_target_point{};
 
@@ -73,7 +69,7 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @param y_velocity __double__ The velocity in the y direction
   /// @param angular_velocity __double__ The angular velocity
   void setDriveMotionVector(double x_velocity, double y_velocity,
-                          double angular_velocity);
+                            double angular_velocity);
 
   /// @brief Gets the current position of the robot
   /// @return The current position of the robot
@@ -83,14 +79,13 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @param x_distance __double__ The distance to the target in the x direction
   /// @param y_distance __double__ The distance to the target in the y direction
   /// @param current_heading __double__ The current heading of the robot
-  /// @param angular_distance __double__ The angular distance to the target
-  void updateVelocity(double x_distance, double y_distance, double current_heading, double angular_distance);
+  void updateVelocity(double x_distance, double y_distance,
+                      double current_heading);
 
   /// @brief Runs all instance specific updates
   void taskUpdate();
 
-  public:
-
+ public:
   /// @brief Initializes the control
   void init() override;
 
@@ -104,7 +99,8 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   void resume() override;
 
   /// @brief Sets the target point for the robot to go to
-  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being controlled
+  /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
+  /// controlled
   /// @param velocity __double__ The max velocity for motion
   /// @param point __Point__ The target point
   void goToPoint(const std::shared_ptr<robot::Robot>& robot, double velocity,
@@ -149,10 +145,6 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @brief Sets the velocity tolerance for reaching the target
   /// @param velocity_tolerance __double__ The velocity tolerance
   void setVelocityTolerance(double velocity_tolerance);
-
-  /// @brief Sets the angular tolerance for reaching the target
-  /// @param angular_tolerance __double__ The angular tolerance
-  void setAngularTolerance(double angular_tolerance);
 };
 }  // namespace motion
 }  // namespace control
