@@ -142,9 +142,9 @@ void BlueSkillsAuton::run(
   delay(500);
   goToPoint(middle_blocks_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_blocks_lineup, 8.0, 4000);
-  goToPoint(middle_blocks_lineup_2, MAX_VELOCITY);
+  goToPoint(middle_blocks_lineup_2, MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_blocks_lineup_2, 12.0, 1000);
-  setGoToPointVelocity(MAX_VELOCITY / 2.0);
+  setGoToPointVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_blocks_lineup_2, 2.0, 4000);
   stopMotion();
   turnToHeading(middle_blocks_end.getTheta(), M_PI * 3.0);

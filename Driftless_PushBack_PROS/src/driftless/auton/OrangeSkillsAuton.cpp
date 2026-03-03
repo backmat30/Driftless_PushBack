@@ -37,6 +37,7 @@ void OrangeSkillsAuton::run(
   waitForGoToPoint(middle_blues_lineup_2, 2.0, 2000);
   deployRake();
   intakeFront();
+  delay(100);
   goToPoint(middle_blues, MAX_VELOCITY / 1.5);
   waitForGoToPoint(middle_blues, 2.0, 3000);
 
@@ -118,8 +119,8 @@ void OrangeSkillsAuton::run(
   waitForGoToPoint(wall_blocks_end, 4.0, 4000);
 
   // grab reds under long goal
-  turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
-  delay(500);
+  // turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
+  // delay(500);
   goToPoint(middle_reds, MAX_VELOCITY / 2.0);
   waitForGoToPoint(middle_reds, 4.0, 1000);
 
@@ -150,10 +151,12 @@ void OrangeSkillsAuton::run(
   goToPoint(middle_goal_top_lineup, MAX_VELOCITY);
   waitForGoToPoint(middle_goal_top_lineup, 2.0, 3000);
   hoodBumpUp();
+  outtakeFront();
   goToPoint(middle_goal_top, MAX_VELOCITY / 3.0);
   waitForGoToPoint(middle_goal_top, 2.0, 3000);
   stopMotion();
-  delay(2000);
+  delay(3000);
+  intakeStop();
   goToPoint(middle_goal_top_lineup, MAX_VELOCITY / 2.0);
   waitForGoToPoint(middle_goal_top_lineup, 2.0, 3000);
 
