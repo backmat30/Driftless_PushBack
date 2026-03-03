@@ -75,6 +75,11 @@ std::shared_ptr<control::ControlSystem> OrangeConfig::buildControlSystem() {
   std::unique_ptr<rtos::IMutex> go_to_point_mutex{
       std::make_unique<pros_adapters::ProsMutex>()};
 
+  std::unique_ptr<rtos::ITask> go_to_pose_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> go_to_pose_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
   // PID controllers
   control::PID drive_straight_linear_pid{clock, DRIVE_STRAIGHT_LINEAR_KP,
                                          DRIVE_STRAIGHT_LINEAR_KI,
@@ -90,10 +95,19 @@ std::shared_ptr<control::ControlSystem> OrangeConfig::buildControlSystem() {
   control::PID go_to_point_y_pid{clock, GO_TO_POINT_Y_KP, GO_TO_POINT_Y_KI,
                                  GO_TO_POINT_Y_KD};
 
+  control::PID go_to_pose_x_pid{clock, GO_TO_POSE_X_KP, GO_TO_POSE_X_KI,
+                                GO_TO_POSE_X_KD};
+  control::PID go_to_pose_y_pid{clock, GO_TO_POSE_Y_KP, GO_TO_POSE_Y_KI,
+                                GO_TO_POSE_Y_KD};
+  control::PID go_to_pose_rotational_pid{clock, GO_TO_POSE_ROTATIONAL_KP,
+                                         GO_TO_POSE_ROTATIONAL_KI,
+                                         GO_TO_POSE_ROTATIONAL_KD};
+
   // build the motion controls
   control::motion::PIDDriveStraightBuilder drive_straight_builder{};
   control::motion::PIDHolonomicTurnBuilder turn_builder{};
   control::motion::PIDHolonomicGoToPointBuilder go_to_point_builder{};
+  control::motion::PIDHolonomicGoToPoseBuilder go_to_pose_builder{};
 
   std::unique_ptr<control::motion::IDriveStraight> drive_straight{
       drive_straight_builder.withDelayer(delayer)
@@ -124,10 +138,22 @@ std::shared_ptr<control::ControlSystem> OrangeConfig::buildControlSystem() {
           ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
           ->build()};
 
+  std::unique_ptr<control::motion::IGoToPose> go_to_pose{
+      go_to_pose_builder.withDelayer(delayer)
+          ->withMutex(go_to_pose_mutex)
+          ->withTask(go_to_pose_task)
+          ->withXPID(go_to_pose_x_pid)
+          ->withYPID(go_to_pose_y_pid)
+          ->withRotationalPID(go_to_pose_rotational_pid)
+          ->withVelocityTolerance(MOTION_LINEAR_VELOCITY_TOLERANCE)
+          ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
+          ->withAngularTolerance(MOTION_ANGULAR_DISTANCE_TOLERANCE)
+          ->build()};
+
   // make the controller
   std::unique_ptr<control::AControl> motion_control{
-      std::make_unique<control::motion::MotionControl>(drive_straight,
-                                                       go_to_point, turn)};
+      std::make_unique<control::motion::MotionControl>(
+          drive_straight, go_to_point, go_to_pose, turn)};
 
   // add to the control system
   control_system->addControl(motion_control);
