@@ -89,9 +89,6 @@ std::shared_ptr<control::ControlSystem> OrangeConfig::buildControlSystem() {
                                  GO_TO_POINT_X_KD};
   control::PID go_to_point_y_pid{clock, GO_TO_POINT_Y_KP, GO_TO_POINT_Y_KI,
                                  GO_TO_POINT_Y_KD};
-  control::PID go_to_point_rotational_pid{clock, GO_TO_POINT_ROTATIONAL_KP,
-                                          GO_TO_POINT_ROTATIONAL_KI,
-                                          GO_TO_POINT_ROTATIONAL_KD};
 
   // build the motion controls
   control::motion::PIDDriveStraightBuilder drive_straight_builder{};
@@ -123,10 +120,8 @@ std::shared_ptr<control::ControlSystem> OrangeConfig::buildControlSystem() {
           ->withTask(go_to_point_task)
           ->withXPID(go_to_point_x_pid)
           ->withYPID(go_to_point_y_pid)
-          ->withRotationalPID(go_to_point_rotational_pid)
           ->withVelocityTolerance(MOTION_LINEAR_VELOCITY_TOLERANCE)
           ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
-          ->withAngularTolerance(MOTION_ANGULAR_DISTANCE_TOLERANCE)
           ->build()};
 
   // make the controller
