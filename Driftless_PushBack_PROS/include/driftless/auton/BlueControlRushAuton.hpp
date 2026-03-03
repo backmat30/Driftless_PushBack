@@ -11,11 +11,14 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the blue robot's win point auton
+/// @brief Class representing the autonomous routine for the blue robot's win
+/// point auton
 /// @author Ethan jacobson
 class BlueControlRushAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
+
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
 
   // matchload points
   control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
@@ -31,7 +34,7 @@ class BlueControlRushAuton : public AAuton {
 
   // descore points
   control::Point descore_lineup{38.0, 37.0, M_PI / 2.0};
-  
+
   control::Point end_descore{37.0, 60.5, M_PI / 2.0};
 
  public:

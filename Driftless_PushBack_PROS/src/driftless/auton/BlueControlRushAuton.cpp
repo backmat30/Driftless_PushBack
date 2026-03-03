@@ -29,12 +29,12 @@ void BlueControlRushAuton::run(
 
   // go to matchloader
   intakeFront();
-  goToPoint(matchload_lineup, MAX_VELOCITY);
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
-  setGoToPointVelocity(MAX_VELOCITY / 1.5);
+  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
   delay(200);
-  goToPoint(matchload, MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload, 2.0, 1500);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
@@ -45,28 +45,28 @@ void BlueControlRushAuton::run(
   retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPoint(long_goal, MAX_VELOCITY / 1.5);
+  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   delay(200);
   outtakeFront();
   delay(200);
   intakeFront();
-  waitForGoToPoint(long_goal, 10.0, 1250);
+  waitForGoToPose(long_goal, 10.0, 1250);
   intakeFront();
 
-  waitForGoToPoint(long_goal, 2.0, 750);
+  waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
   delay(1000);
 
   // go descore
-  goToPoint(descore_lineup, MAX_VELOCITY / 2.0);
+  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   middleDescore();
   delay(100);
   intakeStop();
-  waitForGoToPoint(descore_lineup, 1.0, 2000);
+  waitForGoToPose(descore_lineup, 1.0, 2000);
 
-  goToPoint(end_descore, MAX_VELOCITY / 3.0);
-  waitForGoToPoint(end_descore, 2.5, 3000);
+  goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(end_descore, 2.5, 3000);
 
   stopMotion();
 
