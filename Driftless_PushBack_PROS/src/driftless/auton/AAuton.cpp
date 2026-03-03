@@ -178,12 +178,13 @@ void AAuton::stopMotion() {
                                                                       0.0});
 }
 
-void AAuton::intakeFront() {
+void AAuton::intakeFront(double voltage) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
-                       robot::subsystems::ESubsystemCommand::INTAKE_FRONT_IN);
+                       robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                       std::abs(voltage));
   m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                        robot::subsystems::ESubsystemCommand::HOOD_SET_VOLTAGE,
-                       12.0);
+                       std::abs(voltage));
 
   bool is_hood_open{*static_cast<bool*>(
       m_robot->getState(robot::subsystems::ESubsystem::HOOD,
@@ -200,9 +201,10 @@ void AAuton::intakeFront() {
   }
 }
 
-void AAuton::outtakeFront() {
+void AAuton::outtakeFront(double voltage) {
   m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
-                       robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
+                       robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                       -std::abs(voltage));
 }
 
 void AAuton::intakeBack() {

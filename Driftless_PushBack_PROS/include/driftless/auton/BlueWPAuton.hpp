@@ -11,7 +11,8 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the blue robot's win point auton
+/// @brief Class representing the autonomous routine for the blue robot's win
+/// point auton
 /// @author Ethan jacobson
 class BlueWPAuton : public AAuton {
  private:
@@ -30,9 +31,39 @@ class BlueWPAuton : public AAuton {
   control::Point long_goal{27.5, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{39.5, 37.0, M_PI / 2.0};
-  
-  control::Point end_descore{39.0, 58.0, M_PI / 2.0};
+  control::Point descore_lineup{15.5, 37.0, M_PI / 2.0};
+
+  control::Point end_descore{16.0, 58.0, M_PI / 2.0};
+
+  // two blocks points
+  control::Point two_blocks_lineup{12.0, 56.0, 0.0};
+
+  control::Point two_blocks_lineup_2{23.0, 59.0, M_PI / 4.0};
+
+  control::Point two_blocks{29.0, 62.0, M_PI / 2.0};
+
+  // line block points
+  control::Point line_blocks_lineup{30.0, 62.5, M_PI / 4.0};
+
+  control::Point line_blocks_lineup_2{32.0, 67, M_PI / 4.0};
+
+  control::Point line_blocks{49.0, 66.0, M_PI / 4.0};
+
+  // middle goal points
+  control::Point bottom_goal_1{58.0, 85.0, 0};
+
+  control::Point bottom_goal_2{78, 76, -M_PI / 6};
+
+  control::Point top_goal_lineup{51, 48, M_PI / 4};
+
+  control::Point top_goal{62.25, 59.25, M_PI / 4};
+
+  // other side descore
+  control::Point descore_2_lineup{50.0, 50.0, M_PI / 4.0};
+
+  control::Point descore_2{38.5, 38.0, M_PI / 2};
+
+  control::Point descore_2_end{38.0, 61.0, M_PI / 2};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object

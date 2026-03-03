@@ -18,12 +18,9 @@ void IntakeSubsystem::run() {
 
 void IntakeSubsystem::command(ESubsystemCommand command_name, va_list& args) {
   switch (command_name) {
-    case ESubsystemCommand::INTAKE_FRONT_IN: {
-      m_intake->intakeFront(false);
-      break;
-    }
-    case ESubsystemCommand::INTAKE_FRONT_OUT: {
-      m_intake->intakeFront(true);
+    case ESubsystemCommand::INTAKE_FRONT: {
+      double voltage{va_arg(args, double)};
+      m_intake->intakeFront(voltage);
       break;
     }
     case ESubsystemCommand::INTAKE_BACK_IN: {

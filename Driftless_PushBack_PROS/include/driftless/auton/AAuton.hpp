@@ -103,9 +103,9 @@ class AAuton {
 
   void stopMotion();
 
-  void intakeFront();
+  void intakeFront(double voltage = 12.0);
 
-  void outtakeFront();
+  void outtakeFront(double voltage = 12.0);
 
   void intakeBack();
 
