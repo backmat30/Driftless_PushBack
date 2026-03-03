@@ -20,13 +20,13 @@ bool DirectIntake::hasOpposingBlock() {
     if (m_color_sensor->getProximity() >= 200) {
       switch (m_alliance) {
         case alliance::EAlliance::RED: {
-          if (blue > red * 1.25) {
+          if (blue > red * COLOR_SORT_SCALAR) {
             result = true;
           }
           break;
         }
         case alliance::EAlliance::BLUE: {
-          if (red > blue * 1.25) {
+          if (red > blue * COLOR_SORT_SCALAR) {
             result = true;
           }
           break;
@@ -52,13 +52,13 @@ bool DirectIntake::hasAllianceBlock() {
     if (m_color_sensor->getProximity() >= 200) {
       switch (m_alliance) {
         case alliance::EAlliance::BLUE: {
-          if (blue > red * 1.25) {
+          if (blue > red * COLOR_SORT_SCALAR) {
             result = true;
           }
           break;
         }
         case alliance::EAlliance::RED: {
-          if (red > blue * 1.25) {
+          if (red > blue * COLOR_SORT_SCALAR) {
             result = true;
           }
           break;
@@ -158,17 +158,20 @@ void DirectIntake::taskUpdate() {
         m_latest_opposing_block_pos = m_front_motors.getPosition();
       }
       if (m_front_motors.getPosition() >
-              m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 2.0 ||
+              m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END * 1.5 ||
           m_front_motors.getPosition() <
               m_latest_opposing_block_pos - COLOR_SORT_DISTANCE_TO_END) {
         m_latest_opposing_block_pos = -__DBL_MAX__;
+        m_ejecting_block = false;
       } else if (m_front_motors.getPosition() <
                      m_latest_opposing_block_pos + COLOR_SORT_DISTANCE_TO_END &&
                  m_running_forward) {
+        m_ejecting_block = true;
         m_back_motors.setVoltage(-12.0);
         m_back_motors.setCurrentLimit(2.5);
         m_intermediary_motors.setVoltage(-12.0);
         m_intermediary_motors.setCurrentLimit(2.5);
+        m_vertical_motors.setCurrentLimit(0.5);
       }
     }
 
@@ -178,6 +181,8 @@ void DirectIntake::taskUpdate() {
       m_back_motors.setCurrentLimit(1.25);
       m_intermediary_motors.setVoltage(12.0);
       m_intermediary_motors.setCurrentLimit(1.5);
+      // m_vertical_motors.setVoltage(12.0);
+      m_vertical_motors.setCurrentLimit(2.5);
     }
   }
 
@@ -216,8 +221,10 @@ void DirectIntake::intakeFront(double voltage) {
   m_front_motors.setVoltage(voltage);
   m_front_motors.setCurrentLimit(2.5);
 
-  m_vertical_motors.setVoltage(voltage);
-  m_vertical_motors.setCurrentLimit(2.5);
+  if (!m_ejecting_block) {
+    m_vertical_motors.setVoltage(voltage);
+    m_vertical_motors.setCurrentLimit(2.5);
+  }
 
   if (!m_running_forward) {
     m_back_motors.setVoltage(12.0);

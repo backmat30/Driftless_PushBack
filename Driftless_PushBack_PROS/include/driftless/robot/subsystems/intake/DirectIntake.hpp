@@ -32,7 +32,9 @@ class DirectIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
 
-  static constexpr double COLOR_SORT_DISTANCE_TO_END{3.25};
+  static constexpr double COLOR_SORT_DISTANCE_TO_END{2.5};
+
+  static constexpr double COLOR_SORT_SCALAR{1.2};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
@@ -80,6 +82,8 @@ class DirectIntake : public IIntake {
   bool m_has_second_matchloader_block{};
 
   bool m_back_intake_to_hood{};
+
+  bool m_ejecting_block{};
 
   double m_first_matchloader_block_pos{-__DBL_MAX__};
 
