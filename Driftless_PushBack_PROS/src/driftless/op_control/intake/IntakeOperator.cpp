@@ -16,12 +16,13 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
 
   } else if (run_front_intake_in) {
     m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
-                         robot::subsystems::ESubsystemCommand::INTAKE_FRONT_IN);
+                         robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                         12.0);
 
   } else if (run_front_intake_out) {
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::INTAKE,
-        robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                         robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                         -12.0);
   } else {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
@@ -64,16 +65,16 @@ void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_RETRACT_ARMS);
-        
+
     if (run_front_intake_in) {
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::INTAKE,
-          robot::subsystems::ESubsystemCommand::INTAKE_FRONT_IN);
+      m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                           robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                           12.0);
 
     } else if (run_front_intake_out) {
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::INTAKE,
-          robot::subsystems::ESubsystemCommand::INTAKE_FRONT_OUT);
+      m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                           robot::subsystems::ESubsystemCommand::INTAKE_FRONT,
+                           -12.0);
     } else {
       m_robot->sendCommand(
           robot::subsystems::ESubsystem::INTAKE,

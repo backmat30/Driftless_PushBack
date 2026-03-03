@@ -15,7 +15,7 @@ namespace motion {
 
 /// @brief Enumeration for the possible motion control types
 /// @author Matthew Backman
-enum class EMotionType { NONE, DRIVE_STRAIGHT, GO_TO_POINT, TURN };
+enum class EMotionType { NONE, DRIVE_STRAIGHT, GO_TO_POINT, GO_TO_POSE, TURN };
 }  // namespace motion
 }  // namespace control
 }  // namespace driftless

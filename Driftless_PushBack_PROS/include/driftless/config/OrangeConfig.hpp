@@ -54,6 +54,7 @@
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicGoToPoseBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
@@ -140,9 +141,17 @@ class OrangeConfig : public IConfig {
   static constexpr double GO_TO_POINT_Y_KI{0.0};
   static constexpr double GO_TO_POINT_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
+  static constexpr double GO_TO_POSE_X_KP{40.0};
+  static constexpr double GO_TO_POSE_X_KI{0.0};
+  static constexpr double GO_TO_POSE_X_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_Y_KP{40.0};
+  static constexpr double GO_TO_POSE_Y_KI{0.0};
+  static constexpr double GO_TO_POSE_Y_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
   static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};

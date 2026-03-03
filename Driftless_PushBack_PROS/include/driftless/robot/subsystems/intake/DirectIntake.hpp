@@ -104,8 +104,8 @@ class DirectIntake : public IIntake {
   void run() override;
 
   /// @brief Runs the intake to intake from the front
-  /// @param reversed __bool__ True for outtaking, false for intaking
-  void intakeFront(bool reversed) override;
+  /// @param voltage __double__ The voltage to supply to the intake motors
+  void intakeFront(double voltage) override;
 
   /// @brief Runs the intake to intake from the back
   void intakeBack() override;

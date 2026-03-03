@@ -86,6 +86,18 @@ class AAuton {
 
   void setGoToPointVelocity(double velocity);
 
+  void goToPose(control::Point target_point, double target_velocity,
+                double target_angular_velocity);
+
+  bool goToPoseTargetReached();
+
+  void waitForGoToPose(control::Point target_point, double position_tolerance,
+                       uint32_t timeout);
+
+  void setGoToPoseVelocity(double velocity);
+
+  void setGoToPoseAngularVelocity(double angular_velocity);
+
   void turnToPoint(control::Point target_point, double target_velocity,
                    control::motion::ETurnDirection direction =
                        control::motion::ETurnDirection::AUTO);
@@ -103,9 +115,9 @@ class AAuton {
 
   void stopMotion();
 
-  void intakeFront();
+  void intakeFront(double voltage = 12.0);
 
-  void outtakeFront();
+  void outtakeFront(double voltage = 12.0);
 
   void intakeBack();
 

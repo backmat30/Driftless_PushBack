@@ -33,8 +33,8 @@ class IIntake {
   virtual void run() = 0;
 
   /// @brief Runs the intake to intake from the front
-  /// @param reversed __bool__ True for outtaking, false for intaking
-  virtual void intakeFront(bool reversed) = 0;
+  /// @param voltage __double__ The voltage to supply to the intake motors
+  virtual void intakeFront(double voltage) = 0;
 
   /// @brief Runs the intake to intake from the back
   virtual void intakeBack() = 0;
