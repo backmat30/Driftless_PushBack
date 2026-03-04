@@ -33,7 +33,7 @@ DirectIntakeBuilder* DirectIntakeBuilder::withBackPiston(
 
 DirectIntakeBuilder* DirectIntakeBuilder::withColorSensor(
     std::unique_ptr<io::IColorSensor>& color_sensor) {
-  std::move(color_sensor);
+  m_color_sensors.push_back(std::move(color_sensor));
   return this;
 }
 
