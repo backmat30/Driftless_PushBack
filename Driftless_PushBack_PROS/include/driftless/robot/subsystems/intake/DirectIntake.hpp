@@ -64,8 +64,8 @@ class DirectIntake : public IIntake {
   /// @brief The pistons used by the back intake
   hal::PistonGroup m_back_pistons{};
 
-  /// @brief The color sensor used for color sorting
-  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+  /// @brief The color sensors used for color sorting
+  std::vector<std::unique_ptr<io::IColorSensor>> m_color_sensors{};
 
   alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
 
@@ -89,6 +89,10 @@ class DirectIntake : public IIntake {
 
   double m_latest_opposing_block_pos{-__DBL_MAX__};
 
+  /// @brief Checks if there is a block in the intake of any alliance
+  /// @return __bool__ True if there is a block, false otherwise
+  bool hasBlock();
+
   /// @brief Checks if there is a block of the opposing alliance in the intake
   /// @return __bool__ True if there is an opposing block, false otherwise
   bool hasOpposingBlock();
@@ -96,6 +100,10 @@ class DirectIntake : public IIntake {
   /// @brief Checks if there is a block of the current alliance in the intake
   /// @return __bool__ True if there is an alliance block, false otherwise
   bool hasAllianceBlock();
+
+  /// @brief Gets the average RGB value from the color sensors
+  /// @return __io::RGBValue__ The average RGB value
+  io::RGBValue getRGB();
 
   /// @brief Performs all instance related updates
   void taskUpdate();
@@ -160,10 +168,11 @@ class DirectIntake : public IIntake {
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setVerticalMotors(hal::MotorGroup& motors);
 
-  /// @brief Sets the color sensor used for color sorting
-  /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
-  /// sensor to use
-  void setColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+  /// @brief Sets the color sensors used for color sorting
+  /// @param color_sensors __std::vector<std::unique_ptr<io::IColorSensor>>&__
+  /// The color sensors to use
+  void setColorSensors(
+      std::vector<std::unique_ptr<io::IColorSensor>>& color_sensors);
 
   /// @brief Sets the delayer used by the intake
   /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer to

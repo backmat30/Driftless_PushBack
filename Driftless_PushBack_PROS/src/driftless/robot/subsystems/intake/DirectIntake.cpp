@@ -10,14 +10,27 @@ void DirectIntake::taskLoop(void* params) {
   }
 }
 
+bool DirectIntake::hasBlock() {
+  bool result{};
+  for (auto& color_sensor : m_color_sensors) {
+    if (color_sensor->getProximity() >= 200) {
+      result = true;
+      break;
+    }
+  }
+
+  return result;
+}
+
 bool DirectIntake::hasOpposingBlock() {
   bool result{};
 
-  if (m_color_sensor && m_alliance != alliance::EAlliance::NONE) {
-    double red{m_color_sensor->getRGB().red};
-    double blue{m_color_sensor->getRGB().blue};
+  if (m_alliance != alliance::EAlliance::NONE) {
+    io::RGBValue rgb{getRGB()};
+    double red{rgb.red};
+    double blue{rgb.blue};
 
-    if (m_color_sensor->getProximity() >= 200) {
+    if (hasBlock()) {
       switch (m_alliance) {
         case alliance::EAlliance::RED: {
           if (blue > red * COLOR_SORT_SCALAR) {
@@ -42,14 +55,18 @@ bool DirectIntake::hasAllianceBlock() {
   bool result{};
 
   if (m_color_sort_paused) {
-    if (m_color_sensor->getProximity() >= 200) {
-      result = true;
+    for (auto& color_sensor : m_color_sensors) {
+      if (color_sensor->getProximity() >= 200) {
+        result = true;
+        break;
+      }
     }
-  } else if (m_color_sensor) {
-    double red{m_color_sensor->getRGB().red};
-    double blue{m_color_sensor->getRGB().blue};
+  } else {
+    io::RGBValue rgb{getRGB()};
+    double red{rgb.red};
+    double blue{rgb.blue};
 
-    if (m_color_sensor->getProximity() >= 200) {
+    if (hasBlock()) {
       switch (m_alliance) {
         case alliance::EAlliance::BLUE: {
           if (blue > red * COLOR_SORT_SCALAR) {
@@ -68,6 +85,27 @@ bool DirectIntake::hasAllianceBlock() {
   }
 
   return result;
+}
+
+io::RGBValue DirectIntake::getRGB() {
+  io::RGBValue average_rgb{};
+
+  for (auto& color_sensor : m_color_sensors) {
+    io::RGBValue current_rgb = color_sensor->getRGB();
+    average_rgb.red += current_rgb.red;
+    average_rgb.green += current_rgb.green;
+    average_rgb.blue += current_rgb.blue;
+    average_rgb.brightness += current_rgb.brightness;
+  }
+
+  if (!m_color_sensors.empty()) {
+    average_rgb.red /= m_color_sensors.size();
+    average_rgb.green /= m_color_sensors.size();
+    average_rgb.blue /= m_color_sensors.size();
+    average_rgb.brightness /= m_color_sensors.size();
+  }
+
+  return average_rgb;
 }
 
 void DirectIntake::taskUpdate() {
@@ -101,13 +139,12 @@ void DirectIntake::taskUpdate() {
                !m_ready_for_second_matchloader_block &&
                (m_front_motors.getPosition() <
                     m_first_matchloader_block_pos - 0.5 ||
-                m_color_sensor->getProximity() < 100)) {
+                !hasBlock())) {
       m_ready_for_second_matchloader_block = true;
       // if we are ready for a second block but do not have a second block,
       // check if we can see a second block and update flag
     } else if (m_ready_for_second_matchloader_block &&
-               !m_has_second_matchloader_block &&
-               (m_color_sensor->getProximity() > 100)) {
+               !m_has_second_matchloader_block && (hasBlock())) {
       m_has_second_matchloader_block = true;
       // wait for the front intake to go far enough, then update the flag to
       // direct blocks to the hood
@@ -200,7 +237,9 @@ void DirectIntake::init() {
   m_intermediary_motors.init();
   m_back_motors.init();
   m_vertical_motors.init();
-  m_color_sensor->init();
+  for (auto& color_sensor : m_color_sensors) {
+    color_sensor->init();
+  }
 }
 
 void DirectIntake::run() { m_task->start(&taskLoop, this); }
@@ -371,9 +410,9 @@ void DirectIntake::setVerticalMotors(hal::MotorGroup& motors) {
   m_vertical_motors = motors;
 }
 
-void DirectIntake::setColorSensor(
-    std::unique_ptr<io::IColorSensor>& color_sensor) {
-  m_color_sensor = std::move(color_sensor);
+void DirectIntake::setColorSensors(
+    std::vector<std::unique_ptr<io::IColorSensor>>& color_sensors) {
+  m_color_sensors = std::move(color_sensors);
 }
 
 void DirectIntake::setDelayer(const std::unique_ptr<rtos::IDelayer>& delayer) {
