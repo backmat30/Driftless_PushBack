@@ -186,7 +186,8 @@ class BlueConfig : public IConfig {
 
   // ## INTAKE SENSORS ##
 
-  static constexpr int INTAKE_COLOR_SENSOR_PORT{5};
+  static constexpr int INTAKE_COLOR_SENSOR_1_PORT{5};
+  static constexpr int INTAKE_COLOR_SENSOR_2_PORT{1};
 
   // ## INTAKE PNEUMATICS ##
 
