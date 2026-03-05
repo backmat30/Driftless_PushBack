@@ -18,7 +18,7 @@ class BlueSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   control::Point orange_preload{80.0, 27.0, 0.0};
 

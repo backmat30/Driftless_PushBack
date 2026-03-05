@@ -215,6 +215,10 @@ class OrangeConfig : public IConfig {
 
   // #### ROBOT CONSTANTS ####
 
+  // ## COPROCESSOR ##
+
+  static constexpr int32_t COPROCESSOR_BAUD_RATE{115200};
+
   // ## DRIVE ##
 
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};

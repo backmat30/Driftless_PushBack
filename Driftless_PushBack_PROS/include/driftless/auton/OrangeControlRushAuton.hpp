@@ -18,7 +18,7 @@ class OrangeControlRushAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   control::Point matchload_lineup{120.0, 24.0, M_PI / 2.0};
 

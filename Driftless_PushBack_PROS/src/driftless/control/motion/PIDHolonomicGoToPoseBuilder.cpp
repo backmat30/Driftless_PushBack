@@ -3,7 +3,7 @@
 namespace driftless::control::motion {
 PIDHolonomicGoToPoseBuilder* PIDHolonomicGoToPoseBuilder::withDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
-  m_delayer = std::move(delayer);
+  m_delayer = delayer->clone();
   return this;
 }
 
