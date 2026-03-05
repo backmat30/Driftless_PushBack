@@ -21,9 +21,9 @@ class BlueFCUAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
 
   // matchload points
-  control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup{26.0, 20.0, M_PI / 2.0};
 
-  control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup_2{27.5, 22.0, M_PI / 2.0};
 
   control::Point matchload{26.0, 11.0, M_PI / 2.0};
 
@@ -47,14 +47,14 @@ class BlueFCUAuton : public AAuton {
   // line block points
   control::Point line_blocks_lineup{30.0, 62.5, M_PI / 4.0};
 
-  control::Point line_blocks_lineup_2{31.0, 66.25, M_PI / 4.0};
+  control::Point line_blocks_lineup_2{31.5, 66.25, M_PI / 4.0};
 
   control::Point line_blocks{51.0, 66.25, M_PI / 4.0};
 
   // middle goal points
   control::Point bottom_goal_lineup{55.0, 52.0, M_PI / 2.0};
 
-  control::Point bottom_goal_lineup_2{89.25, 52.0, M_PI / 2.0};
+  control::Point bottom_goal_lineup_2{90.5, 52.0, M_PI / 2.0};
 
   control::Point bottom_goal{71.5, 76.0, M_PI * 2.0 / 3.0};
 
@@ -67,7 +67,7 @@ class BlueFCUAuton : public AAuton {
 
   control::Point descore_2{38.5, 38.0, M_PI / 2};
 
-  control::Point descore_2_end{39.0, 45.0, M_PI / 2};
+  control::Point descore_2_end{39.25, 45.0, M_PI / 2};
 
  public:
   /// @brief Constructs a new blue fcu auton object
