@@ -38,6 +38,7 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
   if (velocity > m_max_velocity) {
     velocity_scalar = m_max_velocity / velocity;
   }
+
   x_velocity *= velocity_scalar;
   y_velocity *= velocity_scalar;
 
@@ -177,7 +178,7 @@ bool PIDHolonomicGoToPose::targetReached() { return m_target_reached; }
 
 void PIDHolonomicGoToPose::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
-  m_delayer = std::move(delayer);
+  m_delayer = delayer->clone();
 }
 
 void PIDHolonomicGoToPose::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
