@@ -20,7 +20,7 @@ class OrangePumpNDumpAuton : public AAuton {
 
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
-  control::Point matchload_lineup{120.0, 28.0, M_PI / 2.0};
+  control::Point matchload_lineup{120.0, 18.0, M_PI / 2.0};
 
   control::Point matchload{120.0, 11.0, M_PI / 2.0};
 
@@ -34,11 +34,11 @@ class OrangePumpNDumpAuton : public AAuton {
 
   control::Point long_goal_to_matchload{118.0, 12.0, M_PI / 2.0};
 
-  control::Point descore_lineup{131.0, 33.0, M_PI / 2.0};
+  control::Point descore_lineup{110.5, 33.0, M_PI / 2.0};
 
-  control::Point start_descore{130.0, 48.0, M_PI / 2.0};
+  control::Point start_descore{110.5, 48.0, M_PI / 2.0};
 
-  control::Point end_descore{130.5, 60.0, M_PI / 2.0};
+  control::Point end_descore{111.0, 60.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new orange pump n dump auton object

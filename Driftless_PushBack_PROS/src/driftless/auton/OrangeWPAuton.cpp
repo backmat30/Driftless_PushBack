@@ -33,7 +33,7 @@ void OrangeWPAuton::run(
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
   setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  delay(200);
+  waitForGoToPoint(matchload_lineup, 5.0, 1000);
   goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
@@ -42,7 +42,7 @@ void OrangeWPAuton::run(
   delay(450);
   hoodRaise();
 
-  delay(175);
+  delay(200);
   retractBackIntakeArms();
 
   // score blocks from match loader
@@ -92,7 +92,7 @@ void OrangeWPAuton::run(
   goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPose(line_blocks, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks, MAX_VELOCITY / 4.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(line_blocks, 1.0, 3500);
 
   // score in top middle goal
@@ -112,7 +112,7 @@ void OrangeWPAuton::run(
   delay(100);
 
   // go back to matchload
-  goToPose(matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 7.0, 3000);
   setGoToPoseVelocity(MAX_VELOCITY / 2.0);
   waitForGoToPose(matchload, 1.0, 1000);
@@ -124,10 +124,13 @@ void OrangeWPAuton::run(
   delay(2000);
   retractBackIntakeArms();
 
+  // go to bottom goal
   goToPose(bottom_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(bottom_goal, 1.0, 2500);
+  waitForGoToPoint(bottom_goal, 10.0, 2500);
+  setGoToPointVelocity(MAX_VELOCITY / 2.5);
+  waitForGoToPose(bottom_goal, 1.0, 1500);
 
-  outtakeFront();
+  outtakeFront(10);
   delay(500);
   hoodRaise();
   delay(2150);

@@ -34,7 +34,7 @@ void OrangeControlRushAuton::run(
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
   setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  delay(200);
+  waitForGoToPoint(matchload_lineup, 5.0, 1000);
   goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
@@ -43,7 +43,7 @@ void OrangeControlRushAuton::run(
   delay(450);
   hoodRaise();
 
-  delay(175);
+  delay(225);
   retractBackIntakeArms();
 
   // score blocks from match loader
@@ -57,7 +57,7 @@ void OrangeControlRushAuton::run(
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(800);
+  delay(850);
 
   // go to descore
   goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);

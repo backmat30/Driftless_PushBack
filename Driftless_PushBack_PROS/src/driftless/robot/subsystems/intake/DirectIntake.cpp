@@ -20,13 +20,13 @@ bool DirectIntake::hasOpposingBlock() {
     if (m_color_sensor->getProximity() >= 200) {
       switch (m_alliance) {
         case alliance::EAlliance::RED: {
-          if (blue > red * 1.25) {
+          if (blue > red * 1.2) {
             result = true;
           }
           break;
         }
         case alliance::EAlliance::BLUE: {
-          if (red > blue * 1.25) {
+          if (red > blue * 1.2) {
             result = true;
           }
           break;
@@ -52,13 +52,13 @@ bool DirectIntake::hasAllianceBlock() {
     if (m_color_sensor->getProximity() >= 200) {
       switch (m_alliance) {
         case alliance::EAlliance::BLUE: {
-          if (blue > red * 1.25) {
+          if (blue > red * 1.2) {
             result = true;
           }
           break;
         }
         case alliance::EAlliance::RED: {
-          if (red > blue * 1.25) {
+          if (red > blue * 1.2) {
             result = true;
           }
           break;

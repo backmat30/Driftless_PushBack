@@ -26,13 +26,13 @@ void BlueControlRushAuton::run(
   setOdomPosition(56.0, 20.0, 0.0);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
-
+  //Penis Rat
   // go to matchloader
   intakeFront();
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
   setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  delay(200);
+  waitForGoToPoint(matchload_lineup, 4.0, 1000);
   goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
