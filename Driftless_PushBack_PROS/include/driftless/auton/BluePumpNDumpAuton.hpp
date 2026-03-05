@@ -28,7 +28,7 @@ class BluePumpNDumpAuton : public AAuton {
 
   control::Point long_goal_2{27.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_to_matchload{25.0, 12.0, M_PI / 2.0};
+  control::Point long_goal_to_matchload{26.0, 12.0, M_PI / 2.0};
 
   control::Point descore_lineup{38.0, 36.0, M_PI / 2.0};
 

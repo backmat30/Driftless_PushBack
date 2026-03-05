@@ -31,7 +31,7 @@ void OrangePumpNDumpAuton::run(
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
   setGoToPoseVelocity(MAX_VELOCITY / 2.0);
-  delay(200);
+  waitForGoToPoint(matchload_lineup, 4.0, 1000);
   goToPose(matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
@@ -39,7 +39,7 @@ void OrangePumpNDumpAuton::run(
 
   delay(450);
   hoodRaise();
-  delay(175);
+  delay(200);
   intakeStop();
   retractBackIntakeArms();
 
@@ -88,7 +88,7 @@ void OrangePumpNDumpAuton::run(
   delay(250);
   hoodCloseDoor();
   intakeStop();
-  goToPose(long_goal, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
+  goToPose(long_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(long_goal, 2.0, 2000);
   stopMotion();
   delayUntil(start_time + 19000);
