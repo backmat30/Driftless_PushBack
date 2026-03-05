@@ -11,8 +11,9 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
   bool toggle_back_arms{m_controller->getNewDigital(back_arms_toggle)};
 
   if (run_back_intake_in) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
-                         robot::subsystems::ESubsystemCommand::INTAKE_BACK_IN);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_BACK_TO_HOOD);
 
   } else if (run_front_intake_in) {
     m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
@@ -54,8 +55,9 @@ void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
   bool run_back_intake_in{m_controller->getDigital(back_intake_in)};
 
   if (run_back_intake_in) {
-    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
-                         robot::subsystems::ESubsystemCommand::INTAKE_BACK_IN);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_BACK_TO_HOOD);
 
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,

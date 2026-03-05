@@ -12,6 +12,7 @@ MotionControl::MotionControl(
     : AControl{EControl::MOTION},
       m_drive_straight{std::move(drive_straight)},
       m_go_to_point{std::move(go_to_point)},
+      m_go_to_pose{std::move(go_to_pose)},
       m_turn{std::move(turn)} {}
 
 void MotionControl::init() {
