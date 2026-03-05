@@ -154,7 +154,7 @@ bool PIDHolonomicGoToPoint::targetReached() { return m_target_reached; }
 
 void PIDHolonomicGoToPoint::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
-  m_delayer = std::move(delayer);
+  m_delayer = delayer->clone();
 }
 
 void PIDHolonomicGoToPoint::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {

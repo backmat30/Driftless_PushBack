@@ -13,12 +13,10 @@ void PIDHolonomicGoToPose::taskLoop(void* params) {
 void PIDHolonomicGoToPose::setDriveMotionVector(double x_velocity,
                                                 double y_velocity,
                                                 double angular_velocity) {
-  m_robot->sendCommand(
-      robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
-      robot::subsystems::ESubsystemCommand::
-          HOLONOMIC_DRIVE_TRAIN_SET_MOTION_VECTOR,
-      robot::subsystems::holonomic_drive_train::HolonomicMotionVector{
-          x_velocity, y_velocity, angular_velocity});
+  m_robot->sendCommand(robot::subsystems::ESubsystem::HOLONOMIC_DRIVE_TRAIN,
+                       robot::subsystems::ESubsystemCommand::
+                           HOLONOMIC_DRIVE_TRAIN_SET_MOTION_VECTOR,
+                       x_velocity, y_velocity, angular_velocity);
 }
 
 robot::subsystems::odometry::Position PIDHolonomicGoToPose::getPosition() {
@@ -40,11 +38,12 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
   if (velocity > m_max_velocity) {
     velocity_scalar = m_max_velocity / velocity;
   }
+
   x_velocity *= velocity_scalar;
   y_velocity *= velocity_scalar;
 
   if (angular_velocity > m_max_rotational_velocity) {
-    angular_velocity *= m_max_rotational_velocity / angular_velocity;
+    angular_velocity = m_max_rotational_velocity;
   }
 
   double out_x = x_velocity * std::sin(current_heading) -
@@ -179,7 +178,7 @@ bool PIDHolonomicGoToPose::targetReached() { return m_target_reached; }
 
 void PIDHolonomicGoToPose::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
-  m_delayer = std::move(delayer);
+  m_delayer = delayer->clone();
 }
 
 void PIDHolonomicGoToPose::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {

@@ -54,9 +54,9 @@ class PIDHolonomicGoToPose : public IGoToPose {
 
   PID m_rotational_pid{};
 
-  double m_max_velocity{};
+  double m_max_velocity{1.0};
 
-  double m_max_rotational_velocity{};
+  double m_max_rotational_velocity{1.0};
 
   double m_distance_tolerance{};
 
@@ -66,7 +66,7 @@ class PIDHolonomicGoToPose : public IGoToPose {
 
   Point m_target_point{};
 
-  bool m_target_reached{};
+  bool m_target_reached{true};
 
   bool m_paused{true};
 

@@ -18,7 +18,7 @@ class OrangeSkillsAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   control::Point middle_blues_lineup_1{130.0, 34.0, M_PI};
 
