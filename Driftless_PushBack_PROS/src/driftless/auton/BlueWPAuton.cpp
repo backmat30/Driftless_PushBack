@@ -32,7 +32,7 @@ void BlueWPAuton::run(
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
   setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  delay(200);
+  waitForGoToPoint(matchload_lineup, 4.0, 1000);
   goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
@@ -91,7 +91,7 @@ void BlueWPAuton::run(
   goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPose(line_blocks, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(line_blocks, 1.0, 3500);
 
   // go bottom goal
@@ -101,10 +101,10 @@ void BlueWPAuton::run(
   waitForGoToPose(bottom_goal_2, 1.0, 400);
   delay(100);
 
-  hoodSetVoltage(-10.0);
-  outtakeFront();
+  outtakeFront(10);
+  hoodSetVoltage(-12.0);
 
-  delay(2300);
+  delay(2800);
 
   // go matchload again
   intakeStop();
@@ -115,7 +115,7 @@ void BlueWPAuton::run(
   deployBackIntakeArms();
   intakeBack();
 
-  delay(2000);
+  delay(2250);
 
   // go top goal
   goToPose(top_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
