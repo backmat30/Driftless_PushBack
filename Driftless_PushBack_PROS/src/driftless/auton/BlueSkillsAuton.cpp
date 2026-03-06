@@ -167,7 +167,7 @@ void BlueSkillsAuton::run(
   waitForGoToPose(middle_lower_goal, 2.0, 2000);
   stopMotion();
 
-  delayUntil(start_time + 32500);
+  delayUntil(start_time + 32000);
 
   goToPose(middle_lower_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_lower_goal_lineup, 4.0, 2000);
