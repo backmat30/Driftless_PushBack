@@ -21,7 +21,7 @@ class BlueFCUAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
 
   // matchload points
-  control::Point matchload_lineup{26.0, 20.0, M_PI / 2.0};
+  control::Point matchload_lineup{28.0, 20.0, M_PI / 2.0};
 
   control::Point matchload_lineup_2{27.5, 22.0, M_PI / 2.0};
 
@@ -56,7 +56,7 @@ class BlueFCUAuton : public AAuton {
 
   control::Point bottom_goal_lineup_2{90.5, 52.0, M_PI / 2.0};
 
-  control::Point bottom_goal{71.5, 76.0, M_PI * 2.0 / 3.0};
+  control::Point bottom_goal{71.5, 76.5, M_PI * 2.0 / 3.0};
 
   control::Point top_goal_lineup{51, 48, M_PI / 4};
 

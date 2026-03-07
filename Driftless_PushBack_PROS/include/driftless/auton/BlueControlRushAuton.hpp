@@ -25,7 +25,7 @@ class BlueControlRushAuton : public AAuton {
 
   control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload{26.0, 11.0, M_PI / 2.0};
+  control::Point matchload{26.25, 11.0, M_PI / 2.0};
 
   control::Point matchload_2{28.0, 11.5, M_PI / 2.0};
 
