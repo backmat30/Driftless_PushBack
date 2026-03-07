@@ -56,11 +56,11 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point back_left_wall_blocks_lineup_2{42.0, 120.0, M_PI};
 
-  control::Point back_left_wall_blocks{9.0, 122.0, M_PI};
+  control::Point back_left_wall_blocks{9.0, 121.0, M_PI};
 
-  control::Point second_matchload_lineup{28.0, 118.0, -M_PI / 2.0};
+  control::Point second_matchload_lineup{26.5, 118.0, -M_PI / 2.0};
 
-  control::Point second_matchload{28.0, 138.0, -M_PI / 2.0};
+  control::Point second_matchload{27.0, 138.0, -M_PI / 2.0};
 
   control::Point left_goal_back{26.0, 103.0, -M_PI / 2.0};
 

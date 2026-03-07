@@ -143,9 +143,9 @@ void BlueSkillsAuton::run(
   delay(500);
   goToPose(middle_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_blocks_lineup, 8.0, 4000);
-  goToPose(middle_blocks_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(middle_blocks_lineup_2, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_blocks_lineup_2, 12.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
+  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPose(middle_blocks_lineup_2, 2.0, 4000);
   stopMotion();
   turnToHeading(middle_blocks_end.getTheta(), M_PI * 3.0);
@@ -167,7 +167,7 @@ void BlueSkillsAuton::run(
   waitForGoToPose(middle_lower_goal, 2.0, 2000);
   stopMotion();
 
-  delayUntil(start_time + 32500);
+  delayUntil(start_time + 32000);
 
   goToPose(middle_lower_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_lower_goal_lineup, 4.0, 2000);
