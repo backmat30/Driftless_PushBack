@@ -27,44 +27,48 @@ void OrangeSkillsAuton::run(
   setOdomPosition(88.0, 20.0, M_PI);
 
   // head to the blues under the long goal
-  goToPose(middle_blues_lineup_1, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_blues_lineup_1, 12.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPose(middle_blues_lineup_1, 8.0, 3000);
+  goToPose(middle_blues_lineup_1, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(middle_blues_lineup_1, 10.0, 3000);
+  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
+  waitForGoToPose(middle_blues_lineup_1, 6.0, 3000);
   goToPose(middle_blues_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_blues_lineup_2, 18.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(middle_blues_lineup_2, 2.0, 2000);
+  setGoToPoseVelocity(MAX_VELOCITY / 4.0);
+  waitForGoToPose(middle_blues_lineup_2, 1.0, 3000);
   deployRake();
   intakeFront();
-  goToPose(middle_blues, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  delay(100);
+  goToPose(middle_blues, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_blues, 2.0, 3000);
+  stopMotion();
+  delay(100);
 
   // go to the first matchload on blue side
   goToPose(back_matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(back_matchload_lineup, 8.0, 3000);
+  waitForGoToPose(back_matchload_lineup, 12.0, 3000);
+  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
   goToPose(back_matchload_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  delay(150);
-  setGoToPoseVelocity(MAX_VELOCITY);
+  waitForGoToPose(back_matchload_lineup_2, 10.0, 1500);
+  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPose(back_matchload_lineup_2, 2.0, 3000);
   retractRake();
-  goToPose(back_matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(back_matchload, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(back_matchload, 16.0, 3000);
   setGoToPoseVelocity(MAX_VELOCITY / 3.0);
   waitForGoToPose(back_matchload, 2.0, 1250);
   stopMotion();
   intakeBack();
   deployBackIntakeArms();
-
+  hoodRaise();
   delay(2250);
 
   // score on the goal
-  hoodRaise();
-  delay(250);
   goToPose(back_long_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   intakeFront();
+  delay(150);
+  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
   waitForGoToPose(back_long_goal, 16.0, 1500);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
+  setGoToPoseVelocity(MAX_VELOCITY / 4.0);
   waitForGoToPose(back_long_goal, 2.0, 1250);
   stopMotion();
   hoodOpenDoor();
@@ -76,9 +80,9 @@ void OrangeSkillsAuton::run(
   goToPose(back_matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   outtakeFront();
   delay(400);
+  stopMotion();
   hoodCloseDoor();
   hoodLower();
-  stopMotion();
   delay(250);
 
   // go to blue park zone for blocks
@@ -98,7 +102,7 @@ void OrangeSkillsAuton::run(
   waitForGoToPose(park_zone_blocks_lineup, 2.0, 1000);
 
   // grab the red blocks against the wall
-  goToPose(wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(wall_blocks_lineup, 8.0, 2000);
   goToPose(wall_blocks_start, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(wall_blocks_start, 24.0, 3000);
@@ -114,19 +118,19 @@ void OrangeSkillsAuton::run(
   goToPose(wall_blocks_start, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(wall_blocks_start, 4.0, 3000);
   delay(500);
-  goToPose(wall_blocks_end, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(wall_blocks_end, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(wall_blocks_end, 4.0, 4000);
   stopMotion();
 
   // grab reds under long goal
   turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
-  delay(500);
+  delay(375);
   goToPose(middle_reds, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_reds, 4.0, 1000);
 
   // deposit blocks in middle goal
   goToPose(middle_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal_lineup, 2.0, 2000);
+  waitForGoToPose(middle_goal_lineup, 3.0, 2000);
   goToPose(middle_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_goal, 10.0, 3000);
   goToPose(middle_goal, MAX_VELOCITY / 3.5, MAX_ANGULAR_VELOCITY);
@@ -138,7 +142,7 @@ void OrangeSkillsAuton::run(
   delay(1000);
   intakeFront();
   delay(250);
-  hoodRaise();
+  hoodBumpUp();
   hoodSetVoltage(-12.0);
   outtakeFront();
   delay(2000);
@@ -148,9 +152,10 @@ void OrangeSkillsAuton::run(
   startColorSort(alliance::EAlliance::BLUE);
   goToPose(middle_goal_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
   delay(1000);
-  goToPose(middle_goal_top_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(middle_goal_top_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
   hoodBumpUp();
+  outtakeFront();
   goToPose(middle_goal_top, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_goal_top, 2.0, 3000);
   stopMotion();
@@ -159,10 +164,10 @@ void OrangeSkillsAuton::run(
   waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
 
   // go to the blue wall blocks
-  goToPose(front_wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(front_wall_blocks_lineup, MAX_VELOCITY / 1.75, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_wall_blocks_lineup, 8.0, 4000);
   intakeFront();
-  goToPose(front_wall_blocks_start, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(front_wall_blocks_start, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_wall_blocks_start, 10.0, 2000);
   setGoToPoseVelocity(MAX_VELOCITY / 5.0);
   waitForGoToPose(front_wall_blocks_start, 2.0, 1500);
@@ -182,7 +187,7 @@ void OrangeSkillsAuton::run(
   // go to front matchloader
   goToPose(front_match_load_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_match_load_lineup, 4.0, 2000);
-  goToPose(front_match_load, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(front_match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_match_load, 16.0, 4000);
   setGoToPoseVelocity(MAX_VELOCITY / 2.0);
   waitForGoToPose(front_match_load, 2.0, 1750);
@@ -209,7 +214,7 @@ void OrangeSkillsAuton::run(
   waitForGoToPose(park_lineup, 4.0, 3000);
   hoodCloseDoor();
   intakeStop();
-  goToPose(park, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
+  goToPose(park, MAX_VELOCITY / 1.625, MAX_ANGULAR_VELOCITY);
 
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",
                       (getTime() - start_time) / 1000.0);
