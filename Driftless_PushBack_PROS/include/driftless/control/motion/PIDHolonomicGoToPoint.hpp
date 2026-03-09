@@ -2,6 +2,7 @@
 #define __PID_HOLONOMIC_GO_TO_POINT_HPP__
 
 #include <cmath>
+#include <cstdint>
 #include <memory>
 
 #include "driftless/control/PID.hpp"
@@ -10,7 +11,6 @@
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
-#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
@@ -76,8 +76,10 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   robot::subsystems::odometry::Position getPosition();
 
   /// @brief Updates the velocity of the robot
-  /// @param x_distance __double__ The distance to the target in the x direction
-  /// @param y_distance __double__ The distance to the target in the y direction
+  /// @param x_distance __double__ The distance to the target in the x
+  /// direction
+  /// @param y_distance __double__ The distance to the target in the y
+  /// direction
   /// @param current_heading __double__ The current heading of the robot
   void updateVelocity(double x_distance, double y_distance,
                       double current_heading);
