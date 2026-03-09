@@ -33,9 +33,9 @@ void OrangeControlRushAuton::run(
   // go to matchloader
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 5.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
+  waitForGoToPoint(matchload_lineup, 4.0, 1000);
+  goToPose(matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
@@ -43,21 +43,23 @@ void OrangeControlRushAuton::run(
   delay(450);
   hoodRaise();
 
-  delay(225);
+  delay(210);
+  intakeStop();
   retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(long_goal, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
   delay(100);
   intakeStop();
   delay(150);
-  waitForGoToPose(long_goal, 10.0, 1250);
+  waitForGoToPose(long_goal, 12.0, 1000);
   intakeFront();
 
+  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(850);
+  delay(1000);
 
   // go to descore
   goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
@@ -68,6 +70,21 @@ void OrangeControlRushAuton::run(
 
   goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(end_descore, 2.5, 3000);
+
+  // go to block mid goal
+  deployDescore();
+  delay(100);
+
+  goToPoint(middle_goal_lineup, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(middle_goal_lineup, 2.0, 2000);
+
+  retractDescore();
+  hoodLower();
+
+  goToPoint(middle_goal_block, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(middle_goal_block, 2.0, 2000);
+
+  stopMotion();
 
   // leave at end
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",

@@ -45,12 +45,12 @@ void BlueFCUAuton::run(
   retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(long_goal, MAX_VELOCITY / 1.75, MAX_ANGULAR_VELOCITY);
   delay(200);
   outtakeFront();
   delay(200);
   intakeFront();
-  waitForGoToPose(long_goal, 10.0, 1250);
+  waitForGoToPose(long_goal / 2.0, 10.0, 1500);
   intakeFront();
   setGoToPoseVelocity(MAX_VELOCITY / 2.0);
 
@@ -59,7 +59,7 @@ void BlueFCUAuton::run(
 
   delay(1000);
 
-  // go descore
+  // go "descore"
   goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   delay(100);
   intakeStop();
@@ -126,17 +126,18 @@ void BlueFCUAuton::run(
   goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(top_goal, 2.0, 2000);
   delayUntil(start_time + 26000);
-  hoodOpenDoor();
-  intakeFront();
-  hoodSetVoltage(6.0);
+  
+  // hoodOpenDoor();
+  // intakeFront();
+  // hoodSetVoltage(6.0);
 
-  delay(1000);
-  hoodSetVoltage(9.0);
-  delay(1000);
-  hoodRaise();
-  delay(250);
-  hoodCloseDoor();
-  intakeStop();
+  // delay(1000);
+  // hoodSetVoltage(9.0);
+  // delay(1000);
+  // hoodRaise();
+  // delay(250);
+  // hoodCloseDoor();
+  // intakeStop();
 
   goToPose(descore_2_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   middleDescore();

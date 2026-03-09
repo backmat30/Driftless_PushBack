@@ -27,7 +27,7 @@ class BlueWPAuton : public AAuton {
 
   control::Point matchload{27.5, 11.0, M_PI / 2.0};
 
-  control::Point matchload_2{28.5, 11.5, M_PI / 2.0};
+  control::Point matchload_2{28.5, 10.75, M_PI / 2.0};
 
   // long goal points
   control::Point long_goal{26.75, 42.0, M_PI / 2.0};

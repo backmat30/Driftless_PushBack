@@ -24,13 +24,13 @@ class OrangePumpNDumpAuton : public AAuton {
 
   control::Point matchload{120.25, 10.5, M_PI / 2.0};
 
-  control::Point long_goal_lineup{122.0, 20.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup{120.75, 20.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal_lineup_2{122.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup_2{120.75, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{122.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{121.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_2{122.0, 42.0, M_PI / 2.0};
+  control::Point long_goal_2{121.0, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{118.0, 12.0, M_PI / 2.0};
 

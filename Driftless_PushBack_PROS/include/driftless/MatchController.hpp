@@ -42,6 +42,8 @@ class MatchController {
 
   std::shared_ptr<processes::ProcessSystem> process_system{};
 
+  std::shared_ptr<alliance::IAlliance> m_alliance{};
+
  public:
   /// @brief Constructs a new MatchController object
   /// @param new_menu __std::unique_ptr<menu::IMenu>&__ The menu to use
