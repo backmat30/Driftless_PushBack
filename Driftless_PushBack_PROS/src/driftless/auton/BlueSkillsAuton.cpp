@@ -103,6 +103,7 @@ void BlueSkillsAuton::run(
 
   goToPose(first_matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   delay(500);
+  intakeStop();
   hoodCloseDoor();
   goToPose(left_goal_front, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(left_goal_front, 1.0, 1250);

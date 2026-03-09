@@ -20,17 +20,17 @@ class OrangePumpNDumpAuton : public AAuton {
 
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
-  control::Point matchload_lineup{120.0, 18.0, M_PI / 2.0};
+  control::Point matchload_lineup{120.25, 18.0, M_PI / 2.0};
 
-  control::Point matchload{120.0, 11.0, M_PI / 2.0};
+  control::Point matchload{120.25, 10.5, M_PI / 2.0};
 
-  control::Point long_goal_lineup{121.0, 20.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup{120.75, 20.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal_lineup_2{121.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup_2{120.75, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{120.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{121.0, 42.0, M_PI / 2.0};
 
-  control::Point long_goal_2{120.0, 42.0, M_PI / 2.0};
+  control::Point long_goal_2{121.0, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{118.0, 12.0, M_PI / 2.0};
 

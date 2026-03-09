@@ -21,16 +21,16 @@ class OrangeWPAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point matchload_lineup{120.0, 20.0, M_PI / 2.0};
+  control::Point matchload_lineup{120.25, 20.0, M_PI / 2.0};
 
-  control::Point matchload{120.0, 11.0, M_PI / 2.0};
+  control::Point matchload{120.25, 10.5, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal_lineup{121.0, 20.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup{122.0, 20.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal_lineup_2{121.0, 33.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup_2{122.0, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point long_goal{120.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{122.0, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{131.0, 37.0, M_PI / 2.0};

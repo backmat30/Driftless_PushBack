@@ -55,7 +55,7 @@ void OrangeSkillsAuton::run(
   goToPose(back_matchload, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(back_matchload, 16.0, 3000);
   setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(back_matchload, 2.0, 1000);
+  waitForGoToPose(back_matchload, 2.0, 1250);
   stopMotion();
   intakeBack();
   deployBackIntakeArms();
@@ -120,6 +120,7 @@ void OrangeSkillsAuton::run(
   delay(500);
   goToPose(wall_blocks_end, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(wall_blocks_end, 4.0, 4000);
+  stopMotion();
 
   // grab reds under long goal
   turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
@@ -158,8 +159,7 @@ void OrangeSkillsAuton::run(
   goToPose(middle_goal_top, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_goal_top, 2.0, 3000);
   stopMotion();
-  delay(4500);
-  intakeStop();
+  delay(5500);
   goToPose(middle_goal_top_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
 
@@ -185,7 +185,7 @@ void OrangeSkillsAuton::run(
   delay(250);
 
   // go to front matchloader
-  goToPose(front_match_load_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(front_match_load_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_match_load_lineup, 4.0, 2000);
   goToPose(front_match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(front_match_load, 16.0, 4000);

@@ -45,15 +45,15 @@ void BlueWPAuton::run(
   retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(long_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   delay(200);
   outtakeFront();
   delay(200);
   intakeFront();
-  waitForGoToPose(long_goal, 10.0, 1250);
+  waitForGoToPose(long_goal / 2.0, 10.0, 1250);
   intakeFront();
 
-  waitForGoToPose(long_goal, 2.0, 750);
+  waitForGoToPose(long_goal, 2.0, 1000);
   hoodOpenDoor();
 
   delay(1000);

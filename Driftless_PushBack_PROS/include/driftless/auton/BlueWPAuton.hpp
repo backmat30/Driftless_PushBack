@@ -21,16 +21,16 @@ class BlueWPAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point matchload_lineup{26.5, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup{28.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup_2{29.5, 22.0, M_PI / 2.0};
 
-  control::Point matchload{26.0, 11.0, M_PI / 2.0};
+  control::Point matchload{27.5, 11.0, M_PI / 2.0};
 
-  control::Point matchload_2{28.0, 11.5, M_PI / 2.0};
+  control::Point matchload_2{28.5, 10.75, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{27.5, 42.0, M_PI / 2.0};
+  control::Point long_goal{26.75, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{16.0, 37.0, M_PI / 2.0};
@@ -58,7 +58,7 @@ class BlueWPAuton : public AAuton {
 
   control::Point top_goal_lineup{51, 48, M_PI / 4};
 
-  control::Point top_goal{62.5, 59.0, M_PI / 4};
+  control::Point top_goal{62.5, 58.5, M_PI / 4};
 
   // other side descore
   control::Point descore_2_lineup{50.0, 50.0, M_PI / 4.0};
