@@ -24,6 +24,7 @@ void MatchController::init(bool fast_init) {
   if (m_menu) {
     system_config = m_menu->getSystemConfig(fast_init);
   }
+  m_alliance = system_config.alliance;
   // send the profile info to the op control manager
   auton_manager.setAlliance(system_config.alliance);
   auton_manager.setAuton(system_config.auton);
@@ -80,7 +81,11 @@ void MatchController::autonomous() {
 }
 
 void MatchController::operatorControl() {
+  if(m_alliance->getAlliance() == alliance::EAlliance::NONE) {
+    auton_manager.runAuton(robot, control_system);
+  } else {
   op_control_manager.run(control_system, process_system, controller, robot);
+  }
 }
 
 }  // namespace driftless

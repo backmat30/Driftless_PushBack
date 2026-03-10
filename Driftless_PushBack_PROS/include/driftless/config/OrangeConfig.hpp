@@ -54,6 +54,7 @@
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicGoToPoseBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
 #include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
@@ -140,9 +141,17 @@ class OrangeConfig : public IConfig {
   static constexpr double GO_TO_POINT_Y_KI{0.0};
   static constexpr double GO_TO_POINT_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
+  static constexpr double GO_TO_POSE_X_KP{40.0};
+  static constexpr double GO_TO_POSE_X_KI{0.0};
+  static constexpr double GO_TO_POSE_X_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_Y_KP{40.0};
+  static constexpr double GO_TO_POSE_Y_KI{0.0};
+  static constexpr double GO_TO_POSE_Y_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
   static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};
@@ -168,7 +177,7 @@ class OrangeConfig : public IConfig {
 
   // ## INTAKE MOTORS ##
 
-  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
@@ -190,12 +199,9 @@ class OrangeConfig : public IConfig {
 
   static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
   static constexpr int HOOD_GATE_PISTONS_PORT{4};
-  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{1};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
-
-  // ## BRAKE PNEUMATICS ##
-
-  static constexpr int BRAKE_PISTON_PORT{1};
 
   // ## RAKE PNEUMATICS ##
 
@@ -209,6 +215,10 @@ class OrangeConfig : public IConfig {
 
   // #### ROBOT CONSTANTS ####
 
+  // ## COPROCESSOR ##
+
+  static constexpr int32_t COPROCESSOR_BAUD_RATE{115200};
+
   // ## DRIVE ##
 
   static constexpr pros::MotorGearset DRIVE_GEARSET{pros::E_MOTOR_GEAR_BLUE};
@@ -220,8 +230,9 @@ class OrangeConfig : public IConfig {
   static constexpr double DRIVE_MAX_ANGULAR_VELOCITY{M_PI * 3};
 
   // ## ODOMETRY ##
-  static constexpr double LINEAR_DISTANCE_TRACKER_OFFSET{5.5};
-  static constexpr double STRAFE_DISTANCE_TRACKER_OFFSET{0.5};
+  static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
+  static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
+  static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
  public:
   std::string getName() override;

@@ -12,7 +12,7 @@ namespace robot {
 /// @brief The namespace for subsystems code
 /// @author Matthew Backman
 namespace subsystems {
-  
+
 /// @brief The enum class for subsystem commands
 /// @author Matthew Backman
 enum class ESubsystemCommand {
@@ -30,8 +30,7 @@ enum class ESubsystemCommand {
   ODOMETRY_SET_THETA,
   ODOMETRY_RESET_X,
   ODOMETRY_RESET_Y,
-  INTAKE_FRONT_IN,
-  INTAKE_FRONT_OUT,
+  INTAKE_FRONT,
   INTAKE_BACK_IN,
   INTAKE_BACK_TO_HOOD,
   INTAKE_STOP_MOTION,
@@ -49,7 +48,7 @@ enum class ESubsystemCommand {
   HOOD_TOGGLE_RAISED,
   HOOD_EXTEND_DESCORE,
   HOOD_RETRACT_DESCORE,
-  HOOD_TOGGLE_DESCORE,
+  HOOD_EXTEND_DESCORE_HALF,
   HOOD_BUMP_UP,
   HOOD_BUMP_DOWN,
   HOOD_TOGGLE_BUMP,

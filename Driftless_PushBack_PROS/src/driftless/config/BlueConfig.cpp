@@ -75,6 +75,11 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
   std::unique_ptr<rtos::IMutex> go_to_point_mutex{
       std::make_unique<pros_adapters::ProsMutex>()};
 
+  std::unique_ptr<rtos::ITask> go_to_pose_task{
+      std::make_unique<pros_adapters::ProsTask>()};
+  std::unique_ptr<rtos::IMutex> go_to_pose_mutex{
+      std::make_unique<pros_adapters::ProsMutex>()};
+
   // PID controllers
   control::PID drive_straight_linear_pid{clock, DRIVE_STRAIGHT_LINEAR_KP,
                                          DRIVE_STRAIGHT_LINEAR_KI,
@@ -89,14 +94,20 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
                                  GO_TO_POINT_X_KD};
   control::PID go_to_point_y_pid{clock, GO_TO_POINT_Y_KP, GO_TO_POINT_Y_KI,
                                  GO_TO_POINT_Y_KD};
-  control::PID go_to_point_rotational_pid{clock, GO_TO_POINT_ROTATIONAL_KP,
-                                          GO_TO_POINT_ROTATIONAL_KI,
-                                          GO_TO_POINT_ROTATIONAL_KD};
+
+  control::PID go_to_pose_x_pid{clock, GO_TO_POSE_X_KP, GO_TO_POSE_X_KI,
+                                GO_TO_POSE_X_KD};
+  control::PID go_to_pose_y_pid{clock, GO_TO_POSE_Y_KP, GO_TO_POSE_Y_KI,
+                                GO_TO_POSE_Y_KD};
+  control::PID go_to_pose_rotational_pid{clock, GO_TO_POSE_ROTATIONAL_KP,
+                                         GO_TO_POSE_ROTATIONAL_KI,
+                                         GO_TO_POSE_ROTATIONAL_KD};
 
   // build the motion controls
   control::motion::PIDDriveStraightBuilder drive_straight_builder{};
   control::motion::PIDHolonomicTurnBuilder turn_builder{};
   control::motion::PIDHolonomicGoToPointBuilder go_to_point_builder{};
+  control::motion::PIDHolonomicGoToPoseBuilder go_to_pose_builder{};
 
   std::unique_ptr<control::motion::IDriveStraight> drive_straight{
       drive_straight_builder.withDelayer(delayer)
@@ -123,7 +134,17 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
           ->withTask(go_to_point_task)
           ->withXPID(go_to_point_x_pid)
           ->withYPID(go_to_point_y_pid)
-          ->withRotationalPID(go_to_point_rotational_pid)
+          ->withVelocityTolerance(MOTION_LINEAR_VELOCITY_TOLERANCE)
+          ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
+          ->build()};
+
+  std::unique_ptr<control::motion::IGoToPose> go_to_pose{
+      go_to_pose_builder.withDelayer(delayer)
+          ->withMutex(go_to_pose_mutex)
+          ->withTask(go_to_pose_task)
+          ->withXPID(go_to_pose_x_pid)
+          ->withYPID(go_to_pose_y_pid)
+          ->withRotationalPID(go_to_pose_rotational_pid)
           ->withVelocityTolerance(MOTION_LINEAR_VELOCITY_TOLERANCE)
           ->withDistanceTolerance(MOTION_LINEAR_DISTANCE_TOLERANCE)
           ->withAngularTolerance(MOTION_ANGULAR_DISTANCE_TOLERANCE)
@@ -131,8 +152,8 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
 
   // make the controller
   std::unique_ptr<control::AControl> motion_control{
-      std::make_unique<control::motion::MotionControl>(drive_straight,
-                                                       go_to_point, turn)};
+      std::make_unique<control::motion::MotionControl>(
+          drive_straight, go_to_point, go_to_pose, turn)};
 
   // add to the control system
   control_system->addControl(motion_control);
@@ -164,7 +185,7 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
   // ## ARDUINO ##
   // create pros objects
   std::unique_ptr<pros::Serial> pros_arduino_serial{
-      std::make_unique<pros::Serial>(ARDUINO_PORT, 115200)};
+      std::make_unique<pros::Serial>(ARDUINO_PORT, COPROCESSOR_BAUD_RATE)};
 
   // adapt the pros objects
   std::unique_ptr<io::ISerialDevice> arduino_serial{
@@ -393,8 +414,10 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(HOOD_HEIGHT_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_gate_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_GATE_PISTONS_PORT)};
-  std::unique_ptr<pros::adi::DigitalOut> pros_hood_descore_pistons{
-      std::make_unique<pros::adi::DigitalOut>(HOOD_DESCORE_PISTONS_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_lower_descore_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_LOWER_DESCORE_PISTONS_PORT)};
+  std::unique_ptr<pros::adi::DigitalOut> pros_hood_upper_descore_pistons{
+      std::make_unique<pros::adi::DigitalOut>(HOOD_UPPER_DESCORE_PISTONS_PORT)};
   std::unique_ptr<pros::adi::DigitalOut> pros_hood_bump_pistons{
       std::make_unique<pros::adi::DigitalOut>(HOOD_BUMP_PISTONS_PORT)};
 
@@ -405,8 +428,12 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_height_pistons)};
   std::unique_ptr<io::IPiston> hood_gate_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_gate_pistons)};
-  std::unique_ptr<io::IPiston> hood_descore_pistons{
-      std::make_unique<pros_adapters::ProsPiston>(pros_hood_descore_pistons)};
+  std::unique_ptr<io::IPiston> hood_lower_descore_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(
+          pros_hood_lower_descore_pistons)};
+  std::unique_ptr<io::IPiston> hood_upper_descore_pistons{
+      std::make_unique<pros_adapters::ProsPiston>(
+          pros_hood_upper_descore_pistons)};
   std::unique_ptr<io::IPiston> hood_bump_pistons{
       std::make_unique<pros_adapters::ProsPiston>(pros_hood_bump_pistons)};
 
@@ -417,7 +444,8 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
       hood_builder.withMotor(hood_motor_1)
           ->withHeightPiston(hood_height_pistons)
           ->withGatePiston(hood_gate_pistons)
-          ->withDescorePiston(hood_descore_pistons)
+          ->withLowerDescorePiston(hood_lower_descore_pistons)
+          ->withUpperDescorePiston(hood_upper_descore_pistons)
           ->withBumpPiston(hood_bump_pistons)
           ->build()};
 
@@ -461,28 +489,6 @@ std::shared_ptr<robot::Robot> BlueConfig::buildRobot() {
 
   // add subsystem to robot
   robot->addSubsystem(odometry_subsystem);
-
-  // ## BRAKE SUBSYSTEM ##
-
-  // create pros objects
-  std::unique_ptr<pros::adi::DigitalOut> pros_brake_piston{
-      std::make_unique<pros::adi::DigitalOut>(BRAKE_PISTON_PORT)};
-
-  // adapt pros objects
-  std::unique_ptr<io::IPiston> adapted_brake_piston{
-      std::make_unique<pros_adapters::ProsPiston>(pros_brake_piston)};
-
-  // build the brake
-  robot::subsystems::brake::PneumaticBrakeBuilder brake_builder{};
-
-  std::unique_ptr<robot::subsystems::brake::IBrake> brake{
-      brake_builder.withBrakePiston(adapted_brake_piston)->build()};
-
-  // create the subsystem
-  std::unique_ptr<robot::subsystems::ASubsystem> brake_subsystem{
-      std::make_unique<robot::subsystems::brake::BrakeSubsystem>(brake)};
-
-  robot->addSubsystem(brake_subsystem);
 
   // ## RAKE SUBSYSTEM ##
 

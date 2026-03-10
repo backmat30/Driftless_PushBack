@@ -60,8 +60,6 @@ class AsherProfile : public IProfile {
            op_control::EControllerDigital::TRIGGER_LEFT_TOP},
           {op_control::EControl::HOOD_TOGGLE_BUMP,
            op_control::EControllerDigital::BUTTON_Y},
-          {op_control::EControl::BRAKE_TOGGLE,
-           op_control::EControllerDigital::DPAD_DOWN},
           {op_control::EControl::RAKE_TOGGLE,
            op_control::EControllerDigital::DPAD_UP},
           {op_control::EControl::HOLONOMIC_LOCK_90,

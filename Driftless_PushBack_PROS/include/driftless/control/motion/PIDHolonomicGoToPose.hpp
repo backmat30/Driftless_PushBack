@@ -1,13 +1,12 @@
-#ifndef __PID_HOLONOMIC_GO_TO_POINT_HPP__
-#define __PID_HOLONOMIC_GO_TO_POINT_HPP__
+#ifndef __PID_HOLONOMIC_GO_TO_POSE_HPP__
+#define __PID_HOLONOMIC_GO_TO_POSE_HPP__
 
 #include <cmath>
-#include <cstdint>
 #include <memory>
 
 #include "driftless/control/PID.hpp"
 #include "driftless/control/Point.hpp"
-#include "driftless/control/motion/IGoToPoint.hpp"
+#include "driftless/control/motion/IGoToPose.hpp"
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
@@ -32,7 +31,7 @@ namespace motion {
 
 /// @brief Class representing a go to point algorithm using PID
 /// @author Matthew Backman
-class PIDHolonomicGoToPoint : public IGoToPoint {
+class PIDHolonomicGoToPose : public IGoToPose {
  private:
   // the task delay
   static constexpr uint8_t TASK_DELAY{10};
@@ -53,15 +52,21 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
 
   PID m_y_pid{};
 
-  double m_max_velocity{};
+  PID m_rotational_pid{};
+
+  double m_max_velocity{1.0};
+
+  double m_max_rotational_velocity{1.0};
 
   double m_distance_tolerance{};
 
   double m_velocity_tolerance{};
 
+  double m_angular_tolerance{};
+
   Point m_target_point{};
 
-  bool m_target_reached{};
+  bool m_target_reached{true};
 
   bool m_paused{true};
 
@@ -77,13 +82,12 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   robot::subsystems::odometry::Position getPosition();
 
   /// @brief Updates the velocity of the robot
-  /// @param x_distance __double__ The distance to the target in the x
-  /// direction
-  /// @param y_distance __double__ The distance to the target in the y
-  /// direction
+  /// @param x_distance __double__ The distance to the target in the x direction
+  /// @param y_distance __double__ The distance to the target in the y direction
   /// @param current_heading __double__ The current heading of the robot
+  /// @param angular_distance __double__ The angular distance to the target
   void updateVelocity(double x_distance, double y_distance,
-                      double current_heading);
+                      double current_heading, double angular_distance);
 
   /// @brief Runs all instance specific updates
   void taskUpdate();
@@ -101,17 +105,23 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @brief Resumes the control
   void resume() override;
 
-  /// @brief Sets the target point for the robot to go to
+  /// @brief Drives the given robot to a pose (x, y, theta)
   /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
   /// controlled
-  /// @param velocity __double__ The max velocity for motion
-  /// @param point __Point__ The target point
-  void goToPoint(const std::shared_ptr<robot::Robot>& robot, double velocity,
-                 Point point) override;
+  /// @param velocity __double__ The maximum velocity of the robot
+  /// @param angular_velocity __double__ The maximum angular velocity of
+  /// the robot
+  /// @param point __Point__ The pose (x, y, theta) for the robot to go to
+  void goToPose(const std::shared_ptr<robot::Robot>& robot, double velocity,
+                double angular_velocity, Point point) override;
 
   /// @brief Updates the max velocity for motion
   /// @param velocity __double__ The max velocity for motion
   void setVelocity(double velocity) override;
+
+  /// @brief Updates the max angular velocity for motion
+  /// @param angular_velocity __double__ The max angular velocity for motion
+  void setAngularVelocity(double angular_velocity) override;
 
   /// @brief Checks if the target point has been reached
   /// @return True if the target point has been reached, false otherwise
@@ -148,6 +158,10 @@ class PIDHolonomicGoToPoint : public IGoToPoint {
   /// @brief Sets the velocity tolerance for reaching the target
   /// @param velocity_tolerance __double__ The velocity tolerance
   void setVelocityTolerance(double velocity_tolerance);
+
+  /// @brief Sets the angular tolerance for reaching the target
+  /// @param angular_tolerance __double__ The angular tolerance
+  void setAngularTolerance(double angular_tolerance);
 };
 }  // namespace motion
 }  // namespace control

@@ -54,12 +54,13 @@
 #include "driftless/control/motion/PIDDriveStraightBuilder.hpp"
 #include "driftless/control/motion/PIDGoToPointBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicGoToPointBuilder.hpp"
-#include "driftless/control/motion/PIDTurnBuilder.hpp"
+#include "driftless/control/motion/PIDHolonomicGoToPoseBuilder.hpp"
 #include "driftless/control/motion/PIDHolonomicTurnBuilder.hpp"
+#include "driftless/control/motion/PIDTurnBuilder.hpp"
 #include "driftless/control/path/PIDPathFollowerBuilder.hpp"
 #include "driftless/control/path/PathFollowerControl.hpp"
-#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
 #include "driftless/control/trajectory/trajectory_follower/PIDTrajectoryFollowerBuilder.hpp"
+#include "driftless/control/trajectory/trajectory_follower/TrajectoryFollowerControl.hpp"
 
 // robot include
 #include "driftless/robot/Robot.hpp"
@@ -89,11 +90,13 @@
 #include "driftless/robot/subsystems/brake/PneumaticBrakeBuilder.hpp"
 
 // Rake includes
-#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
 #include "driftless/robot/subsystems/rake/PneumaticRakeBuilder.hpp"
+#include "driftless/robot/subsystems/rake/RakeSubsystem.hpp"
 
 namespace driftless {
 namespace config {
+/// @brief The configurations for the blue robot and its control system
+/// @author Matthew Backman
 class BlueConfig : public IConfig {
  private:
   static constexpr char CONFIG_NAME[] = "BLUE_CONFIG";
@@ -139,9 +142,17 @@ class BlueConfig : public IConfig {
   static constexpr double GO_TO_POINT_Y_KI{0.0};
   static constexpr double GO_TO_POINT_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POINT_ROTATIONAL_KP{28.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KI{0.0};
-  static constexpr double GO_TO_POINT_ROTATIONAL_KD{1200.0};
+  static constexpr double GO_TO_POSE_X_KP{40.0};
+  static constexpr double GO_TO_POSE_X_KI{0.0};
+  static constexpr double GO_TO_POSE_X_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_Y_KP{40.0};
+  static constexpr double GO_TO_POSE_Y_KI{0.0};
+  static constexpr double GO_TO_POSE_Y_KD{3000.0};
+
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
   static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};
@@ -167,7 +178,7 @@ class BlueConfig : public IConfig {
 
   // ## INTAKE MOTORS ##
 
-  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{-6};
+  static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
@@ -189,18 +200,19 @@ class BlueConfig : public IConfig {
 
   static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
   static constexpr int HOOD_GATE_PISTONS_PORT{4};
-  static constexpr int HOOD_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{1};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
-
-  // ## BRAKE PNEUMATICS ##
-
-  static constexpr int BRAKE_PISTON_PORT{1};
 
   // ## RAKE PNEUMATICS ##
 
   static constexpr int RAKE_PISTON_PORT{6};
 
   // #### ROBOT CONSTANTS ####
+
+  // ## COPROCESSOR ##
+
+  static constexpr int32_t COPROCESSOR_BAUD_RATE{115200};
 
   // ## DRIVE ##
 

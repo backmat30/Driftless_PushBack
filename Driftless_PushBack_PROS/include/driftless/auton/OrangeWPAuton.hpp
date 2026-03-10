@@ -1,5 +1,5 @@
-#ifndef __ORANGE_SKILLS_AUTON_HPP__
-#define __ORANGE_SKILLS_AUTON_HPP__
+#ifndef __ORANGE_WIN_POINT_AUTON_HPP__
+#define __ORANGE_WIN_POINT_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
@@ -12,69 +12,63 @@ namespace driftless {
 namespace auton {
 
 /// @brief Class representing the autonomous routine for the orange robot's
-/// skills route
-/// @author Matthew Backman
-class OrangeSkillsAuton : public AAuton {
+/// win point auton routine
+/// @author Ethan Jacobson
+class OrangeWPAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  control::Point middle_blues_lineup_1{129.5, 34.0, M_PI};
-
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
-  control::Point middle_blues_lineup_2{130.0, 79.0, M_PI};
+  // matchload points
+  control::Point matchload_lineup{120.25, 20.0, M_PI / 2.0};
 
-  control::Point middle_blues{114.0, 82.0, M_PI};
+  control::Point matchload{120.25, 10.5, M_PI / 2.0};
 
-  control::Point back_matchload_lineup{94.0, 93.0, M_PI};
+  // long goal points
+  control::Point long_goal_lineup{122.0, 20.0, M_PI * 3.0 / 4.0};
 
-  control::Point back_matchload_lineup_2{119.0, 116.0, M_PI * 3.0 / 4.0};
+  control::Point long_goal_lineup_2{122.0, 33.0, M_PI * 3.0 / 4.0};
 
-  control::Point back_matchload{117.75, 134.0, -M_PI / 2.0};
+  control::Point long_goal{122.0, 42.0, M_PI / 2.0};
 
-  control::Point back_long_goal{121.0, 96.0, -M_PI / 2.0};
+  // descore points
+  control::Point descore_lineup{131.0, 37.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks_lineup{73.5, 94.0, M_PI / 2.0};
+  control::Point start_descore{130.0, 48.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks{71.0, 120.0, M_PI / 2.0};
+  control::Point end_descore{130.5, 60.0, M_PI / 2.0};
 
-  control::Point wall_blocks_lineup{100.0, 119.0, 0.0};
+  // blocks points
+  control::Point two_blocks_lineup{136.0, 56.0, M_PI};
 
-  control::Point wall_blocks_start{134.0, 117.0, 0.0};
+  control::Point two_blocks_lineup_2{126, 59, M_PI * 3.0 / 4.0};
 
-  control::Point wall_blocks_end{134.0, 78.0, -M_PI / 2.0};
+  control::Point two_blocks{123.0, 62.0, M_PI / 2.0};
 
-  control::Point middle_reds{109.0, 59.0, -M_PI * 3.0 / 4.0};
+  control::Point line_blocks_lineup{120.0, 62.5, M_PI * 3.0 / 4.0};
 
-  control::Point middle_reds_end{110.0, 53.0, -M_PI / 2.0};
+  control::Point line_blocks_lineup_2{115.5, 67.0, M_PI * 3.0 / 4.0};
 
-  control::Point middle_goal_lineup{91.0, 48.0, M_PI * 3.0 / 4.0};
+  control::Point line_blocks{99.0, 66.0, M_PI * 3.0 / 4.0};
 
-  control::Point middle_goal{81.0, 61.5, M_PI * 3.0 / 4.0};
+  // middle goal points
+  control::Point top_goal_lineup{93.0, 88.0, M_PI * 5.0 / 4.0};
 
-  control::Point middle_goal_top_lineup{99.0, 92.0, -M_PI * 3.0 / 4.0};
+  control::Point top_goal{87.75, 86, M_PI * 5.0 / 4.0};
 
-  control::Point middle_goal_top{84.0, 87.0, -M_PI * 3.0 / 4.0};
+  control::Point bottom_goal{83.75, 61.0, M_PI * 3.0 / 4.0};
 
-  control::Point front_wall_blocks_lineup{100.0, 32.0, 0.0};
+  // other side descore
+  control::Point descore_2_lineup{94.0, 50.0, M_PI * 3.0 / 4.0};
 
-  control::Point front_wall_blocks_start{130.0, 25.0, 0.0};
+  control::Point descore_2{107.75, 38.0, M_PI / 2};
 
-  control::Point front_wall_blocks_end{116.0, 25.0, 0.0};
-
-  control::Point front_match_load_lineup{116.5, 32.0, M_PI / 2.0};
-
-  control::Point front_match_load{114.0, 10.0, M_PI / 2.0};
-
-  control::Point front_right_long_goal{114.5, 43.0, M_PI / 2.0};
-
-  control::Point park_lineup{96.0, 12.0, 0.0};
-
-  control::Point park{72.0, 10.0, 0.0};
+  control::Point descore_2_end{109.0, 61.0, M_PI / 2};
 
  public:
-  /// @brief Constructs a new orange skills auton object
-  OrangeSkillsAuton();
+  /// @brief Constructs a new orange win point auton object
+  OrangeWPAuton();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled

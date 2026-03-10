@@ -3,12 +3,12 @@
 
 #include "driftless/control/PID.hpp"
 #include "driftless/control/trajectory/trajectory_follower/ITrajectoryFollower.hpp"
+#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
+#include "driftless/robot/subsystems/odometry/Position.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
-#include "driftless/robot/subsystems/odometry/Position.hpp"
-#include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -32,7 +32,7 @@ class PIDTrajectoryFollower : public ITrajectoryFollower {
   static constexpr uint8_t TASK_DELAY{10};
 
   /// @brief Repeatedly updates the given trajectory follower
-  /// @param params __void*__ The trajectory follower to update 
+  /// @param params __void*__ The trajectory follower to update
   static void taskLoop(void* params);
 
   std::unique_ptr<driftless::rtos::IDelayer> m_delayer{};
@@ -72,7 +72,8 @@ class PIDTrajectoryFollower : public ITrajectoryFollower {
   /// @param x_velocity __double__ The x velocity
   /// @param y_velocity __double__ The y velocity
   /// @param angular_velocity __double__ The angular velocity
-  void setDriveMotionVector(double x_velocity, double y_velocity, double angular_velocity);
+  void setDriveMotionVector(double x_velocity, double y_velocity,
+                            double angular_velocity);
 
   /// @brief Gets the current position of the robot
   /// @return __Position__ The current position of the robot
@@ -81,7 +82,8 @@ class PIDTrajectoryFollower : public ITrajectoryFollower {
   /// @brief Calculates the distance to the target
   /// @param position __const Position__ The current position
   /// @return __double__ The distance to the target
-  double calculateDistanceToTarget(const driftless::robot::subsystems::odometry::Position& position);
+  double calculateDistanceToTarget(
+      const driftless::robot::subsystems::odometry::Position& position);
 
   /// @brief Updates the target velocity of the robot
   /// @param position __const Position__ The current position
@@ -106,8 +108,8 @@ class PIDTrajectoryFollower : public ITrajectoryFollower {
   /// @brief Follows a given trajectory
   /// @param robot __const std::shared_ptr<robot::Robot>&__ The robot being
   /// controlled
-  /// @param trajectory __const std::vector<TrajectoryPoint>&__ The trajectory to
-  /// follow
+  /// @param trajectory __const std::vector<TrajectoryPoint>&__ The trajectory
+  /// to follow
   void followTrajectory(
       const std::shared_ptr<driftless::robot::Robot>& robot,
       const std::vector<TrajectoryPoint>& trajectory) override;

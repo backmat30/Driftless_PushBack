@@ -58,8 +58,8 @@ class IHood {
   /// @brief Retracts the descore mechanism
   virtual void retractDescore() = 0;
 
-  /// @brief Toggles the descore mechanism between extended and retracted
-  virtual void toggleDescore() = 0;
+  /// @brief Extends the descore halfway
+  virtual void extendDescoreHalf() = 0;
 
   /// @brief Bumps the hood up slightly
   virtual void bumpUp() = 0;
@@ -85,6 +85,11 @@ class IHood {
   /// @brief Checks if the hood door is open
   /// @return __bool__ True if the door is open, false otherwise
   virtual bool isOpen() = 0;
+
+  /// @brief Gets the height of the descore mechanism;
+  /// 0 if fully retracted, 1 if halfway extended, 2 if fully extended
+  /// @return __int__ The height of the descore mechanism
+  virtual int getDescoreHeight() = 0;
 };
 }  // namespace hood
 }  // namespace subsystems

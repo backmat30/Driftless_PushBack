@@ -1,16 +1,17 @@
-#include "driftless/auton/OrangePumpNDumpAuton.hpp"
+#include "driftless/auton/OrangeControlRushAuton.hpp"
 
 namespace driftless::auton {
-OrangePumpNDumpAuton::OrangePumpNDumpAuton() : AAuton("Orange_PumpDump") {}
+OrangeControlRushAuton::OrangeControlRushAuton()
+    : AAuton("Orange_ControlRush") {}
 
-void OrangePumpNDumpAuton::init(
+void OrangeControlRushAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system) {
   m_robot = robot;
   m_control_system = control_system;
 }
 
-void OrangePumpNDumpAuton::run(
+void OrangeControlRushAuton::run(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system,
     std::shared_ptr<driftless::alliance::IAlliance>& alliance,
@@ -25,6 +26,8 @@ void OrangePumpNDumpAuton::run(
   uint32_t start_time{getTime()};
   setOdomPosition(91, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
+
+  // ROUTE GOES HERE
   intakeFront();
 
   // go to matchloader
@@ -39,69 +42,48 @@ void OrangePumpNDumpAuton::run(
 
   delay(450);
   hoodRaise();
-  delay(200);
+
+  delay(210);
   intakeStop();
   retractBackIntakeArms();
 
   // score blocks from match loader
-  intakeFront();
   goToPose(long_goal, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
+  delay(100);
+  intakeStop();
+  delay(150);
   waitForGoToPose(long_goal, 12.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPose(long_goal, 2.0, 1000);
-  hoodOpenDoor();
-
-  delay(1250);
-
-  // go back to match loader
-  intakeStop();
-  goToPose(long_goal_to_matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal_to_matchload, 16.0, 1500);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.5);
-  waitForGoToPose(long_goal_to_matchload, 6.0, 2000);
-  goToPose(matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  intakeBack();
-  waitForGoToPose(matchload, 12.0, 2000);
-  hoodLower();
-  hoodCloseDoor();
-  setGoToPoseVelocity(MAX_VELOCITY / 2.5);
-  waitForGoToPose(matchload, 2.0, 2000);
-  deployBackIntakeArms();
-
-  delay(3300);
-  hoodRaise();
-  delay(200);
-
-  // score on long goal again
-  intakeFront();
-  retractBackIntakeArms();
-  goToPose(long_goal_2, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal_2, 12.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPose(long_goal_2, 2.0, 1000);
-  hoodOpenDoor();
   intakeFront();
 
-  // block goal until almost end of auton
-  delay(2500);
-  goToPose(matchload_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  delay(250);
-  hoodCloseDoor();
-  intakeStop();
-  goToPose(long_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal, 2.0, 2000);
-  stopMotion();
-  delayUntil(start_time + 19000);
+  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
+  waitForGoToPose(long_goal, 2.0, 750);
+  hoodOpenDoor();
 
-  // descore
-  goToPose(descore_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  delay(1000);
+
+  // go to descore
+  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   middleDescore();
   delay(100);
   intakeStop();
-  waitForGoToPose(descore_lineup, 1.25, 2000);
+  waitForGoToPose(descore_lineup, 1.0, 2000);
 
   goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(end_descore, 2.0, 3000);
+  waitForGoToPose(end_descore, 2.5, 3000);
+
+  // go to block mid goal
+  deployDescore();
+  delay(100);
+
+  goToPoint(middle_goal_lineup, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(middle_goal_lineup, 2.0, 2000);
+
+  retractDescore();
+  hoodLower();
+
+  goToPoint(middle_goal_block, MAX_VELOCITY / 2.0);
+  waitForGoToPoint(middle_goal_block, 2.0, 2000);
+
   stopMotion();
 
   // leave at end
