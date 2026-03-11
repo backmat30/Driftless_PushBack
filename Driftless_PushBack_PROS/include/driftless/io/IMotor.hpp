@@ -51,6 +51,10 @@ class IMotor {
   /// @param volts __double__ The desired voltage
   virtual void setVoltage(double volts) = 0;
 
+  /// @brief Sets the velocity of the motor in rad/s
+  /// @param velocity __double__ The desired velocity
+  virtual void setVelocity(double velocity) = 0;
+
   /// @brief Sets the max current of the motor in amps
   /// @param amps __double__ The desired current limit
   virtual void setCurrentLimit(double amps) = 0;
