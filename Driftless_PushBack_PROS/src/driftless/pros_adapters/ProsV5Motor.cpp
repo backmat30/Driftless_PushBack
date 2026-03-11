@@ -4,6 +4,13 @@ namespace pros_adapters {
 ProsV5Motor::ProsV5Motor(std::unique_ptr<pros::Motor>& motor)
     : m_motor{std::move(motor)} {}
 
+ProsV5Motor::ProsV5Motor(
+    std::unique_ptr<pros::Motor>& motor,
+    std::unique_ptr<io::motor_voltage_control::IVoltageController>&
+        voltage_controller)
+    : m_motor{std::move(motor)},
+      voltage_controller{std::move(voltage_controller)} {}
+
 void ProsV5Motor::initialize() {
   if (m_motor) {
     m_motor->move_voltage(0);
@@ -12,14 +19,6 @@ void ProsV5Motor::initialize() {
     m_motor->set_encoder_units(
         pros::motor_encoder_units_e_t::E_MOTOR_ENCODER_ROTATIONS);
   }
-}
-
-double ProsV5Motor::getTorqueConstant() { return TORQUE_CONSTANT; }
-
-double ProsV5Motor::getResistance() { return RESISTANCE; }
-
-double ProsV5Motor::getAngularVelocityConstant() {
-  return ANGULAR_VELOCITY_CONSTANT;
 }
 
 double ProsV5Motor::getGearRatio() {
@@ -68,6 +67,19 @@ void ProsV5Motor::setVoltage(double volts) {
   millivolts = std::max(millivolts, -MAX_MILLIVOLTS);
 
   if (m_motor) m_motor->move_voltage(millivolts);
+}
+
+void ProsV5Motor::setVelocity(double velocity) {
+  if (m_motor) {
+    if (voltage_controller) {
+      double volts{voltage_controller->getVoltage(
+          velocity, velocity - getAngularVelocity())};
+      setVoltage(volts);
+    } else {
+      double rpm{velocity / VELOCITY_CONVERSION};
+      m_motor->move_velocity(rpm);
+    }
+  }
 }
 
 void ProsV5Motor::setCurrentLimit(double amps) {
