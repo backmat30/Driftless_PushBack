@@ -59,6 +59,11 @@ void MotorGroup::setVoltage(double volts) {
     if (motor) motor->setVoltage(volts);
 }
 
+void MotorGroup::setVelocity(double velocity) {
+  for (auto& motor : motors)
+    if (motor) motor->setVelocity(velocity);
+}
+
 void MotorGroup::setCurrentLimit(double amps) {
   for (auto& motor : motors) {
     if (motor) motor->setCurrentLimit(amps);

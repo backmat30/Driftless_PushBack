@@ -47,6 +47,10 @@ class MotorGroup {
   /// @param voltage __double__ The new voltage
   void setVoltage(double voltage);
 
+  /// @brief Sets the velocity of all motors in the group
+  /// @param velocity __double__ The new velocity
+  void setVelocity(double velocity);
+
   /// @brief Sets the current limit of all motors in the group
   /// @param amps __double__ The new current limit
   void setCurrentLimit(double amps);
