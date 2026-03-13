@@ -143,6 +143,24 @@ void ModularHolonomicDrive::setNormalizedAngularVelocity(
   }
 }
 
+void ModularHolonomicDrive::setWheelVoltage(int wheel, double voltage) {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+  if (wheel < 0 || wheel >= m_modules.size()) {
+    return;
+  }
+
+  m_current_velocity = {0, 0, 0};
+
+  if (m_modules[wheel]) {
+    m_modules[wheel]->setRawVoltage(voltage);
+  }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
 void ModularHolonomicDrive::setModules(
     std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>&
         modules) {

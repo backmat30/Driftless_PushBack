@@ -58,6 +58,12 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
       m_drive_train->setNormalizedAngularVelocity(normalized_angular_velocity);
       break;
     }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_MODULE_VOLTAGE: {
+      int wheel = va_arg(args, int);
+      double voltage = va_arg(args, double);
+      m_drive_train->setWheelVoltage(wheel, voltage);
+      break;
+    }
   }
 }
 void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {

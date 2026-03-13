@@ -43,6 +43,10 @@ void XDriveModule::setNormalizedMotionVector(
   m_motors.setVoltage(module_voltage);
 }
 
+void XDriveModule::setRawVoltage(double voltage) {
+  m_motors.setVoltage(voltage);
+}
+
 void XDriveModule::setMotors(hal::MotorGroup& motors) { m_motors = motors; }
 
 void XDriveModule::setAngleOffset(double angle_offset) {
