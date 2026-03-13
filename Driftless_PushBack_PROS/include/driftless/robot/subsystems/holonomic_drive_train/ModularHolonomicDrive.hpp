@@ -53,6 +53,8 @@ class ModularHolonomicDrive : public IHolonomicDrive {
 
   HolonomicMotionVector m_current_velocity{};
 
+  bool m_paused{false};
+
   void taskUpdate();
 
  public:
