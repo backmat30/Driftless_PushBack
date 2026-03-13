@@ -68,6 +68,11 @@ class IHolonomicDrive {
   /// @param wheel __int__ The index of the wheel to set the voltage of
   /// @param voltage __double__ The voltage to set the wheel to
   virtual void setWheelVoltage(int wheel, double voltage) = 0;
+
+  /// @brief Gets the speed of a specific wheel in the holonomic drive train
+  /// @param wheel __int__ The index of the wheel to get the speed of
+  /// @return __double__ The speed of the specified wheel in rad/s
+  virtual double getWheelSpeed(int wheel) = 0;
 };
 }  // namespace holonomic_drive_train
 }  // namespace subsystems

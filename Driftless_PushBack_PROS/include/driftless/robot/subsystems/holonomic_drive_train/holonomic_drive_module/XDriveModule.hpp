@@ -61,6 +61,10 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @brief Sets the angle offset of the X-drive module
   /// @param angleOffset __double__ The angle offset to be set
   void setAngleOffset(double angle_offset);
+
+  /// @brief Gets the speed of the module in rad/s
+  /// @return __double__ The speed of the module in rad/s
+  double getSpeed() override;
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train

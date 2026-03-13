@@ -161,6 +161,18 @@ void ModularHolonomicDrive::setWheelVoltage(int wheel, double voltage) {
   }
 }
 
+double ModularHolonomicDrive::getWheelSpeed(int wheel) {
+  if (wheel < 0 || wheel >= m_modules.size()) {
+    return 0.0;
+  }
+
+  if (m_modules[wheel]) {
+    return m_modules[wheel]->getSpeed();
+  }
+
+  return 0.0;
+}
+
 void ModularHolonomicDrive::setModules(
     std::vector<std::unique_ptr<holonomic_drive_module::IHolonomicDriveModule>>&
         modules) {

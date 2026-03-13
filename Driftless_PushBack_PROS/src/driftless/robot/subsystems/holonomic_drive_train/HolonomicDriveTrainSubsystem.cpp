@@ -67,6 +67,17 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
   }
 }
 void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {
-  return nullptr;
+  void* out = nullptr;
+  switch (state_name) {
+    case ESubsystemState::HOLONOMIC_DRIVE_TRAIN_GET_WHEEL_SPEED: {
+      std::vector<double> wheel_speeds{};
+      for (int i = 0; i < 4; ++i) {
+        wheel_speeds.push_back(m_drive_train->getWheelSpeed(i));
+      }
+      out = static_cast<void*>(&wheel_speeds);
+      break;
+    }
+  }
+  return out;
 }
 }  // namespace driftless::robot::subsystems::holonomic_drive_train

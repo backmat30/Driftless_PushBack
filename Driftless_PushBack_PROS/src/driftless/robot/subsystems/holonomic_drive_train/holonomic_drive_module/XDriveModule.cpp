@@ -47,6 +47,12 @@ void XDriveModule::setRawVoltage(double voltage) {
   m_motors.setVoltage(voltage);
 }
 
+double XDriveModule::getSpeed() {
+  double motor_speed = m_motors.getAngularVelocity();
+  double gear_ratio = m_motors.getGearRatio();
+  return motor_speed * gear_ratio;
+}
+
 void XDriveModule::setMotors(hal::MotorGroup& motors) { m_motors = motors; }
 
 void XDriveModule::setAngleOffset(double angle_offset) {
