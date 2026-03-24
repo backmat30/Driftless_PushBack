@@ -31,16 +31,18 @@ void XDriveModule::setNormalizedMotionVector(
   // Calculate the y-component of the vector, aka forward velocity of the wheel
   double linear_velocity = std::sin(m_angle_offset) * motion_vector.y +
                            std::cos(m_angle_offset) * motion_vector.x;
-  double linear_voltage = linear_velocity * 12.0 * std::sqrt(2);
+  double linear_motor_velocity =
+      linear_velocity * std::sqrt(2) * (3600 / m_motors.getGearRatio());
 
   // calculate the velocity contribution from angular velocity
-  double turn_voltage = motion_vector.angular_velocity * -12.0;
+  double turn_motor_velocity =
+      motion_vector.angular_velocity * -(3600 / m_motors.getGearRatio());
 
   // Set the motor speeds (assuming a simple proportional control for
   // demonstration)
-  double module_voltage = linear_voltage + turn_voltage;
+  double module_velocity = linear_motor_velocity + turn_motor_velocity;
 
-  m_motors.setVoltage(module_voltage);
+  m_motors.setVelocity(module_velocity);
 }
 
 void XDriveModule::setRawVoltage(double voltage) {
