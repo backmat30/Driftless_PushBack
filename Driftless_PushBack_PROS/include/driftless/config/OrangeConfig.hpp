@@ -133,21 +133,21 @@ class OrangeConfig : public IConfig {
   static constexpr double TURN_KI{0.0};
   static constexpr double TURN_KD{350.0};
 
-  static constexpr double GO_TO_POINT_X_KP{40.0};
+  static constexpr double GO_TO_POINT_X_KP{5.0};
   static constexpr double GO_TO_POINT_X_KI{0.0};
-  static constexpr double GO_TO_POINT_X_KD{3000.0};
+  static constexpr double GO_TO_POINT_X_KD{700.0};
 
-  static constexpr double GO_TO_POINT_Y_KP{40.0};
+  static constexpr double GO_TO_POINT_Y_KP{5.0};
   static constexpr double GO_TO_POINT_Y_KI{0.0};
-  static constexpr double GO_TO_POINT_Y_KD{3000.0};
+  static constexpr double GO_TO_POINT_Y_KD{700.0};
 
-  static constexpr double GO_TO_POSE_X_KP{40.0};
+  static constexpr double GO_TO_POSE_X_KP{5.0};
   static constexpr double GO_TO_POSE_X_KI{0.0};
-  static constexpr double GO_TO_POSE_X_KD{3000.0};
+  static constexpr double GO_TO_POSE_X_KD{700.0};
 
-  static constexpr double GO_TO_POSE_Y_KP{40.0};
+  static constexpr double GO_TO_POSE_Y_KP{5.0};
   static constexpr double GO_TO_POSE_Y_KI{0.0};
-  static constexpr double GO_TO_POSE_Y_KD{3000.0};
+  static constexpr double GO_TO_POSE_Y_KD{700.0};
 
   static constexpr double GO_TO_POSE_ROTATIONAL_KP{6.75};
   static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
