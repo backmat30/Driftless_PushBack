@@ -129,9 +129,9 @@ class OrangeConfig : public IConfig {
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KI{0.0};
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KD{0.0};
 
-  static constexpr double TURN_KP{28.0};
+  static constexpr double TURN_KP{6.75};
   static constexpr double TURN_KI{0.0};
-  static constexpr double TURN_KD{1200.0};
+  static constexpr double TURN_KD{350.0};
 
   static constexpr double GO_TO_POINT_X_KP{40.0};
   static constexpr double GO_TO_POINT_X_KI{0.0};
@@ -149,9 +149,9 @@ class OrangeConfig : public IConfig {
   static constexpr double GO_TO_POSE_Y_KI{0.0};
   static constexpr double GO_TO_POSE_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{6.75};
   static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
-  static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KD{350.0};
 
   static constexpr double MOTION_LINEAR_VELOCITY_TOLERANCE{1.0};
   static constexpr double MOTION_ANGULAR_VELOCITY_TOLERANCE{M_PI / 20};
