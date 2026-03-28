@@ -18,6 +18,7 @@
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
 #include "driftless/auton/BlueWPAuton.hpp"
+#include "driftless/auton/FeedForwardTunerAuton.hpp"
 #include "driftless/auton/OrangeControlRushAuton.hpp"
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
 #include "driftless/auton/OrangeSkillsAuton.hpp"

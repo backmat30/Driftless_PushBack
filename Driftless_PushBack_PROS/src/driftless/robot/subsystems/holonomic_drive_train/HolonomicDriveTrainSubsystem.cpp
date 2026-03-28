@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicDriveTrainSubsystem.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless::robot::subsystems::holonomic_drive_train {
 HolonomicDriveTrainSubsystem::HolonomicDriveTrainSubsystem(
     std::unique_ptr<IHolonomicDrive>& drive_train)
@@ -70,11 +71,11 @@ void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {
   void* out = nullptr;
   switch (state_name) {
     case ESubsystemState::HOLONOMIC_DRIVE_TRAIN_GET_WHEEL_SPEED: {
-      std::vector<double> wheel_speeds{};
+      double* wheel_speeds = new double[4];
       for (int i = 0; i < 4; ++i) {
-        wheel_speeds.push_back(m_drive_train->getWheelSpeed(i));
+        wheel_speeds[i] = m_drive_train->getWheelSpeed(i);
       }
-      out = static_cast<void*>(&wheel_speeds);
+      out = wheel_speeds;
       break;
     }
   }
