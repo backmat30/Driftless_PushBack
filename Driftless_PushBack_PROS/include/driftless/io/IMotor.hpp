@@ -19,18 +19,6 @@ class IMotor {
   /// @brief Initialize the motor
   virtual void initialize() = 0;
 
-  /// @brief Gets the torque constant of the motor
-  /// @return __double__ The torque constant
-  virtual double getTorqueConstant() = 0;
-
-  /// @brief Gets the electrical resistance of the motor
-  /// @return __double__ the resistance
-  virtual double getResistance() = 0;
-
-  /// @brief Gets the angular velocity constant of the motor
-  /// @return __double__ the angular velocity constant
-  virtual double getAngularVelocityConstant() = 0;
-
   /// @brief Gets the current gear ratio of the motor
   /// @return __double__ the gear ratio
   virtual double getGearRatio() = 0;
@@ -50,6 +38,10 @@ class IMotor {
   /// @brief Sets the voltage going to the motor in volts
   /// @param volts __double__ The desired voltage
   virtual void setVoltage(double volts) = 0;
+
+  /// @brief Sets the velocity of the motor in rad/s
+  /// @param velocity __double__ The desired velocity
+  virtual void setVelocity(double velocity) = 0;
 
   /// @brief Sets the max current of the motor in amps
   /// @param amps __double__ The desired current limit

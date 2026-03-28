@@ -1,5 +1,6 @@
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicDriveTrainSubsystem.hpp"
 
+#include "pros/screen.hpp"
 namespace driftless::robot::subsystems::holonomic_drive_train {
 HolonomicDriveTrainSubsystem::HolonomicDriveTrainSubsystem(
     std::unique_ptr<IHolonomicDrive>& drive_train)
@@ -58,9 +59,26 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
       m_drive_train->setNormalizedAngularVelocity(normalized_angular_velocity);
       break;
     }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_MODULE_VOLTAGE: {
+      int wheel = va_arg(args, int);
+      double voltage = va_arg(args, double);
+      m_drive_train->setWheelVoltage(wheel, voltage);
+      break;
+    }
   }
 }
 void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {
-  return nullptr;
+  void* out = nullptr;
+  switch (state_name) {
+    case ESubsystemState::HOLONOMIC_DRIVE_TRAIN_GET_WHEEL_SPEED: {
+      double* wheel_speeds = new double[4];
+      for (int i = 0; i < 4; ++i) {
+        wheel_speeds[i] = m_drive_train->getWheelSpeed(i);
+      }
+      out = wheel_speeds;
+      break;
+    }
+  }
+  return out;
 }
 }  // namespace driftless::robot::subsystems::holonomic_drive_train

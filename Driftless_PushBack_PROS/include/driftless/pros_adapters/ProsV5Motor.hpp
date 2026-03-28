@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "driftless/io/IMotor.hpp"
+#include "driftless/io/motor_voltage_control/IVoltageController.hpp"
 #include "pros/motors.hpp"
 
 /// @brief The namespace for driftless library code
@@ -31,24 +32,6 @@ class ProsV5Motor : public io::IMotor {
    *
    */
   static constexpr double NO_CARTRIDGE{1.0};
-
-  /**
-   * @brief The torque constant of the motor
-   *
-   */
-  static constexpr double TORQUE_CONSTANT{(2.1 / 36) / 2.5};
-
-  /**
-   * @brief The resistance of the motor in ohms
-   *
-   */
-  static constexpr double RESISTANCE{3.2};
-
-  /**
-   * @brief The angular velocity constant of the motor
-   *
-   */
-  static constexpr double ANGULAR_VELOCITY_CONSTANT{2.1};
 
   /**
    * @brief Converts motor velocity to radians/second
@@ -84,6 +67,10 @@ class ProsV5Motor : public io::IMotor {
    */
   std::unique_ptr<pros::Motor> m_motor{};
 
+  /// @brief The voltage controller used to find voltage when given a velocity
+  std::unique_ptr<io::motor_voltage_control::IVoltageController>
+      voltage_controller{};
+
   /**
    * @brief The position offset
    *
@@ -98,32 +85,20 @@ class ProsV5Motor : public io::IMotor {
    */
   ProsV5Motor(std::unique_ptr<pros::Motor>& motor);
 
+  /// @brief Construct a new Pros V5 Motor object with a voltage controller
+  /// @param motor __std::unique_ptr<pros::Motor>&__ The motor being adapted
+  /// @param voltage_controller
+  /// __std::unique_ptr<io::motor_voltage_control::IVoltageController>&__ The
+  /// voltage controller to use for velocity control
+  ProsV5Motor(std::unique_ptr<pros::Motor>& motor,
+              std::unique_ptr<io::motor_voltage_control::IVoltageController>&
+                  voltage_controller);
+
   /**
    * @brief Initializes the motor
    *
    */
   void initialize() override;
-
-  /**
-   * @brief Get the torque constant of the motor
-   *
-   * @return __double__ The torque constant of the motor
-   */
-  double getTorqueConstant() override;
-
-  /**
-   * @brief Get the resistance of the motor
-   *
-   * @return __double__ The resistance of the motor
-   */
-  double getResistance() override;
-
-  /**
-   * @brief Get the angular velocity constant of the motor
-   *
-   * @return __double__ The angular velocity constant of the motor
-   */
-  double getAngularVelocityConstant() override;
 
   /**
    * @brief Get the gear ratio of the motor (1 if n/a)
@@ -156,6 +131,10 @@ class ProsV5Motor : public io::IMotor {
    * @param volts __double__ The voltage input in Volts
    */
   void setVoltage(double volts) override;
+
+  /// @brief Sets the velocity of the motor in rad/s
+  /// @param velocity __double__ The desired velocity
+  void setVelocity(double velocity) override;
 
   /// @brief Sets the max current of the motor in amps
   /// @param amps __double__ The desired current limit

@@ -14,9 +14,11 @@ void ModularHolonomicDrive::taskUpdate() {
     m_mutex->take();
   }
 
-  for (auto& module : m_modules) {
-    if (module) {
-      module->setNormalizedMotionVector(m_current_velocity);
+  if (!m_paused) {
+    for (auto& module : m_modules) {
+      if (module) {
+        module->setNormalizedMotionVector(m_current_velocity);
+      }
     }
   }
 
@@ -57,6 +59,8 @@ void ModularHolonomicDrive::setLinearVelocity(double x_velocity,
     m_mutex->take();
   }
 
+  m_paused = false;
+
   double velocity{std::sqrt(x_velocity * x_velocity + y_velocity * y_velocity)};
   if (velocity > m_max_linear_velocity) {
     double scale = m_max_linear_velocity / velocity;
@@ -76,6 +80,8 @@ void ModularHolonomicDrive::setAngularVelocity(double angular_velocity) {
   if (m_mutex) {
     m_mutex->take();
   }
+
+  m_paused = false;
 
   if (std::abs(angular_velocity) > m_max_angular_velocity) {
     angular_velocity = (angular_velocity / std::abs(angular_velocity)) *
@@ -101,6 +107,8 @@ void ModularHolonomicDrive::setNormalizedLinearVelocity(double x_velocity,
   if (m_mutex) {
     m_mutex->take();
   }
+
+  m_paused = false;
 
   // Clamp the x and y to [-1, 1]
   if (x_velocity > 1.0) {
@@ -129,6 +137,8 @@ void ModularHolonomicDrive::setNormalizedAngularVelocity(
     m_mutex->take();
   }
 
+  m_paused = false;
+
   // Clamp the angular velocity to [-1, 1]
   if (angular_velocity > 1.0) {
     angular_velocity = 1.0;
@@ -141,6 +151,39 @@ void ModularHolonomicDrive::setNormalizedAngularVelocity(
   if (m_mutex) {
     m_mutex->give();
   }
+}
+
+void ModularHolonomicDrive::setWheelVoltage(int wheel, double voltage) {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  m_paused = true;
+
+  if (wheel < 0 || wheel >= m_modules.size()) {
+    return;
+  }
+
+  m_current_velocity = {0, 0, 0};
+
+  if (m_modules[wheel]) {
+    m_modules[wheel]->setRawVoltage(voltage);
+  }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+double ModularHolonomicDrive::getWheelSpeed(int wheel) {
+  if (wheel < 0 || wheel >= m_modules.size()) {
+    return 0.0;
+  }
+
+  if (m_modules[wheel]) {
+    return m_modules[wheel]->getSpeed();
+  }
+
+  return 0.0;
 }
 
 void ModularHolonomicDrive::setModules(

@@ -62,6 +62,17 @@ class IHolonomicDrive {
   /// @brief Sets the normalized angular velocity of the holonomic drive train
   /// @param angular_velocity The desired normalized angular velocity [-1, 1]
   virtual void setNormalizedAngularVelocity(double angular_velocity) = 0;
+
+  /// @brief Sets the voltage of a specific wheel in the holonomic drive train
+  /// Only use for tuning or testing, not for regular control of the drive train
+  /// @param wheel __int__ The index of the wheel to set the voltage of
+  /// @param voltage __double__ The voltage to set the wheel to
+  virtual void setWheelVoltage(int wheel, double voltage) = 0;
+
+  /// @brief Gets the speed of a specific wheel in the holonomic drive train
+  /// @param wheel __int__ The index of the wheel to get the speed of
+  /// @return __double__ The speed of the specified wheel in rad/s
+  virtual double getWheelSpeed(int wheel) = 0;
 };
 }  // namespace holonomic_drive_train
 }  // namespace subsystems

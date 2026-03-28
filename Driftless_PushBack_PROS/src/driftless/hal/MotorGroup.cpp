@@ -11,36 +11,6 @@ void MotorGroup::init() {
     if (motor) motor->initialize();
 }
 
-double MotorGroup::getTorqueConstant() {
-  double sum_constant{};
-  for (auto& motor : motors)
-    if (motor) sum_constant += motor->getTorqueConstant();
-
-  return sum_constant;
-}
-
-double MotorGroup::getResistance() {
-  double average_resistance{};
-  if (!motors.empty()) {
-    for (auto& motor : motors)
-      if (motor) average_resistance += motor->getResistance();
-    average_resistance /= motors.size();
-  }
-
-  return average_resistance;
-}
-
-double MotorGroup::getAngularVelocityConstant() {
-  double average_constant{};
-  if (!motors.empty()) {
-    for (auto& motor : motors)
-      if (motor) average_constant += motor->getAngularVelocityConstant();
-    average_constant /= motors.size();
-  }
-
-  return average_constant;
-}
-
 double MotorGroup::getGearRatio() {
   double gear_ratio{};
   if (!motors.empty() && motors.front())
@@ -87,6 +57,11 @@ double MotorGroup::getEfficiency() {
 void MotorGroup::setVoltage(double volts) {
   for (auto& motor : motors)
     if (motor) motor->setVoltage(volts);
+}
+
+void MotorGroup::setVelocity(double velocity) {
+  for (auto& motor : motors)
+    if (motor) motor->setVelocity(velocity);
 }
 
 void MotorGroup::setCurrentLimit(double amps) {
