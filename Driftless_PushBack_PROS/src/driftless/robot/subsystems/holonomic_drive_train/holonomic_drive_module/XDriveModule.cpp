@@ -32,11 +32,11 @@ void XDriveModule::setNormalizedMotionVector(
   double linear_velocity = std::sin(m_angle_offset) * motion_vector.y +
                            std::cos(m_angle_offset) * motion_vector.x;
   double linear_motor_velocity =
-      linear_velocity * std::sqrt(2) * (3600 / m_motors.getGearRatio());
+      linear_velocity * std::sqrt(2) * (120 * M_PI / m_motors.getGearRatio());
 
   // calculate the velocity contribution from angular velocity
   double turn_motor_velocity =
-      motion_vector.angular_velocity * -(3600 / m_motors.getGearRatio());
+      motion_vector.angular_velocity * -(120 * M_PI / m_motors.getGearRatio());
 
   // Set the motor speeds (assuming a simple proportional control for
   // demonstration)
