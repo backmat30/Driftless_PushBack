@@ -69,7 +69,7 @@ void HoodOperator::updateHoodSmartToggle(EControllerDigital toggle_high_goal,
   bool toggle_high_goal_pressed{m_controller->getNewDigital(toggle_high_goal)};
   bool toggle_low_goal_pressed{m_controller->getNewDigital(toggle_low_goal)};
   bool toggle_gate_pressed{m_controller->getNewDigital(toggle_gate)};
-  bool toggle_descore_pressed{m_controller->getNewDigital(toggle_descore)};
+  bool activate_descore_pressed{m_controller->getDigital(toggle_descore)};
 
   bool is_hood_raised{*static_cast<bool*>(
       m_robot->getState(robot::subsystems::ESubsystem::HOOD,
@@ -116,28 +116,29 @@ void HoodOperator::updateHoodSmartToggle(EControllerDigital toggle_high_goal,
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
         robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
-  } else if (toggle_descore_pressed) {
-    if (is_hood_raised) {
-      if (!is_descore_mid) {
-        m_robot->sendCommand(
-            robot::subsystems::ESubsystem::HOOD,
-            robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
-      } else {
-        m_robot->sendCommand(
-            robot::subsystems::ESubsystem::HOOD,
-            robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
-      }
-    } else {
-      m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                           robot::subsystems::ESubsystemCommand::HOOD_RAISE);
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
-    }
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
         robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_GATE);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
+  }
+
+  if (activate_descore_pressed) {
+    if (!is_hood_raised && !is_hood_bumped) {
+      m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                           robot::subsystems::ESubsystemCommand::HOOD_RAISE);
+    }
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                         robot::subsystems::ESubsystemCommand::HOOD_CLOSE_GATE);
+  } else if (is_descore_mid) {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
   }
 }
 
