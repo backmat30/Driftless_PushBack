@@ -71,11 +71,9 @@ class StateMachineIntake : public IIntake {
   intake_states::EIntakeStates current_state{
       intake_states::EIntakeStates::IDLE};
 
+  double m_desired_voltage{};
+
   bool m_color_sort_paused{true};
-
-  bool m_running_forward{};
-
-  bool m_running_back_intake{};
 
   bool m_has_first_matchloader_block{};
 
@@ -87,21 +85,10 @@ class StateMachineIntake : public IIntake {
 
   double m_first_matchloader_block_pos{-__DBL_MAX__};
 
-  /// @brief Checks if there is a block of the opposing alliance in the intake
-  /// @return __bool__ True if there is an opposing block, false otherwise
-  bool hasOpposingBlock();
-
-  /// @brief Checks if there is a block of the current alliance in the intake
-  /// @return __bool__ True if there is an alliance block, false otherwise
-  bool hasAllianceBlock();
-
   /// @brief Performs all instance related updates
   void taskUpdate();
 
  public:
-  friend class intake_states::IdleIntakeState;
-  friend class intake_states::FrontInIntakeState;
-
   /// @brief Initializes the intake
   void init() override;
 
@@ -140,6 +127,63 @@ class StateMachineIntake : public IIntake {
   /// @brief Checks if the intake arms are deployed
   /// @return __bool__ True of the arms are deployed, false otherwise
   bool isDeployed() override;
+
+  /// @brief Sets the voltage for the front intake motors
+  /// @param voltage __double__ The new voltage
+  void setFrontMotorVoltage(double voltage);
+
+  /// @brief Sets the current limit for the front intake motors
+  /// @param amps __double__ The new current limit in amps
+  void setFrontMotorCurrentLimit(double amps);
+
+  /// @brief Sets the voltage for the intermediary intake motors
+  /// @param voltage __double__ The new voltage
+  void setIntermediaryMotorVoltage(double voltage);
+
+  /// @brief Sets the current limit for the intermediary intake motors
+  /// @param amps __double__ The new current limit in amps
+  void setIntermediaryMotorCurrentLimit(double amps);
+
+  /// @brief Sets the voltage for the back intake motors
+  /// @param voltage __double__ The new voltage
+  void setBackMotorVoltage(double voltage);
+
+  /// @brief Sets the current limit for the back intake motors
+  /// @param amps __double__ The new current limit in amps
+  void setBackMotorCurrentLimit(double amps);
+
+  /// @brief Sets the voltage for the vertical motors
+  /// @param voltage __double__ The new voltage
+  void setVerticalMotorVoltage(double voltage);
+
+  /// @brief Sets the current limit for the vertical motors
+  /// @param amps __double__ The new current limit in amps
+  void setVerticalMotorCurrentLimit(double amps);
+
+  /// @brief Checks if there is a block of the opposing alliance in the intake
+  /// @return __bool__ True if there is an opposing block, false otherwise
+  bool hasOpposingBlock();
+
+  /// @brief Checks if there is a block of the current alliance in the intake
+  /// @return __bool__ True if there is an alliance block, false otherwise
+  bool hasAllianceBlock();
+
+  /// @brief Gets the position of the front intake motors
+  /// @return __double__ The position of the front intake motors
+  double getFrontMotorPosition();
+
+  /// @brief Gets the position of the color sensor relative to the back intake
+  /// @return __double__ The position of the color sensor relative to the back
+  /// intake
+  double getColorSensorPosition();
+
+  /// @brief Checks if the color sorting is paused
+  /// @return __bool__ True if the color sorting is paused, false otherwise
+  bool isColorSortPaused();
+
+  /// @brief Gets the desired voltage for the intake motors
+  /// @return __double__ The desired voltage for the intake motors
+  double getDesiredVoltage();
 
   /// @brief Sets the motors used by the front intake
   /// @param motors __hal::MotorGroup&__ The motors to use
