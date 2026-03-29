@@ -1,8 +1,7 @@
-#ifndef __I_INTAKE_STATE_HPP__
-#define __I_INTAKE_STATE_HPP__
+#ifndef __IDLE_INTAKE_STATE_HPP__
+#define __IDLE_INTAKE_STATE_HPP__
 
-#include "driftless/robot/subsystems/intake/StateMachineIntake.hpp"
-#include "driftless/robot/subsystems/intake/intake_states/EIntakeStates.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/IIntakeState.hpp"
 
 /// @brief The namespace for driftless library code
 /// @author Matthew Backman
@@ -24,14 +23,11 @@ namespace intake {
 /// @author Matthew Backman
 namespace intake_states {
 
-class IIntakeState {
+class IdleIntakeState : public IIntakeState {
  public:
-  /// @brief Deletes the intake state object
-  virtual ~IIntakeState() = default;
-
-  /// @brief Updates the intake using the state's behaviour
+  /// @brief Updates the intake to idle all motors
   /// @param intake __StateMachineIntake&__ The intake being updated
-  virtual void update(StateMachineIntake& intake) = 0;
+  void update(StateMachineIntake& intake) override;
 };
 
 }  // namespace intake_states
