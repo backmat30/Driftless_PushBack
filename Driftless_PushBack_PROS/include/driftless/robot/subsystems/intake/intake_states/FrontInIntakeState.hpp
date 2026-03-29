@@ -26,6 +26,9 @@ namespace intake_states {
 /// @brief Intake state for running the front intake motors forward
 /// @author Matthew Backman
 class FrontInIntakeState : public IIntakeState {
+ private:
+  double m_latest_opposing_block_pos{-__DBL_MAX__};
+
  public:
   /// @brief Updates the intake to run the front intake motors forward
   /// @param intake __StateMachineIntake&__ The intake being updated

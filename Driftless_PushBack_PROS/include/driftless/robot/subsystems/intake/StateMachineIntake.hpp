@@ -87,8 +87,6 @@ class StateMachineIntake : public IIntake {
 
   double m_first_matchloader_block_pos{-__DBL_MAX__};
 
-  double m_latest_opposing_block_pos{-__DBL_MAX__};
-
   /// @brief Checks if there is a block of the opposing alliance in the intake
   /// @return __bool__ True if there is an opposing block, false otherwise
   bool hasOpposingBlock();
@@ -102,6 +100,7 @@ class StateMachineIntake : public IIntake {
 
  public:
   friend class intake_states::IdleIntakeState;
+  friend class intake_states::FrontInIntakeState;
 
   /// @brief Initializes the intake
   void init() override;
