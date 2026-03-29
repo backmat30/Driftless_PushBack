@@ -2,25 +2,36 @@
 
 namespace driftless::robot::subsystems::intake::intake_states {
 void FrontInIntakeState::update(StateMachineIntake& intake) {
-  if (!intake.m_color_sort_paused) {
+  if (!intake.isColorSortPaused()) {
     if (intake.hasOpposingBlock()) {
-      m_latest_opposing_block_pos = intake.m_front_motors.getPosition();
+      m_latest_opposing_block_pos = intake.getFrontMotorPosition();
     }
-    if (intake.m_front_motors.getPosition() >
+    if (intake.getFrontMotorPosition() >
             m_latest_opposing_block_pos +
-                intake.COLOR_SORT_DISTANCE_TO_END * 2.0 ||
-        intake.m_front_motors.getPosition() <
-            m_latest_opposing_block_pos - intake.COLOR_SORT_DISTANCE_TO_END) {
+                intake.getColorSensorPosition() * 2.0 ||
+        intake.getFrontMotorPosition() <
+            m_latest_opposing_block_pos - intake.getColorSensorPosition()) {
       m_latest_opposing_block_pos = -__DBL_MAX__;
-    } else if (intake.m_front_motors.getPosition() <
-                   m_latest_opposing_block_pos +
-                       intake.COLOR_SORT_DISTANCE_TO_END &&
-               intake.m_running_forward) {
-      intake.m_back_motors.setVoltage(-12.0);
-      intake.m_back_motors.setCurrentLimit(2.5);
-      intake.m_intermediary_motors.setVoltage(-12.0);
-      intake.m_intermediary_motors.setCurrentLimit(2.5);
+    } else if (intake.getFrontMotorPosition() <
+               m_latest_opposing_block_pos + intake.getColorSensorPosition()) {
+      intake.setBackMotorVoltage(-12.0);
+      intake.setBackMotorCurrentLimit(2.5);
+      intake.setIntermediaryMotorVoltage(-12.0);
+      intake.setIntermediaryMotorCurrentLimit(2.5);
     }
   }
+
+  if (intake.getFrontMotorPosition() >
+      m_latest_opposing_block_pos + intake.getColorSensorPosition()) {
+    intake.setBackMotorVoltage(-intake.getDesiredVoltage() / 2.0);
+    intake.setBackMotorCurrentLimit(1.25);
+    intake.setIntermediaryMotorVoltage(intake.getDesiredVoltage());
+    intake.setIntermediaryMotorCurrentLimit(1.5);
+  }
+
+  intake.setFrontMotorVoltage(intake.getDesiredVoltage());
+  intake.setFrontMotorCurrentLimit(2.5);
+  intake.setVerticalMotorVoltage(intake.getDesiredVoltage());
+  intake.setVerticalMotorCurrentLimit(2.5);
 }
 }  // namespace driftless::robot::subsystems::intake::intake_states
