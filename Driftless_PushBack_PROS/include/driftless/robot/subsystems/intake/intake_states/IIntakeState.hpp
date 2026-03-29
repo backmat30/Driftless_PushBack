@@ -26,10 +26,18 @@ namespace intake_states {
 
 class IIntakeState {
  public:
+  /// @brief Deletes the intake state object
   virtual ~IIntakeState() = default;
 
+  /// @brief Updates the intake using the state's behaviour
+  /// @param intake __StateMachineIntake&__ The intake being updated
   virtual void update(StateMachineIntake& intake) = 0;
 
+  /// @brief Checks if the intake should transition to another state, and
+  /// returns the state to transition to if so
+  /// @param intake __StateMachineIntake&__ The intake being checked
+  /// @return __EIntakeStates__ The state to transition to, or the current state
+  /// if no transition should occur
   virtual EIntakeStates processStateChange(StateMachineIntake& intake) = 0;
 };
 
