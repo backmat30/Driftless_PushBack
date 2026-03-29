@@ -27,11 +27,8 @@ enum class EIntakeStates {
   IDLE,
   FRONT_IN,
   FRONT_OUT,
-  BACK_IN_BOTTOM_WAITING,
-  BACK_IN_BOTTOM_FIRST_BLOCK,
-  BACK_IN_BOTTOM_SECOND_BLOCK,
+  BACK_IN_BOTTOM,
   BACK_IN_TOP,
-  EJECT_BLOCK
 };
 }  // namespace intake_states
 }  // namespace intake
