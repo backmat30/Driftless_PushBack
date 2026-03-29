@@ -5,6 +5,7 @@
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/EIntakeStates.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
@@ -66,6 +67,9 @@ class StateMachineIntake : public IIntake {
   std::unique_ptr<io::IColorSensor> m_color_sensor{};
 
   alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
+
+  intake_states::EIntakeStates current_state{
+      intake_states::EIntakeStates::IDLE};
 
   bool m_color_sort_paused{true};
 
