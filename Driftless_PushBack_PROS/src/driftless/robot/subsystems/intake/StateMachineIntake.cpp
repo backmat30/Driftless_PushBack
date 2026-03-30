@@ -262,7 +262,7 @@ double StateMachineIntake::getFrontMotorPosition() {
 }
 
 double StateMachineIntake::getColorSensorPosition() {
-  return COLOR_SORT_DISTANCE_TO_END;
+  return m_color_sensor_distance_to_end;
 }
 
 bool StateMachineIntake::isColorSortPaused() { return m_color_sort_paused; }
@@ -289,6 +289,10 @@ void StateMachineIntake::setVerticalMotors(hal::MotorGroup& motors) {
   m_vertical_motors = motors;
 }
 
+void StateMachineIntake::setColorSensorDistanceToEnd(double distance) {
+  m_color_sensor_distance_to_end = distance;
+}
+
 void StateMachineIntake::setColorSensor(
     std::unique_ptr<io::IColorSensor>& color_sensor) {
   m_color_sensor = std::move(color_sensor);
@@ -305,5 +309,10 @@ void StateMachineIntake::setMutex(std::unique_ptr<rtos::IMutex>& mutex) {
 
 void StateMachineIntake::setTask(std::unique_ptr<rtos::ITask>& task) {
   m_task = std::move(task);
+}
+
+void StateMachineIntake::setStates(
+    std::array<std::unique_ptr<intake_states::IIntakeState>, 16>& states) {
+  m_states = std::move(states);
 }
 }  // namespace driftless::robot::subsystems::intake

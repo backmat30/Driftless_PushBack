@@ -8,6 +8,7 @@
 #include "driftless/io/IColorSensor.hpp"
 #include "driftless/robot/subsystems/intake/IIntake.hpp"
 #include "driftless/robot/subsystems/intake/intake_states/EIntakeStates.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/IIntakeState.hpp"
 #include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
@@ -34,8 +35,6 @@ namespace intake {
 class StateMachineIntake : public IIntake {
  private:
   static constexpr uint8_t TASK_DELAY{10};
-
-  static constexpr double COLOR_SORT_DISTANCE_TO_END{3.25};
 
   /// @brief Constantly runs task updates
   /// @param params __void*__ Pointer to the DirectIntake object being updated
@@ -74,6 +73,8 @@ class StateMachineIntake : public IIntake {
       intake_states::EIntakeStates::IDLE};
 
   std::array<std::unique_ptr<intake_states::IIntakeState>, 16> m_states{};
+
+  double m_color_sensor_distance_to_end{0.0};
 
   double m_desired_voltage{};
 
@@ -203,6 +204,11 @@ class StateMachineIntake : public IIntake {
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setVerticalMotors(hal::MotorGroup& motors);
 
+  /// @brief Sets the distance from the color sensor to the back of the intake
+  /// @param distance __double__ The distance from the color sensor to the back
+  /// of the intake in inches
+  void setColorSensorDistanceToEnd(double distance);
+
   /// @brief Sets the color sensor used for color sorting
   /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
   /// sensor to use
@@ -220,6 +226,12 @@ class StateMachineIntake : public IIntake {
   /// @brief Sets the task used by the intake
   /// @param task __std::unique_ptr<rtos::ITask>&__ The task to use
   void setTask(std::unique_ptr<rtos::ITask>& task);
+
+  /// @brief Sets the states for the intake state machine
+  /// @param states __array<std::unique_ptr<intake_states::IIntakeState>, 16>&__
+  /// The states to use
+  void setStates(
+      std::array<std::unique_ptr<intake_states::IIntakeState>, 16>& states);
 };
 }  // namespace intake
 }  // namespace subsystems
