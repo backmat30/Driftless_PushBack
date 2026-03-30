@@ -1,6 +1,8 @@
 #ifndef __STATE_MACHINE_INTAKE_HPP__
 #define __STATE_MACHINE_INTAKE_HPP__
 
+#include <array>
+
 #include "driftless/hal/MotorGroup.hpp"
 #include "driftless/hal/PistonGroup.hpp"
 #include "driftless/io/IColorSensor.hpp"
@@ -70,6 +72,8 @@ class StateMachineIntake : public IIntake {
 
   intake_states::EIntakeStates current_state{
       intake_states::EIntakeStates::IDLE};
+
+  std::array<std::unique_ptr<intake_states::IIntakeState>, 16> m_states{};
 
   double m_desired_voltage{};
 
