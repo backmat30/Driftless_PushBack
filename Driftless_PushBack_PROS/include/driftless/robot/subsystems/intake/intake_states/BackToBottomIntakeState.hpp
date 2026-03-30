@@ -1,6 +1,7 @@
 #ifndef __BACK_TO_BOTTOM_INTAKE_STATE_HPP__
 #define __BACK_TO_BOTTOM_INTAKE_STATE_HPP__
 
+#include "driftless/robot/subsystems/intake/StateMachineIntake.hpp"
 #include "driftless/robot/subsystems/intake/intake_states/IIntakeState.hpp"
 
 /// @brief The namespace for driftless library code
