@@ -24,11 +24,11 @@ namespace intake_states {
 /// @brief Enum containing the various states the intake can be in
 /// @author Matthew Backman
 enum class EIntakeStates {
-  IDLE,
-  FRONT_IN,
-  FRONT_OUT,
-  BACK_IN_BOTTOM,
-  BACK_IN_TOP,
+  IDLE = 0,
+  FRONT_IN = 1,
+  FRONT_OUT = 2,
+  BACK_IN_BOTTOM = 3,
+  BACK_IN_TOP = 4,
 };
 }  // namespace intake_states
 }  // namespace intake
