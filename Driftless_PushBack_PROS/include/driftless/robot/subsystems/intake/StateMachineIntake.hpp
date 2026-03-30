@@ -75,8 +75,6 @@ class StateMachineIntake : public IIntake {
 
   bool m_color_sort_paused{true};
 
-  bool m_back_intake_to_hood{};
-
   /// @brief Performs all instance related updates
   void taskUpdate();
 
