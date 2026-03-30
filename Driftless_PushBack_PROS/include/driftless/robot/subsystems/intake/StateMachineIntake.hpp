@@ -75,15 +75,7 @@ class StateMachineIntake : public IIntake {
 
   bool m_color_sort_paused{true};
 
-  bool m_has_first_matchloader_block{};
-
-  bool m_ready_for_second_matchloader_block{};
-
-  bool m_has_second_matchloader_block{};
-
   bool m_back_intake_to_hood{};
-
-  double m_first_matchloader_block_pos{-__DBL_MAX__};
 
   /// @brief Performs all instance related updates
   void taskUpdate();
@@ -159,6 +151,10 @@ class StateMachineIntake : public IIntake {
   /// @brief Sets the current limit for the vertical motors
   /// @param amps __double__ The new current limit in amps
   void setVerticalMotorCurrentLimit(double amps);
+
+  /// @brief Checks if there is a block of any kind in the intake
+  /// @return __bool__ True if there is a block, false otherwise
+  bool hasBlock();
 
   /// @brief Checks if there is a block of the opposing alliance in the intake
   /// @return __bool__ True if there is an opposing block, false otherwise
