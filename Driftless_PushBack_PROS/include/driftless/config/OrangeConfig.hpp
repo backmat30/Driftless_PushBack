@@ -76,6 +76,13 @@
 // intake includes
 #include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
 #include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
+#include "driftless/robot/subsystems/intake/StateMachineIntakeBuilder.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/BackToBottomIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/BackToTopIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/EIntakeStates.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/FrontInIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/FrontOutIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/IdleIntakeState.hpp"
 
 // hood includes
 #include "driftless/robot/subsystems/hood/DirectHoodBuilder.hpp"
@@ -172,15 +179,15 @@ class OrangeConfig : public IConfig {
   static constexpr int DRIVE_FRONT_RIGHT_BOTTOM_PORT{-13};
   static constexpr int DRIVE_BACK_LEFT_TOP_PORT{20};
   static constexpr int DRIVE_BACK_LEFT_BOTTOM_PORT{-19};
-  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{14};
-  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-18};
+  static constexpr int DRIVE_BACK_RIGHT_TOP_PORT{18};
+  static constexpr int DRIVE_BACK_RIGHT_BOTTOM_PORT{-14};
 
   // ## INTAKE MOTORS ##
 
   static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
-  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-7};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
-  static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
+  static constexpr int INTAKE_BACK_MOTOR_1_PORT{-10};
   static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
 
   // ## INTAKE SENSORS ##
@@ -189,23 +196,23 @@ class OrangeConfig : public IConfig {
 
   // ## INTAKE PNEUMATICS ##
 
-  static constexpr int INTAKE_BACK_ARMS_PORT{2};
+  static constexpr int INTAKE_BACK_ARMS_PORT{5};
 
   // ## HOOD MOTORS ##
 
-  static constexpr int HOOD_MOTOR_1_PORT{10};
+  static constexpr int HOOD_MOTOR_1_PORT{4};
 
   // ## HOOD PNEUMATICS ##
 
-  static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
-  static constexpr int HOOD_GATE_PISTONS_PORT{4};
-  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{5};
-  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{1};
+  static constexpr int HOOD_HEIGHT_PISTONS_PORT{6};
+  static constexpr int HOOD_GATE_PISTONS_PORT{1};
+  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{2};
+  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{3};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
   // ## RAKE PNEUMATICS ##
 
-  static constexpr int RAKE_PISTON_PORT{6};
+  static constexpr int RAKE_PISTON_PORT{4};
 
   // ## ODOM PORTS ##
 
@@ -233,6 +240,9 @@ class OrangeConfig : public IConfig {
   static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
   static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
   static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
+
+  // ## INTAKE ##
+  static constexpr double INTAKE_COLOR_SENSOR_DISTANCE_TO_END{3.25};
 
  public:
   std::string getName() override;

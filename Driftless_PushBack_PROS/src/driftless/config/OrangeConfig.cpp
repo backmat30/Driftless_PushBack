@@ -382,8 +382,25 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<rtos::ITask> intake_task{
       std::make_unique<pros_adapters::ProsTask>()};
 
+  // intake states
+  std::unique_ptr<robot::subsystems::intake::intake_states::IIntakeState>
+      idle_state{std::make_unique<
+          robot::subsystems::intake::intake_states::IdleIntakeState>()};
+  std::unique_ptr<robot::subsystems::intake::intake_states::IIntakeState>
+      front_in_state{std::make_unique<
+          robot::subsystems::intake::intake_states::FrontInIntakeState>()};
+  std::unique_ptr<robot::subsystems::intake::intake_states::IIntakeState>
+      front_out_state{std::make_unique<
+          robot::subsystems::intake::intake_states::FrontOutIntakeState>()};
+  std::unique_ptr<robot::subsystems::intake::intake_states::IIntakeState>
+      back_to_bottom_state{std::make_unique<
+          robot::subsystems::intake::intake_states::BackToBottomIntakeState>()};
+  std::unique_ptr<robot::subsystems::intake::intake_states::IIntakeState>
+      back_to_top_state{std::make_unique<
+          robot::subsystems::intake::intake_states::BackToTopIntakeState>()};
+
   // build the intake
-  robot::subsystems::intake::DirectIntakeBuilder intake_builder{};
+  robot::subsystems::intake::StateMachineIntakeBuilder intake_builder{};
 
   std::unique_ptr<robot::subsystems::intake::IIntake> intake{
       intake_builder.withFrontMotor(intake_front_motor_1)
@@ -392,10 +409,26 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
           ->withBackMotor(intake_back_motor_1)
           ->withVerticalMotor(intake_vertical_motor_1)
           ->withBackPiston(intake_back_arms)
+          ->withColorSensorDistanceToEnd(INTAKE_COLOR_SENSOR_DISTANCE_TO_END)
           ->withColorSensor(intake_color_sensor)
           ->withDelayer(intake_delayer)
           ->withMutex(intake_mutex)
           ->withTask(intake_task)
+          ->withState(
+              robot::subsystems::intake::intake_states::EIntakeStates::IDLE,
+              idle_state)
+          ->withState(
+              robot::subsystems::intake::intake_states::EIntakeStates::FRONT_IN,
+              front_in_state)
+          ->withState(robot::subsystems::intake::intake_states::EIntakeStates::
+                          FRONT_OUT,
+                      front_out_state)
+          ->withState(robot::subsystems::intake::intake_states::EIntakeStates::
+                          BACK_IN_BOTTOM,
+                      back_to_bottom_state)
+          ->withState(robot::subsystems::intake::intake_states::EIntakeStates::
+                          BACK_IN_TOP,
+                      back_to_top_state)
           ->build()};
 
   // build the subsystem
