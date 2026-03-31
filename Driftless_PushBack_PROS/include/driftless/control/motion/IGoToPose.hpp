@@ -46,7 +46,7 @@ class IGoToPose {
   /// @param point __Point__ The pose (x, y, theta) for the robot to go to
   virtual void goToPose(const std::shared_ptr<driftless::robot::Robot>& robot,
                         double velocity, double angular_velocity,
-                        Point point) = 0;
+                        double linear_acceleration, Point point) = 0;
 
   /// @brief Sets the maximum velocity during motion
   /// @param velocity __double__ The new maximum velocity

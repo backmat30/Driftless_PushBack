@@ -42,6 +42,28 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
   x_velocity *= velocity_scalar;
   y_velocity *= velocity_scalar;
 
+  double x_distance_from_start{m_initial_point.getX() - getPosition().x};
+  double y_distance_from_start{m_initial_point.getY() - getPosition().y};
+
+  // limit velocity based on max acceleration
+  double max_x_velocity =
+      std::min(std::sqrt(2 * m_max_linear_acceleration *
+                         std::abs(x_distance_from_start)),
+               std::sqrt(2 * m_max_linear_acceleration * std::abs(x_distance)));
+
+  double max_y_velocity =
+      std::min(std::sqrt(2 * m_max_linear_acceleration *
+                         std::abs(y_distance_from_start)),
+               std::sqrt(2 * m_max_linear_acceleration * std::abs(y_distance)));
+
+  if (std::abs(x_velocity) > max_x_velocity) {
+    x_velocity = x_velocity > 0 ? max_x_velocity : -max_x_velocity;
+  }
+
+  if (std::abs(y_velocity) > max_y_velocity) {
+    y_velocity = y_velocity > 0 ? max_y_velocity : -max_y_velocity;
+  }
+
   if (angular_velocity > m_max_rotational_velocity) {
     angular_velocity = m_max_rotational_velocity;
   }
@@ -129,7 +151,7 @@ void PIDHolonomicGoToPose::resume() {
 
 void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
                                     double velocity, double angular_velocity,
-                                    Point point) {
+                                    double linear_acceleration, Point point) {
   if (m_mutex) {
     m_mutex->take();
   }
@@ -137,7 +159,10 @@ void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
   m_robot = robot;
   m_max_velocity = velocity;
   m_max_rotational_velocity = angular_velocity;
+  m_max_linear_acceleration = linear_acceleration;
   m_target_point = point;
+  robot::subsystems::odometry::Position start_pos = getPosition();
+  m_initial_point = Point{start_pos.x, start_pos.y, start_pos.theta};
   m_target_reached = false;
   m_paused = false;
 
