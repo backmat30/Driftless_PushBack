@@ -213,6 +213,11 @@ void PIDHolonomicGoToPose::setAngularVelocity(double angular_velocity) {
 
 bool PIDHolonomicGoToPose::targetReached() { return m_target_reached; }
 
+void PIDHolonomicGoToPose::setClock(
+    const std::unique_ptr<rtos::IClock>& clock) {
+  m_clock = clock->clone();
+}
+
 void PIDHolonomicGoToPose::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
