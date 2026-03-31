@@ -66,7 +66,7 @@ void BlueSkillsAuton::run(
 
   // intake orange preload
   // intakeFront();
-  goToPose(orange_preload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 1.0);
+  goToPose(orange_preload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(orange_preload, 2.0, 2000);
   stopMotion();
 
