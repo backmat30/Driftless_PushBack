@@ -129,7 +129,7 @@ void PIDHolonomicGoToPose::resume() {
 
 void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
                                     double velocity, double angular_velocity,
-                                    Point point) {
+                                    double linear_acceleration, Point point) {
   if (m_mutex) {
     m_mutex->take();
   }
@@ -137,6 +137,7 @@ void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
   m_robot = robot;
   m_max_velocity = velocity;
   m_max_rotational_velocity = angular_velocity;
+  m_max_linear_acceleration = linear_acceleration;
   m_target_point = point;
   m_target_reached = false;
   m_paused = false;
