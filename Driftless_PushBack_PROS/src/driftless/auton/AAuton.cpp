@@ -111,11 +111,12 @@ void AAuton::setGoToPointVelocity(double velocity) {
 }
 
 void AAuton::goToPose(control::Point target_point, double target_velocity,
-                      double target_angular_velocity) {
+                      double target_angular_velocity,
+                      double linear_acceleration) {
   m_control_system->sendCommand(
       control::EControl::MOTION, control::EControlCommand::GO_TO_POSE, m_robot,
-      target_velocity, target_angular_velocity, target_point.getX(),
-      target_point.getY(), target_point.getTheta());
+      target_velocity, target_angular_velocity, linear_acceleration,
+      target_point.getX(), target_point.getY(), target_point.getTheta());
 }
 
 bool AAuton::goToPoseTargetReached() {
