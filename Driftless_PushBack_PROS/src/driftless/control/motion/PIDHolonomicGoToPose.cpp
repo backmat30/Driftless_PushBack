@@ -28,9 +28,6 @@ robot::subsystems::odometry::Position PIDHolonomicGoToPose::getPosition() {
 void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
                                           double current_heading,
                                           double angular_distance) {
-  uint32_t current_time{m_clock->getTime()};
-  double time_delta{(current_time - m_latest_update) / 1000.0};
-
   double x_velocity{m_x_pid.getControlValue(0, x_distance)};
   double y_velocity{m_y_pid.getControlValue(0, y_distance)};
   double angular_velocity{
@@ -49,21 +46,9 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
   double y_distance_from_start{getPosition().y - m_initial_point.getY()};
 
   // limit velocity based on max acceleration
-  double max_x_velocity = std::min(
-      std::abs(x_distance -
-               (m_max_linear_acceleration * std::pow(time_delta, 2) / 2)) /
-          time_delta,
-      std::abs(x_distance_from_start -
-               (m_max_linear_acceleration * std::pow(time_delta, 2) / 2)) /
-          time_delta);
+  double max_x_velocity = 0;
 
-  double max_y_velocity = std::min(
-      std::abs(y_distance -
-               (m_max_linear_acceleration * std::pow(time_delta, 2) / 2)) /
-          time_delta,
-      std::abs(y_distance_from_start -
-               (m_max_linear_acceleration * std::pow(time_delta, 2) / 2)) /
-          time_delta);
+  double max_y_velocity = 0;
 
   if (std::abs(x_velocity) > max_x_velocity) {
     x_velocity = x_velocity > 0 ? max_x_velocity : -max_x_velocity;
@@ -83,7 +68,6 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
                  y_velocity * std::sin(current_heading);
 
   setDriveMotionVector(out_x, out_y, angular_velocity);
-  m_latest_update = current_time;
 }
 
 void PIDHolonomicGoToPose::taskUpdate() {
@@ -153,7 +137,6 @@ void PIDHolonomicGoToPose::resume() {
   }
 
   m_paused = false;
-  m_latest_update = m_clock->getTime();
 
   if (m_mutex) {
     m_mutex->give();
@@ -175,7 +158,6 @@ void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
   robot::subsystems::odometry::Position start_pos = getPosition();
   m_initial_point = Point{start_pos.x, start_pos.y, start_pos.theta};
   m_target_reached = false;
-  m_latest_update = m_clock->getTime();
   m_paused = false;
 
   m_x_pid.reset();
@@ -212,11 +194,6 @@ void PIDHolonomicGoToPose::setAngularVelocity(double angular_velocity) {
 }
 
 bool PIDHolonomicGoToPose::targetReached() { return m_target_reached; }
-
-void PIDHolonomicGoToPose::setClock(
-    const std::unique_ptr<rtos::IClock>& clock) {
-  m_clock = clock->clone();
-}
 
 void PIDHolonomicGoToPose::setDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {

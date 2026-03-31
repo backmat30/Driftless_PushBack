@@ -1,12 +1,6 @@
 #include "driftless/control/motion/PIDHolonomicGoToPoseBuilder.hpp"
 
 namespace driftless::control::motion {
-PIDHolonomicGoToPoseBuilder* PIDHolonomicGoToPoseBuilder::withClock(
-    const std::unique_ptr<rtos::IClock>& clock) {
-  m_clock = clock->clone();
-  return this;
-}
-
 PIDHolonomicGoToPoseBuilder* PIDHolonomicGoToPoseBuilder::withDelayer(
     std::unique_ptr<rtos::IDelayer>& delayer) {
   m_delayer = delayer->clone();
@@ -65,7 +59,6 @@ std::unique_ptr<PIDHolonomicGoToPose> PIDHolonomicGoToPoseBuilder::build() {
   std::unique_ptr<PIDHolonomicGoToPose> go_to_pose{
       std::make_unique<PIDHolonomicGoToPose>()};
 
-  go_to_pose->setClock(m_clock);
   go_to_pose->setDelayer(m_delayer);
   go_to_pose->setMutex(m_mutex);
   go_to_pose->setTask(m_task);

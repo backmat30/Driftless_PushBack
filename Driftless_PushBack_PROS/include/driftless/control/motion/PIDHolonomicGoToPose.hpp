@@ -41,8 +41,6 @@ class PIDHolonomicGoToPose : public IGoToPose {
   /// @param params __void*__ The goToPoint algorithm to update
   static void taskLoop(void* params);
 
-  std::unique_ptr<rtos::IClock> m_clock{};
-
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
   std::unique_ptr<rtos::IMutex> m_mutex{};
@@ -138,10 +136,6 @@ class PIDHolonomicGoToPose : public IGoToPose {
   /// @brief Checks if the target point has been reached
   /// @return True if the target point has been reached, false otherwise
   bool targetReached() override;
-
-  /// @brief Sets the clock for the control
-  /// @param clock __std::unique_ptr<rtos::IClock>&__ The clock to use
-  void setClock(const std::unique_ptr<rtos::IClock>& clock);
 
   /// @brief Sets the delayer for the control
   /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to use

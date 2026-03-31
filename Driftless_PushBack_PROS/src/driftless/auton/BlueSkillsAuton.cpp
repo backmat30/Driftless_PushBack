@@ -65,8 +65,8 @@ void BlueSkillsAuton::run(
   setOdomPosition(68.25, 25.0, 0);
 
   // intake orange preload
-  intakeFront();
-  goToPose(orange_preload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  // intakeFront();
+  goToPose(orange_preload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 1.0);
   waitForGoToPose(orange_preload, 2.0, 2000);
   stopMotion();
 

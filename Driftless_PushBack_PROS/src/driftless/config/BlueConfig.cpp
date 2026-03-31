@@ -139,8 +139,7 @@ std::shared_ptr<control::ControlSystem> BlueConfig::buildControlSystem() {
           ->build()};
 
   std::unique_ptr<control::motion::IGoToPose> go_to_pose{
-      go_to_pose_builder.withClock(clock)
-          ->withDelayer(delayer)
+      go_to_pose_builder.withDelayer(delayer)
           ->withMutex(go_to_pose_mutex)
           ->withTask(go_to_pose_task)
           ->withXPID(go_to_pose_x_pid)

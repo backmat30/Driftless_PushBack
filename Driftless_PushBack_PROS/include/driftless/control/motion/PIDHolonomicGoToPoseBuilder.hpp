@@ -18,8 +18,6 @@ namespace motion {
 /// @brief Builder class for PIDHolonomicGoToPoint objects
 class PIDHolonomicGoToPoseBuilder {
  private:
-  std::unique_ptr<rtos::IClock> m_clock{};
-
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
   std::unique_ptr<rtos::IMutex> m_mutex{};
@@ -39,12 +37,6 @@ class PIDHolonomicGoToPoseBuilder {
   double m_angular_tolerance{};
 
  public:
-  /// @brief Sets the clock for the control
-  /// @param clock __const std::unique_ptr<rtos::IClock>&__ The clock to use
-  /// @return __PIDHolonomicGoToPoseBuilder*__ Pointer to the builder
-  PIDHolonomicGoToPoseBuilder* withClock(
-      const std::unique_ptr<rtos::IClock>& clock);
-
   /// @brief Sets the delayer for the control
   /// @param delayer __std::unique_ptr<rtos::IDelayer>&__ The delayer to use
   /// @return __PIDHolonomicGoToPoseBuilder*__ Pointer to the builder
