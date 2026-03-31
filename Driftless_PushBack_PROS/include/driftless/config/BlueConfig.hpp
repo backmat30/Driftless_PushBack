@@ -76,6 +76,13 @@
 // intake includes
 #include "driftless/robot/subsystems/intake/DirectIntakeBuilder.hpp"
 #include "driftless/robot/subsystems/intake/IntakeSubsystem.hpp"
+#include "driftless/robot/subsystems/intake/StateMachineIntakeBuilder.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/BackToBottomIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/BackToTopIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/EIntakeStates.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/FrontInIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/FrontOutIntakeState.hpp"
+#include "driftless/robot/subsystems/intake/intake_states/IdleIntakeState.hpp"
 
 // hood includes
 #include "driftless/robot/subsystems/hood/DirectHoodBuilder.hpp"
@@ -228,6 +235,9 @@ class BlueConfig : public IConfig {
   static constexpr float ODOMETRY_LOCAL_X_OFFSET{0.0f};
   static constexpr float ODOMETRY_LOCAL_Y_OFFSET{-0.365f};
   static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
+
+  // ## INTAKE ##
+  static constexpr double INTAKE_COLOR_SENSOR_DISTANCE_TO_END{3.25};
 
  public:
   std::string getName() override;
