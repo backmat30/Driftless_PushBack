@@ -42,13 +42,19 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
   x_velocity *= velocity_scalar;
   y_velocity *= velocity_scalar;
 
-  double x_distance_from_start{getPosition().x - m_initial_point.getX()};
-  double y_distance_from_start{getPosition().y - m_initial_point.getY()};
+  double x_distance_from_start{m_initial_point.getX() - getPosition().x};
+  double y_distance_from_start{m_initial_point.getY() - getPosition().y};
 
   // limit velocity based on max acceleration
-  double max_x_velocity = 0;
+  double max_x_velocity =
+      std::min(std::sqrt(2 * m_max_linear_acceleration *
+                         std::abs(x_distance_from_start)),
+               std::sqrt(2 * m_max_linear_acceleration * std::abs(x_distance)));
 
-  double max_y_velocity = 0;
+  double max_y_velocity =
+      std::min(std::sqrt(2 * m_max_linear_acceleration *
+                         std::abs(y_distance_from_start)),
+               std::sqrt(2 * m_max_linear_acceleration * std::abs(y_distance)));
 
   if (std::abs(x_velocity) > max_x_velocity) {
     x_velocity = x_velocity > 0 ? max_x_velocity : -max_x_velocity;
