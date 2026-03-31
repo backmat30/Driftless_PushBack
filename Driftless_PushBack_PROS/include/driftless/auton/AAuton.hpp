@@ -87,7 +87,8 @@ class AAuton {
   void setGoToPointVelocity(double velocity);
 
   void goToPose(control::Point target_point, double target_velocity,
-                double target_angular_velocity);
+                double target_angular_velocity,
+                double linear_acceleration = __DBL_MAX__);
 
   bool goToPoseTargetReached();
 

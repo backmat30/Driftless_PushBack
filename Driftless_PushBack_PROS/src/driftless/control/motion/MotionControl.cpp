@@ -105,12 +105,14 @@ void MotionControl::command(EControlCommand command_name, va_list& args) {
         *static_cast<std::shared_ptr<driftless::robot::Robot>*>(temp_robot)};
     double velocity{va_arg(args, double)};
     double angular_velocity{va_arg(args, double)};
+    double linear_acceleration{va_arg(args, double)};
     double x{va_arg(args, double)};
     double y{va_arg(args, double)};
     double theta{va_arg(args, double)};
     Point point{x, y, theta};
 
-    m_go_to_pose->goToPose(robot, velocity, angular_velocity, point);
+    m_go_to_pose->goToPose(robot, velocity, angular_velocity,
+                           linear_acceleration, point);
 
   } else if (command_name == EControlCommand::TURN_TO_ANGLE) {
     if (m_motion_type != EMotionType::TURN) {
