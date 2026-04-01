@@ -86,8 +86,9 @@ void StateMachineIntake::taskUpdate() {
     m_mutex->take();
   }
 
-  if (m_states[static_cast<int>(current_state)]) {
-    m_states[static_cast<int>(current_state)]->update(*this);
+  int index = static_cast<int>(current_state);
+  if (index >= 0 && index < m_states.size() && m_states[index]) {
+    m_states[index]->update(*this);
   }
 
   if (m_mutex) {
@@ -255,6 +256,10 @@ void StateMachineIntake::setVerticalMotorVoltage(double voltage) {
 
 void StateMachineIntake::setVerticalMotorCurrentLimit(double amps) {
   m_vertical_motors.setCurrentLimit(amps);
+}
+
+void StateMachineIntake::setCurrentState(intake_states::EIntakeStates state) {
+  current_state = state;
 }
 
 double StateMachineIntake::getFrontMotorPosition() {

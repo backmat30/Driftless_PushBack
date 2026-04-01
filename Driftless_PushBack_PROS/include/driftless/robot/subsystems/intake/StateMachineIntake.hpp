@@ -155,6 +155,10 @@ class StateMachineIntake : public IIntake {
   /// @param amps __double__ The new current limit in amps
   void setVerticalMotorCurrentLimit(double amps);
 
+  /// @brief Sets the current state of the intake
+  /// @param state The new state
+  void setCurrentState(intake_states::EIntakeStates state);
+
   /// @brief Checks if there is a block of any kind in the intake
   /// @return __bool__ True if there is a block, false otherwise
   bool hasBlock();

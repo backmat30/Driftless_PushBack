@@ -30,7 +30,7 @@ void BackToBottomIntakeState::update(StateMachineIntake& intake) {
     m_has_second_matchloader_block = false;
     m_first_matchloader_block_pos = -__DBL_MAX__;
 
-    intake.intakeBackToHood();
+    intake.setCurrentState(intake_states::EIntakeStates::BACK_IN_TOP);
   }
 
   if (!m_has_first_matchloader_block ||
