@@ -1,5 +1,4 @@
-#include <map>
-#include <vector>
+#include <array>
 
 #include "SparkFun_Qwiic_OTOS_Arduino_Library.h"
 #include "Wire.h"
@@ -21,8 +20,7 @@ enum class EErrorCode {
 };
 
 constexpr char START_DELIMETER{'/'};
-const std::map<char, uint8_t> key_size{
-    {'R', 1}, {'X', 4}, {'Y', 4}, {'H', 4}, {'C', 1}};
+std::array<int, 128> key_size{};
 
 bool isValidPackage(const std::vector<uint8_t>& data);
 uint16_t computeCRC(const std::vector<uint8_t>& data, uint8_t size);
@@ -33,12 +31,7 @@ void handleSetYCommand(const uint8_t* data);
 void handleSetHeadingCommand(const uint8_t* data);
 void sendInvalidPackageError(const uint8_t error_code);
 
-std::map<char, void (*)(const uint8_t*)> command_handlers{
-    {'R', handleRequestCommand},
-    {'C', handleCalibrateCommand},
-    {'X', handleSetXCommand},
-    {'Y', handleSetYCommand},
-    {'H', handleSetHeadingCommand}};
+std::array<void (*)(const uint8_t*), 128> command_handlers{};
 // Create an Optical Tracking Odometry Sensor object
 QwiicOTOS odom_sensor;
 
@@ -46,6 +39,20 @@ std::vector<char> packets_requested{};
 
 void setup() {
   // put your setup code here, to run once:
+
+  // initialize key sizes
+  key_size['R'] = 1;
+  key_size['X'] = 4;
+  key_size['Y'] = 4;
+  key_size['H'] = 4;
+  key_size['C'] = 1;
+
+  // initialize command handlers
+  command_handlers['R'] = handleRequestCommand;
+  command_handlers['C'] = handleCalibrateCommand;
+  command_handlers['X'] = handleSetXCommand;
+  command_handlers['Y'] = handleSetYCommand;
+  command_handlers['H'] = handleSetHeadingCommand;
 
   Serial8.begin(115200);
 
@@ -161,7 +168,7 @@ void loop() {
   uint8_t packet_offset = 3;
   for (int i = 0; i < packets_recieved; ++i) {
     char key = recieved_data[packet_offset++];
-    if (key_size.find(key) == key_size.end()) {
+    if (key_size[key]) {
       sendInvalidPackageError(EErrorCode::INVALID_KEY);
 #ifdef DEBUG
       Serial.println(key);
@@ -172,9 +179,9 @@ void loop() {
     uint8_t size = key_size.at(key);
     const uint8_t* packet_value = &recieved_data[packet_offset];
 
-    auto handler = command_handlers.find(key);
-    if (handler != command_handlers.end()) {
-      handler->second(packet_value);
+    auto handler = command_handlers[key];
+    if (handler != nullptr) {
+      handler(packet_value);
     }
 
     packet_offset += size;
@@ -374,5 +381,5 @@ void sendInvalidPackageError(const EErrorCode error_code) {
       "=============================================\n========================="
       "====================");
   Serial.println("");
-#endif DEBUG
+#endif
 }
