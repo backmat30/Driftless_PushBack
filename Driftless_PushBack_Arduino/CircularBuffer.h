@@ -40,6 +40,14 @@ class CircularBuffer {
     }
 
 /**
+* Determines the number of bytes stored in the buffer
+* @return The number of bytes in the buffer
+*/
+    size_t size() {
+      return count;
+    }
+
+/**
 * Reads the next available byte and stores it in the provided space
 * @param byte The space to store the next byte
 * @return True if successful, false otherwise
