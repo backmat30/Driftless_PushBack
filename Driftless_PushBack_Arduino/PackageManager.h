@@ -15,7 +15,7 @@ class PackageManager {
     WAIT_FOR_DELIMITER,
     READ_SIZE,
     READ_PAYLOAD,
-    VALIDATE_PACKET,
+    VALIDATE_PACKAGE,
     PROCESS_COMMANDS,
     BUILD_RESPONSE,
     SEND_RESPONSE,
@@ -24,11 +24,15 @@ class PackageManager {
 
     CircularBuffer<1024> m_input_buffer{};
 
+    std::array<uint8_t, 1024> m_input_package{};
+
     std::array<uint8_t, 128> m_packet_sizes{};
 
-    std::array<void (*)(const uint8_t* data, uint8_t size), 128> m_packet_handlers{};
+    std::array<void (*)(const uint8_t* data), 128> m_packet_handlers{};
 
-    std::array<uint8_t, 1024> m_outgoing_package{};
+    std::array<uint8_t, 1024> m_output_buffer{};
+
+    std::array<uint8_t, 1024> m_output_package{};
 
     States m_state{States::WAIT_FOR_DELIMITER};
 
@@ -38,9 +42,35 @@ class PackageManager {
 
     uint8_t m_bytes_read{};
 
-    size_t m_outgoing_size{};
+    size_t m_output_size{};
+
+    size_t m_input_size{};
+
+    size_t m_next_encoded_zero{};
 
     HardwareSerialIMXRT* m_serial_port{};
+
+    uint16_t calculateCRC(uint8_t* data, size_t size);
+
+    void encodeCOBS();
+
+    bool decodeCOBS();
+
+    bool waitForDelimeter();
+
+    bool readSize();
+
+    bool readPayload();
+
+    bool validatePackage();
+
+    bool processCommands();
+
+    bool buildResponse();
+
+    bool sendResponse();
+
+    bool sendError();
 
   public:
     PackageManager(HardwareSerialIMXRT* serial_port);
