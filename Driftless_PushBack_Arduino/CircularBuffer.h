@@ -69,7 +69,7 @@ class CircularBuffer {
 * @param byte The byte to write to the buffer
 * @return True if successful, false otherwise
 */
-    bool write(uint8_t& byte) {
+    bool write(uint8_t byte) {
       if(isFull()) {
         return false;
       }
