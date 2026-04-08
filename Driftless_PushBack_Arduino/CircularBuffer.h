@@ -9,7 +9,7 @@
 template<size_t N>
 class CircularBuffer {
   private:
-    std::array<char, N> buffer{};
+    std::array<uint8_t, N> buffer{};
 
     size_t head{};
 
@@ -52,7 +52,7 @@ class CircularBuffer {
 * @param byte The space to store the next byte
 * @return True if successful, false otherwise
 */
-    bool readNext(char& byte) {
+    bool readNext(uint8_t& byte) {
       if (isEmpty()) {
         return false;
       }
@@ -69,7 +69,7 @@ class CircularBuffer {
 * @param byte The byte to write to the buffer
 * @return True if successful, false otherwise
 */
-    bool write(char byte) {
+    bool write(uint8_t& byte) {
       if(isFull()) {
         return false;
       }
