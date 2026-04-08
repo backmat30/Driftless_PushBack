@@ -26,9 +26,11 @@ class PackageManager {
 
     std::array<uint8_t, 1024> m_input_package{};
 
+    std::array<uint8_t, 1024> m_decoded_input_package{};
+
     std::array<uint8_t, 128> m_packet_sizes{};
 
-    std::array<void (*)(const uint8_t* data), 128> m_packet_handlers{};
+    std::array<void (*)(const uint8_t* read_data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num), 128> m_packet_handlers{};
 
     std::array<uint8_t, 1024> m_output_buffer{};
 
@@ -42,9 +44,9 @@ class PackageManager {
 
     uint8_t m_bytes_read{};
 
-    size_t m_output_size{};
+    uint8_t m_output_packets{};
 
-    size_t m_input_size{};
+    size_t m_output_size{};
 
     size_t m_next_encoded_zero{};
 
@@ -70,12 +72,12 @@ class PackageManager {
 
     bool sendResponse();
 
-    bool sendError();
+    bool handleError();
 
   public:
     PackageManager(HardwareSerialIMXRT* serial_port);
 
-    void addPacketType(char key, uint8_t size, void (*)(uint8_t*) handler);
+    void addPacketType(char key, uint8_t size, void (*)(const uint8_t*, uint8_t*, size_t&, uint8_t&) handler);
 
     void update();
 };
