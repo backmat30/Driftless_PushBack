@@ -13,7 +13,6 @@ class PackageManager {
   private:
     enum class States{
     WAIT_FOR_DELIMITER,
-    READ_SIZE,
     READ_PAYLOAD,
     VALIDATE_PACKAGE,
     PROCESS_COMMANDS,
@@ -24,17 +23,17 @@ class PackageManager {
 
     CircularBuffer<1024> m_input_buffer{};
 
-    std::array<uint8_t, 1024> m_input_package{};
+    std::array<uint8_t, 255> m_input_package{};
 
-    std::array<uint8_t, 1024> m_decoded_input_package{};
+    std::array<uint8_t, 255> m_decoded_input_package{};
 
     std::array<uint8_t, 128> m_packet_sizes{};
 
     std::array<void (*)(const uint8_t* read_data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num), 128> m_packet_handlers{};
 
-    std::array<uint8_t, 1024> m_output_buffer{};
+    std::array<uint8_t, 255> m_output_buffer{};
 
-    std::array<uint8_t, 1024> m_output_package{};
+    std::array<uint8_t, 255> m_output_package{};
 
     States m_state{States::WAIT_FOR_DELIMITER};
 
@@ -48,7 +47,7 @@ class PackageManager {
 
     size_t m_output_size{};
 
-    size_t m_next_encoded_zero{};
+    size_t m_send_index{};
 
     HardwareSerialIMXRT* m_serial_port{};
 
@@ -58,9 +57,7 @@ class PackageManager {
 
     bool decodeCOBS();
 
-    bool waitForDelimeter();
-
-    bool readSize();
+    bool waitForDelimiter();
 
     bool readPayload();
 
@@ -77,7 +74,7 @@ class PackageManager {
   public:
     PackageManager(HardwareSerialIMXRT* serial_port);
 
-    void addPacketType(char key, uint8_t size, void (*)(const uint8_t*, uint8_t*, size_t&, uint8_t&) handler);
+    void addPacketType(char key, uint8_t size, void (*handler)(const uint8_t*, uint8_t*, size_t&, uint8_t&));
 
     void update();
 };
