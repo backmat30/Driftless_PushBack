@@ -48,12 +48,12 @@ void PackageManager::encodeCOBS() {
 
 
 bool PackageManager::decodeCOBS() {
-  size_t read_index{0};
+  size_t read_index{1};
   size_t write_index{};
   uint8_t bytes_until_zero{m_input_package[0]};
 
-  while (read_index < m_input_size) {
-    if (m_input_package[read_index] == 0 || m_expected_package_size + 1 > read_index + bytes_until_zero) {
+  while (read_index < m_bytes_read) {
+    if (m_input_package[read_index] == 0 || m_bytes_read + 1 > read_index + bytes_until_zero) {
       return false;
     }
 
@@ -63,23 +63,24 @@ bool PackageManager::decodeCOBS() {
       m_decoded_input_package[write_index++] = m_input_package[read_index++];
     }
 
-    if (bytes_until_zero != 0xFF && read_index < m_expected_package_size) {
+    bytes_until_zero = m_input_package[read_index];
+
+    if (bytes_until_zero != 0xFF && read_index < m_bytes_read) {
       m_decoded_input_package[write_index++] = 0;
     }
   }
 
-  m_output_size = write_index;
   return true;
 }
 
 
 
-bool PackageManager::WaitForDelimeter() {
+bool PackageManager::waitForDelimiter() {
   uint8_t byte{};
   while (m_input_buffer.readNext(byte)) {
     if (byte == 0x00) {
       m_bytes_read = 0;
-      m_state = States::READ_SIZE;
+      m_state = States::READ_PAYLOAD;
       return true;
     }
   }
@@ -89,40 +90,16 @@ bool PackageManager::WaitForDelimeter() {
 
 
 
-bool PackageManager::readSize() {
-  if (m_input_buffer.isEmpty()) {
-    return false;
-  }
-
-  m_input_buffer.readNext(m_expected_package_size);
-
-  if (m_expected_package_size < 4) {
-    m_state = States::ERROR;
-    return true;
-  }
-
-  m_input_package[m_bytes_read++] = m_expected_package_size;
-  m_state = States::READ_PAYLOAD;
-  return true;
-}
-
-
-
 bool PackageManager::readPayload() {
   uint8_t byte{};
 
   while (m_input_buffer.readNext(byte)) {
     if (byte == 0x00) {
-      m_state = States::ERROR;
+      m_state = States::VALIDATE_PACKAGE;
       return true;
     }
 
     m_input_package[m_bytes_read++] = byte;
-
-    if (m_bytes_read == m_expected_package_size) {
-      m_state = States::VALIDATE_PACKAGE;
-      return true;
-    }
   }
 
   return false;
@@ -135,6 +112,9 @@ bool PackageManager::validatePackage() {
     m_state = States::ERROR;
     return true;
   }
+
+  m_bytes_read = 0;
+  m_expected_package_size = m_decoded_input_package[0];
 
   uint16_t recieved_crc{};
 
@@ -174,7 +154,7 @@ bool PackageManager::processCommands() {
   if (m_output_packets) {
     m_state = States::BUILD_RESPONSE;
   } else {
-    m_state = States::WAIT_FOR_DELIMITER;
+    m_state = States::READ_PAYLOAD;
   }
   return true;
 }
@@ -182,7 +162,6 @@ bool PackageManager::processCommands() {
 
 
 bool PackageManager::buildResponse() {
-  m_output_size;
   m_output_buffer[0] = m_output_size + 2;
   m_output_buffer[1] = m_output_packets;
 
@@ -193,22 +172,22 @@ bool PackageManager::buildResponse() {
   encodeCOBS();
 
   m_state = States::SEND_RESPONSE;
+  m_send_index = 0;
   return true;
 }
 
 
 
 bool PackageManager::sendResponse() {
-  if(!m_serial_port->availableForWrite()) {
-    m_state = States::ERROR;
-    return true;
+  while(m_send_index < m_output_size) {
+    if(!m_serial_port->availableForWrite()) {
+    return false;
   }
 
-  for(size_t i = 0; i < m_output_size; ++i) {
-    m_serial_port->write(m_output_package[i]);
+    m_serial_port->write(m_output_package[m_send_index++]);
   }
 
-  m_state = States::WAIT_FOR_DELIMITER;
+  m_state = States::READ_PAYLOAD;
   return true;
 }
 
@@ -227,7 +206,7 @@ PackageManager::PackageManager(HardwareSerialIMXRT* serial_port)
 
 
 void PackageManager::addPacketType(char key, uint8_t size,
-                                   void (*)(const uint8_t* data) handler) {
+                                   void(*handler)(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num)) {
   m_packet_sizes[static_cast<int>(key)] = size;
   m_packet_handlers[static_cast<int>(key)] = handler;
 }
@@ -245,10 +224,6 @@ void PackageManager::update() {
     switch (m_state) {
       case States::WAIT_FOR_DELIMITER:
         update_state = waitForDelimiter();
-        break;
-
-      case States::READ_SIZE:
-        update_state = readSize();
         break;
 
       case States::READ_PAYLOAD:
