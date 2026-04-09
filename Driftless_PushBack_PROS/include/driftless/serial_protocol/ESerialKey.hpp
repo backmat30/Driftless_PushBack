@@ -4,23 +4,20 @@
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
 namespace driftless {
-  /// @brief Namespace for serial communication protocols
-  /// @author Matthew Backman
-  namespace serial_protocol {
-    /// @brief Enumeration representing valid keys for serial communication
-    /// @author Matthew Backman
-    enum class ESerialKey : int8_t {
-      REQUEST_PACKET = 'R',
-      CALIBRATE_ODOM = 'C',
-      XPOS = 'X',
-      YPOS = 'Y',
-      THETA = 'H',
-      SWERVE_MODULE_A = 'A',
-      SWERVE_MODULE_B = 'B',
-      SWERVE_MODULE_C = 'C',
-      SWERVE_MODULE_D = 'D',
-      ERROR = 'E'
-    };
-  }
-}
+/// @brief Namespace for serial communication protocols
+/// @author Matthew Backman
+namespace serial_protocol {
+/// @brief Enumeration representing valid keys for serial communication
+/// @author Matthew Backman
+enum class ESerialKey : int8_t {
+  REQUEST_PACKET = 'R',
+  CALIBRATE_ODOM = 'C',
+  XPOS = 'X',
+  YPOS = 'Y',
+  THETA = 'H',
+  ACK = 'A',
+  ERROR = 'E'
+};
+}  // namespace serial_protocol
+}  // namespace driftless
 #endif
