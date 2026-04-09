@@ -27,7 +27,7 @@ class CircularBuffer {
 * Determines if the circular buffer is full
 * @return True if full, false if there is at least 1 free space in the buffer
 */
-    bool isFull() {
+    bool isFull() const {
       return count == N;
     }
 
@@ -35,7 +35,7 @@ class CircularBuffer {
 * Determines if the circular buffer is empty
 * @return True if empty, false if there is at least 1 byte in the buffer
 */
-    bool isEmpty() {
+    bool isEmpty() const {
       return count == 0;
     }
 
@@ -43,7 +43,7 @@ class CircularBuffer {
 * Determines the number of bytes stored in the buffer
 * @return The number of bytes in the buffer
 */
-    size_t size() {
+    size_t size() const {
       return count;
     }
 
