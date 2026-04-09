@@ -1,7 +1,7 @@
 #include "PackageManager.h"
 
 uint16_t PackageManager::calculateCRC(uint8_t* data, size_t size) {
-  uint16_t crc{ 0xFFFF };
+  uint16_t crc{0xFFFF};
   for (size_t i = 0; i < size; ++i) {
     crc ^= static_cast<uint8_t>(data[i]);
     for (uint8_t i = 0; i < 8; ++i) {
@@ -14,13 +14,11 @@ uint16_t PackageManager::calculateCRC(uint8_t* data, size_t size) {
   return crc;
 }
 
-
-
 void PackageManager::encodeCOBS() {
   size_t read_index{};
-  size_t write_index{ 1 };
+  size_t write_index{1};
   size_t latest_zero_index{};
-  uint8_t bytes_since_zero{ 1 };
+  uint8_t bytes_since_zero{1};
 
   while (read_index < m_output_size) {
     if (m_output_buffer[read_index] == 0) {
@@ -45,15 +43,14 @@ void PackageManager::encodeCOBS() {
   m_output_package[latest_zero_index] = bytes_since_zero;
 }
 
-
-
 bool PackageManager::decodeCOBS() {
   size_t read_index{1};
   size_t write_index{};
   uint8_t bytes_until_zero{m_input_package[0]};
 
   while (read_index < m_bytes_read) {
-    if (m_input_package[read_index] == 0 || m_bytes_read + 1 > read_index + bytes_until_zero) {
+    if (m_input_package[read_index] == 0 ||
+        m_bytes_read + 1 > read_index + bytes_until_zero) {
       return false;
     }
 
@@ -73,8 +70,6 @@ bool PackageManager::decodeCOBS() {
   return true;
 }
 
-
-
 bool PackageManager::waitForDelimiter() {
   uint8_t byte{};
   while (m_input_buffer.readNext(byte)) {
@@ -87,8 +82,6 @@ bool PackageManager::waitForDelimiter() {
 
   return false;
 }
-
-
 
 bool PackageManager::readPayload() {
   uint8_t byte{};
@@ -105,8 +98,6 @@ bool PackageManager::readPayload() {
   return false;
 }
 
-
-
 bool PackageManager::validatePackage() {
   if (!decodeCOBS()) {
     m_state = States::ERROR;
@@ -118,8 +109,10 @@ bool PackageManager::validatePackage() {
 
   uint16_t recieved_crc{};
 
-  memcpy(&recieved_crc, &m_decoded_input_package[m_expected_package_size - 2], 2);
-  uint16_t calculated_crc{ calculateCRC(m_decoded_input_package.data(), m_expected_package_size - 2) };
+  memcpy(&recieved_crc, &m_decoded_input_package[m_expected_package_size - 2],
+         2);
+  uint16_t calculated_crc{calculateCRC(m_decoded_input_package.data(),
+                                       m_expected_package_size - 2)};
 
   if (recieved_crc == calculated_crc) {
     m_state = States::PROCESS_COMMANDS;
@@ -129,8 +122,6 @@ bool PackageManager::validatePackage() {
 
   return true;
 }
-
-
 
 bool PackageManager::processCommands() {
   uint8_t num_packets = m_decoded_input_package[1];
@@ -147,7 +138,9 @@ bool PackageManager::processCommands() {
       return true;
     }
 
-    m_packet_handlers[key](&m_decoded_input_package[packet_index], m_output_buffer.data(), m_output_size, m_output_packets);
+    m_packet_handlers[key](&m_decoded_input_package[packet_index],
+                           m_output_buffer.data(), m_output_size,
+                           m_output_packets);
     packet_index += m_packet_sizes[key];
   }
 
@@ -159,13 +152,11 @@ bool PackageManager::processCommands() {
   return true;
 }
 
-
-
 bool PackageManager::buildResponse() {
   m_output_buffer[0] = m_output_size + 2;
   m_output_buffer[1] = m_output_packets;
 
-  uint16_t crc{ calculateCRC(m_output_buffer.data(), m_output_size) };
+  uint16_t crc{calculateCRC(m_output_buffer.data(), m_output_size)};
   memcpy(&m_output_buffer[m_output_size], &crc, 2);
   m_output_size += 2;
 
@@ -176,13 +167,11 @@ bool PackageManager::buildResponse() {
   return true;
 }
 
-
-
 bool PackageManager::sendResponse() {
-  while(m_send_index < m_output_size) {
-    if(!m_serial_port->availableForWrite()) {
-    return false;
-  }
+  while (m_send_index < m_output_size) {
+    if (!m_serial_port->availableForWrite()) {
+      return false;
+    }
 
     m_serial_port->write(m_output_package[m_send_index++]);
   }
@@ -192,30 +181,26 @@ bool PackageManager::sendResponse() {
 }
 
 bool PackageManager::handleError() {
-  //TODO actually handle errors
+  // TODO actually handle errors
 
   m_state = States::WAIT_FOR_DELIMITER;
   return true;
 }
 
-
-
 PackageManager::PackageManager(HardwareSerialIMXRT* serial_port)
-  : m_serial_port{ serial_port } {}
+    : m_serial_port{serial_port} {}
 
-
-
-void PackageManager::addPacketType(char key, uint8_t size,
-                                   void(*handler)(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num)) {
+void PackageManager::addPacketType(
+    char key, uint8_t size,
+    void (*handler)(const uint8_t* data, uint8_t* write_data,
+                    size_t& write_index, uint8_t& outgoing_packet_num)) {
   m_packet_sizes[static_cast<int>(key)] = size;
   m_packet_handlers[static_cast<int>(key)] = handler;
 }
 
-
-
 void PackageManager::update() {
   while (m_serial_port->available() && !m_input_buffer.isFull()) {
-    uint8_t next_byte{ m_serial_port->read() };
+    uint8_t next_byte{m_serial_port->read()};
     m_input_buffer.write(next_byte);
   }
 
