@@ -197,7 +197,7 @@ class BlueConfig : public IConfig {
 
   // ## INTAKE PNEUMATICS ##
 
-  static constexpr int INTAKE_BACK_ARMS_PORT{5};
+  static constexpr int INTAKE_BACK_ARMS_PORT{4};
 
   // ## HOOD MOTORS ##
 
@@ -213,7 +213,7 @@ class BlueConfig : public IConfig {
 
   // ## RAKE PNEUMATICS ##
 
-  static constexpr int RAKE_PISTON_PORT{4};
+  static constexpr int RAKE_PISTON_PORT{5};
 
   // #### ROBOT CONSTANTS ####
 
