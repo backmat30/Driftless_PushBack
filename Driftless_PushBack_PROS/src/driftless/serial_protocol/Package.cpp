@@ -5,6 +5,14 @@ void Package::addPacket(const Packet& packet) { m_packets.push_back(packet); }
 
 void Package::addPacket(const ESerialKey key,
                         const std::vector<uint8_t>& value) {
+  for (const auto& existing_packet : m_packets) {
+    if (existing_packet.key == key) {
+      std::memcpy(const_cast<uint8_t*>(existing_packet.value.data()),
+                  value.data(), value.size());
+      return;
+    }
+  }
+
   Packet packet{key, value};
   m_packets.push_back(packet);
 }
@@ -21,7 +29,7 @@ std::vector<uint8_t> Package::getSerializedPackage() const {
                          packet.value.end());
   }
 
-  output_vector[1] =
+  output_vector[0] =
       static_cast<uint8_t>(output_vector.size() + 2);  // +2 for CRC bytes
   return output_vector;
 }

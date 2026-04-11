@@ -4,7 +4,7 @@
 #include "Wire.h"
 #include "PackageManager.h"
 
-// #define DEBUG
+#define DEBUG
 
 /**
  * Arduino code to recieve odometry information from a
@@ -19,6 +19,7 @@ void handleCalibrateCommand(const uint8_t* data, uint8_t* write_data, size_t& wr
 void handleSetXCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num);
 void handleSetYCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num);
 void handleSetHeadingCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num);
+void handleSetPositionCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num);
 void handleAckCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num);
 
 std::array<uint8_t, 128> key_sizes{};
@@ -35,6 +36,7 @@ void setup() {
   manager.addPacketType('H', 4, handleSetHeadingCommand);
   manager.addPacketType('C', 1, handleCalibrateCommand);
   manager.addPacketType('A', 1, handleAckCommand);
+  manager.addPacketType('P', 6, handleSetPositionCommand);
 
   key_sizes['R'] = 1;
   key_sizes['X'] = 4;
@@ -42,6 +44,7 @@ void setup() {
   key_sizes['H'] = 4;
   key_sizes['C'] = 1;
   key_sizes['A'] = 1;
+  key_sizes['P'] = 6;
 
   Serial8.begin(115200);
 
@@ -49,13 +52,14 @@ void setup() {
   Serial.begin(74880);
 #endif
 
-  Wire2.begin();
-  while (!(odom_sensor.begin(Wire2))) {
+  Wire1.begin();
+  while (!(odom_sensor.begin(Wire1))) {
 #ifdef DEBUG
     Serial.println("Odom initializing");
 #endif
     delay(1000);
   }
+  Serial.println("Odom initialized");
 
   odom_sensor.setAngularUnit(kSfeOtosAngularUnitDegrees);
   odom_sensor.setLinearUnit(kSfeOtosLinearUnitInches);
@@ -67,7 +71,7 @@ void loop() {
   manager.update();
 
   uint32_t end_time{millis()};
-  uint32_t next_start_time{end_time + 10 - (end_time % 10)};
+  uint32_t next_start_time{end_time + 20 - (end_time % 20)};
   
   delay(next_start_time - millis());
 }
@@ -106,10 +110,24 @@ void handleRequestCommand(const uint8_t* data, uint8_t* write_data, size_t& writ
       memcpy(&value, &heading, value_size);
       break;
     }
+    case 'P': {
+      sfe_otos_pose2d_t position;
+      odom_sensor.getPosition(position);
+
+      int16_t x{position.x * 100};
+      int16_t y{position.y * 100};
+      int16_t h{position.h * 100};
+
+      memcpy(&value, x, 2);
+      memcpy(&value[2], y, 2);
+      memcpy(&value[4], h, 2);
+      break;
+    }
   }
 
   memcpy(write_data + write_index, value, value_size);
   write_index += value_size;
+  outgoing_packet_num++;
 }
 
 void handleCalibrateCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num) {
@@ -159,6 +177,19 @@ void handleSetHeadingCommand(const uint8_t* data, uint8_t* write_data, size_t& w
   sfe_otos_pose2d_t offset{};
   odom_sensor.getOffset(offset);
   offset.h = h_offset;
+  odom_sensor.setOffset(offset);
+}
+
+void handleSetPositionCommand(const uint8_t* data, uint8_t* write_data, size_t& write_index, uint8_t& outgoing_packet_num) {
+  int16_t x_pos{};
+  int16_t y_pos{};
+  int16_t heading{};
+
+  memcpy(&x_pos, data, 2);
+  memcpy(&y_pos, data + 2, 2);
+  memcpy(&heading, data + 4, 2);
+
+  sfe_otos_pose2d_t offset{x_pos / 100.0, y_pos / 100.0, heading / 100.0};
   odom_sensor.setOffset(offset);
 }
 

@@ -44,25 +44,30 @@ void PackageManager::encodeCOBS() {
 }
 
 bool PackageManager::decodeCOBS() {
-  size_t read_index{1};
-  size_t write_index{};
-  uint8_t bytes_until_zero{m_input_package[0]};
+  size_t read_index = 0;
+  size_t write_index = 0;
 
   while (read_index < m_bytes_read) {
-    if (m_input_package[read_index] == 0 ||
-        m_bytes_read + 1 > read_index + bytes_until_zero) {
-      return false;
+    uint8_t code = m_input_package[read_index];
+
+    if (code == 0) {
+      return false; // invalid in COBS stream
     }
 
     read_index++;
 
-    for (uint8_t i = 1; i < bytes_until_zero; ++i) {
-      m_decoded_input_package[write_index++] = m_input_package[read_index++];
+    // Copy (code - 1) bytes
+    for (uint8_t i = 1; i < code; ++i) {
+      if (read_index >= m_bytes_read) {
+        return false; // overflow
+      }
+
+      m_decoded_input_package[write_index++] =
+          m_input_package[read_index++];
     }
 
-    bytes_until_zero = m_input_package[read_index];
-
-    if (bytes_until_zero != 0xFF && read_index < m_bytes_read) {
+    // Insert zero if needed
+    if (code < 0xFF && read_index < m_bytes_read) {
       m_decoded_input_package[write_index++] = 0;
     }
   }
@@ -111,6 +116,7 @@ bool PackageManager::validatePackage() {
 
   memcpy(&recieved_crc, &m_decoded_input_package[m_expected_package_size - 2],
          2);
+
   uint16_t calculated_crc{calculateCRC(m_decoded_input_package.data(),
                                        m_expected_package_size - 2)};
 
@@ -175,6 +181,7 @@ bool PackageManager::sendResponse() {
 
     m_serial_port->write(m_output_package[m_send_index++]);
   }
+  m_serial_port->write(0x00);
 
   m_state = States::READ_PAYLOAD;
   return true;
@@ -184,7 +191,7 @@ bool PackageManager::handleError() {
   // TODO actually handle errors
 
   m_state = States::WAIT_FOR_DELIMITER;
-  return true;
+  return false;
 }
 
 PackageManager::PackageManager(HardwareSerialIMXRT* serial_port)
@@ -232,6 +239,7 @@ void PackageManager::update() {
         break;
 
       case States::ERROR:
+      Serial.println("Error");
         update_state = handleError();
         break;
     }

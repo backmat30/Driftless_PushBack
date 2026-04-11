@@ -16,7 +16,8 @@ enum class ESerialKey : int8_t {
   YPOS = 'Y',
   THETA = 'H',
   ACK = 'A',
-  ERROR = 'E'
+  ERROR = 'E',
+  POSITION = 'P'
 };
 }  // namespace serial_protocol
 }  // namespace driftless
