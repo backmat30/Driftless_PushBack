@@ -44,6 +44,12 @@ class IHolonomicDriveModule {
   virtual void setNormalizedMotionVector(
       HolonomicMotionVector motion_vector) = 0;
 
+  /// @brief Sets the motion vector of the holonimic drive train with normalized
+  /// vector achieved through voltage control
+  /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+  virtual void setNormalizedMotionVectorVoltage(
+      HolonomicMotionVector motion_vector) = 0;
+
   /// @brief Sets the voltage of the motors within the module
   /// @param voltage __double__ The voltage to set the motors to
   virtual void setRawVoltage(double voltage) = 0;

@@ -53,6 +53,8 @@ class ModularHolonomicDrive : public IHolonomicDrive {
 
   HolonomicMotionVector m_current_velocity{};
 
+  ControlType m_control_type{ControlType::VOLTAGE};
+
   bool m_paused{false};
 
   void taskUpdate();
@@ -98,6 +100,8 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   /// @param wheel __int__ The index of the wheel to set the voltage of
   /// @param voltage __double__ The voltage to set the wheel to
   void setWheelVoltage(int wheel, double voltage) override;
+
+  void setControlType(ControlType control_type) override;
 
   /// @brief Gets the speed of a specific wheel in the holonomic drive train
   /// @param wheel __int__ The index of the wheel to get the speed of
