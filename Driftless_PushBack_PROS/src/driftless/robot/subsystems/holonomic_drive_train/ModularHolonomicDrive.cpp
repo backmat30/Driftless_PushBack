@@ -15,9 +15,17 @@ void ModularHolonomicDrive::taskUpdate() {
   }
 
   if (!m_paused) {
-    for (auto& module : m_modules) {
-      if (module) {
-        module->setNormalizedMotionVector(m_current_velocity);
+    if (m_control_type == ControlType::VELOCITY) {
+      for (auto& module : m_modules) {
+        if (module) {
+          module->setNormalizedMotionVector(m_current_velocity);
+        }
+      }
+    } else if (m_control_type == ControlType::VOLTAGE) {
+      for (auto& module : m_modules) {
+        if (module) {
+          module->setNormalizedMotionVectorVoltage(m_current_velocity);
+        }
       }
     }
   }
@@ -169,6 +177,18 @@ void ModularHolonomicDrive::setWheelVoltage(int wheel, double voltage) {
   if (m_modules[wheel]) {
     m_modules[wheel]->setRawVoltage(voltage);
   }
+  if (m_mutex) {
+    m_mutex->give();
+  }
+}
+
+void ModularHolonomicDrive::setControlType(ControlType control_type) {
+  if (m_mutex) {
+    m_mutex->take();
+  }
+
+  m_control_type = control_type;
+
   if (m_mutex) {
     m_mutex->give();
   }

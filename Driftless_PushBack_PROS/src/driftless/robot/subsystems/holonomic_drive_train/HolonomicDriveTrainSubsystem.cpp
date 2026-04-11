@@ -65,6 +65,11 @@ void HolonomicDriveTrainSubsystem::command(ESubsystemCommand command_name,
       m_drive_train->setWheelVoltage(wheel, voltage);
       break;
     }
+    case ESubsystemCommand::HOLONOMIC_DRIVE_TRAIN_SET_CONTROL_TYPE: {
+      IHolonomicDrive::ControlType type{
+          va_arg(args, IHolonomicDrive::ControlType)};
+      m_drive_train->setControlType(type);
+    }
   }
 }
 void* HolonomicDriveTrainSubsystem::state(ESubsystemState state_name) {

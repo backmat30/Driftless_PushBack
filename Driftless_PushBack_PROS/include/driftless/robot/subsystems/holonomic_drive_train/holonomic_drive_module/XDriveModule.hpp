@@ -50,6 +50,12 @@ class XDriveModule : public IHolonomicDriveModule {
   /// @details Angular velocity must be within [-1, 1]
   void setNormalizedMotionVector(HolonomicMotionVector motion_vector) override;
 
+  /// @brief Sets the motion vector of the holonimic drive train with normalized
+  /// vector achieved through voltage control
+  /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+  void setNormalizedMotionVectorVoltage(
+      HolonomicMotionVector motion_vector) override;
+
   /// @brief Sets the voltage of the motors within the module
   /// @param voltage __double__ The voltage to set the motors to
   void setRawVoltage(double voltage) override;

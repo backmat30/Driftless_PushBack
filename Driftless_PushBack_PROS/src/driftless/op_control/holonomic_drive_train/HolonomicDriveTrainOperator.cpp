@@ -8,6 +8,16 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   double strafe_input = m_controller->getAnalog(strafe) / 127.0;
   double turn_input = m_controller->getAnalog(turn) / 127.0;
 
+  if (std::abs(forward_input) < 5 / 127.0) {
+    forward_input = 0;
+  }
+  if (std::abs(strafe_input) < 5 / 127.0) {
+    strafe_input = 0;
+  }
+  if (std::abs(turn_input) < 5 / 127.0) {
+    turn_input = 0;
+  }
+
   auto position =
       *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
           robot::subsystems::ESubsystem::ODOMETRY,

@@ -20,13 +20,13 @@ void Coprocessor::taskUpdate() {
   processLatestSignal();
   sendOutgoingPackage();
 
+  if (m_mutex) {
+    m_mutex->give();
+  }
+
   uint32_t elapsed_time{m_clock->getTime() - start_time};
   if (elapsed_time > 0) {
     m_delayer->delay(Coprocessor::TASK_DELAY - elapsed_time);
-  }
-
-  if (m_mutex) {
-    m_mutex->give();
   }
 }
 

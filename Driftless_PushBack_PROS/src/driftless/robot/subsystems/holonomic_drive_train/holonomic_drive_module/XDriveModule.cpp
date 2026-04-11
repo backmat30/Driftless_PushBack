@@ -45,6 +45,46 @@ void XDriveModule::setNormalizedMotionVector(
   m_motors.setVelocity(module_velocity);
 }
 
+void XDriveModule::setNormalizedMotionVectorVoltage(
+    HolonomicMotionVector motion_vector) {
+  // Clamp the x and y to [-1, 1]
+  if (motion_vector.x > 1.0) {
+    motion_vector.x = 1.0;
+  } else if (motion_vector.x < -1.0) {
+    motion_vector.x = -1.0;
+  }
+
+  if (motion_vector.y > 1.0) {
+    motion_vector.y = 1.0;
+  } else if (motion_vector.y < -1.0) {
+    motion_vector.y = -1.0;
+  }
+
+  // Clamp the angular velocity to [-1, 1]
+  if (motion_vector.angular_velocity > 1.0) {
+    motion_vector.angular_velocity = 1.0;
+  } else if (motion_vector.angular_velocity < -1.0) {
+    motion_vector.angular_velocity = -1.0;
+  }
+
+  // Calculate the y-component of the vector, aka forward velocity of the wheel
+  double linear_velocity = std::sin(m_angle_offset) * motion_vector.y +
+                           std::cos(m_angle_offset) * motion_vector.x;
+  double linear_motor_voltage = linear_velocity * std::sqrt(2) * 10.25;
+
+  // calculate the velocity contribution from angular velocity
+  double turn_motor_voltage = motion_vector.angular_velocity * -10.25;
+
+  // Set the motor speeds (assuming a simple proportional control for
+  // demonstration)
+  double module_voltage = linear_motor_voltage + turn_motor_voltage;
+  if (module_voltage != 0.0) {
+    module_voltage += 1.75 * (module_voltage / std::abs(module_voltage));
+  }
+
+  m_motors.setVoltage(module_voltage);
+}
+
 void XDriveModule::setRawVoltage(double voltage) {
   m_motors.setVoltage(voltage);
 }
