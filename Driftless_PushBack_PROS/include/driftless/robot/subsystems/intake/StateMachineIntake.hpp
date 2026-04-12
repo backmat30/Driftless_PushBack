@@ -74,7 +74,7 @@ class StateMachineIntake : public IIntake {
 
   std::array<std::unique_ptr<intake_states::IIntakeState>, 16> m_states{};
 
-  double m_color_sensor_distance_to_end{0.0};
+  double m_color_sensor_distance_to_end{1.5};
 
   double m_desired_voltage{};
 
