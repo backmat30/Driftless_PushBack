@@ -42,9 +42,9 @@ void BlueSkillsAuton::run(
   setGoToPoseVelocity(MAX_VELOCITY / 5.0);
   setGoToPoseAngularVelocity(MAX_ANGULAR_VELOCITY);
   delay(150);
-  goToPose(first_matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 40.0);
+  goToPose(first_matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 30.0);
   intakeBack();
-  waitForGoToPose(first_matchload, 2.0, 1100);
+  waitForGoToPose(first_matchload, 2.0, 1500);
   deployBackIntakeArms();
   stopMotion();
 
@@ -54,7 +54,7 @@ void BlueSkillsAuton::run(
   intakeFront();
 
   // score all blocks in robot
-  goToPose(left_goal_front, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 10.0);
+  goToPose(left_goal_front, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
   delay(500);
   retractBackIntakeArms();
   waitForGoToPose(left_goal_front, 2.0, 2000);
@@ -63,7 +63,7 @@ void BlueSkillsAuton::run(
   hoodOpenDoor();
   intakeFront();
 
-  delay(2000);
+  delay(2250);
 
   goToPose(first_matchload, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
   delay(500);
@@ -75,29 +75,32 @@ void BlueSkillsAuton::run(
 
   // grab park zone blocks
   goToPose(park_zone_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 3.0);
-  waitForGoToPose(park_zone_blocks_lineup, 12.0, 3000);
+  waitForGoToPose(park_zone_blocks_lineup, 18.0, 3000);
   setGoToPoseVelocity(MAX_VELOCITY / 5.0);
-  setGoToPoseAngularVelocity(MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(park_zone_blocks_lineup, 2.0, 1000);
-  goToPose(park_zone_blocks, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 10.0);
-  retractRake();
-  waitForGoToPose(park_zone_blocks, 2.0, 1750);
+  setGoToPoseAngularVelocity(MAX_ANGULAR_VELOCITY / 2.0);
+  waitForGoToPose(park_zone_blocks_lineup, 2.0, 2000);
+  goToPose(park_zone_blocks, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 7.0);
+  intakeFront();
+  waitForGoToPose(park_zone_blocks, 2.0, 2250);
+  stopMotion();
   deployRake();
   delay(500);
-  goToPose(park_zone_blocks_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
+  goToPose(park_zone_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY,
+           80.0);
   waitForGoToPose(park_zone_blocks_lineup, 2.0, 1000);
   stopMotion();
 
   delay(150);
 
   // grab 2 blocks on the left wall
-  goToPose(front_left_wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  intakeFront();
+  goToPose(front_left_wall_blocks_lineup, MAX_VELOCITY / 2.0,
+           MAX_ANGULAR_VELOCITY / 3.0);
   waitForGoToPose(front_left_wall_blocks_lineup, 6.0, 3000);
   retractRake();
   hoodLower();
-  goToPose(front_left_wall_blocks, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_left_wall_blocks, 3.0, 1000);
+  goToPose(front_left_wall_blocks, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY,
+           20.0);
+  waitForGoToPose(front_left_wall_blocks, 3.0, 2000);
   stopMotion();
   delay(250);
   deployRake();
@@ -111,9 +114,11 @@ void BlueSkillsAuton::run(
   waitForGoToPose(middle_blocks_lineup, 2.0, 4000);
   retractRake();
   delay(250);
+  turnToHeading(middle_blocks_lineup_2.getTheta(), MAX_ANGULAR_VELOCITY);
+  waitForTurnToAngle(middle_blocks_lineup_2.getTheta(), M_PI / 8.0, 1000);
   goToPose(middle_blocks_lineup_2, MAX_VELOCITY / 2.0,
            MAX_ANGULAR_VELOCITY / 4.0, 100.0);
-  waitForGoToPose(middle_blocks_lineup_2, 2.0, 3000);
+  waitForGoToPose(middle_blocks_lineup_2, 5.0, 3000);
   stopMotion();
   delay(250);
   goToPose(middle_blocks_end, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
@@ -133,11 +138,11 @@ void BlueSkillsAuton::run(
 
   delayUntil(start_time + 32000);
 
-  goToPose(middle_lower_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(middle_lower_goal_lineup, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_lower_goal_lineup, 4.0, 2000);
 
   // score on middle goal top
-  goToPose(middle_top_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(middle_top_goal_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(middle_top_goal_lineup, 2.0, 4000);
   hoodBumpUp();
   goToPose(middle_top_goal, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY, 20.0);
@@ -157,7 +162,6 @@ void BlueSkillsAuton::run(
   waitForGoToPose(middle_top_goal_lineup, 2.0, 1000);
   intakeStop();
   hoodLower();
-  hoodCloseDoor();
 
   // left wall blocks on the far side
   startColorSort(alliance::EAlliance::RED);
@@ -166,6 +170,7 @@ void BlueSkillsAuton::run(
   waitForGoToPose(back_left_wall_blocks_lineup_1, 8.0, 5000);
   goToPose(back_left_wall_blocks_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(back_left_wall_blocks_lineup_2, 2.0, 2000);
+  hoodCloseDoor();
   goToPose(back_left_wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
   waitForGoToPose(back_left_wall_blocks, 16.0, 2000);
   setGoToPoseVelocity(MAX_VELOCITY / 5.0);
@@ -200,7 +205,7 @@ void BlueSkillsAuton::run(
   intakeFront();
 
   // score on long goal
-  goToPose(left_goal_back, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 80.0);
+  goToPose(left_goal_back, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
   waitForGoToPose(left_goal_back, 12.0, 2000);
   retractBackIntakeArms();
   waitForGoToPose(left_goal_back, 2.0, 1500);
@@ -225,7 +230,8 @@ void BlueSkillsAuton::run(
   waitForGoToPose(park_lineup_2, 10.0, 3000);
   goToPose(park_lineup_3, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(park_lineup_3, 6.0, 3000);
-  goToPose(park_zone, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  goToPose(park_zone, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 50.0);
+  intakeBackToHood();
 
   delayUntil(start_time + 60000);
 
