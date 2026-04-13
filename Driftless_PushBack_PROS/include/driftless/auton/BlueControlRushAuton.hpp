@@ -26,7 +26,7 @@ class BlueControlRushAuton : public AAuton {
   control::Point matchload{28.0, 12.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{29.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{28.0, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{37.0, 37.0, M_PI / 2.0};
