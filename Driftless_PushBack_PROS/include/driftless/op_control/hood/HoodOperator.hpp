@@ -42,7 +42,7 @@ class HoodOperator {
   /// @brief Toggles the gate of the hood
   void toggleHoodGate();
 
-  /// @brief Updates the hood using toggles for pneumatic control
+  /// @brief Updates the hood using toggle for descore
   /// @param spin_forwards __EControllerDigital__ The control for spinning the
   /// hood motors forwards from the front intake
   /// @param spin_forwards_back __EControllerDigital__ The control for spinning
@@ -53,16 +53,34 @@ class HoodOperator {
   /// hood height
   /// @param toggle_gate __EControllerDigital__ The control for toggling the
   /// hood gate
-  void updateHoodToggle(EControllerDigital toggle_height,
+  void updateHoodToggle(EControllerDigital toggle_high_goal,
+                        EControllerDigital toggle_low_goal,
                         EControllerDigital toggle_gate,
-                        EControllerDigital toggle_descore,
-                        EControllerDigital toggle_bump);
+                        EControllerDigital toggle_descore);
 
-  void updateHoodSmartToggle(EControllerDigital toggle_high_goal,
-                             EControllerDigital toggle_low_goal,
-                             EControllerDigital toggle_gate,
-                             EControllerDigital toggle_descore);
+  /// @brief Updates the hood using hold for descore
+  /// @param spin_forwards __EControllerDigital__ The control for spinning the
+  /// hood motors forwards from the front intake
+  /// @param spin_forwards_back __EControllerDigital__ The control for spinning
+  /// the hood motors forwards from the back intake
+  /// @param spin_backwards __EControllerDigital__ The control for spinning the
+  /// hood motors backwards
+  /// @param toggle_height __EControllerDigital__ The control for toggling the
+  /// hood height
+  /// @param hold_descore __EControllerDigital__ The control for holding the
+  /// descore
+  void updateHoodHold(EControllerDigital toggle_high_goal,
+                      EControllerDigital toggle_low_goal,
+                      EControllerDigital toggle_gate,
+                      EControllerDigital hold_descore);
 
+  /// Updates the rollers for the hood
+  /// @param spin_forwards __EControllerDigital__ The control for spinning
+  /// the hood motors forwards from the front intake
+  /// @param spin_forwards_back __EControllerDigital__ The control for
+  /// spinning the hood motors forwards from the back intake
+  /// @param spin_backwards __EControllerDigital__ The control for spinning
+  /// the hood motors backwards
   void updateHoodRollers(EControllerDigital spin_forwards_front,
                          EControllerDigital spin_forwards_back,
                          EControllerDigital spin_backwards);
