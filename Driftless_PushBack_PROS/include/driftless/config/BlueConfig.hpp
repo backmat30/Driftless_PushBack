@@ -193,7 +193,9 @@ class BlueConfig : public IConfig {
 
   // ## INTAKE SENSORS ##
 
-  static constexpr int INTAKE_COLOR_SENSOR_PORT{3};
+  static constexpr int INTAKE_FRONT_COLOR_SENSOR_PORT{1};
+  static constexpr int INTAKE_MID_COLOR_SENSOR_PORT{2};
+  static constexpr int INTAKE_BACK_COLOR_SENSOR_PORT{3};
 
   // ## INTAKE PNEUMATICS ##
 
@@ -237,7 +239,9 @@ class BlueConfig : public IConfig {
   static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
   // ## INTAKE ##
-  static constexpr double INTAKE_COLOR_SENSOR_DISTANCE_TO_END{3.25};
+  static constexpr double INTAKE_FRONT_COLOR_SENSOR_DISTANCE{6.5};
+  static constexpr double INTAKE_MID_COLOR_SENSOR_DISTANCE{2.0};
+  static constexpr double INTAKE_BACK_COLOR_SENSOR_DISTANCE{1.5};
 
  public:
   std::string getName() override;

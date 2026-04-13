@@ -351,8 +351,12 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
       std::make_unique<pros::adi::DigitalOut>(INTAKE_BACK_ARMS_PORT)};
   std::unique_ptr<pros::Motor> pros_intake_vertical_motor_1{
       std::make_unique<pros::Motor>(INTAKE_VERTICAL_MOTOR_1_PORT)};
-  std::unique_ptr<pros::Optical> pros_intake_color_sensor{
-      std::make_unique<pros::Optical>(INTAKE_COLOR_SENSOR_PORT)};
+  std::unique_ptr<pros::Optical> pros_intake_front_color_sensor{
+      std::make_unique<pros::Optical>(INTAKE_FRONT_COLOR_SENSOR_PORT)};
+  std::unique_ptr<pros::Optical> pros_intake_mid_color_sensor{
+      std::make_unique<pros::Optical>(INTAKE_MID_COLOR_SENSOR_PORT)};
+  std::unique_ptr<pros::Optical> pros_intake_back_color_sensor{
+      std::make_unique<pros::Optical>(INTAKE_BACK_COLOR_SENSOR_PORT)};
 
   // adapt the pros objects
   std::unique_ptr<io::IMotor> intake_front_motor_1{
@@ -370,9 +374,15 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
   std::unique_ptr<io::IMotor> intake_vertical_motor_1{
       std::make_unique<pros_adapters::ProsV5Motor>(
           pros_intake_vertical_motor_1)};
-  std::unique_ptr<io::IColorSensor> intake_color_sensor{
+  std::unique_ptr<io::IColorSensor> intake_front_color_sensor{
       std::make_unique<pros_adapters::ProsColorSensor>(
-          pros_intake_color_sensor)};
+          pros_intake_front_color_sensor)};
+  std::unique_ptr<io::IColorSensor> intake_mid_color_sensor{
+      std::make_unique<pros_adapters::ProsColorSensor>(
+          pros_intake_mid_color_sensor)};
+  std::unique_ptr<io::IColorSensor> intake_back_color_sensor{
+      std::make_unique<pros_adapters::ProsColorSensor>(
+          pros_intake_back_color_sensor)};
 
   // rtos
   std::unique_ptr<rtos::IDelayer> intake_delayer{
@@ -409,8 +419,12 @@ std::shared_ptr<robot::Robot> OrangeConfig::buildRobot() {
           ->withBackMotor(intake_back_motor_1)
           ->withVerticalMotor(intake_vertical_motor_1)
           ->withBackPiston(intake_back_arms)
-          ->withColorSensorDistanceToEnd(INTAKE_COLOR_SENSOR_DISTANCE_TO_END)
-          ->withColorSensor(intake_color_sensor)
+          ->withFrontColorSensorDistance(INTAKE_FRONT_COLOR_SENSOR_DISTANCE)
+          ->withMidColorSensorDistance(INTAKE_MID_COLOR_SENSOR_DISTANCE)
+          ->withBackColorSensorDistance(INTAKE_BACK_COLOR_SENSOR_DISTANCE)
+          ->withFrontColorSensor(intake_front_color_sensor)
+          ->withMidColorSensor(intake_mid_color_sensor)
+          ->withBackColorSensor(intake_back_color_sensor)
           ->withDelayer(intake_delayer)
           ->withMutex(intake_mutex)
           ->withTask(intake_task)
