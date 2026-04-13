@@ -32,7 +32,7 @@ class AsherProfile : public IProfile {
       {op_control::EControlType::INTAKE,
        static_cast<int>(op_control::intake::EIntakeControlMode::SMART_SPLIT)},
       {op_control::EControlType::HOOD,
-       static_cast<int>(op_control::hood::EHoodControlMode::SMART_TOGGLE)}};
+       static_cast<int>(op_control::hood::EHoodControlMode::DESCORE_TOGGLE)}};
 
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>

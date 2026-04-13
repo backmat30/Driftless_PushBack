@@ -18,58 +18,94 @@ void HoodOperator::toggleHoodGate() {
                        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_GATE);
 }
 
-void HoodOperator::updateHoodToggle(EControllerDigital toggle_height,
+void HoodOperator::updateHoodToggle(EControllerDigital toggle_high_goal,
+                                    EControllerDigital toggle_low_goal,
                                     EControllerDigital toggle_gate,
-                                    EControllerDigital toggle_descore,
-                                    EControllerDigital toggle_bump) {
-  bool toggle_height_pressed{m_controller->getNewDigital(toggle_height)};
+                                    EControllerDigital toggle_descore) {
+  bool toggle_high_goal_pressed{m_controller->getNewDigital(toggle_high_goal)};
+  bool toggle_low_goal_pressed{m_controller->getNewDigital(toggle_low_goal)};
   bool toggle_gate_pressed{m_controller->getNewDigital(toggle_gate)};
-  bool toggle_descore_pressed{m_controller->getNewDigital(toggle_descore)};
-  bool toggle_bump_pressed{m_controller->getNewDigital(toggle_bump)};
+  bool activate_descore_pressed{m_controller->getNewDigital(toggle_descore)};
 
   bool is_hood_raised{*static_cast<bool*>(
       m_robot->getState(robot::subsystems::ESubsystem::HOOD,
                         robot::subsystems::ESubsystemState::HOOD_IS_RAISED))};
+  bool is_hood_bumped{*static_cast<bool*>(
+      m_robot->getState(robot::subsystems::ESubsystem::HOOD,
+                        robot::subsystems::ESubsystemState::HOOD_IS_BUMPED))};
+  bool is_descore_mid{
+      (*static_cast<int*>(m_robot->getState(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemState::HOOD_GET_DESCORE_HEIGHT))) == 1};
 
-  if (toggle_height_pressed) {
+  if (toggle_high_goal_pressed) {
+    if (is_hood_raised) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_CLOSE_GATE);
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
+    } else {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
+    }
+    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
     toggleHoodHeight();
+  } else if (toggle_low_goal_pressed) {
+    if (is_hood_bumped) {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_CLOSE_GATE);
+    } else {
+      m_robot->sendCommand(
+          robot::subsystems::ESubsystem::HOOD,
+          robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
+    }
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
     m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
+                         robot::subsystems::ESubsystemCommand::HOOD_LOWER);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
+  } else if (toggle_gate_pressed) {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_GATE);
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
   }
 
-  if (toggle_gate_pressed) {
-    toggleHoodGate();
-  }
-
-  // TODO: update for 3 state descore
-  // if (toggle_descore_pressed) {
-  //   if (is_hood_raised) {
-  //     m_robot->sendCommand(
-  //         robot::subsystems::ESubsystem::HOOD,
-  //         robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_DESCORE);
-  //   }
-  // }
-
-  if (toggle_bump_pressed) {
-    if (!is_hood_raised) {
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
+  if (activate_descore_pressed && !is_descore_mid) {
+    if (!is_hood_raised && !is_hood_bumped) {
+      m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                           robot::subsystems::ESubsystemCommand::HOOD_RAISE);
     }
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE_HALF);
+    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
+                         robot::subsystems::ESubsystemCommand::HOOD_CLOSE_GATE);
+  } else if (activate_descore_pressed && is_descore_mid) {
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_EXTEND_DESCORE);
   }
 }
 
-void HoodOperator::updateHoodSmartToggle(EControllerDigital toggle_high_goal,
-                                         EControllerDigital toggle_low_goal,
-                                         EControllerDigital toggle_gate,
-                                         EControllerDigital toggle_descore) {
+void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
+                                  EControllerDigital toggle_low_goal,
+                                  EControllerDigital toggle_gate,
+                                  EControllerDigital hold_descore) {
   bool toggle_high_goal_pressed{m_controller->getNewDigital(toggle_high_goal)};
   bool toggle_low_goal_pressed{m_controller->getNewDigital(toggle_low_goal)};
   bool toggle_gate_pressed{m_controller->getNewDigital(toggle_gate)};
-  bool activate_descore_pressed{m_controller->getDigital(toggle_descore)};
+  bool activate_descore_pressed{m_controller->getDigital(hold_descore)};
 
   bool is_hood_raised{*static_cast<bool*>(
       m_robot->getState(robot::subsystems::ESubsystem::HOOD,
@@ -202,12 +238,11 @@ void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   updateHoodRollers(spin_forwards_front, spin_forwards_back, spin_backwards);
 
   switch (control_mode) {
-    case EHoodControlMode::SPLIT_TOGGLE:
-      updateHoodToggle(toggle_height, toggle_gate, toggle_descore, toggle_bump);
+    case EHoodControlMode::DESCORE_TOGGLE:
+      updateHoodToggle(toggle_height, toggle_bump, toggle_gate, toggle_descore);
       break;
-    case EHoodControlMode::SMART_TOGGLE:
-      updateHoodSmartToggle(toggle_height, toggle_bump, toggle_gate,
-                            toggle_descore);
+    case EHoodControlMode::DESCORE_HOLD:
+      updateHoodHold(toggle_height, toggle_bump, toggle_gate, toggle_descore);
       break;
   }
 }

@@ -13,10 +13,9 @@ namespace op_control {
 /// @author Matthew Backman
 namespace hood {
 
-  enum class EHoodControlMode {
-    SPLIT_TOGGLE,
-    SMART_TOGGLE
-  };
-}}}
+enum class EHoodControlMode { DESCORE_TOGGLE, DESCORE_HOLD };
+}
+}  // namespace op_control
+}  // namespace driftless
 
 #endif
