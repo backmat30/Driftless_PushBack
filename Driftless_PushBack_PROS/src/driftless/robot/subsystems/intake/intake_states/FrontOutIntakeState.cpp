@@ -8,7 +8,7 @@ void FrontOutIntakeState::update(StateMachineIntake& intake) {
   intake.setIntermediaryMotorVoltage(0.0);
   intake.setIntermediaryMotorCurrentLimit(0.0);
 
-  intake.setBackMotorVoltage(intake.getDesiredVoltage());
+  intake.setBackMotorVoltage(-intake.getDesiredVoltage());
   intake.setBackMotorCurrentLimit(1.25);
 
   intake.setVerticalMotorVoltage(-intake.getDesiredVoltage());
