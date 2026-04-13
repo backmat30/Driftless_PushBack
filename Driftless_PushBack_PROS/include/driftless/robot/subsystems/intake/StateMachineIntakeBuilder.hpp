@@ -40,7 +40,11 @@ class StateMachineIntakeBuilder {
   /// @brief The pistons used to build the StateMachineIntake
   hal::PistonGroup m_back_pistons{};
 
-  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+  std::unique_ptr<io::IColorSensor> m_front_color_sensor{};
+
+  std::unique_ptr<io::IColorSensor> m_mid_color_sensor{};
+
+  std::unique_ptr<io::IColorSensor> m_back_color_sensor{};
 
   std::unique_ptr<rtos::IDelayer> m_delayer{};
 
@@ -50,7 +54,11 @@ class StateMachineIntakeBuilder {
 
   std::unique_ptr<rtos::IClock> m_clock{};
 
-  double m_color_sensor_distance_to_end{};
+  double m_front_sensor_distance{};
+
+  double m_mid_sensor_distance{};
+
+  double m_back_sensor_distance{};
 
   std::array<std::unique_ptr<intake_states::IIntakeState>, 16> m_states{};
 
@@ -87,7 +95,21 @@ class StateMachineIntakeBuilder {
   /// @param piston __std::unique_ptr<io::IColorSensor>&__ The color sensor to
   /// add
   /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
-  StateMachineIntakeBuilder* withColorSensor(
+  StateMachineIntakeBuilder* withFrontColorSensor(
+      std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Add a color sensor to the builder
+  /// @param piston __std::unique_ptr<io::IColorSensor>&__ The color sensor to
+  /// add
+  /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
+  StateMachineIntakeBuilder* withMidColorSensor(
+      std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Add a color sensor to the builder
+  /// @param piston __std::unique_ptr<io::IColorSensor>&__ The color sensor to
+  /// add
+  /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
+  StateMachineIntakeBuilder* withBackColorSensor(
       std::unique_ptr<io::IColorSensor>& color_sensor);
 
   /// @brief Add a delayer to the builder
@@ -119,7 +141,19 @@ class StateMachineIntakeBuilder {
   /// @param distance __double__ The distance from the color sensor to the back
   /// of the intake in inches
   /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
-  StateMachineIntakeBuilder* withColorSensorDistanceToEnd(double distance);
+  StateMachineIntakeBuilder* withFrontColorSensorDistance(double distance);
+
+  /// @brief Add a color sensor distance to end to the builder
+  /// @param distance __double__ The distance from the color sensor to the back
+  /// of the intake in inches
+  /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
+  StateMachineIntakeBuilder* withMidColorSensorDistance(double distance);
+
+  /// @brief Add a color sensor distance to end to the builder
+  /// @param distance __double__ The distance from the color sensor to the back
+  /// of the intake in inches
+  /// @return __StateMachineIntakeBuilder*__ Pointer to this builder
+  StateMachineIntakeBuilder* withBackColorSensorDistance(double distance);
 
   /// @brief Builds the StateMachineIntake object
   /// @return __std::unique_ptr<IIntake>__ Pointer to the newly built

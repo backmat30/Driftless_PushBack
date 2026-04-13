@@ -10,25 +10,28 @@ void StateMachineIntake::taskLoop(void* params) {
   }
 }
 
-bool StateMachineIntake::hasBlock() {
+bool StateMachineIntake::hasBlock(ColorSortLocation location) {
   bool result{};
+  int index{static_cast<int>(location)};
 
-  if (m_color_sensor) {
-    if (m_color_sensor->getProximity() >= 200) {
+  if (m_color_sensors[index].m_color_sensor) {
+    if (m_color_sensors[index].m_color_sensor->getProximity() >= 200) {
       result = true;
     }
   }
   return result;
 }
 
-bool StateMachineIntake::hasOpposingBlock() {
+bool StateMachineIntake::hasOpposingBlock(ColorSortLocation location) {
   bool result{};
+  int index{static_cast<int>(location)};
 
-  if (m_color_sensor && m_alliance != alliance::EAlliance::NONE) {
-    double red{m_color_sensor->getRGB().red};
-    double blue{m_color_sensor->getRGB().blue};
+  if (m_color_sensors[index].m_color_sensor &&
+      m_alliance != alliance::EAlliance::NONE) {
+    double red{m_color_sensors[index].m_color_sensor->getRGB().red};
+    double blue{m_color_sensors[index].m_color_sensor->getRGB().blue};
 
-    if (hasBlock()) {
+    if (hasBlock(location)) {
       switch (m_alliance) {
         case alliance::EAlliance::RED: {
           if (blue > red * 1.2) {
@@ -49,18 +52,19 @@ bool StateMachineIntake::hasOpposingBlock() {
   return result;
 }
 
-bool StateMachineIntake::hasAllianceBlock() {
+bool StateMachineIntake::hasAllianceBlock(ColorSortLocation location) {
   bool result{};
+  int index{static_cast<int>(location)};
 
   if (m_color_sort_paused) {
-    if (hasBlock()) {
+    if (hasBlock(location)) {
       result = true;
     }
-  } else if (m_color_sensor) {
-    double red{m_color_sensor->getRGB().red};
-    double blue{m_color_sensor->getRGB().blue};
+  } else if (m_color_sensors[index].m_color_sensor) {
+    double red{m_color_sensors[index].m_color_sensor->getRGB().red};
+    double blue{m_color_sensors[index].m_color_sensor->getRGB().blue};
 
-    if (hasBlock()) {
+    if (hasBlock(location)) {
       switch (m_alliance) {
         case alliance::EAlliance::BLUE: {
           if (blue > red * 1.2) {
@@ -105,7 +109,11 @@ void StateMachineIntake::init() {
   m_intermediary_motors.init();
   m_back_motors.init();
   m_vertical_motors.init();
-  m_color_sensor->init();
+  for (auto& color_sensor : m_color_sensors) {
+    if (color_sensor.m_color_sensor) {
+      color_sensor.m_color_sensor->init();
+    }
+  }
 }
 
 void StateMachineIntake::run() { m_task->start(&taskLoop, this); }
@@ -266,8 +274,12 @@ double StateMachineIntake::getFrontMotorPosition() {
   return m_front_motors.getPosition();
 }
 
-double StateMachineIntake::getColorSensorPosition() {
-  return m_color_sensor_distance_to_end;
+double StateMachineIntake::getBackMotorPosition() {
+  return m_back_motors.getPosition();
+}
+
+double StateMachineIntake::getColorSensorPosition(ColorSortLocation location) {
+  return m_color_sensors[static_cast<int>(location)].m_distance_to_end;
 }
 
 bool StateMachineIntake::isColorSortPaused() { return m_color_sort_paused; }
@@ -294,13 +306,37 @@ void StateMachineIntake::setVerticalMotors(hal::MotorGroup& motors) {
   m_vertical_motors = motors;
 }
 
-void StateMachineIntake::setColorSensorDistanceToEnd(double distance) {
-  m_color_sensor_distance_to_end = distance;
+void StateMachineIntake::setBackColorSensorDistanceToEnd(double distance) {
+  m_color_sensors[static_cast<int>(ColorSortLocation::BACK)].m_distance_to_end =
+      distance;
 }
 
-void StateMachineIntake::setColorSensor(
+void StateMachineIntake::setMidColorSensorDistanceToEnd(double distance) {
+  m_color_sensors[static_cast<int>(ColorSortLocation::MID)].m_distance_to_end =
+      distance;
+}
+
+void StateMachineIntake::setFrontColorSensorDistanceToEnd(double distance) {
+  m_color_sensors[static_cast<int>(ColorSortLocation::FRONT)]
+      .m_distance_to_end = distance;
+}
+
+void StateMachineIntake::setBackColorSensor(
     std::unique_ptr<io::IColorSensor>& color_sensor) {
-  m_color_sensor = std::move(color_sensor);
+  m_color_sensors[static_cast<int>(ColorSortLocation::BACK)].m_color_sensor =
+      std::move(color_sensor);
+}
+
+void StateMachineIntake::setMidColorSensor(
+    std::unique_ptr<io::IColorSensor>& color_sensor) {
+  m_color_sensors[static_cast<int>(ColorSortLocation::MID)].m_color_sensor =
+      std::move(color_sensor);
+}
+
+void StateMachineIntake::setFrontColorSensor(
+    std::unique_ptr<io::IColorSensor>& color_sensor) {
+  m_color_sensors[static_cast<int>(ColorSortLocation::FRONT)].m_color_sensor =
+      std::move(color_sensor);
 }
 
 void StateMachineIntake::setDelayer(

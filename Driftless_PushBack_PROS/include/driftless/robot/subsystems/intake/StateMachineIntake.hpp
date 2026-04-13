@@ -34,6 +34,11 @@ namespace intake {
 /// @author Matthew Backman
 class StateMachineIntake : public IIntake {
  private:
+  struct ColorSensorData {
+    std::unique_ptr<io::IColorSensor> m_color_sensor;
+
+    double m_distance_to_end;
+  };
   static constexpr uint8_t TASK_DELAY{10};
 
   /// @brief Constantly runs task updates
@@ -64,8 +69,7 @@ class StateMachineIntake : public IIntake {
   /// @brief The pistons used by the back intake
   hal::PistonGroup m_back_pistons{};
 
-  /// @brief The color sensor used for color sorting
-  std::unique_ptr<io::IColorSensor> m_color_sensor{};
+  std::array<ColorSensorData, 3> m_color_sensors{};
 
   alliance::EAlliance m_alliance{alliance::EAlliance::NONE};
 
@@ -73,8 +77,6 @@ class StateMachineIntake : public IIntake {
       intake_states::EIntakeStates::IDLE};
 
   std::array<std::unique_ptr<intake_states::IIntakeState>, 16> m_states{};
-
-  double m_color_sensor_distance_to_end{1.5};
 
   double m_desired_voltage{};
 
@@ -84,6 +86,7 @@ class StateMachineIntake : public IIntake {
   void taskUpdate();
 
  public:
+  enum class ColorSortLocation { FRONT, MID, BACK };
   /// @brief Initializes the intake
   void init() override;
 
@@ -160,25 +163,37 @@ class StateMachineIntake : public IIntake {
   void setCurrentState(intake_states::EIntakeStates state);
 
   /// @brief Checks if there is a block of any kind in the intake
+  /// @param location __ColorSortLocation__ The location to search for a block
+  /// in the intake
   /// @return __bool__ True if there is a block, false otherwise
-  bool hasBlock();
+  bool hasBlock(ColorSortLocation location);
 
   /// @brief Checks if there is a block of the opposing alliance in the intake
+  /// @param location __ColorSortLocation__ The location to search for a block
+  /// in the intake
   /// @return __bool__ True if there is an opposing block, false otherwise
-  bool hasOpposingBlock();
+  bool hasOpposingBlock(ColorSortLocation location);
 
   /// @brief Checks if there is a block of the current alliance in the intake
+  /// @param location __ColorSortLocation__ The location to search for a block
+  /// in the intake
   /// @return __bool__ True if there is an alliance block, false otherwise
-  bool hasAllianceBlock();
+  bool hasAllianceBlock(ColorSortLocation location);
 
   /// @brief Gets the position of the front intake motors
   /// @return __double__ The position of the front intake motors
   double getFrontMotorPosition();
 
+  /// @brief Gets the position of the back intake motors
+  /// @return __double__ The position of the back intake motors
+  double getBackMotorPosition();
+
   /// @brief Gets the position of the color sensor relative to the back intake
+  /// @param location __ColorSortLocation__ The specified color sensor to
+  /// retrieve the distance of
   /// @return __double__ The position of the color sensor relative to the back
   /// intake
-  double getColorSensorPosition();
+  double getColorSensorPosition(ColorSortLocation location);
 
   /// @brief Checks if the color sorting is paused
   /// @return __bool__ True if the color sorting is paused, false otherwise
@@ -208,15 +223,38 @@ class StateMachineIntake : public IIntake {
   /// @param motors __hal::MotorGroup&__ The motors to use
   void setVerticalMotors(hal::MotorGroup& motors);
 
-  /// @brief Sets the distance from the color sensor to the back of the intake
+  /// @brief Sets the distance from the back color sensor to the back of the
+  /// intake
   /// @param distance __double__ The distance from the color sensor to the back
   /// of the intake in inches
-  void setColorSensorDistanceToEnd(double distance);
+  void setBackColorSensorDistanceToEnd(double distance);
 
-  /// @brief Sets the color sensor used for color sorting
+  /// @brief Sets the distance from the mid color sensor to the back of the
+  /// intake
+  /// @param distance __double__ The distance from the color sensor to the back
+  /// of the intake in inches
+  void setMidColorSensorDistanceToEnd(double distance);
+
+  /// @brief Sets the distance from the front color sensor to the back of the
+  /// intake
+  /// @param distance __double__ The distance from the color sensor to the back
+  /// of the intake in inches
+  void setFrontColorSensorDistanceToEnd(double distance);
+
+  /// @brief Sets the back color sensor used for match loading
   /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
   /// sensor to use
-  void setColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+  void setBackColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Sets the back color sensor used for match loading and color sort
+  /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
+  /// sensor to use
+  void setMidColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
+
+  /// @brief Sets the back color sensor used for match loading and color sort
+  /// @param color_sensor __std::unique_ptr<io::IColorSensor>&__ The color
+  /// sensor to use
+  void setFrontColorSensor(std::unique_ptr<io::IColorSensor>& color_sensor);
 
   /// @brief Sets the delayer used by the intake
   /// @param delayer __const std::unique_ptr<rtos::IDelayer>&__ The delayer to
