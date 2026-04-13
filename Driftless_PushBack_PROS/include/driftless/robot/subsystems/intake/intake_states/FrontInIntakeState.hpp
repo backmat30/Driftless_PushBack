@@ -30,6 +30,12 @@ class FrontInIntakeState : public IIntakeState {
  private:
   double m_latest_opposing_block_pos{-__DBL_MAX__};
 
+  double m_outgoing_block_pos{-__DBL_MAX__};
+
+  bool m_color_sort_active{false};
+
+  bool m_reject_block{false};
+
  public:
   /// @brief Updates the intake to run the front intake motors forward
   /// @param intake __StateMachineIntake&__ The intake being updated
