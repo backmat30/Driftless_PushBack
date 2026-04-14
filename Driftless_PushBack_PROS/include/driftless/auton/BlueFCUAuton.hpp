@@ -21,19 +21,19 @@ class BlueFCUAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
 
   // matchload points
-  control::Point matchload_lineup{28.0, 20.0, M_PI / 2.0};
+  control::Point matchload_lineup{29.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup_2{28.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload{27.5, 11.0, M_PI / 2.0};
+  control::Point matchload{28.0, 12.0, M_PI / 2.0};
 
-  control::Point matchload_2{29.0, 11.5, M_PI / 2.0};
+  control::Point matchload_2{28.5, 12.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{25.25, 42.0, M_PI / 2.0};
+  control::Point long_goal{27.0, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{15.5, 37.0, M_PI / 2.0};
+  control::Point descore_lineup{15.0, 37.0, M_PI / 2.0};
 
   control::Point end_descore{16.0, 58.0, M_PI / 2.0};
 
@@ -47,27 +47,27 @@ class BlueFCUAuton : public AAuton {
   // line block points
   control::Point line_blocks_lineup{30.0, 62.5, M_PI / 4.0};
 
-  control::Point line_blocks_lineup_2{31.5, 66.25, M_PI / 4.0};
+  control::Point line_blocks_lineup_2{31.5, 65.25, M_PI / 4.0};
 
-  control::Point line_blocks{51.0, 66.25, M_PI / 4.0};
+  control::Point line_blocks{51.0, 68.25, 0.0};
 
   // middle goal points
-  control::Point bottom_goal_lineup{55.0, 52.0, M_PI / 2.0};
+  control::Point bottom_goal_lineup{55.0, 42.0, M_PI / 2.0};
 
-  control::Point bottom_goal_lineup_2{90.5, 52.0, M_PI / 2.0};
+  control::Point bottom_goal_lineup_2{92.0, 44.0, M_PI * 2.0 / 3.0};
 
-  control::Point bottom_goal{71.5, 76.5, M_PI * 2.0 / 3.0};
+  control::Point bottom_goal{84.5, 56.0, M_PI * 2.0 / 3.0};
 
   control::Point top_goal_lineup{51, 48, M_PI / 4};
 
-  control::Point top_goal{63.25, 58.75, M_PI / 4};
+  control::Point top_goal{60.0, 57.0, M_PI / 4};
 
   // other side descore
   control::Point descore_2_lineup{50.0, 50.0, M_PI / 4.0};
 
-  control::Point descore_2{38.5, 38.0, M_PI / 2};
+  control::Point descore_2{37.0, 38.0, M_PI / 2};
 
-  control::Point descore_2_end{39.25, 45.0, M_PI / 2};
+  control::Point descore_2_end{37.0, 45.0, M_PI / 2};
 
  public:
   /// @brief Constructs a new blue fcu auton object
