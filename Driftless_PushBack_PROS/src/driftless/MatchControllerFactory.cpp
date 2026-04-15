@@ -18,6 +18,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   lvgl_menu->addAlliance(skills_alliance);
 
   // add auton routes
+  std::unique_ptr<auton::AAuton> blue_ten_ball_left_auton{
+      std::make_unique<auton::BlueTenBallLeftAuton>()};
+  lvgl_menu->addAuton(blue_ten_ball_left_auton);
   std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
       std::make_unique<auton::BluePumpNDumpAuton>()};
   lvgl_menu->addAuton(blue_pump_n_dump_auton);
