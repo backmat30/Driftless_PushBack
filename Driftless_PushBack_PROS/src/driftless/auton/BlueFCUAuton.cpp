@@ -23,7 +23,7 @@ void BlueFCUAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
 
@@ -89,7 +89,7 @@ void BlueFCUAuton::run(
   // go bottom goal
   goToPose(bottom_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(bottom_goal_lineup, 5.0, 1750);
-  goToPose(bottom_goal_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
+  goToPose(bottom_goal_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
   waitForGoToPose(bottom_goal_lineup_2, 2.0, 2500);
   intakeStop();
   goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);

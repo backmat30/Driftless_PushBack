@@ -23,7 +23,7 @@ void BlueControlRushAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
   // Penis Rat
