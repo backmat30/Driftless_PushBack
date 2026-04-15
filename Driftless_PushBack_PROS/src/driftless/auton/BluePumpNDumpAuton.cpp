@@ -23,48 +23,40 @@ void BluePumpNDumpAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
 
-  // go to matchloader
-  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPoint(matchload_lineup, 4.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  //  go to matchloader
+  intakeFront();
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPoint(matchload_lineup, 2.0, 1000);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(450);
+  delay(400);
   hoodRaise();
-  delay(200);
-  intakeStop();
-  retractBackIntakeArms();
+
+  delay(225);
 
   // score blocks from match loader
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(long_goal, 10.0, 1250);
   intakeFront();
-  goToPose(long_goal, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal, 12.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPose(long_goal, 2.0, 1000);
+  retractBackIntakeArms();
+
+  waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(1250);
+  delay(1000);
 
   // go back to match loader
   intakeStop();
-  goToPose(long_goal_to_matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal_to_matchload, 16.0, 1500);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.5);
-  waitForGoToPose(long_goal_to_matchload, 6.0, 2000);
-  goToPose(matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
   intakeBack();
-  waitForGoToPose(matchload, 12.0, 2000);
-  hoodLower();
   hoodCloseDoor();
-  setGoToPoseVelocity(MAX_VELOCITY / 2.5);
   waitForGoToPose(matchload, 2.0, 2000);
   deployBackIntakeArms();
 
@@ -73,12 +65,11 @@ void BluePumpNDumpAuton::run(
   delay(200);
 
   // score on long goal again
-  intakeFront();
   retractBackIntakeArms();
-  goToPose(long_goal_2, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal_2, 12.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.5);
-  waitForGoToPose(long_goal_2, 2.0, 1000);
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(long_goal, 16.0, 1000);
+  intakeFront(6.0);
+  waitForGoToPose(long_goal, 2.0, 1000);
   hoodOpenDoor();
   intakeFront();
 
