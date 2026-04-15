@@ -1,16 +1,16 @@
-#include "driftless/auton/BlueFCUAuton.hpp"
+#include "driftless/auton/BlueSafeWP.hpp"
 
 namespace driftless::auton {
-BlueFCUAuton::BlueFCUAuton() : AAuton("Blue_FCU") {}
+BlueSafeWP::BlueSafeWP() : AAuton("Blue_Safe_T->B") {}
 
-void BlueFCUAuton::init(
+void BlueSafeWP::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system) {
   m_robot = robot;
   m_control_system = control_system;
 }
 
-void BlueFCUAuton::run(
+void BlueSafeWP::run(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system,
     std::shared_ptr<driftless::alliance::IAlliance>& alliance,

@@ -14,7 +14,7 @@ namespace auton {
 /// @brief Class representing the autonomous routine for the blue robot's
 /// anti-UCF auton
 /// @author Ethan Jacobson
-class BlueFCUAuton : public AAuton {
+class BlueSafeWP : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
@@ -71,7 +71,7 @@ class BlueFCUAuton : public AAuton {
 
  public:
   /// @brief Constructs a new blue fcu auton object
-  BlueFCUAuton();
+  BlueSafeWP();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled

@@ -34,7 +34,7 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_unique<auton::BlueWPAuton>()};
   lvgl_menu->addAuton(blue_win_point_auton);
   std::unique_ptr<auton::AAuton> blue_fcu_auton{
-      std::make_unique<auton::BlueFCUAuton>()};
+      std::make_unique<auton::BlueSafeWP>()};
   lvgl_menu->addAuton(blue_fcu_auton);
   std::unique_ptr<auton::AAuton> orange_pump_n_dump_auton{
       std::make_unique<auton::OrangePumpNDumpAuton>()};
