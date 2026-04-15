@@ -1,7 +1,7 @@
 #include "driftless/auton/BlueWPAuton.hpp"
 
 namespace driftless::auton {
-BlueWPAuton::BlueWPAuton() : AAuton("B_WP") {}
+BlueWPAuton::BlueWPAuton() : AAuton("B_WP_B->T") {}
 
 void BlueWPAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
