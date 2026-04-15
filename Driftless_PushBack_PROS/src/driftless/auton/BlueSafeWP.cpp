@@ -97,8 +97,8 @@ void BlueSafeWP::run(
   stopMotion();
   delay(1000);
 
-  hoodSetVoltage(-10.0);
-  outtakeFront(8.0);
+  hoodSetVoltage(-12.0);
+  outtakeFront(12.0);
 
   delay(2800);
 
@@ -106,8 +106,8 @@ void BlueSafeWP::run(
   intakeStop();
   goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(matchload_lineup_2, 4, 3500);
-  goToPose(matchload_2, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(matchload_2, 2.0, 1250);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(matchload, 2.0, 1250);
   deployBackIntakeArms();
   intakeBack();
 

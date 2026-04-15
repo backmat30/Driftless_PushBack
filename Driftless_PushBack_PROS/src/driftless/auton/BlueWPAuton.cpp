@@ -23,37 +23,32 @@ void BlueWPAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
 
-  // go to matchloader
+  //  go to matchloader
   intakeFront();
-  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 4.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPoint(matchload_lineup, 2.0, 1000);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(450);
+  delay(400);
   hoodRaise();
 
   delay(225);
-  retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  delay(200);
-  outtakeFront();
-  delay(200);
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  outtakeFront(6.0);
+  waitForGoToPose(long_goal, 16.0, 1250);
   intakeFront();
-  waitForGoToPose(long_goal / 2.0, 10.0, 1250);
-  intakeFront();
+  retractBackIntakeArms();
 
-  waitForGoToPose(long_goal, 2.0, 1000);
+  waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
   delay(1000);
@@ -77,6 +72,7 @@ void BlueWPAuton::run(
   hoodCloseDoor();
   retractDescore();
   intakeFront();
+  delay(200);
 
   goToPose(two_blocks_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(two_blocks_lineup_2, 1.5, 2000);
@@ -85,33 +81,36 @@ void BlueWPAuton::run(
   waitForGoToPose(two_blocks, 1.0, 3000);
 
   // go middle 6 blocks
-  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 3.0);
   waitForGoToPose(line_blocks_lineup, 1.5, 2500);
 
-  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0,
+           MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(line_blocks, 1.0, 3500);
 
   // go bottom goal
-  goToPose(bottom_goal_1, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(bottom_goal_1, 5.0, 1750);
-  goToPose(bottom_goal_2, MAX_VELOCITY / 2, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(bottom_goal_2, 1.0, 400);
-  delay(100);
+  goToPose(bottom_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(bottom_goal_lineup, 2.0, 1750);
+  intakeStop();
+  goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(bottom_goal, 2.0, 1000);
+  stopMotion();
+  delay(1000);
 
-  outtakeFront(10);
   hoodSetVoltage(-12.0);
+  outtakeFront(8.0);
 
   delay(2800);
 
   // go matchload again
   intakeStop();
-  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
   waitForGoToPose(matchload_lineup_2, 4, 3500);
-  goToPose(matchload_2, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(matchload_2, 2.0, 1250);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBack();
 
@@ -124,14 +123,14 @@ void BlueWPAuton::run(
   intakeStop();
   waitForGoToPose(top_goal_lineup, 3.0, 2000);
   hoodBumpUp();
-  goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY);
+  goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY, 10.0);
   waitForGoToPose(top_goal, 2.0, 2000);
   hoodOpenDoor();
   intakeFront();
-  hoodSetVoltage(6.0);
+  hoodSetVoltage(9.0);
 
   delay(1000);
-  hoodSetVoltage(9.0);
+  hoodSetVoltage(12.0);
   delay(1000);
   hoodRaise();
 

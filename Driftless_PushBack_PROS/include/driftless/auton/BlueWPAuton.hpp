@@ -21,21 +21,19 @@ class BlueWPAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point matchload_lineup{28.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup{27.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload_lineup_2{29.5, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup_2{27.0, 28.0, M_PI / 2.0};
 
-  control::Point matchload{27.5, 11.0, M_PI / 2.0};
-
-  control::Point matchload_2{28.5, 10.75, M_PI / 2.0};
+  control::Point matchload{27.0, 11.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{26.75, 42.0, M_PI / 2.0};
+  control::Point long_goal{26.5, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{16.0, 37.0, M_PI / 2.0};
+  control::Point descore_lineup{17.0, 36.0, M_PI / 2.0};
 
-  control::Point end_descore{16.5, 58.0, M_PI / 2.0};
+  control::Point end_descore{18.0, 60.5, M_PI / 2.0};
 
   // two blocks points
   control::Point two_blocks_lineup{12.0, 56.0, 0.0};
@@ -52,20 +50,20 @@ class BlueWPAuton : public AAuton {
   control::Point line_blocks{49.0, 66.0, M_PI / 4.0};
 
   // middle goal points
-  control::Point bottom_goal_1{60.0, 81.0, 0};
+  control::Point bottom_goal_lineup{60.0, 86.0, 0};
 
-  control::Point bottom_goal_2{77, 75, -M_PI / 5};
+  control::Point bottom_goal{64.0, 83.0, -M_PI / 3.0};
 
   control::Point top_goal_lineup{51, 48, M_PI / 4};
 
-  control::Point top_goal{62.5, 58.5, M_PI / 4};
+  control::Point top_goal{61.0, 57.5, M_PI / 4};
 
   // other side descore
   control::Point descore_2_lineup{50.0, 50.0, M_PI / 4.0};
 
-  control::Point descore_2{38.5, 38.0, M_PI / 2};
+  control::Point descore_2{37.0, 38.0, M_PI / 2};
 
-  control::Point descore_2_end{38.0, 61.0, M_PI / 2};
+  control::Point descore_2_end{36.0, 61.0, M_PI / 2};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object
