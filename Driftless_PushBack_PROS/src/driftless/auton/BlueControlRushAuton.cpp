@@ -26,7 +26,7 @@ void BlueControlRushAuton::run(
   setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
-  // Penis Rat
+
   //  go to matchloader
   intakeFront();
   goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
