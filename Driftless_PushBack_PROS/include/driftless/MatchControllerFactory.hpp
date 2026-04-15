@@ -14,6 +14,7 @@
 
 // auton includes
 #include "driftless/auton/BlueControlRushAuton.hpp"
+#include "driftless/auton/BlueControlRushLeft.hpp"
 #include "driftless/auton/BlueFCUAuton.hpp"
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
