@@ -24,15 +24,21 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
       std::make_unique<auton::BluePumpNDumpAuton>()};
   lvgl_menu->addAuton(blue_pump_n_dump_auton);
-  std::unique_ptr<auton::AAuton> blue_control_rush_auton{
-      std::make_unique<auton::BlueControlRushAuton>()};
-  lvgl_menu->addAuton(blue_control_rush_auton);
+
   std::unique_ptr<auton::AAuton> blue_control_rush_left_auton{
       std::make_unique<auton::BlueControlRushLeftAuton>()};
   lvgl_menu->addAuton(blue_control_rush_left_auton);
+  std::unique_ptr<auton::AAuton> blue_control_rush_auton{
+      std::make_unique<auton::BlueControlRushAuton>()};
+  lvgl_menu->addAuton(blue_control_rush_auton);
+
   std::unique_ptr<auton::AAuton> blue_win_point_auton{
       std::make_unique<auton::BlueWPAuton>()};
   lvgl_menu->addAuton(blue_win_point_auton);
+  std::unique_ptr<auton::AAuton> blue_win_point_inverse_auton{
+      std::make_unique<auton::BlueWPInverseAuton>()};
+  lvgl_menu->addAuton(blue_win_point_inverse_auton);
+
   std::unique_ptr<auton::AAuton> blue_safe_wp{
       std::make_unique<auton::BlueSafeWP>()};
   lvgl_menu->addAuton(blue_safe_wp);
