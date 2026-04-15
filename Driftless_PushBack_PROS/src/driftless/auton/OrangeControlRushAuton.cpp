@@ -1,8 +1,7 @@
 #include "driftless/auton/OrangeControlRushAuton.hpp"
 
 namespace driftless::auton {
-OrangeControlRushAuton::OrangeControlRushAuton()
-    : AAuton("Orange_ControlRush") {}
+OrangeControlRushAuton::OrangeControlRushAuton() : AAuton("O_4B_L") {}
 
 void OrangeControlRushAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,

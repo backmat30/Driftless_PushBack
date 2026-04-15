@@ -18,9 +18,6 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   lvgl_menu->addAlliance(skills_alliance);
 
   // add auton routes
-  std::unique_ptr<auton::AAuton> blue_skills_auton{
-      std::make_unique<auton::BlueSkillsAuton>()};
-  lvgl_menu->addAuton(blue_skills_auton);
   std::unique_ptr<auton::AAuton> blue_pump_n_dump_auton{
       std::make_unique<auton::BluePumpNDumpAuton>()};
   lvgl_menu->addAuton(blue_pump_n_dump_auton);
@@ -33,24 +30,28 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> blue_win_point_auton{
       std::make_unique<auton::BlueWPAuton>()};
   lvgl_menu->addAuton(blue_win_point_auton);
-  std::unique_ptr<auton::AAuton> blue_fcu_auton{
+  std::unique_ptr<auton::AAuton> blue_safe_wp{
       std::make_unique<auton::BlueSafeWP>()};
-  lvgl_menu->addAuton(blue_fcu_auton);
+  lvgl_menu->addAuton(blue_safe_wp);
+
   std::unique_ptr<auton::AAuton> orange_pump_n_dump_auton{
       std::make_unique<auton::OrangePumpNDumpAuton>()};
   lvgl_menu->addAuton(orange_pump_n_dump_auton);
-  std::unique_ptr<auton::AAuton> orange_skills_auton{
-      std::make_unique<auton::OrangeSkillsAuton>()};
-  lvgl_menu->addAuton(orange_skills_auton);
   std::unique_ptr<auton::AAuton> orange_control_rush_auton{
       std::make_unique<auton::OrangeControlRushAuton>()};
   lvgl_menu->addAuton(orange_control_rush_auton);
   std::unique_ptr<auton::AAuton> orange_win_point_auton{
       std::make_unique<auton::OrangeWPAuton>()};
   lvgl_menu->addAuton(orange_win_point_auton);
-  std::unique_ptr<auton::AAuton> feed_forward_tuner_auton{
-      std::make_unique<auton::FeedForwardTunerAuton>()};
-  lvgl_menu->addAuton(feed_forward_tuner_auton);
+
+  // skills
+  std::unique_ptr<auton::AAuton> blue_skills_auton{
+      std::make_unique<auton::BlueSkillsAuton>()};
+  lvgl_menu->addAuton(blue_skills_auton);
+
+  std::unique_ptr<auton::AAuton> orange_skills_auton{
+      std::make_unique<auton::OrangeSkillsAuton>()};
+  lvgl_menu->addAuton(orange_skills_auton);
 
   // add configs
   std::unique_ptr<config::IConfig> blue_config{

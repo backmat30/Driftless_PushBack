@@ -1,7 +1,7 @@
 #include "driftless/auton/BlueControlRushAuton.hpp"
 
 namespace driftless::auton {
-BlueControlRushAuton::BlueControlRushAuton() : AAuton("Blue_Control_Right") {}
+BlueControlRushAuton::BlueControlRushAuton() : AAuton("B_4B_R") {}
 
 void BlueControlRushAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,

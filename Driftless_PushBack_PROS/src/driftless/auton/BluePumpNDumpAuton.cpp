@@ -1,7 +1,7 @@
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 
 namespace driftless::auton {
-BluePumpNDumpAuton::BluePumpNDumpAuton() : AAuton("Blue_PumpDump") {}
+BluePumpNDumpAuton::BluePumpNDumpAuton() : AAuton("B_10B_R") {}
 
 void BluePumpNDumpAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,

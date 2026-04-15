@@ -1,7 +1,7 @@
 #include "driftless/auton/OrangeWPAuton.hpp"
 
 namespace driftless::auton {
-OrangeWPAuton::OrangeWPAuton() : AAuton("Orange_Win_Point") {}
+OrangeWPAuton::OrangeWPAuton() : AAuton("O_WP") {}
 
 void OrangeWPAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,

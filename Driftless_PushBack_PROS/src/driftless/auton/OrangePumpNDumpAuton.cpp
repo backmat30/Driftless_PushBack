@@ -1,7 +1,7 @@
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
 
 namespace driftless::auton {
-OrangePumpNDumpAuton::OrangePumpNDumpAuton() : AAuton("Orange_PumpDump") {}
+OrangePumpNDumpAuton::OrangePumpNDumpAuton() : AAuton("O_10B_L") {}
 
 void OrangePumpNDumpAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
