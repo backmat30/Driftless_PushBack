@@ -17,6 +17,7 @@
 #include "driftless/auton/BlueControlRushLeft.hpp"
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 #include "driftless/auton/BlueSafeWP.hpp"
+#include "driftless/auton/BlueSafeWPInverseAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
 #include "driftless/auton/BlueTenBallLeftAuton.hpp"
 #include "driftless/auton/BlueWPAuton.hpp"
