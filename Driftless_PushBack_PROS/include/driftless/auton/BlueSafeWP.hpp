@@ -1,5 +1,5 @@
-#ifndef __BLUE_FCU_AUTON_HPP__
-#define __BLUE_FCU_POINT_AUTON_HPP__
+#ifndef __BLUE_SAFE_WP_AUTON_HPP__
+#define __BLUE_SAFE_WP_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
