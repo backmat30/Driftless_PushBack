@@ -32,7 +32,7 @@ namespace holonomic_drive_train {
 /// @author Matthew Backman
 class HolonomicDriveTrainOperator {
  private:
-  enum LockDirection { NONE, NEAREST_90, NEAREST_45 };
+  enum LockDirection { NONE, NEAREST_180, NEAREST_45 };
   /// @brief The controller used by the driver
   std::shared_ptr<io::IController> m_controller{};
 
