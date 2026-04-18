@@ -216,12 +216,6 @@ class OrangeConfig : public IConfig {
 
   static constexpr int RAKE_PISTON_PORT{1};
 
-  // ## ODOM PORTS ##
-
-  static constexpr int VERTICAL_TRACKING_WHEEL_PORT{-1};
-  static constexpr int HORIZONTAL_TRACKING_WHEEL_PORT{2};
-  static constexpr int IMU_PORT{3};
-
   // #### ROBOT CONSTANTS ####
 
   // ## COPROCESSOR ##
