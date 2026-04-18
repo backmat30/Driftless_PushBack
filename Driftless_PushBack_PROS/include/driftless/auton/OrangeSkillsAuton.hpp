@@ -22,43 +22,43 @@ class OrangeSkillsAuton : public AAuton {
 
   control::Point front_match_load_lineup{116.0, 24.0, M_PI / 2.0};
 
-  control::Point front_match_load{117.0, 10.0, M_PI / 2.0};
+  control::Point front_match_load{116.0, 11.0, M_PI / 2.0};
 
-  control::Point front_wall_blocks_lineup{116.0, 25.0, 0.0};
+  control::Point front_wall_blocks_lineup{120.0, 22.0, 0.0};
 
-  control::Point front_wall_blocks{130.0, 24.0, 0.0};
+  control::Point front_wall_blocks{132.0, 24.0, 0.0};
 
-  control::Point far_goal_lineup_1{128.0, 112.0, 0.0};
+  control::Point far_goal_lineup_1{132.0, 100.0, -M_PI / 2.0};
 
-  control::Point back_matchload_lineup{119.0, 120.0, -M_PI / 2.0};
+  control::Point back_matchload_lineup{119.0, 110.0, -M_PI / 2.0};
 
-  control::Point back_matchload{120.0, 136.0, -M_PI / 2.0};
+  control::Point back_matchload{120.0, 129.0, -M_PI / 2.0};
 
-  control::Point back_long_goal{120.0, 96.0, -M_PI / 2.0};
+  control::Point back_long_goal{119.0, 98.0, -M_PI / 2.0};
 
-  control::Point park_zone_blocks_lineup{72.0, 106.0, M_PI / 2.0};
+  control::Point park_zone_blocks_lineup{74.0, 100.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks{72.0, 121.0, M_PI / 2.0};
+  control::Point park_zone_blocks{73.0, 118.0, M_PI / 2.0};
 
-  control::Point wall_blocks_lineup{100.0, 119.0, 0.0};
+  control::Point wall_blocks_lineup{100.0, 114.0, 0.0};
 
-  control::Point wall_blocks_start{134.0, 117.0, 0.0};
+  control::Point wall_blocks_start{134.0, 114.0, 0.0};
 
-  control::Point wall_blocks_end{136.0, 78.0, -M_PI / 2.0};
+  control::Point wall_blocks_end{136.0, 74.0, -M_PI / 2.0};
 
-  control::Point middle_reds{109.0, 58.0, -M_PI * 3.0 / 4.0};
+  control::Point middle_reds{109.0, 54.0, -M_PI * 3.0 / 4.0};
 
-  control::Point middle_reds_end{110.0, 50.0, -M_PI / 2.0};
+  control::Point middle_reds_end{110.0, 48.0, -M_PI / 2.0};
 
-  control::Point middle_goal_lineup{91.0, 48.0, M_PI * 3.0 / 4.0};
+  control::Point middle_goal_lineup{90.0, 48.0, M_PI * 3.0 / 4.0};
 
-  control::Point middle_goal{83.0, 64.0, M_PI * 3.0 / 4.0};
+  control::Point middle_goal{84.5, 57.5, M_PI * 3.0 / 4.0};
 
   control::Point middle_goal_top_lineup{99.0, 92.0, M_PI / 2.0};
 
-  control::Point middle_goal_top{84.0, 87.0, -M_PI * 3.0 / 4.0};
+  control::Point middle_goal_top{84.0, 84.0, -M_PI * 3.0 / 4.0};
 
-  control::Point park_lineup_1{134.0, 24.0, 0.0};
+  control::Point park_lineup_1{134.0, 24.0, -M_PI / 2.0};
 
   control::Point park_lineup_2{92.0, 12.0, 0.0};
 
