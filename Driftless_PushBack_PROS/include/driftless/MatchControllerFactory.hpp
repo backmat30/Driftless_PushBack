@@ -26,6 +26,7 @@
 #include "driftless/auton/OrangeControlRushAuton.hpp"
 #include "driftless/auton/OrangeControlRushRightAuton.hpp"
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
+#include "driftless/auton/OrangeSWPAuton.hpp"
 #include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/auton/OrangeTenBallRightAuton.hpp"
 #include "driftless/auton/OrangeWPAuton.hpp"
