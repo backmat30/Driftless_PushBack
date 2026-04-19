@@ -29,6 +29,7 @@
 #include "driftless/auton/OrangeSkillsAuton.hpp"
 #include "driftless/auton/OrangeTenBallRightAuton.hpp"
 #include "driftless/auton/OrangeWPAuton.hpp"
+#include "driftless/auton/OrangeWPInverseAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"

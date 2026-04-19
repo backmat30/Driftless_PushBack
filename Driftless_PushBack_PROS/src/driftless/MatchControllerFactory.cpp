@@ -63,6 +63,9 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<auton::AAuton> orange_win_point_auton{
       std::make_unique<auton::OrangeWPAuton>()};
   lvgl_menu->addAuton(orange_win_point_auton);
+  std::unique_ptr<auton::AAuton> orange_win_point_inverse{
+      std::make_unique<auton::OrangeWPInverseAuton>()};
+  lvgl_menu->addAuton(orange_win_point_inverse);
 
   // skills
   std::unique_ptr<auton::AAuton> blue_skills_auton{
