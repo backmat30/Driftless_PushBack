@@ -51,8 +51,6 @@ void HoodOperator::updateHoodToggle(EControllerDigital toggle_high_goal,
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
     }
-    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
     toggleHoodHeight();
   } else if (toggle_low_goal_pressed) {
     if (is_hood_bumped) {
@@ -69,9 +67,6 @@ void HoodOperator::updateHoodToggle(EControllerDigital toggle_high_goal,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
     m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                          robot::subsystems::ESubsystemCommand::HOOD_LOWER);
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::HOOD,
-        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
@@ -131,8 +126,6 @@ void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
     }
-    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
     toggleHoodHeight();
   } else if (toggle_low_goal_pressed) {
     if (is_hood_bumped) {
@@ -149,9 +142,6 @@ void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
     m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                          robot::subsystems::ESubsystemCommand::HOOD_LOWER);
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::HOOD,
-        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
