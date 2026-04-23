@@ -25,6 +25,7 @@
 #include "driftless/auton/FeedForwardTunerAuton.hpp"
 #include "driftless/auton/OrangeControlRushAuton.hpp"
 #include "driftless/auton/OrangeControlRushRightAuton.hpp"
+#include "driftless/auton/OrangeMaxPointAuton.hpp"
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
 #include "driftless/auton/OrangeSWPAuton.hpp"
 #include "driftless/auton/OrangeSWPInverseAuton.hpp"

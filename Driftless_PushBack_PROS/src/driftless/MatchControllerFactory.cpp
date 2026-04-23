@@ -74,6 +74,10 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_unique<auton::OrangeSWPInverseAuton>()};
   lvgl_menu->addAuton(orange_swp_inverse);
 
+  std::unique_ptr<auton::AAuton> orange_max_point_auton{
+      std::make_unique<auton::OrangeMaxPointAuton>()};
+  lvgl_menu->addAuton(orange_max_point_auton);
+
   // skills
   std::unique_ptr<auton::AAuton> blue_skills_auton{
       std::make_unique<auton::BlueSkillsAuton>()};
