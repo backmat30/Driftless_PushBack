@@ -132,23 +132,57 @@ void SparkFunPositionTracker::run() {
 }
 
 void SparkFunPositionTracker::setPosition(Position position) {
-  setX(position.x);
-  setY(position.y);
-  setTheta(position.theta);
+  Position raw = fetchRawPosition();
+
+  // Step 1: set rotation offset
+  global_theta_offset = position.theta - raw.theta;
+
+  // Step 2: recompute translation offsets to keep position consistent
+  double rotated_x = raw.x * std::cos(global_theta_offset) -
+                     raw.y * std::sin(global_theta_offset);
+
+  double rotated_y = raw.x * std::sin(global_theta_offset) +
+                     raw.y * std::cos(global_theta_offset);
+
+  global_x_offset = position.x - rotated_x;
+  global_y_offset = position.y - rotated_y;
 }
 
 Position SparkFunPositionTracker::getPosition() { return current_position; }
 
 void SparkFunPositionTracker::setX(double x) {
-  global_x_offset += x - current_position.x;
+  Position raw = fetchRawPosition();
+
+  double rotated_x = raw.x * std::cos(global_theta_offset) -
+                     raw.y * std::sin(global_theta_offset);
+
+  global_x_offset = x - rotated_x;
 }
 
 void SparkFunPositionTracker::setY(double y) {
-  global_y_offset += y - current_position.y;
+  Position raw = fetchRawPosition();
+
+  double rotated_y = raw.x * std::sin(global_theta_offset) +
+                     raw.y * std::cos(global_theta_offset);
+
+  global_y_offset = y - rotated_y;
 }
 
 void SparkFunPositionTracker::setTheta(double theta) {
-  global_theta_offset += theta - current_position.theta;
+  Position raw = fetchRawPosition();
+
+  // Step 1: set rotation offset
+  global_theta_offset = theta - raw.theta;
+
+  // Step 2: recompute translation offsets to keep position consistent
+  double rotated_x = raw.x * std::cos(global_theta_offset) -
+                     raw.y * std::sin(global_theta_offset);
+
+  double rotated_y = raw.x * std::sin(global_theta_offset) +
+                     raw.y * std::cos(global_theta_offset);
+
+  global_x_offset = current_position.x - rotated_x;
+  global_y_offset = current_position.y - rotated_y;
 }
 
 void SparkFunPositionTracker::setClock(std::unique_ptr<rtos::IClock>& clock) {
