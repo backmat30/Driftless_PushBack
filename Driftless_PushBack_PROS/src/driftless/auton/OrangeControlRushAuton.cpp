@@ -23,7 +23,7 @@ void OrangeControlRushAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(88.0, 20.0, M_PI);
+  setOdomPosition(88.0, 20.5, M_PI);
   startColorSort(m_alliance->getAlliance());
 
   // ROUTE GOES HERE

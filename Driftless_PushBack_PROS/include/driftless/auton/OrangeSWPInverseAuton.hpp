@@ -25,10 +25,10 @@ class OrangeSWPInverseAuton : public AAuton {
 
   control::Point match_load_lineup_2{117.0, 28.0, M_PI / 2.0};
 
-  control::Point match_load{117.5, 10.5, M_PI / 2.0};
+  control::Point match_load{117.0, 10.5, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{118.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{116.0, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{127.0, 37.0, M_PI / 2.0};

@@ -22,9 +22,9 @@ class BlueTenBallLeftAuton : public AAuton {
 
   control::Point matchload_lineup{27.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload{27.0, 12.0, M_PI / 2.0};
+  control::Point matchload{27.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal{27.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{28.0, 42.0, M_PI / 2.0};
 
   control::Point long_goal_to_matchload{26.0, 12.0, M_PI / 2.0};
 

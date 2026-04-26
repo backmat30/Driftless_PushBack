@@ -21,14 +21,14 @@ class OrangeSWPAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point match_load_lineup{116.0, 24.0, M_PI / 2.0};
+  control::Point match_load_lineup{117.0, 24.0, M_PI / 2.0};
 
-  control::Point match_load_lineup_2{116.0, 28.0, M_PI / 2.0};
+  control::Point match_load_lineup_2{117.0, 28.0, M_PI / 2.0};
 
   control::Point match_load{117.0, 11.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{118.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{116.0, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{127.0, 37.0, M_PI / 2.0};

@@ -23,7 +23,7 @@ void OrangeWPAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(88.0, 20.0, M_PI);
+  setOdomPosition(88.0, 20.5, M_PI);
   startColorSort(m_alliance->getAlliance());
 
   // ROUTE GOES HERE
@@ -55,14 +55,14 @@ void OrangeWPAuton::run(
   delay(1000);
 
   // go descore
-  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 30.0);
   middleDescore();
   delay(100);
   intakeStop();
   waitForGoToPose(descore_lineup, 1.0, 2000);
 
   goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(end_descore, 2.5, 3000);
+  waitForGoToPose(end_descore, 4.0, 2500);
 
   // grab two blocks under goal
   deployDescore();
@@ -123,10 +123,10 @@ void OrangeWPAuton::run(
   delay(200);
   retractBackIntakeArms();
   intakeFront();
-  waitForGoToPose(top_goal_lineup, 3.0, 2000);
+  waitForGoToPose(top_goal_lineup, 1.0, 3000);
   hoodBumpUp();
   goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY, 10.0);
-  waitForGoToPose(top_goal, 2.0, 2000);
+  waitForGoToPose(top_goal, 2.0, 1500);
   hoodOpenDoor();
   intakeFront();
   hoodSetVoltage(9.0);

@@ -25,10 +25,10 @@ class BlueSafeWP : public AAuton {
 
   control::Point matchload_lineup_2{28.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload{28.0, 12.0, M_PI / 2.0};
+  control::Point matchload{28.0, 11.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{27.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{28.0, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{17.5, 37.0, M_PI / 2.0};
