@@ -19,19 +19,19 @@ namespace menu {
 
 /// @brief Handles events for the start button
 /// @param event __lv_event_t*__ The event
-extern void startButtonEventHandler(lv_event_t *event);
+extern void startButtonEventHandler(lv_event_t* event);
 
 /// @brief Handles events for the settings button
 /// @param event __lv_event_t*__ The event
-extern void settingsButtonEventHandler(lv_event_t *event);
+extern void settingsButtonEventHandler(lv_event_t* event);
 
 /// @brief Handles events for the back button in the settings menu
 /// @param event __lv_event_t*__ The event
-extern void settingsBackButtonEventHandler(lv_event_t *event);
+extern void settingsBackButtonEventHandler(lv_event_t* event);
 
 /// @brief Handles events for the button matrix in the settings menu
 /// @param event __lv_event_t*__ The event
-extern void settingsButtonMatrixEventHandler(lv_event_t *event);
+extern void settingsButtonMatrixEventHandler(lv_event_t* event);
 
 /// @brief Class to control the menu display through lvgl
 class LvglMenu {
@@ -40,7 +40,7 @@ class LvglMenu {
 
   static constexpr int COLUMN_WIDTH{16};
 
-  static constexpr int BUTTONS_PER_LINE{2};
+  static constexpr int BUTTONS_PER_LINE{3};
 
   static lv_style_t button_default_style;
 
@@ -71,7 +71,7 @@ class LvglMenu {
   /// @brief Removes an option from the settings display
   /// @param option_name __const std::string&__ The name of the option being
   /// removed
-  void removeOption(const std::string &option_name);
+  void removeOption(const std::string& option_name);
 
   /// @brief Draws the main menu
   void drawMainMenu();
@@ -99,7 +99,7 @@ class LvglMenu {
   /// @brief Gets the selection for a given option
   /// @param option_name __const std::string&__ The name of the option
   /// @return __std::string__ The selected state of the option
-  std::string getSelection(const std::string &option_name);
+  std::string getSelection(const std::string& option_name);
 };
 }  // namespace menu
 }  // namespace driftless

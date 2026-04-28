@@ -136,7 +136,7 @@ class OrangeConfig : public IConfig {
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KI{0.0};
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KD{0.0};
 
-  static constexpr double TURN_KP{28.0};
+  static constexpr double TURN_KP{22.0};
   static constexpr double TURN_KI{0.0};
   static constexpr double TURN_KD{1200.0};
 
@@ -156,7 +156,7 @@ class OrangeConfig : public IConfig {
   static constexpr double GO_TO_POSE_Y_KI{0.0};
   static constexpr double GO_TO_POSE_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{22.0};
   static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
   static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
 
@@ -192,11 +192,13 @@ class OrangeConfig : public IConfig {
 
   // ## INTAKE SENSORS ##
 
-  static constexpr int INTAKE_COLOR_SENSOR_PORT{5};
+  static constexpr int INTAKE_FRONT_COLOR_SENSOR_PORT{1};
+  static constexpr int INTAKE_MID_COLOR_SENSOR_PORT{2};
+  static constexpr int INTAKE_BACK_COLOR_SENSOR_PORT{3};
 
   // ## INTAKE PNEUMATICS ##
 
-  static constexpr int INTAKE_BACK_ARMS_PORT{5};
+  static constexpr int INTAKE_BACK_ARMS_PORT{2};
 
   // ## HOOD MOTORS ##
 
@@ -204,21 +206,15 @@ class OrangeConfig : public IConfig {
 
   // ## HOOD PNEUMATICS ##
 
-  static constexpr int HOOD_HEIGHT_PISTONS_PORT{6};
-  static constexpr int HOOD_GATE_PISTONS_PORT{1};
-  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{2};
-  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{3};
+  static constexpr int HOOD_HEIGHT_PISTONS_PORT{3};
+  static constexpr int HOOD_GATE_PISTONS_PORT{4};
+  static constexpr int HOOD_LOWER_DESCORE_PISTONS_PORT{5};
+  static constexpr int HOOD_UPPER_DESCORE_PISTONS_PORT{6};
   static constexpr int HOOD_BUMP_PISTONS_PORT{7};
 
   // ## RAKE PNEUMATICS ##
 
-  static constexpr int RAKE_PISTON_PORT{4};
-
-  // ## ODOM PORTS ##
-
-  static constexpr int VERTICAL_TRACKING_WHEEL_PORT{-1};
-  static constexpr int HORIZONTAL_TRACKING_WHEEL_PORT{2};
-  static constexpr int IMU_PORT{3};
+  static constexpr int RAKE_PISTON_PORT{1};
 
   // #### ROBOT CONSTANTS ####
 
@@ -242,7 +238,9 @@ class OrangeConfig : public IConfig {
   static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
   // ## INTAKE ##
-  static constexpr double INTAKE_COLOR_SENSOR_DISTANCE_TO_END{3.25};
+  static constexpr double INTAKE_FRONT_COLOR_SENSOR_DISTANCE{10.0};
+  static constexpr double INTAKE_MID_COLOR_SENSOR_DISTANCE{7.0};
+  static constexpr double INTAKE_BACK_COLOR_SENSOR_DISTANCE{1.5};
 
  public:
   std::string getName() override;

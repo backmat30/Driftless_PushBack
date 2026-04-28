@@ -1,5 +1,5 @@
-#ifndef __BLUE_FCU_AUTON_HPP__
-#define __BLUE_FCU_POINT_AUTON_HPP__
+#ifndef __ORANGE_SAFE_WIN_POINT_INVERSE_AUTON_HPP__
+#define __ORANGE_SAFE_WIN_POINT_INVERSE_AUTON_HPP__
 
 #include "driftless/auton/AAuton.hpp"
 
@@ -11,67 +11,66 @@ namespace driftless {
 /// @author Matthew Backman
 namespace auton {
 
-/// @brief Class representing the autonomous routine for the blue robot's
-/// anti-UCF auton
+/// @brief Class representing the autonomous routine for the orange robot's
+/// win point auton routine
 /// @author Ethan Jacobson
-class BlueFCUAuton : public AAuton {
+class OrangeSWPInverseAuton : public AAuton {
  private:
   static constexpr double MAX_VELOCITY{80.0};
 
-  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 2.5};
+  static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point matchload_lineup{28.0, 20.0, M_PI / 2.0};
+  control::Point match_load_lineup{117.0, 24.0, M_PI / 2.0};
 
-  control::Point matchload_lineup_2{29.0, 22.0, M_PI / 2.0};
+  control::Point match_load_lineup_2{117.0, 28.0, M_PI / 2.0};
 
-  control::Point matchload{27.5, 11.0, M_PI / 2.0};
-
-  control::Point matchload_2{29.0, 11.5, M_PI / 2.0};
+  control::Point match_load{117.0, 10.5, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{25.25, 42.0, M_PI / 2.0};
+  control::Point long_goal{116.0, 42.0, M_PI / 2.0};
 
   // descore points
-  control::Point descore_lineup{15.5, 37.0, M_PI / 2.0};
+  control::Point descore_lineup{127.0, 37.0, M_PI / 2.0};
 
-  control::Point end_descore{16.0, 58.0, M_PI / 2.0};
+  control::Point start_descore{126.0, 48.0, M_PI / 2.0};
 
-  // two blocks points
-  control::Point two_blocks_lineup{12.0, 58.0, M_PI / 2.0};
+  control::Point end_descore{126.0, 60.0, M_PI / 2.0};
 
-  control::Point two_blocks_lineup_2{23.0, 60.5, M_PI / 4.0};
+  // blocks points
+  control::Point two_blocks_lineup{132.0, 56.0, M_PI};
 
-  control::Point two_blocks{29.0, 62.5, M_PI / 2.0};
+  control::Point two_blocks_lineup_2{123, 57.0, M_PI * 3.0 / 4.0};
 
-  // line block points
-  control::Point line_blocks_lineup{30.0, 62.5, M_PI / 4.0};
+  control::Point two_blocks{120.0, 59.0, M_PI / 2.0};
 
-  control::Point line_blocks_lineup_2{31.5, 66.25, M_PI / 4.0};
+  control::Point line_blocks_lineup{120.0, 60.0, M_PI * 3.0 / 4.0};
 
-  control::Point line_blocks{51.0, 66.25, M_PI / 4.0};
+  control::Point line_blocks_lineup_2{115.5, 63.0, M_PI * 3.0 / 4.0};
+
+  control::Point line_blocks{103.0, 67.0, M_PI};
 
   // middle goal points
-  control::Point bottom_goal_lineup{55.0, 52.0, M_PI / 2.0};
+  control::Point top_goal_lineup_1{100.0, 40.0, M_PI / 2.0};
 
-  control::Point bottom_goal_lineup_2{90.5, 52.0, M_PI / 2.0};
+  control::Point top_goal_lineup{53.0, 50.0, M_PI / 4.0};
 
-  control::Point bottom_goal{71.5, 76.5, M_PI * 2.0 / 3.0};
+  control::Point top_goal{60.0, 57.0, M_PI / 4.0};
 
-  control::Point top_goal_lineup{51, 48, M_PI / 4};
+  control::Point bottom_goal_lineup{95.0, 50.0, M_PI * 3.0 / 4.0};
 
-  control::Point top_goal{63.25, 58.75, M_PI / 4};
+  control::Point bottom_goal{83.0, 57.0, M_PI * 3.0 / 4.0};
 
   // other side descore
-  control::Point descore_2_lineup{50.0, 50.0, M_PI / 4.0};
+  control::Point descore_2_lineup{101.0, 40.0, M_PI * 3.0 / 4.0};
 
-  control::Point descore_2{38.5, 38.0, M_PI / 2};
+  control::Point descore_2{109.0, 38.0, M_PI / 2};
 
-  control::Point descore_2_end{39.25, 45.0, M_PI / 2};
+  control::Point descore_2_end{110.0, 59.0, M_PI / 2};
 
  public:
-  /// @brief Constructs a new blue fcu auton object
-  BlueFCUAuton();
+  /// @brief Constructs a new orange win point auton object
+  OrangeSWPInverseAuton();
 
   /// @brief Initializes the auton
   /// @param robot __std::shared_ptr<robot::Robot>&__ The robot being controlled

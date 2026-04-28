@@ -36,6 +36,8 @@ class BackToBottomIntakeState : public IIntakeState {
 
   double m_first_matchloader_block_pos{-__DBL_MAX__};
 
+  double m_second_matchloader_block_pos{-__DBL_MAX__};
+
  public:
   /// @brief Updates the intake to run the front intake motors forward
   /// @param intake __StateMachineIntake&__ The intake being updated

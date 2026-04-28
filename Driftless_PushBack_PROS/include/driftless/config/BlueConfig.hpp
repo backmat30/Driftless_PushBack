@@ -137,7 +137,7 @@ class BlueConfig : public IConfig {
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KI{0.0};
   static constexpr double DRIVE_STRAIGHT_ANGULAR_KD{0.0};
 
-  static constexpr double TURN_KP{28.0};
+  static constexpr double TURN_KP{22.0};
   static constexpr double TURN_KI{0.0};
   static constexpr double TURN_KD{1200.0};
 
@@ -157,7 +157,7 @@ class BlueConfig : public IConfig {
   static constexpr double GO_TO_POSE_Y_KI{0.0};
   static constexpr double GO_TO_POSE_Y_KD{3000.0};
 
-  static constexpr double GO_TO_POSE_ROTATIONAL_KP{28.0};
+  static constexpr double GO_TO_POSE_ROTATIONAL_KP{22.0};
   static constexpr double GO_TO_POSE_ROTATIONAL_KI{0.0};
   static constexpr double GO_TO_POSE_ROTATIONAL_KD{1200.0};
 
@@ -170,7 +170,7 @@ class BlueConfig : public IConfig {
 
   // ## ARDUINO PORT ##
 
-  static constexpr int ARDUINO_PORT{16};
+  static constexpr int ARDUINO_PORT{4};
 
   // ## DRIVE MOTORS ##
 
@@ -186,14 +186,16 @@ class BlueConfig : public IConfig {
   // ## INTAKE MOTORS ##
 
   static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
-  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
-  static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{9};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-8};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{5};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
-  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-8};
+  static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-9};
 
   // ## INTAKE SENSORS ##
 
-  static constexpr int INTAKE_COLOR_SENSOR_PORT{5};
+  static constexpr int INTAKE_FRONT_COLOR_SENSOR_PORT{3};
+  static constexpr int INTAKE_MID_COLOR_SENSOR_PORT{1};
+  static constexpr int INTAKE_BACK_COLOR_SENSOR_PORT{2};
 
   // ## INTAKE PNEUMATICS ##
 
@@ -237,7 +239,9 @@ class BlueConfig : public IConfig {
   static constexpr float ODOMETRY_LOCAL_THETA_OFFSET{-M_PI / 2};
 
   // ## INTAKE ##
-  static constexpr double INTAKE_COLOR_SENSOR_DISTANCE_TO_END{3.25};
+  static constexpr double INTAKE_FRONT_COLOR_SENSOR_DISTANCE{6.5};
+  static constexpr double INTAKE_MID_COLOR_SENSOR_DISTANCE{2.0};
+  static constexpr double INTAKE_BACK_COLOR_SENSOR_DISTANCE{1.5};
 
  public:
   std::string getName() override;

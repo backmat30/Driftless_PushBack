@@ -32,14 +32,38 @@ StateMachineIntakeBuilder* StateMachineIntakeBuilder::withBackPiston(
 }
 
 StateMachineIntakeBuilder*
-StateMachineIntakeBuilder::withColorSensorDistanceToEnd(double distance) {
-  m_color_sensor_distance_to_end = distance;
+StateMachineIntakeBuilder::withFrontColorSensorDistance(double distance) {
+  m_front_sensor_distance = distance;
   return this;
 }
 
-StateMachineIntakeBuilder* StateMachineIntakeBuilder::withColorSensor(
+StateMachineIntakeBuilder*
+StateMachineIntakeBuilder::withMidColorSensorDistance(double distance) {
+  m_mid_sensor_distance = distance;
+  return this;
+}
+
+StateMachineIntakeBuilder*
+StateMachineIntakeBuilder::withBackColorSensorDistance(double distance) {
+  m_back_sensor_distance = distance;
+  return this;
+}
+
+StateMachineIntakeBuilder* StateMachineIntakeBuilder::withFrontColorSensor(
     std::unique_ptr<io::IColorSensor>& color_sensor) {
-  m_color_sensor = std::move(color_sensor);
+  m_front_color_sensor = std::move(color_sensor);
+  return this;
+}
+
+StateMachineIntakeBuilder* StateMachineIntakeBuilder::withMidColorSensor(
+    std::unique_ptr<io::IColorSensor>& color_sensor) {
+  m_mid_color_sensor = std::move(color_sensor);
+  return this;
+}
+
+StateMachineIntakeBuilder* StateMachineIntakeBuilder::withBackColorSensor(
+    std::unique_ptr<io::IColorSensor>& color_sensor) {
+  m_back_color_sensor = std::move(color_sensor);
   return this;
 }
 
@@ -76,12 +100,16 @@ std::unique_ptr<IIntake> StateMachineIntakeBuilder::build() {
   state_machine_intake->setBackMotors(m_back_motors);
   state_machine_intake->setVerticalMotors(m_vertical_motors);
   state_machine_intake->setBackPistons(m_back_pistons);
-  state_machine_intake->setColorSensor(m_color_sensor);
+  state_machine_intake->setFrontColorSensor(m_front_color_sensor);
+  state_machine_intake->setMidColorSensor(m_mid_color_sensor);
+  state_machine_intake->setBackColorSensor(m_back_color_sensor);
   state_machine_intake->setDelayer(m_delayer);
   state_machine_intake->setMutex(m_mutex);
   state_machine_intake->setTask(m_task);
-  state_machine_intake->setColorSensorDistanceToEnd(
-      m_color_sensor_distance_to_end);
+  state_machine_intake->setFrontColorSensorDistanceToEnd(
+      m_front_sensor_distance);
+  state_machine_intake->setMidColorSensorDistanceToEnd(m_mid_sensor_distance);
+  state_machine_intake->setBackColorSensorDistanceToEnd(m_back_sensor_distance);
   state_machine_intake->setStates(m_states);
 
   return state_machine_intake;

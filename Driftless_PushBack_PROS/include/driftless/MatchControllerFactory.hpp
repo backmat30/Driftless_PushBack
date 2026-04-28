@@ -14,15 +14,26 @@
 
 // auton includes
 #include "driftless/auton/BlueControlRushAuton.hpp"
-#include "driftless/auton/BlueFCUAuton.hpp"
+#include "driftless/auton/BlueControlRushLeft.hpp"
+#include "driftless/auton/BlueMaxPointAuton.hpp"
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
+#include "driftless/auton/BlueSafeWP.hpp"
+#include "driftless/auton/BlueSafeWPInverseAuton.hpp"
 #include "driftless/auton/BlueSkillsAuton.hpp"
+#include "driftless/auton/BlueTenBallLeftAuton.hpp"
 #include "driftless/auton/BlueWPAuton.hpp"
+#include "driftless/auton/BlueWPInverseAuton.hpp"
 #include "driftless/auton/FeedForwardTunerAuton.hpp"
 #include "driftless/auton/OrangeControlRushAuton.hpp"
+#include "driftless/auton/OrangeControlRushRightAuton.hpp"
+#include "driftless/auton/OrangeMaxPointAuton.hpp"
 #include "driftless/auton/OrangePumpNDumpAuton.hpp"
+#include "driftless/auton/OrangeSWPAuton.hpp"
+#include "driftless/auton/OrangeSWPInverseAuton.hpp"
 #include "driftless/auton/OrangeSkillsAuton.hpp"
+#include "driftless/auton/OrangeTenBallRightAuton.hpp"
 #include "driftless/auton/OrangeWPAuton.hpp"
+#include "driftless/auton/OrangeWPInverseAuton.hpp"
 
 // config includes
 #include "driftless/config/BlueConfig.hpp"
@@ -30,7 +41,9 @@
 
 // profile includes
 #include "driftless/profiles/AsherProfile.hpp"
+#include "driftless/profiles/AsherSkillsProfile.hpp"
 #include "driftless/profiles/EthanProfile.hpp"
+#include "driftless/profiles/EthanSkillsProfile.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman

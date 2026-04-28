@@ -132,6 +132,8 @@ void LvglMenu::initStyles() {
   lv_style_set_bg_color(&button_matrix_main_style,
                         lv_color_make(173, 205, 234));
   lv_style_set_border_width(&button_matrix_main_style, 0);
+  lv_style_set_pad_gap(&button_matrix_main_style, 2);
+  lv_style_set_text_font(&button_matrix_main_style, &lv_font_montserrat_10);
 
   // Create the button matrix items style
   lv_style_init(&button_matrix_items_style);

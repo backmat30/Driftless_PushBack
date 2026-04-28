@@ -1,16 +1,16 @@
-#include "driftless/auton/BlueFCUAuton.hpp"
+#include "driftless/auton/BlueSafeWP.hpp"
 
 namespace driftless::auton {
-BlueFCUAuton::BlueFCUAuton() : AAuton("Blue_FCU") {}
+BlueSafeWP::BlueSafeWP() : AAuton("B_SWP_B_T") {}
 
-void BlueFCUAuton::init(
+void BlueSafeWP::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system) {
   m_robot = robot;
   m_control_system = control_system;
 }
 
-void BlueFCUAuton::run(
+void BlueSafeWP::run(
     std::shared_ptr<driftless::robot::Robot>& robot,
     std::shared_ptr<driftless::control::ControlSystem>& control_system,
     std::shared_ptr<driftless::alliance::IAlliance>& alliance,
@@ -23,17 +23,15 @@ void BlueFCUAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
 
   // go to matchloader
   intakeFront();
-  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 7.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPoint(matchload_lineup, 2.0, 1000);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload, 2.0, 1000);
   deployBackIntakeArms();
   intakeBackToHood();
@@ -41,37 +39,34 @@ void BlueFCUAuton::run(
   delay(450);
   hoodRaise();
 
-  delay(210);
-  retractBackIntakeArms();
+  delay(300);
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.75, MAX_ANGULAR_VELOCITY);
-  delay(200);
-  outtakeFront();
-  delay(200);
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(long_goal, 16.0, 1250);
+  outtakeFront(5.0);
+  delay(500);
   intakeFront();
-  waitForGoToPose(long_goal / 2.0, 10.0, 1500);
-  intakeFront();
-  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
 
   waitForGoToPose(long_goal, 2.0, 750);
+  retractBackIntakeArms();
   hoodOpenDoor();
 
-  delay(1000);
+  delay(1500);
 
   // go "descore"
   goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   delay(100);
   intakeStop();
   waitForGoToPose(descore_lineup, 1.0, 2000);
+  hoodLower();
+  hoodCloseDoor();
+  retractDescore();
 
   // grab two blocks under goal
   goToPose(two_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(two_blocks_lineup, 1.5, 2000);
 
-  hoodLower();
-  hoodCloseDoor();
-  retractDescore();
   intakeFront();
 
   goToPose(two_blocks_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
@@ -81,36 +76,38 @@ void BlueFCUAuton::run(
   waitForGoToPose(two_blocks, 1.0, 3000);
 
   // go middle 6 blocks
-  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 3.0);
   waitForGoToPose(line_blocks_lineup, 1.5, 2500);
 
-  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0,
+           MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(line_blocks, 1.0, 3500);
 
   // go bottom goal
-  goToPose(bottom_goal_lineup, MAX_VELOCITY / 2, MAX_ANGULAR_VELOCITY);
+  goToPose(bottom_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(bottom_goal_lineup, 5.0, 1750);
-  goToPose(bottom_goal_lineup_2, MAX_VELOCITY / 2, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(bottom_goal_lineup_2, 1.0, 1750);
-  goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(bottom_goal, 1.0, 600);
+  goToPose(bottom_goal_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(bottom_goal_lineup_2, 2.0, 2500);
+  intakeStop();
+  goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(bottom_goal, 2.0, 1000);
   stopMotion();
   delay(1000);
 
-  hoodSetVoltage(-10.0);
-  outtakeFront(8.0);
+  hoodSetVoltage(-12.0);
+  outtakeFront(12.0);
 
   delay(2800);
 
   // go matchload again
   intakeStop();
-  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(matchload_lineup_2, 4, 3500);
-  goToPose(matchload_2, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(matchload_2, 2.0, 1250);
+  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(matchload_lineup_2, 2, 3500);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(matchload, 2.0, 1250);
   deployBackIntakeArms();
   intakeBack();
 
@@ -126,18 +123,18 @@ void BlueFCUAuton::run(
   goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(top_goal, 2.0, 2000);
   delayUntil(start_time + 26000);
-  
-  // hoodOpenDoor();
-  // intakeFront();
-  // hoodSetVoltage(6.0);
 
-  // delay(1000);
-  // hoodSetVoltage(9.0);
-  // delay(1000);
-  // hoodRaise();
-  // delay(250);
-  // hoodCloseDoor();
-  // intakeStop();
+  hoodOpenDoor();
+  intakeFront();
+  hoodSetVoltage(6.0);
+
+  delay(1000);
+  hoodSetVoltage(9.0);
+  delay(1000);
+  hoodRaise();
+  delay(250);
+  hoodCloseDoor();
+  intakeStop();
 
   goToPose(descore_2_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
   middleDescore();

@@ -71,16 +71,21 @@ void XDriveModule::setNormalizedMotionVectorVoltage(
   double linear_velocity = std::sin(m_angle_offset) * motion_vector.y +
                            std::cos(m_angle_offset) * motion_vector.x;
   double linear_motor_voltage = linear_velocity * std::sqrt(2) * 10.25;
+  if (linear_motor_voltage != 0) {
+    linear_motor_voltage +=
+        1.75 * (linear_velocity / std::abs(linear_velocity));
+  }
 
   // calculate the velocity contribution from angular velocity
-  double turn_motor_voltage = motion_vector.angular_velocity * -10.25;
+  double turn_motor_voltage = motion_vector.angular_velocity * -11.0;
+  if (turn_motor_voltage != 0) {
+    turn_motor_voltage += 1.0 * (motion_vector.angular_velocity /
+                                 std::abs(motion_vector.angular_velocity));
+  }
 
   // Set the motor speeds (assuming a simple proportional control for
   // demonstration)
   double module_voltage = linear_motor_voltage + turn_motor_voltage;
-  if (module_voltage != 0.0) {
-    module_voltage += 1.75 * (module_voltage / std::abs(module_voltage));
-  }
 
   m_motors.setVoltage(module_voltage);
 }

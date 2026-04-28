@@ -24,38 +24,148 @@ void OrangeSkillsAuton::run(
 
   // start auton
   uint32_t start_time{getTime()};
-  setOdomPosition(88.0, 20.0, M_PI);
+  setOdomPosition(88.0, 20.5, M_PI);
 
-  // head to the blues under the long goal
-  goToPose(middle_blues_lineup_1, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_blues_lineup_1, 10.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(middle_blues_lineup_1, 6.0, 3000);
-  goToPose(middle_blues_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_blues_lineup_2, 18.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 4.0);
-  waitForGoToPose(middle_blues_lineup_2, 1.0, 3000);
+  // go to front matchloader
+  goToPose(front_match_load_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
+  waitForGoToPose(front_match_load_lineup, 2.0, 2000);
+  goToPose(front_match_load, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(front_match_load, 2.0, 2000);
+  stopMotion();
+  intakeBack();
+  deployBackIntakeArms();
+
+  delay(1500);
+  hoodRaise();
+  delay(750);
+
+  // go to the blue wall blocks
+  goToPose(front_wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
+  intakeFront();
+  waitForGoToPose(front_wall_blocks_lineup, 8.0, 4000);
+  retractBackIntakeArms();
+  goToPose(front_wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(front_wall_blocks, 2.0, 1500);
+  pauseColorSort();
+  deployRake();
+  delay(250);
+  goToPose(front_wall_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY,
+           30.0);
+  waitForGoToPose(front_wall_blocks_lineup, 4.0, 1250);
+  stopMotion();
+  retractRake();
+  delay(250);
+  goToPose(front_wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
+  delay(500);
+  stopMotion();
+  delay(500);
+
+  // go to blue side to score
+  goToPose(far_goal_lineup_1, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
+  waitForGoToPose(far_goal_lineup_1, 2.0, 5000);
+  intakeStop();
+  goToPose(back_matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(back_matchload_lineup, 2.0, 2000);
+  goToPose(back_long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(back_long_goal, 2.0, 2000);
+  stopMotion();
+  hoodOpenDoor();
+  intakeFront();
+  delay(3000);
+  goToPose(back_matchload_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY,
+           20.0);
+  delay(250);
+  hoodCloseDoor();
+  hoodLower();
+  delay(500);
+
+  // go to blue park zone for blocks
+  startColorSort(alliance::EAlliance::RED);
+  goToPose(park_zone_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 3.0,
+           40.0);
+  waitForGoToPose(park_zone_blocks_lineup, 18.0, 2000);
+  hoodLower();
+  intakeStop();
+  hoodCloseDoor();
+  waitForGoToPose(park_zone_blocks_lineup, 2.0, 3000);
+  goToPose(park_zone_blocks, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 10.0);
+  waitForGoToPose(park_zone_blocks, 2.0, 2000);
   deployRake();
   intakeFront();
-  delay(100);
-  goToPose(middle_blues, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_blues, 2.0, 3000);
   stopMotion();
-  delay(100);
+  delay(500);
+  goToPose(park_zone_blocks_lineup, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(park_zone_blocks_lineup, 2.0, 1000);
 
-  // go to the first matchload on blue side
-  goToPose(back_matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(back_matchload_lineup, 12.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  goToPose(back_matchload_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(back_matchload_lineup_2, 10.0, 1500);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(back_matchload_lineup_2, 2.0, 3000);
+  // grab the red blocks against the wall
+  goToPose(wall_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.0);
+  waitForGoToPose(wall_blocks_lineup, 8.0, 2000);
+  goToPose(wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(wall_blocks, 24.0, 3000);
   retractRake();
-  goToPose(back_matchload, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(back_matchload, 16.0, 3000);
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(back_matchload, 2.0, 1250);
+  waitForGoToPose(wall_blocks, 2.0, 2500);
+  deployRake();
+  delay(500);
+  goToPose(wall_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 40.0);
+  waitForGoToPose(wall_blocks_lineup, 10.0, 750);
+  retractRake();
+  stopMotion();
+  delay(400);
+  goToPose(wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(wall_blocks, 4.0, 3000);
+  delay(500);
+
+  // grab reds under long goal
+  goToPose(middle_reds_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 2.0, 40.0);
+  waitForGoToPose(middle_reds_lineup, 4.0, 4000);
+  goToPose(middle_reds, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(middle_reds, 1.0, 2000);
+  delay(150);
+  deployRake();
+  delay(150);
+  goToPose(middle_reds_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(middle_reds_lineup, 1.0, 2000);
+
+  // deposit blocks in middle goal
+  goToPose(middle_goal_lineup_1, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 6.0,
+           40.0);
+  waitForGoToPose(middle_goal_lineup_1, 3.0, 2000);
+  retractRake();
+  goToPose(middle_goal_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 6.0,
+           40.0);
+  waitForGoToPose(middle_goal_lineup_2, 3.0, 4000);
+  goToPose(middle_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(middle_goal, 2.0, 3000);
+  stopMotion();
+  delayUntil(start_time + 33000);
+  hoodSetVoltage(-12.0);
+  outtakeFront();
+  delay(750);
+  intakeFront();
+  delay(100);
+  outtakeFront();
+  hoodSetVoltage(-12.0);
+  delay(1500);
+  outtakeFront(6.0);
+  delay(250);
+
+  // go to the matchload on blue side
+  startColorSort(alliance::EAlliance::BLUE);
+  goToPose(middle_goal_lineup_2, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY,
+           30.0);
+  delay(1000);
+  goToPose(middle_goal_top_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY,
+           40.0);
+  intakeFront();
+  waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
+  goToPose(back_matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 3.0,
+           60.0);
+  delay(500);
+  setGoToPoseAngularVelocity(MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(back_matchload_lineup, 2.0, 3000);
+  pauseColorSort();
+  goToPose(back_matchload, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(back_matchload, 2.0, 1500);
   stopMotion();
   intakeBack();
   deployBackIntakeArms();
@@ -63,158 +173,39 @@ void OrangeSkillsAuton::run(
   delay(2250);
 
   // score on the goal
-  goToPose(back_long_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(back_long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 20.0);
   intakeFront();
-  delay(150);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPose(back_long_goal, 16.0, 1500);
-  setGoToPoseVelocity(MAX_VELOCITY / 4.0);
-  waitForGoToPose(back_long_goal, 2.0, 1250);
-  stopMotion();
+  delay(500);
+  intakeStop();
   hoodOpenDoor();
+  waitForGoToPose(back_long_goal, 2.0, 1250);
+  intakeFront();
+  stopMotion();
   retractBackIntakeArms();
 
-  delay(2000);
+  delay(1000);
+  hoodSetVoltage(9.0);
+  delay(1500);
 
   // back up and close hood
-  goToPose(back_matchload, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  outtakeFront();
-  delay(400);
+  goToPose(back_matchload, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
+  delay(500);
   stopMotion();
   hoodCloseDoor();
   hoodLower();
-  delay(250);
-
-  // go to blue park zone for blocks
-  startColorSort(alliance::EAlliance::RED);
-  goToPose(park_zone_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(park_zone_blocks_lineup, 18.0, 2000);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.5);
-  waitForGoToPose(park_zone_blocks_lineup, 4.0, 2000);
-  goToPose(park_zone_blocks, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(park_zone_blocks, 14.0, 1000);
-  setGoToPoseVelocity(MAX_VELOCITY / 4.0);
-  waitForGoToPose(park_zone_blocks, 3.0, 2000);
-  deployRake();
-  intakeFront();
+  intakeStop();
   delay(500);
-  goToPose(park_zone_blocks_lineup, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(park_zone_blocks_lineup, 2.0, 1000);
-
-  // grab the red blocks against the wall
-  goToPose(wall_blocks_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY / 2.0);
-  waitForGoToPose(wall_blocks_lineup, 8.0, 2000);
-  goToPose(wall_blocks_start, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(wall_blocks_start, 24.0, 3000);
-  retractRake();
-  setGoToPoseVelocity(MAX_VELOCITY / 3.0);
-  waitForGoToPose(wall_blocks_start, 3.0, 2500);
-  deployRake();
-  goToPose(wall_blocks_lineup, MAX_VELOCITY / 3.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(wall_blocks_lineup, 10.0, 750);
-  retractRake();
-  stopMotion();
-  delay(400);
-  goToPose(wall_blocks_start, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(wall_blocks_start, 4.0, 3000);
-  delay(500);
-  goToPose(wall_blocks_end, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.0);
-  waitForGoToPose(wall_blocks_end, 4.0, 4000);
-  stopMotion();
-
-  // grab reds under long goal
-  turnToHeading(middle_reds.getTheta(), M_PI * 3.0);
-  delay(375);
-  goToPose(middle_reds, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_reds, 4.0, 1000);
-
-  // deposit blocks in middle goal
-  goToPose(middle_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal_lineup, 3.0, 2000);
-  goToPose(middle_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal, 10.0, 3000);
-  goToPose(middle_goal, MAX_VELOCITY / 3.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal, 2.0, 1000);
-  outtakeFront();
-  hoodSetVoltage(-12.0);
-  pauseColorSort();
-
-  delay(1000);
-  intakeFront();
-  delay(250);
-  hoodBumpUp();
-  hoodSetVoltage(-12.0);
-  outtakeFront();
-  delay(2000);
-  hoodLower();
-
-  // block top middle goal for blue
-  startColorSort(alliance::EAlliance::BLUE);
-  goToPose(middle_goal_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
-  delay(1000);
-  goToPose(middle_goal_top_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
-  hoodBumpUp();
-  outtakeFront();
-  goToPose(middle_goal_top, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal_top, 2.0, 3000);
-  stopMotion();
-  delay(5500);
-  goToPose(middle_goal_top_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(middle_goal_top_lineup, 2.0, 3000);
-
-  // go to the blue wall blocks
-  goToPose(front_wall_blocks_lineup, MAX_VELOCITY / 1.75, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_wall_blocks_lineup, 8.0, 4000);
-  intakeFront();
-  goToPose(front_wall_blocks_start, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_wall_blocks_start, 10.0, 2000);
-  setGoToPoseVelocity(MAX_VELOCITY / 5.0);
-  waitForGoToPose(front_wall_blocks_start, 2.0, 1500);
-  pauseColorSort();
-  deployRake();
-  delay(250);
-  goToPose(front_wall_blocks_end, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_wall_blocks_end, 4.0, 1250);
-  stopMotion();
-  retractRake();
-  delay(250);
-  goToPose(front_wall_blocks_start, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  delay(500);
-  stopMotion();
-  delay(250);
-
-  // go to front matchloader
-  goToPose(front_match_load_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_match_load_lineup, 4.0, 2000);
-  goToPose(front_match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(front_match_load, 16.0, 4000);
-  setGoToPoseVelocity(MAX_VELOCITY / 2.0);
-  waitForGoToPose(front_match_load, 2.0, 1750);
-  intakeBack();
-  deployBackIntakeArms();
-
-  delay(2250);
-
-  // go to goal
-  goToPose(front_right_long_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
-  intakeFront();
-  delay(300);
-  retractBackIntakeArms();
-  hoodRaise();
-  waitForGoToPose(front_right_long_goal, 2.0, 2500);
-  stopMotion();
-  hoodOpenDoor();
-
-  delay(3000);
 
   // park
-  goToPose(park_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  hoodLower();
-  waitForGoToPose(park_lineup, 4.0, 3000);
-  hoodCloseDoor();
+  intakeFront();
+  goToPose(wall_blocks, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(wall_blocks, 2.0, 1500);
+  goToPose(park_lineup_1, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(park_lineup_1, 4.0, 4000);
+  goToPose(park_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPose(park_lineup_2, 8.0, 4000);
   intakeStop();
-  goToPose(park, MAX_VELOCITY / 1.625, MAX_ANGULAR_VELOCITY);
+  goToPose(park, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 50.0);
 
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",
                       (getTime() - start_time) / 1000.0);

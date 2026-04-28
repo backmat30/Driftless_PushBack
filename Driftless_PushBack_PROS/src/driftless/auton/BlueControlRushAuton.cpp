@@ -1,7 +1,7 @@
 #include "driftless/auton/BlueControlRushAuton.hpp"
 
 namespace driftless::auton {
-BlueControlRushAuton::BlueControlRushAuton() : AAuton("Blue_Control_Rush") {}
+BlueControlRushAuton::BlueControlRushAuton() : AAuton("B_4B_R") {}
 
 void BlueControlRushAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
@@ -23,35 +23,29 @@ void BlueControlRushAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(56.0, 20.0, 0.0);
+  setOdomPosition(58.0, 20.0, M_PI);
   startColorSort(m_alliance->getAlliance());
   intakeFront();
-  //Penis Rat
-  // go to matchloader
+
+  //  go to matchloader
   intakeFront();
-  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 4.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPoint(matchload_lineup, 2.0, 1000);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(450);
+  delay(400);
   hoodRaise();
 
   delay(225);
-  retractBackIntakeArms();
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  delay(200);
-  outtakeFront();
-  delay(200);
-  intakeFront();
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(long_goal, 10.0, 1250);
   intakeFront();
+  retractBackIntakeArms();
 
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();

@@ -83,6 +83,7 @@ class HoodOperator {
   /// the hood motors backwards
   void updateHoodRollers(EControllerDigital spin_forwards_front,
                          EControllerDigital spin_forwards_back,
+                         EControllerDigital spin_forwards_back_alt,
                          EControllerDigital spin_backwards);
 
  public:

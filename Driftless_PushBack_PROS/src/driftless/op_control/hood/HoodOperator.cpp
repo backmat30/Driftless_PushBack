@@ -51,8 +51,6 @@ void HoodOperator::updateHoodToggle(EControllerDigital toggle_high_goal,
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
     }
-    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
     toggleHoodHeight();
   } else if (toggle_low_goal_pressed) {
     if (is_hood_bumped) {
@@ -69,9 +67,6 @@ void HoodOperator::updateHoodToggle(EControllerDigital toggle_high_goal,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
     m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                          robot::subsystems::ESubsystemCommand::HOOD_LOWER);
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::HOOD,
-        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
@@ -131,8 +126,6 @@ void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
           robot::subsystems::ESubsystem::HOOD,
           robot::subsystems::ESubsystemCommand::HOOD_OPEN_GATE);
     }
-    m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
-                         robot::subsystems::ESubsystemCommand::HOOD_BUMP_DOWN);
     toggleHoodHeight();
   } else if (toggle_low_goal_pressed) {
     if (is_hood_bumped) {
@@ -149,9 +142,6 @@ void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
         robot::subsystems::ESubsystemCommand::HOOD_RETRACT_DESCORE);
     m_robot->sendCommand(robot::subsystems::ESubsystem::HOOD,
                          robot::subsystems::ESubsystemCommand::HOOD_LOWER);
-    m_robot->sendCommand(
-        robot::subsystems::ESubsystem::HOOD,
-        robot::subsystems::ESubsystemCommand::HOOD_TOGGLE_BUMP);
   } else if (toggle_gate_pressed) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::HOOD,
@@ -180,9 +170,11 @@ void HoodOperator::updateHoodHold(EControllerDigital toggle_high_goal,
 
 void HoodOperator::updateHoodRollers(EControllerDigital spin_forwards_front,
                                      EControllerDigital spin_forwards_back,
+                                     EControllerDigital spin_forwards_back_alt,
                                      EControllerDigital spin_backwards) {
   bool spin_forwards_pressed{m_controller->getDigital(spin_forwards_front) ||
-                             m_controller->getDigital(spin_forwards_back)};
+                             m_controller->getDigital(spin_forwards_back) ||
+                             m_controller->getDigital(spin_forwards_back_alt)};
   bool spin_backwards_pressed{m_controller->getDigital(spin_backwards)};
 
   bool is_hood_open{*static_cast<bool*>(
@@ -191,15 +183,9 @@ void HoodOperator::updateHoodRollers(EControllerDigital spin_forwards_front,
 
   if (spin_forwards_pressed) {
     setMotorVoltage(12.0);
-    if (!is_hood_open) {
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 1.35);
-    } else {
-      m_robot->sendCommand(
-          robot::subsystems::ESubsystem::HOOD,
-          robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
-    }
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::HOOD,
+        robot::subsystems::ESubsystemCommand::HOOD_SET_CURRENT_LIMIT, 2.5);
   } else {
     if (spin_backwards_pressed) {
       m_robot->sendCommand(
@@ -224,6 +210,8 @@ void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
       op_control::EControl::INTAKE_FRONT_RUN_IN)};
   EControllerDigital spin_forwards_back{profile->getDigitalControlMapping(
       op_control::EControl::INTAKE_BACK_RUN_IN)};
+  EControllerDigital spin_forwards_back_alt{profile->getDigitalControlMapping(
+      op_control::EControl::INTAKE_BACK_TO_BOTTOM)};
   EControllerDigital spin_backwards{profile->getDigitalControlMapping(
       op_control::EControl::INTAKE_FRONT_RUN_OUT)};
   EControllerDigital toggle_height{profile->getDigitalControlMapping(
@@ -235,7 +223,8 @@ void HoodOperator::update(const std::unique_ptr<profiles::IProfile>& profile) {
   EControllerDigital toggle_bump{profile->getDigitalControlMapping(
       op_control::EControl::HOOD_TOGGLE_BUMP)};
 
-  updateHoodRollers(spin_forwards_front, spin_forwards_back, spin_backwards);
+  updateHoodRollers(spin_forwards_front, spin_forwards_back,
+                    spin_forwards_back_alt, spin_backwards);
 
   switch (control_mode) {
     case EHoodControlMode::DESCORE_TOGGLE:

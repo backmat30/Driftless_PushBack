@@ -1,8 +1,8 @@
 #include "driftless/MatchController.hpp"
 namespace driftless {
-MatchController::MatchController(std::unique_ptr<menu::IMenu> &new_menu,
-                                 std::shared_ptr<rtos::IClock> &clock,
-                                 std::unique_ptr<rtos::IDelayer> &delayer)
+MatchController::MatchController(std::unique_ptr<menu::IMenu>& new_menu,
+                                 std::shared_ptr<rtos::IClock>& clock,
+                                 std::unique_ptr<rtos::IDelayer>& delayer)
     : m_menu{std::move(new_menu)},
       m_clock{clock},
       m_delayer{std::move(delayer)},
@@ -81,11 +81,13 @@ void MatchController::autonomous() {
 }
 
 void MatchController::operatorControl() {
-  if(m_alliance->getAlliance() == alliance::EAlliance::NONE) {
-    auton_manager.runAuton(robot, control_system);
-  } else {
-  op_control_manager.run(control_system, process_system, controller, robot);
+  if (m_alliance->getAlliance() == alliance::EAlliance::NONE) {
+    robot->sendCommand(
+        robot::subsystems::ESubsystem::ODOMETRY,
+        robot::subsystems::ESubsystemCommand::ODOMETRY_SET_POSITION, 0.0, 0.0,
+        M_PI);
   }
+  op_control_manager.run(control_system, process_system, controller, robot);
 }
 
 }  // namespace driftless
