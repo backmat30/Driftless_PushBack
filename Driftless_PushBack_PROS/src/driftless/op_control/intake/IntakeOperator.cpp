@@ -47,12 +47,16 @@ void IntakeOperator::updateIntakeSplit(EControllerDigital front_intake_in,
   }
 }
 
-void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
-                                            EControllerDigital front_intake_out,
-                                            EControllerDigital back_intake_in) {
+void IntakeOperator::updateIntakeSmartSplit(
+    EControllerDigital front_intake_in, EControllerDigital front_intake_out,
+    EControllerDigital back_intake_in,
+    EControllerDigital back_intake_to_bottom) {
   bool run_front_intake_in{m_controller->getDigital(front_intake_in)};
   bool run_front_intake_out{m_controller->getDigital(front_intake_out)};
   bool run_back_intake_in{m_controller->getDigital(back_intake_in)};
+  bool run_back_intake_to_back{
+      m_controller->getNewDigital(back_intake_to_bottom)};
+  bool stop_back_intake{!m_controller->getDigital(back_intake_to_bottom)};
 
   if (run_back_intake_in) {
     m_robot->sendCommand(
@@ -63,7 +67,15 @@ void IntakeOperator::updateIntakeSmartSplit(EControllerDigital front_intake_in,
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_DEPLOY_ARMS);
 
-  } else {
+  } else if (run_back_intake_to_back) {
+    m_robot->sendCommand(robot::subsystems::ESubsystem::INTAKE,
+                         robot::subsystems::ESubsystemCommand::INTAKE_BACK_IN);
+
+    m_robot->sendCommand(
+        robot::subsystems::ESubsystem::INTAKE,
+        robot::subsystems::ESubsystemCommand::INTAKE_DEPLOY_ARMS);
+
+  } else if (stop_back_intake) {
     m_robot->sendCommand(
         robot::subsystems::ESubsystem::INTAKE,
         robot::subsystems::ESubsystemCommand::INTAKE_RETRACT_ARMS);
@@ -103,6 +115,8 @@ void IntakeOperator::update(
       profile->getDigitalControlMapping(EControl::INTAKE_BACK_RUN_IN)};
   EControllerDigital back_arms_toggle{
       profile->getDigitalControlMapping(EControl::INTAKE_BACK_TOGGLE_ARMS)};
+  EControllerDigital back_intake_to_bottom{
+      profile->getDigitalControlMapping(EControl::INTAKE_BACK_TO_BOTTOM)};
 
   switch (control_mode) {
     case EIntakeControlMode::SPLIT:
@@ -110,7 +124,8 @@ void IntakeOperator::update(
                         back_arms_toggle);
       break;
     case EIntakeControlMode::SMART_SPLIT:
-      updateIntakeSmartSplit(front_intake_in, front_intake_out, back_intake_in);
+      updateIntakeSmartSplit(front_intake_in, front_intake_out, back_intake_in,
+                             back_intake_to_bottom);
       break;
   }
 }

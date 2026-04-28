@@ -35,8 +35,13 @@ void PIDHolonomicGoToPose::updateVelocity(double x_distance, double y_distance,
 
   double velocity_scalar{1.0};
   double velocity{std::sqrt(x_velocity * x_velocity + y_velocity * y_velocity)};
-  if (velocity > m_max_velocity) {
-    velocity_scalar = m_max_velocity / velocity;
+
+  double true_max_velocity = std::min(
+      m_max_velocity, std::sqrt(2 * m_max_linear_acceleration *
+                                std::abs(std::sqrt(x_distance * x_distance +
+                                                   y_distance * y_distance))));
+  if (velocity > true_max_velocity) {
+    velocity_scalar = true_max_velocity / velocity;
   }
 
   x_velocity *= velocity_scalar;
@@ -129,7 +134,7 @@ void PIDHolonomicGoToPose::resume() {
 
 void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
                                     double velocity, double angular_velocity,
-                                    Point point) {
+                                    double linear_acceleration, Point point) {
   if (m_mutex) {
     m_mutex->take();
   }
@@ -137,7 +142,10 @@ void PIDHolonomicGoToPose::goToPose(const std::shared_ptr<robot::Robot>& robot,
   m_robot = robot;
   m_max_velocity = velocity;
   m_max_rotational_velocity = angular_velocity;
+  m_max_linear_acceleration = linear_acceleration;
   m_target_point = point;
+  robot::subsystems::odometry::Position start_pos = getPosition();
+  m_initial_point = Point{start_pos.x, start_pos.y, start_pos.theta};
   m_target_reached = false;
   m_paused = false;
 

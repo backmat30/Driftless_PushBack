@@ -32,7 +32,7 @@ class AsherProfile : public IProfile {
       {op_control::EControlType::INTAKE,
        static_cast<int>(op_control::intake::EIntakeControlMode::SMART_SPLIT)},
       {op_control::EControlType::HOOD,
-       static_cast<int>(op_control::hood::EHoodControlMode::SMART_TOGGLE)}};
+       static_cast<int>(op_control::hood::EHoodControlMode::DESCORE_TOGGLE)}};
 
   /// @brief Maps subsystem controls to analog inputs
   const std::map<op_control::EControl, op_control::EControllerAnalog>
@@ -55,13 +55,9 @@ class AsherProfile : public IProfile {
           {op_control::EControl::HOOD_TOGGLE_RAISED,
            op_control::EControllerDigital::BUTTON_B},
           {op_control::EControl::HOOD_TOGGLE_GATE,
-           op_control::EControllerDigital::DPAD_RIGHT},
+           op_control::EControllerDigital::BUTTON_Y},
           {op_control::EControl::HOOD_TOGGLE_DESCORE,
            op_control::EControllerDigital::TRIGGER_LEFT_TOP},
-          {op_control::EControl::HOOD_TOGGLE_BUMP,
-           op_control::EControllerDigital::BUTTON_Y},
-          {op_control::EControl::RAKE_TOGGLE,
-           op_control::EControllerDigital::DPAD_UP},
           {op_control::EControl::HOLONOMIC_LOCK_90,
            op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::HOLONOMIC_LOCK_45,

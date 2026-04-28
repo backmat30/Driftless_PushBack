@@ -27,19 +27,6 @@ class MotorGroup {
   /// @brief Initializes the motor group
   void init();
 
-  /// @brief Gets the torque constant of the motors in the group
-  /// @return __double__ the torque constant
-  double getTorqueConstant();
-
-  /// @brief Gets the average resistance of the motors in the group
-  /// @return __double__ the resistance
-  double getResistance();
-
-  /// @brief Gets the average angular velocity constant of the motors in the
-  /// group
-  /// @return __double__ the angular velocity constant
-  double getAngularVelocityConstant();
-
   /// @brief Gets the average gear ratio of the motors in the group
   /// @return __double__ the gear ratio
   double getGearRatio();
@@ -59,6 +46,10 @@ class MotorGroup {
   /// @brief Sets the voltage of all motors in the group
   /// @param voltage __double__ The new voltage
   void setVoltage(double voltage);
+
+  /// @brief Sets the velocity of all motors in the group
+  /// @param velocity __double__ The new velocity
+  void setVelocity(double velocity);
 
   /// @brief Sets the current limit of all motors in the group
   /// @param amps __double__ The new current limit

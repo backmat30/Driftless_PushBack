@@ -4,12 +4,12 @@
 #include <memory>
 
 #include "driftless/io/IController.hpp"
+#include "driftless/op_control/intake/EIntakeControlMode.hpp"
 #include "driftless/profiles/IProfile.hpp"
 #include "driftless/robot/Robot.hpp"
 #include "driftless/robot/subsystems/ESubsystem.hpp"
 #include "driftless/robot/subsystems/ESubsystemCommand.hpp"
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
-#include "driftless/op_control/intake/EIntakeControlMode.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman
@@ -56,7 +56,8 @@ class IntakeOperator {
   /// spinning the back intake forward
   void updateIntakeSmartSplit(EControllerDigital front_intake_in,
                               EControllerDigital front_intake_out,
-                              EControllerDigital back_intake_in);
+                              EControllerDigital back_intake_in,
+                              EControllerDigital back_intake_to_bottom);
 
  public:
   /// @brief Constructs a new IntakeOperator object

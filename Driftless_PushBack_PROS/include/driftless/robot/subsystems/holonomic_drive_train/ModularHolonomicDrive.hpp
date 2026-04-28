@@ -53,6 +53,10 @@ class ModularHolonomicDrive : public IHolonomicDrive {
 
   HolonomicMotionVector m_current_velocity{};
 
+  ControlType m_control_type{ControlType::VOLTAGE};
+
+  bool m_paused{false};
+
   void taskUpdate();
 
  public:
@@ -90,6 +94,19 @@ class ModularHolonomicDrive : public IHolonomicDrive {
   /// @brief Sets the normalized angular velocity of the modular holonomic drive
   /// @param angular_velocity The desired normalized angular velocity [-1, 1]
   void setNormalizedAngularVelocity(double angular_velocity) override;
+
+  /// @brief Sets the voltage of a specific wheel in the holonomic drive train
+  /// Only use for tuning or testing, not for regular control of the drive train
+  /// @param wheel __int__ The index of the wheel to set the voltage of
+  /// @param voltage __double__ The voltage to set the wheel to
+  void setWheelVoltage(int wheel, double voltage) override;
+
+  void setControlType(ControlType control_type) override;
+
+  /// @brief Gets the speed of a specific wheel in the holonomic drive train
+  /// @param wheel __int__ The index of the wheel to get the speed of
+  /// @return __double__ The speed of the specified wheel in rad/s
+  double getWheelSpeed(int wheel) override;
 
   /// @brief Adds a module to the modular holonomic drive
   /// @param module __unique_ptr<IHolonomicDriveModule>&__ The module to be

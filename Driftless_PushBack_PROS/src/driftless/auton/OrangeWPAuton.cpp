@@ -1,7 +1,7 @@
 #include "driftless/auton/OrangeWPAuton.hpp"
 
 namespace driftless::auton {
-OrangeWPAuton::OrangeWPAuton() : AAuton("Orange_Win_Point") {}
+OrangeWPAuton::OrangeWPAuton() : AAuton("O_WP_B->T") {}
 
 void OrangeWPAuton::init(
     std::shared_ptr<driftless::robot::Robot>& robot,
@@ -23,51 +23,46 @@ void OrangeWPAuton::run(
   m_delayer = delayer->clone();
 
   uint32_t start_time{getTime()};
-  setOdomPosition(91, 20.0, M_PI);
+  setOdomPosition(88.0, 20.5, M_PI);
   startColorSort(m_alliance->getAlliance());
 
   // ROUTE GOES HERE
   intakeFront();
 
-  // go to matchloader
-  goToPose(matchload_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
-  delay(750);
-  setGoToPoseVelocity(MAX_VELOCITY / 1.5);
-  waitForGoToPoint(matchload_lineup, 5.0, 1000);
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(matchload, 2.0, 1500);
+  //  go to matchloader
+  intakeFront();
+  goToPose(match_load_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 60.0);
+  waitForGoToPoint(match_load_lineup, 2.0, 1000);
+  goToPose(match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(match_load, 2.0, 1500);
   deployBackIntakeArms();
   intakeBackToHood();
 
-  delay(450);
+  delay(400);
   hoodRaise();
 
-  delay(200);
-  retractBackIntakeArms();
+  delay(225);
 
   // score blocks from match loader
-  goToPose(long_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  delay(200);
-  outtakeFront();
-  delay(200);
+  goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(long_goal, 16.0, 1250);
   intakeFront();
-  waitForGoToPose(long_goal, 10.0, 1250);
-  intakeFront();
+  retractBackIntakeArms();
 
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(950);
+  delay(1000);
 
-  // go to descore
-  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  // go descore
+  goToPose(descore_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 30.0);
   middleDescore();
   delay(100);
   intakeStop();
   waitForGoToPose(descore_lineup, 1.0, 2000);
 
   goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(end_descore, 2.5, 3000);
+  waitForGoToPose(end_descore, 4.0, 2500);
 
   // grab two blocks under goal
   deployDescore();
@@ -78,6 +73,7 @@ void OrangeWPAuton::run(
   hoodCloseDoor();
   retractDescore();
   intakeFront();
+  delay(200);
 
   goToPose(two_blocks_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(two_blocks_lineup_2, 1.5, 2000);
@@ -85,67 +81,77 @@ void OrangeWPAuton::run(
   goToPose(two_blocks, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
   waitForGoToPose(two_blocks, 1.0, 3000);
 
-  // grab line of blocks
-  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  // go middle 6 blocks
+  goToPose(line_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 3.0);
   waitForGoToPose(line_blocks_lineup, 1.5, 2500);
 
-  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks_lineup_2, MAX_VELOCITY / 5.0,
+           MAX_ANGULAR_VELOCITY / 2.0);
   waitForGoToPose(line_blocks_lineup_2, 1.0, 1000);
 
-  goToPose(line_blocks, MAX_VELOCITY / 4.5, MAX_ANGULAR_VELOCITY);
+  goToPose(line_blocks, MAX_VELOCITY / 5.0, MAX_ANGULAR_VELOCITY / 10.0);
   waitForGoToPose(line_blocks, 1.0, 3500);
+  stopMotion();
+  delay(1000);
 
-  // score in top middle goal
-  hoodBumpUp();
-  goToPose(top_goal_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(top_goal_lineup, 2.0, 3000);
+  // go bottom goal
+  goToPose(bottom_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(bottom_goal_lineup, 2.0, 1750);
+  goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);
+  waitForGoToPose(bottom_goal, 2.0, 1000);
+  stopMotion();
+  delay(1000);
 
+  hoodSetVoltage(-12.0);
+  outtakeFront(8.0);
+
+  delay(2800);
+
+  // go matchload again
   intakeStop();
-  // hoodOpenDoor();
+  goToPose(match_load_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
+  waitForGoToPose(match_load_lineup_2, 4, 3500);
+  goToPose(match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
+  waitForGoToPose(match_load, 2.0, 1500);
+  deployBackIntakeArms();
+  intakeBack();
 
-  goToPose(top_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(top_goal, 1.0, 1250);
+  delay(2500);
 
-  // intakeFront();
-  // delay(2300);
-  // hoodRaise();
-  // delay(100);
+  // go top goal
+  goToPose(top_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
+  delay(200);
+  retractBackIntakeArms();
+  intakeFront();
+  waitForGoToPose(top_goal_lineup, 1.0, 3000);
+  hoodBumpUp();
+  goToPose(top_goal, MAX_VELOCITY / 3, MAX_ANGULAR_VELOCITY, 10.0);
+  waitForGoToPose(top_goal, 2.0, 1500);
+  hoodOpenDoor();
+  intakeFront();
+  hoodSetVoltage(9.0);
 
-  // // go back to matchload
-  // goToPose(matchload, MAX_VELOCITY / 1.25, MAX_ANGULAR_VELOCITY);
-  // waitForGoToPose(matchload, 7.0, 3000);
-  // setGoToPoseVelocity(MAX_VELOCITY / 2.0);
-  // waitForGoToPose(matchload, 1.0, 1000);
+  delay(1000);
+  hoodSetVoltage(12.0);
+  delay(1000);
+  hoodRaise();
+  hoodCloseDoor();
+  intakeStop();
+  hoodSetVoltage(0.0);
 
-  // hoodCloseDoor();
-  // hoodLower();
-  // deployBackIntakeArms();
-  // intakeBack();
-  // delay(2000);
-  // retractBackIntakeArms();
+  // go descore
+  goToPose(descore_2_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(descore_2_lineup, 1.0, 2000);
 
-  // // go to bottom goal
-  // goToPose(bottom_goal, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
-  // waitForGoToPoint(bottom_goal, 10.0, 2500);
-  // setGoToPointVelocity(MAX_VELOCITY / 2.5);
-  // waitForGoToPose(bottom_goal, 1.0, 1500);
+  middleDescore();
 
-  // outtakeFront(10);
-  // delay(500);
-  // hoodRaise();
-  // delay(2150);
-  // intakeStop();
+  goToPose(descore_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(descore_2, 1.0, 2000);
 
-  // goToPose(descore_2_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  // waitForGoToPose(descore_2_lineup, 1.0, 2000);
+  goToPose(descore_2_end, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  waitForGoToPose(descore_2_end, 1.0, 2000);
 
-  // middleDescore();
-
-  // goToPose(descore_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  // waitForGoToPose(descore_2, 1.0, 2000);
-
-  // goToPose(descore_2_end, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
-  // waitForGoToPose(descore_2, 1.0, 2000);
+  stopMotion();
 
   // leave at end
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 8, "Runtime: %7.2f",

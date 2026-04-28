@@ -9,16 +9,19 @@ void DirectHood::setVoltage(double voltage) { m_motors.setVoltage(voltage); }
 
 void DirectHood::open() {
   m_gate_pistons.extend();
+  m_bump_pistons.extend();
   m_gate_open = true;
 }
 
 void DirectHood::close() {
   m_gate_pistons.retract();
+  m_bump_pistons.retract();
   m_gate_open = false;
 }
 
 void DirectHood::toggleOpen() {
   m_gate_pistons.toggleState();
+  m_bump_pistons.toggleState();
   m_gate_open = !m_gate_open;
 }
 

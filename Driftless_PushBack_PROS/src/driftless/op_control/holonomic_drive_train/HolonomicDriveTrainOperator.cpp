@@ -8,6 +8,16 @@ void HolonomicDriveTrainOperator::updateDriveMotionVector(
   double strafe_input = m_controller->getAnalog(strafe) / 127.0;
   double turn_input = m_controller->getAnalog(turn) / 127.0;
 
+  if (std::abs(forward_input) < 5 / 127.0) {
+    forward_input = 0;
+  }
+  if (std::abs(strafe_input) < 5 / 127.0) {
+    strafe_input = 0;
+  }
+  if (std::abs(turn_input) < 5 / 127.0) {
+    turn_input = 0;
+  }
+
   auto position =
       *static_cast<robot::subsystems::odometry::Position*>(m_robot->getState(
           robot::subsystems::ESubsystem::ODOMETRY,
@@ -71,28 +81,38 @@ void HolonomicDriveTrainOperator::updateHeadingLock(
           robot::subsystems::ESubsystemState::ODOMETRY_GET_POSITION))};
   double current_angle = current_pos.theta;
 
-  double quadrant_angle = current_angle;
-
-  while (quadrant_angle >= M_PI / 2.0) {
-    quadrant_angle -= M_PI / 2.0;
-  }
-  while (quadrant_angle < 0) {
-    quadrant_angle += M_PI / 2.0;
-  }
-
   double angle_difference{};
 
   if (start_lock_90) {
-    lock_direction = LockDirection::NEAREST_90;
+    double hemisphere_angle = current_angle;
+
+    while (hemisphere_angle >= M_PI / 2.0) {
+      hemisphere_angle -= M_PI;
+    }
+    while (hemisphere_angle < -M_PI / 2.0) {
+      hemisphere_angle += M_PI;
+    }
+
+    lock_direction = LockDirection::NEAREST_180;
     turn_target_reached = false;
-    angle_difference = (quadrant_angle > M_PI / 4) ? M_PI / 2 - quadrant_angle
-                                                   : -quadrant_angle;
+    angle_difference = (hemisphere_angle > 0.0)
+                           ? M_PI / 2 - hemisphere_angle
+                           : -M_PI / 2.0 - hemisphere_angle;
     target_angle = current_angle + angle_difference;
     m_control_system->sendCommand(control::EControl::MOTION,
                                   control::EControlCommand::TURN_TO_ANGLE,
                                   m_robot, M_PI * 3.0, target_angle,
                                   control::motion::ETurnDirection::AUTO);
   } else if (start_lock_45) {
+    double quadrant_angle = current_angle;
+
+    while (quadrant_angle >= M_PI / 2.0) {
+      quadrant_angle -= M_PI / 2.0;
+    }
+    while (quadrant_angle < 0) {
+      quadrant_angle += M_PI / 2.0;
+    }
+
     lock_direction = LockDirection::NEAREST_45;
     turn_target_reached = false;
     angle_difference = M_PI / 4 - quadrant_angle;

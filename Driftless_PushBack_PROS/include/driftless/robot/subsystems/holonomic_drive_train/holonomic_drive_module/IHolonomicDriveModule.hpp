@@ -43,6 +43,20 @@ class IHolonomicDriveModule {
   /// @details Angular velocity must be within [-1, 1]
   virtual void setNormalizedMotionVector(
       HolonomicMotionVector motion_vector) = 0;
+
+  /// @brief Sets the motion vector of the holonimic drive train with normalized
+  /// vector achieved through voltage control
+  /// @param motion_vector __HolonomicMotionVector__ the desired motion vector
+  virtual void setNormalizedMotionVectorVoltage(
+      HolonomicMotionVector motion_vector) = 0;
+
+  /// @brief Sets the voltage of the motors within the module
+  /// @param voltage __double__ The voltage to set the motors to
+  virtual void setRawVoltage(double voltage) = 0;
+
+  /// @brief Gets the speed of the module in rad/s
+  /// @return __double__ The speed of the module in rad/s
+  virtual double getSpeed() = 0;
 };
 }  // namespace holonomic_drive_module
 }  // namespace holonomic_drive_train

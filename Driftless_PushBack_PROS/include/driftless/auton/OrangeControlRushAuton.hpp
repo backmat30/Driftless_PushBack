@@ -20,20 +20,15 @@ class OrangeControlRushAuton : public AAuton {
 
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
-  control::Point matchload_lineup{120.25, 18.0, M_PI / 2.0};
+  control::Point match_load_lineup{117.0, 24.0, M_PI / 2.0};
 
-  control::Point matchload{120.25, 10.5, M_PI / 2.0};
+  control::Point match_load{117.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal{120.75, 42.0, M_PI / 2.0};
+  control::Point long_goal{116.0, 42.0, M_PI / 2.0};
 
-  control::Point descore_lineup{110.5, 33.0, M_PI / 2.0};
+  control::Point descore_lineup{107.0, 33.0, M_PI / 2.0};
 
-  control::Point end_descore{111.0, 60.0, M_PI / 2.0};
-
-  control::Point middle_goal_lineup{93.0, 81.0, M_PI};
-
-  control::Point middle_goal_block{88.0, 79.0, M_PI * 5.0 / 4.0};
-
+  control::Point end_descore{108.0, 60.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new blue pump n dump auton object

@@ -12,6 +12,7 @@
 #include "driftless/robot/subsystems/ESubsystemState.hpp"
 #include "driftless/robot/subsystems/holonomic_drive_train/HolonomicMotionVector.hpp"
 #include "driftless/robot/subsystems/odometry/Position.hpp"
+#include "driftless/rtos/IClock.hpp"
 #include "driftless/rtos/IDelayer.hpp"
 #include "driftless/rtos/IMutex.hpp"
 #include "driftless/rtos/ITask.hpp"
@@ -58,13 +59,19 @@ class PIDHolonomicGoToPose : public IGoToPose {
 
   double m_max_rotational_velocity{1.0};
 
+  double m_max_linear_acceleration{__DBL_MAX__};
+
   double m_distance_tolerance{};
 
   double m_velocity_tolerance{};
 
   double m_angular_tolerance{};
 
+  uint32_t m_latest_update{};
+
   Point m_target_point{};
+
+  Point m_initial_point{};
 
   bool m_target_reached{true};
 
@@ -111,9 +118,12 @@ class PIDHolonomicGoToPose : public IGoToPose {
   /// @param velocity __double__ The maximum velocity of the robot
   /// @param angular_velocity __double__ The maximum angular velocity of
   /// the robot
+  /// @param linear_acceleration __double__ The maximum linear acceleration of
+  /// the robot
   /// @param point __Point__ The pose (x, y, theta) for the robot to go to
   void goToPose(const std::shared_ptr<robot::Robot>& robot, double velocity,
-                double angular_velocity, Point point) override;
+                double angular_velocity, double linear_acceleration,
+                Point point) override;
 
   /// @brief Updates the max velocity for motion
   /// @param velocity __double__ The max velocity for motion
