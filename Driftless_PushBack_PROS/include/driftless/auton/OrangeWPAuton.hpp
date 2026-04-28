@@ -51,7 +51,7 @@ class OrangeWPAuton : public AAuton {
   control::Point line_blocks{98.0, 67.0, M_PI};
 
   // middle goal points
-  control::Point top_goal_lineup{90.0, 87.0, M_PI * 5.0 / 4.0};
+  control::Point top_goal_lineup{94.0, 87.0, M_PI * 5.0 / 4.0};
 
   control::Point top_goal{84.0, 83.5, M_PI * 5.0 / 4.0};
 

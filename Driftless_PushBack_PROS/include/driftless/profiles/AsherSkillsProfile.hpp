@@ -1,5 +1,5 @@
-#ifndef __ASHER_PROFILE_HPP__
-#define __ASHER_PROFILE_HPP__
+#ifndef __ASHER_SKILLS_PROFILE_HPP__
+#define __ASHER_SKILLS_PROFILE_HPP__
 
 #include <map>
 #include <string>
@@ -22,10 +22,10 @@ namespace profiles {
 
 /// @brief Class representing Asher's control scheme
 /// @author Matthew Backman
-class AsherProfile : public IProfile {
+class AsherSkillsProfile : public IProfile {
  private:
   /// @brief Name of the profile
-  static constexpr char PROFILE_NAME[]{"ASHER"};
+  static constexpr char PROFILE_NAME[]{"ASHER_SKILLS"};
 
   /// @brief Map of control modes for each subsystem
   std::map<op_control::EControlType, int> CONTROL_MODE_MAP{
@@ -50,7 +50,7 @@ class AsherProfile : public IProfile {
            op_control::EControllerDigital::TRIGGER_RIGHT_TOP},
           {op_control::EControl::INTAKE_FRONT_RUN_OUT,
            op_control::EControllerDigital::TRIGGER_LEFT_BOTTOM},
-          {op_control::EControl::INTAKE_BACK_RUN_IN,
+          {op_control::EControl::INTAKE_BACK_TO_BOTTOM,
            op_control::EControllerDigital::TRIGGER_RIGHT_BOTTOM},
           {op_control::EControl::HOOD_TOGGLE_RAISED,
            op_control::EControllerDigital::BUTTON_B},
@@ -58,12 +58,12 @@ class AsherProfile : public IProfile {
            op_control::EControllerDigital::BUTTON_Y},
           {op_control::EControl::HOOD_TOGGLE_DESCORE,
            op_control::EControllerDigital::TRIGGER_LEFT_TOP},
+          {op_control::EControl::RAKE_TOGGLE,
+           op_control::EControllerDigital::DPAD_LEFT},
           {op_control::EControl::HOLONOMIC_LOCK_90,
            op_control::EControllerDigital::BUTTON_A},
           {op_control::EControl::HOLONOMIC_LOCK_45,
-           op_control::EControllerDigital::BUTTON_X},
-          {op_control::EControl::HOLONOMIC_CANCEL_FIELD_CENTRIC,
-           op_control::EControllerDigital::DPAD_LEFT}};
+           op_control::EControllerDigital::BUTTON_X}};
 
   /// @brief Maps startup configurations to their values
   const std::map<op_control::EStartupConfig, bool> STARTUP_CONFIG_MAP{};

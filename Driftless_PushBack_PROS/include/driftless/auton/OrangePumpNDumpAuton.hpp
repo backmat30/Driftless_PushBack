@@ -24,11 +24,11 @@ class OrangePumpNDumpAuton : public AAuton {
 
   control::Point match_load{117.0, 11.0, M_PI / 2.0};
 
-  control::Point long_goal{116.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{116.5, 42.0, M_PI / 2.0};
 
-  control::Point descore_lineup{107.0, 33.0, M_PI / 2.0};
+  control::Point descore_lineup{104.0, 33.0, M_PI / 2.0};
 
-  control::Point end_descore{108.0, 42.0, M_PI / 2.0};
+  control::Point end_descore{105.0, 42.0, M_PI / 2.0};
 
  public:
   /// @brief Constructs a new orange pump n dump auton object

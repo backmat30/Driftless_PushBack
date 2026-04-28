@@ -33,9 +33,9 @@ class OrangeMaxPointAuton : public AAuton {
   // descore points
   control::Point descore_lineup{127.0, 37.0, M_PI / 2.0};
 
-  control::Point start_descore{126.0, 48.0, M_PI / 2.0};
+  control::Point start_descore{125.0, 48.0, M_PI / 2.0};
 
-  control::Point end_descore{126.0, 60.0, M_PI / 2.0};
+  control::Point end_descore{125.0, 60.0, M_PI / 2.0};
 
   // blocks points
   control::Point two_blocks_lineup{132.0, 56.0, M_PI};
@@ -44,7 +44,7 @@ class OrangeMaxPointAuton : public AAuton {
 
   control::Point two_blocks{120.0, 59.0, M_PI / 2.0};
 
-  control::Point line_blocks_lineup{120.0, 60.0, M_PI * 3.0 / 4.0};
+  control::Point line_blocks_lineup{120.0, 61.0, M_PI * 3.0 / 4.0};
 
   control::Point line_blocks_lineup_2{115.5, 63.0, M_PI * 3.0 / 4.0};
 

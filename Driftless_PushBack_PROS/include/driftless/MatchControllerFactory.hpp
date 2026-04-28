@@ -15,6 +15,7 @@
 // auton includes
 #include "driftless/auton/BlueControlRushAuton.hpp"
 #include "driftless/auton/BlueControlRushLeft.hpp"
+#include "driftless/auton/BlueMaxPointAuton.hpp"
 #include "driftless/auton/BluePumpNDumpAuton.hpp"
 #include "driftless/auton/BlueSafeWP.hpp"
 #include "driftless/auton/BlueSafeWPInverseAuton.hpp"
@@ -40,7 +41,9 @@
 
 // profile includes
 #include "driftless/profiles/AsherProfile.hpp"
+#include "driftless/profiles/AsherSkillsProfile.hpp"
 #include "driftless/profiles/EthanProfile.hpp"
+#include "driftless/profiles/EthanSkillsProfile.hpp"
 
 /// @brief Namespace for driftless library code
 /// @author Matthew Backman

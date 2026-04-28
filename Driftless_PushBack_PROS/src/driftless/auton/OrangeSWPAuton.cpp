@@ -61,12 +61,12 @@ void OrangeSWPAuton::run(
   intakeStop();
   waitForGoToPose(descore_lineup, 1.0, 2000);
 
-  goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  goToPose(end_descore, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY / 2.5);
   waitForGoToPose(end_descore, 2.5, 3000);
 
   // grab two blocks under goal
   deployDescore();
-  goToPose(two_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(two_blocks_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.5);
   waitForGoToPose(two_blocks_lineup, 1.5, 2000);
 
   hoodLower();
@@ -75,10 +75,10 @@ void OrangeSWPAuton::run(
   intakeFront();
   delay(200);
 
-  goToPose(two_blocks_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
+  goToPose(two_blocks_lineup_2, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY / 2.5);
   waitForGoToPose(two_blocks_lineup_2, 1.5, 2000);
 
-  goToPose(two_blocks, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY);
+  goToPose(two_blocks, MAX_VELOCITY / 3.0, MAX_ANGULAR_VELOCITY / 2.5);
   waitForGoToPose(two_blocks, 1.0, 3000);
 
   // go middle 6 blocks
@@ -95,7 +95,7 @@ void OrangeSWPAuton::run(
   delay(1000);
 
   // go bottom goal
-  goToPose(bottom_goal_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(bottom_goal_lineup, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(bottom_goal_lineup, 2.0, 1750);
   goToPose(bottom_goal, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY, 20.0);
   waitForGoToPose(bottom_goal, 2.0, 1000);
@@ -103,16 +103,16 @@ void OrangeSWPAuton::run(
   delay(1000);
 
   hoodSetVoltage(-12.0);
-  outtakeFront(8.0);
+  outtakeFront(7.0);
 
   delay(2800);
 
   // go matchload again
   intakeStop();
-  goToPose(match_load_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 40.0);
-  waitForGoToPose(match_load_lineup_2, 4, 3500);
+  goToPose(match_load_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 50.0);
+  waitForGoToPose(match_load_lineup_2, 4, 4000);
   goToPose(match_load, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
-  waitForGoToPose(match_load, 2.0, 1500);
+  waitForGoToPose(match_load, 2.0, 2500);
   deployBackIntakeArms();
   intakeBack();
 

@@ -156,7 +156,7 @@ void BlueSkillsAuton::run(
   waitForGoToPose(middle_lower_goal, 2.0, 2000);
   stopMotion();
 
-  delayUntil(start_time + 36000);
+  delayUntil(start_time + 40000);
 
   // left wall blocks on the far side
   startColorSort(alliance::EAlliance::RED);

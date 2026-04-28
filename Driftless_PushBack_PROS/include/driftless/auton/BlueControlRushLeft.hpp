@@ -21,12 +21,12 @@ class BlueControlRushLeftAuton : public AAuton {
   static constexpr double MAX_ANGULAR_VELOCITY{M_PI * 4.0};
 
   // matchload points
-  control::Point matchload_lineup{27.0, 22.0, M_PI / 2.0};
+  control::Point matchload_lineup{26.0, 22.0, M_PI / 2.0};
 
-  control::Point matchload{27.0, 11.0, M_PI / 2.0};
+  control::Point matchload{26.0, 11.0, M_PI / 2.0};
 
   // long goal points
-  control::Point long_goal{28.0, 42.0, M_PI / 2.0};
+  control::Point long_goal{26.5, 42.0, M_PI / 2.0};
 
   // descore points
   control::Point descore_lineup{17.5, 37.0, M_PI / 2.0};

@@ -42,7 +42,7 @@ class BlueSkillsAuton : public AAuton {
 
   control::Point middle_top_goal_lineup{52.0, 48.0, M_PI / 4.0};
 
-  control::Point middle_top_goal{61.0, 58.5, M_PI / 4.0};
+  control::Point middle_top_goal{60.5, 59.0, M_PI / 4.0};
 
   control::Point middle_lower_goal_lineup{49.0, 88.0, M_PI / 4.0};
 

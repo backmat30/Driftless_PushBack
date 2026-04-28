@@ -34,19 +34,19 @@ class OrangeSkillsAuton : public AAuton {
 
   control::Point back_matchload{121.0, 129.0, -M_PI / 2.0};
 
-  control::Point back_long_goal{119.0, 98.5, -M_PI / 2.0};
+  control::Point back_long_goal{118.0, 98.5, -M_PI / 2.0};
 
-  control::Point park_zone_blocks_lineup{73.75, 100.0, M_PI / 2.0};
+  control::Point park_zone_blocks_lineup{73.0, 100.0, M_PI / 2.0};
 
-  control::Point park_zone_blocks{73.75, 118.0, M_PI / 2.0};
+  control::Point park_zone_blocks{73.0, 118.0, M_PI / 2.0};
 
   control::Point wall_blocks_lineup{100.0, 114.0, 0.0};
 
   control::Point wall_blocks{134.0, 114.0, 0.0};
 
-  control::Point middle_reds_lineup{134.0, 67.0, -M_PI / 2.0};
+  control::Point middle_reds_lineup{134.0, 68.0, -M_PI / 2.0};
 
-  control::Point middle_reds{128.0, 64.0, M_PI};
+  control::Point middle_reds{128.0, 62.0, M_PI};
 
   control::Point middle_goal_lineup_1{134.0, 32.0, -M_PI / 2.0};
 

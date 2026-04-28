@@ -39,7 +39,7 @@ void BluePumpNDumpAuton::run(
   delay(400);
   hoodRaise();
 
-  delay(225);
+  delay(250);
 
   // score blocks from match loader
   goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
@@ -50,7 +50,7 @@ void BluePumpNDumpAuton::run(
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(1000);
+  delay(1250);
 
   // go back to match loader
   intakeStop();
@@ -74,15 +74,15 @@ void BluePumpNDumpAuton::run(
   intakeFront();
 
   // block goal until almost end of auton
-  delay(2500);
-  goToPose(matchload_lineup, MAX_VELOCITY / 2.0, MAX_ANGULAR_VELOCITY);
-  delay(250);
+  delay(2750);
+  goToPose(matchload_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY);
+  delay(500);
   hoodCloseDoor();
   intakeStop();
-  goToPose(long_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
-  waitForGoToPose(long_goal, 2.0, 2000);
-  stopMotion();
-  delayUntil(start_time + 16000);
+  // goToPose(long_goal, MAX_VELOCITY / 2.5, MAX_ANGULAR_VELOCITY);
+  // waitForGoToPose(long_goal, 2.0, 2000);
+  // stopMotion();
+  // delayUntil(start_time + 16000);
 
   // descore
   goToPose(descore_lineup, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);

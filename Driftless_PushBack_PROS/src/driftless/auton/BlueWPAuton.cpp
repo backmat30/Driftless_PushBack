@@ -39,7 +39,7 @@ void BlueWPAuton::run(
   delay(400);
   hoodRaise();
 
-  delay(225);
+  delay(350);
 
   // score blocks from match loader
   goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);

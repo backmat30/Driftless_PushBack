@@ -48,23 +48,23 @@ class OrangeSWPAuton : public AAuton {
 
   control::Point line_blocks_lineup_2{115.5, 63.0, M_PI * 3.0 / 4.0};
 
-  control::Point line_blocks{103.0, 67.0, M_PI};
+  control::Point line_blocks{100.0, 67.0, M_PI};
 
   // middle goal points
   control::Point top_goal_lineup{55.0, 52.0, M_PI / 4.0};
 
-  control::Point top_goal{60.0, 57.0, M_PI / 4.0};
+  control::Point top_goal{60.0, 58.0, M_PI / 4.0};
 
   control::Point bottom_goal_lineup{93.0, 54.0, M_PI * 3.0 / 4.0};
 
-  control::Point bottom_goal{83.0, 57.0, M_PI * 3.0 / 4.0};
+  control::Point bottom_goal{81.5, 57.0, M_PI * 3.0 / 4.0};
 
   // other side descore
-  control::Point descore_2_lineup{101.0, 40.0, M_PI * 3.0 / 4.0};
+  control::Point descore_2_lineup{100.0, 40.0, M_PI * 3.0 / 4.0};
 
-  control::Point descore_2{109.0, 38.0, M_PI / 2};
+  control::Point descore_2{106.0, 38.0, M_PI / 2};
 
-  control::Point descore_2_end{110.0, 59.0, M_PI / 2};
+  control::Point descore_2_end{107.0, 59.0, M_PI / 2};
 
  public:
   /// @brief Constructs a new orange win point auton object

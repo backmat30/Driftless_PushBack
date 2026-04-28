@@ -120,7 +120,9 @@ void OrangeSkillsAuton::run(
   waitForGoToPose(middle_reds_lineup, 4.0, 4000);
   goToPose(middle_reds, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(middle_reds, 1.0, 2000);
+  delay(150);
   deployRake();
+  delay(150);
   goToPose(middle_reds_lineup, MAX_VELOCITY / 4.0, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(middle_reds_lineup, 1.0, 2000);
 

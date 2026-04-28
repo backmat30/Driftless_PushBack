@@ -56,7 +56,7 @@ bool StateMachineIntake::hasAllianceBlock(ColorSortLocation location) {
   bool result{};
   int index{static_cast<int>(location)};
 
-  if (m_color_sort_paused) {
+  if (m_color_sort_paused || m_alliance == alliance::EAlliance::NONE) {
     if (hasBlock(location)) {
       result = true;
     }

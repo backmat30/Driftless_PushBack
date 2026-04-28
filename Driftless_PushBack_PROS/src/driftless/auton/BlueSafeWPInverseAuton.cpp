@@ -109,10 +109,10 @@ void BlueSafeWPInverseAuton::run(
   intakeStop();
 
   // go matchload again
-  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload_lineup_2, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload_lineup_2, 4, 3500);
   hoodLower();
-  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY);
+  goToPose(matchload, MAX_VELOCITY / 1.5, MAX_ANGULAR_VELOCITY, 30.0);
   waitForGoToPose(matchload, 2.0, 1250);
   deployBackIntakeArms();
   intakeBack();

@@ -46,6 +46,10 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
       std::make_unique<auton::BlueSafeWPInverseAuton>()};
   lvgl_menu->addAuton(blue_safe_wp_inverse);
 
+  std::unique_ptr<auton::AAuton> blue_max_point_auton{
+      std::make_unique<auton::BlueMaxPointAuton>()};
+  lvgl_menu->addAuton(blue_max_point_auton);
+
   std::unique_ptr<auton::AAuton> orange_pump_n_dump_auton{
       std::make_unique<auton::OrangePumpNDumpAuton>()};
   lvgl_menu->addAuton(orange_pump_n_dump_auton);
@@ -99,9 +103,16 @@ driftless::MatchController MatchControllerFactory::createMatchController() {
   std::unique_ptr<profiles::IProfile> ethan_profile{
       std::make_unique<driftless::profiles::EthanProfile>()};
   lvgl_menu->addProfile(ethan_profile);
+  std::unique_ptr<profiles::IProfile> ethan_skills_profile{
+      std::make_unique<profiles::EthanSkillsProfile>()};
+  lvgl_menu->addProfile(ethan_skills_profile);
+
   std::unique_ptr<profiles::IProfile> asher_profile{
       std::make_unique<profiles::AsherProfile>()};
   lvgl_menu->addProfile(asher_profile);
+  std::unique_ptr<profiles::IProfile> asher_skills_profile{
+      std::make_unique<profiles::AsherSkillsProfile>()};
+  lvgl_menu->addProfile(asher_skills_profile);
 
   // create RTOS
   std::shared_ptr<rtos::IClock> clock{

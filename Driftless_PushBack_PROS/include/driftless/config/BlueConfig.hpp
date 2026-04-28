@@ -170,7 +170,7 @@ class BlueConfig : public IConfig {
 
   // ## ARDUINO PORT ##
 
-  static constexpr int ARDUINO_PORT{8};
+  static constexpr int ARDUINO_PORT{4};
 
   // ## DRIVE MOTORS ##
 
@@ -186,16 +186,16 @@ class BlueConfig : public IConfig {
   // ## INTAKE MOTORS ##
 
   static constexpr int INTAKE_FRONT_MOTOR_1_PORT{6};
-  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-4};
+  static constexpr int INTAKE_INTERMEDIARY_MOTOR_1_PORT{-8};
   static constexpr int INTAKE_INTERMEDIARY_MOTOR_2_PORT{5};
   static constexpr int INTAKE_BACK_MOTOR_1_PORT{-7};
   static constexpr int INTAKE_VERTICAL_MOTOR_1_PORT{-9};
 
   // ## INTAKE SENSORS ##
 
-  static constexpr int INTAKE_FRONT_COLOR_SENSOR_PORT{2};
+  static constexpr int INTAKE_FRONT_COLOR_SENSOR_PORT{3};
   static constexpr int INTAKE_MID_COLOR_SENSOR_PORT{1};
-  static constexpr int INTAKE_BACK_COLOR_SENSOR_PORT{3};
+  static constexpr int INTAKE_BACK_COLOR_SENSOR_PORT{2};
 
   // ## INTAKE PNEUMATICS ##
 

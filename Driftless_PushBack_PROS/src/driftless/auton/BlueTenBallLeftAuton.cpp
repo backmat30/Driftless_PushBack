@@ -39,7 +39,7 @@ void BlueTenBallLeftAuton::run(
   delay(400);
   hoodRaise();
 
-  delay(225);
+  delay(250);
 
   // score blocks from match loader
   goToPose(long_goal, MAX_VELOCITY, MAX_ANGULAR_VELOCITY, 30.0);
@@ -50,7 +50,7 @@ void BlueTenBallLeftAuton::run(
   waitForGoToPose(long_goal, 2.0, 750);
   hoodOpenDoor();
 
-  delay(1000);
+  delay(1250);
 
   // go back to match loader
   intakeStop();
